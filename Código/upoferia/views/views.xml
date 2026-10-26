@@ -1,0 +1,60 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+<!--
+    <record model="ir.ui.view" id="upoferia.list">
+      <field name="name">upoferia list</field>
+      <field name="model">upoferia.upoferia</field>
+      <field name="arch" type="xml">
+        <list>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </list>
+      </field>
+    </record>
+-->
+
+    <!-- actions opening views on models -->
+<!--
+    <record model="ir.actions.act_window" id="upoferia.action_window">
+      <field name="name">upoferia window</field>
+      <field name="res_model">upoferia.upoferia</field>
+      <field name="view_mode">list,form</field>
+    </record>
+-->
+
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="upoferia.action_server">
+      <field name="name">upoferia server</field>
+      <field name="model_id" ref="model_upoferia_upoferia"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "list,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+    <!-- Top menu item -->
+<!--
+    <menuitem name="upoferia" id="upoferia.menu_root"/>
+-->
+    <!-- menu categories -->
+<!--
+    <menuitem name="Menu 1" id="upoferia.menu_1" parent="upoferia.menu_root"/>
+    <menuitem name="Menu 2" id="upoferia.menu_2" parent="upoferia.menu_root"/>
+-->
+    <!-- actions -->
+<!--
+    <menuitem name="List" id="upoferia.menu_1_list" parent="upoferia.menu_1"
+              action="upoferia.action_window"/>
+    <menuitem name="Server to list" id="upoferia" parent="upoferia.menu_2"
+              action="upoferia.action_server"/>
+-->
+  </data>
+</odoo>
