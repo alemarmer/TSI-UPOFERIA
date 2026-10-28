@@ -26,6 +26,3 @@ class Movimiento(models.Model):
                             'Tipo', required=True)
     periodo = fields.Char(string="Periodo")
     concepto = fields.Char(string="Concepto")
-    sentido = fields.Selection([('ingreso', 'Ingreso'),
-                                ('gasto', 'Gasto'),],
-                               'Sentido')
