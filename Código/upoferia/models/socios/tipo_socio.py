@@ -1,6 +1,6 @@
 from odoo import models, fields, api
 class TipoSocio(models.Model):
-    _name = 'upoferia.tipo_socio'
+    _name = 'upoferia.socios.tipo_socio'
     _description = 'Tipo de socio'
 
     nombre = fields.Char("Nombre", required=True)

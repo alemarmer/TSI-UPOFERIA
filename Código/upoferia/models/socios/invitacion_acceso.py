@@ -1,6 +1,6 @@
 from odoo import models, fields, api
 class InvitacionAcceso(models.Model):
-    _name = 'upoferia.invitacion_acceso'
+    _name = 'upoferia.socios.invitacion_acceso'
     _description = 'Invitación de acceso'
 
     socio_dni = fields.Char("DNI del socio",9, required=True)

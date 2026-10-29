@@ -1,6 +1,6 @@
 from odoo import models, fields, api
 class Beneficiario(models.Model):
-    _name = 'upoferia.beneficiario'
+    _name = 'upoferia.socios.beneficiario'
     _description = 'Familiares de los socios titulares'
 
     dni = fields.Char("DNI",9, required=True)

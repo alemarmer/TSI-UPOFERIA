@@ -1,10 +1,10 @@
 from odoo import models, fields, api
 
-class Socio(models.Model):
-    _name = 'upoferia.socio'
-    _description = 'Socio de la caseta'
-    
-    dni = fields.Char("DNI del propietario",9, required=True)
+class ConsentimientoBiometrico(models.Model):
+    _name = 'upoferia.socios.consentimiento_biometrico'
+    _description = 'Consentimiento biométrico'
+
+    socio_dni = fields.Char("DNI del socio",9, required=True)
     estado = fields.Char("Estado")
     fecha_firma = fields.Date("Fecha de firma")
     fecha_renovacion = fields.Date("Fecha de renovación")

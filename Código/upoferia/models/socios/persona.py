@@ -2,7 +2,7 @@
 
 from odoo import models, fields, api
 class Persona(models.Model):
-    _name = 'upoferia.persona'
+    _name = 'upoferia.socios.persona'
     _description = 'Persona'
     
     dni = fields.Char("DNI",9, required=True)
