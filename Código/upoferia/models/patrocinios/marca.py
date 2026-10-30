@@ -21,6 +21,7 @@ class Marca(models.Model):
     def _check_nombre(self):
         oRegistro = None
         sNombre = ''
+        oMarca = None
         for oRegistro in self:
             sNombre = oRegistro.sNombre or ''
             if not sNombre.strip():
@@ -29,6 +30,9 @@ class Marca(models.Model):
                 raise ValidationError('El nombre de la marca no puede empezar ni terminar con espacios.')
             if not 2 <= len(sNombre) <= 100:
                 raise ValidationError('El nombre de la marca debe tener entre 2 y 100 caracteres.')
+            for oMarca in self.search([('sNombre', 'ilike', sNombre), ('id', '!=', oRegistro.id)]):
+                if oMarca.sNombre.lower() == sNombre.lower():
+                    raise ValidationError('Ya existe una marca llamada «%s» (aunque esté escrita con otras mayúsculas).' % oMarca.sNombre)
 
     @api.constrains('sLogotipo')
     def _check_logotipo(self):

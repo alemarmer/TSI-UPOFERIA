@@ -10,6 +10,7 @@ Todas las validaciones de esta lista están implementadas.
 - No vacío ni solo espacios — `@api.constrains`
 - Sin espacios al principio ni al final — `@api.constrains`
 - Entre 2 y 100 caracteres — `@api.constrains`
+- Único sin distinguir mayúsculas («Cruzcampo» = «CRUZCAMPO») — `@api.constrains`
 
 ### `sLogotipo` (Char)
 - Sin espacios — `@api.constrains`
