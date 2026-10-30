@@ -83,6 +83,34 @@ class ExhibicionMarca(models.Model):
                     'Una exhibición no puede durar más de un año entre el '
                     'montaje y la retirada.')
 
+    # «Arte final»: URL o archivo de imprenta, sin espacios y de como mucho
+    # 255 caracteres (criterio propio)
+    @api.constrains('sArteFinal')
+    def _check_arte_final(self):
+        oRegistro = None
+        sArte = ''
+        for oRegistro in self:
+            sArte = oRegistro.sArteFinal or ''
+            if not sArte:
+                continue
+            if not sArte.strip():
+                raise ValidationError(
+                    'El «Arte final» no puede estar formado solo por espacios.')
+            if len(sArte) > 255:
+                raise ValidationError(
+                    'El «Arte final» no puede tener más de 255 caracteres.')
+            if ' ' in sArte:
+                raise ValidationError(
+                    'El «Arte final» es una URL o una ruta de archivo y no '
+                    'puede tener espacios.')
+            if not re.fullmatch(
+                    r'(?i)https?://\S+|\S+\.(pdf|png|jpe?g|svg|ai|eps|tiff?)',
+                    sArte):
+                raise ValidationError(
+                    'El «Arte final» debe ser una URL que empiece por http:// o '
+                    'https://, o un archivo .pdf, .png, .jpg, .jpeg, .svg, '
+                    '.ai, .eps, .tif o .tiff.')
+
     # Aviso inmediato en el formulario, antes de guardar (como el onchange de gym_2)
     @api.onchange('dFechaMontaje', 'dFechaRetirada')
     def _onchange_valores(self):
