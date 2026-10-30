@@ -9,21 +9,22 @@ from odoo.exceptions import ValidationError
 class Servicio(models.Model):
     _name = 'feria.servicio'
     _description = 'Servicio'
-    _rec_name = 'codigo'
+    _rec_name = 'sCodigo'
     _sql_constraints = [
-        ('codigo_uniq', 'UNIQUE (codigo)',
+        ('codigo_uniq', 'UNIQUE ("sCodigo")',
          'Ya existe un servicio con ese código.'),
     ]
 
-    codigo = fields.Char(string='Código', required=True)
+    sCodigo = fields.Char(string='Código', required=True)
     # Lista cerrada según el E-R (Selection): valores por acordar en el grupo
-    unidad_facturacion = fields.Char(string='Unidad de facturación')
-    requiere_tecnico = fields.Boolean(string='Requiere técnico')
-    nombre = fields.Char(string='Nombre')
+    sUnidadFacturacion = fields.Char(string='Unidad de facturación')
+    bRequiereTecnico = fields.Boolean(string='Requiere técnico')
+    sNombre = fields.Char(string='Nombre')
 
     # «Código» obligatorio: no vale texto vacío ni solo espacios (básica)
-    @api.constrains('codigo')
+    @api.constrains('sCodigo')
     def _check_codigo_obligatorio(self):
-        for record in self:
-            if not (record.codigo or '').strip():
+        oRegistro = None
+        for oRegistro in self:
+            if not (oRegistro.sCodigo or '').strip():
                 raise ValidationError('El campo «Código» es obligatorio.')
