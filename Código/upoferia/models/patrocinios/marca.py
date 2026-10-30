@@ -72,3 +72,22 @@ class Marca(models.Model):
             if not re.search(r'[^\W\d_]', sNombre):
                 raise ValidationError(
                     'El nombre de la marca debe tener al menos una letra.')
+
+    @api.constrains('sNombre')
+    def _check_nombre_unico(self):
+        oRegistro = None
+        sNombre = ''
+        oParecidas = None
+        for oRegistro in self:
+            sNombre = (oRegistro.sNombre or '').strip()
+            if not sNombre:
+                continue
+            oParecidas = self.search([
+                ('sNombre', 'ilike', sNombre),
+                ('id', '!=', oRegistro.id),
+            ])
+            if any((oParecida.sNombre or '').strip().lower() == sNombre.lower()
+                   for oParecida in oParecidas):
+                raise ValidationError(
+                    'Ya existe una marca con el nombre «%s» (aunque esté '
+                    'escrito con otras mayúsculas).' % sNombre)
