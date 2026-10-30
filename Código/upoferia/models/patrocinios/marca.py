@@ -19,6 +19,11 @@ class Marca(models.Model):
     ]
 
     nombre = fields.Char(string='Nombre', required=True)
-    # En el UML es String; si debe guardar el fichero, cambiar a fields.Binary
     logotipo = fields.Char(string='Logotipo')
     color_corporativo = fields.Char(string='Color corporativo')
+
+    @api.constrains('nombre')
+    def _check_nombre_obligatorio(self):
+        for record in self:
+            if not (record.nombre or '').strip():
+                raise ValidationError('El campo «Nombre» es obligatorio.')
