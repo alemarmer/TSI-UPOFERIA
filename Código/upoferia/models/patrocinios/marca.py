@@ -91,3 +91,27 @@ class Marca(models.Model):
                 raise ValidationError(
                     'Ya existe una marca con el nombre «%s» (aunque esté '
                     'escrito con otras mayúsculas).' % sNombre)
+
+    @api.constrains('sLogotipo')
+    def _check_logotipo(self):
+        oRegistro = None
+        sLogotipo = ''
+        for oRegistro in self:
+            sLogotipo = oRegistro.sLogotipo or ''
+            if not sLogotipo:
+                continue
+            if not sLogotipo.strip():
+                raise ValidationError(
+                    'El logotipo no puede estar formado solo por espacios.')
+            if len(sLogotipo) > 255:
+                raise ValidationError(
+                    'El logotipo no puede tener más de 255 caracteres.')
+            if ' ' in sLogotipo:
+                raise ValidationError(
+                    'El logotipo es una URL o una ruta de archivo y no puede '
+                    'tener espacios.')
+            if not re.fullmatch(r'(?i)https?://\S+|\S+\.(png|jpe?g|svg|webp)',
+                                sLogotipo):
+                raise ValidationError(
+                    'El logotipo debe ser una URL que empiece por http:// o '
+                    'https://, o un archivo .png, .jpg, .jpeg, .svg o .webp.')
