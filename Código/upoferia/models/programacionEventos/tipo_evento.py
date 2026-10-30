@@ -1,6 +1,6 @@
 from odoo import models,fields,api
 
-class tipo_evento(models.Model):
+class Tipo_evento(models.Model):
 
     _name='upoferia.tipo_evento' 
     _description='Tipo de evento'
