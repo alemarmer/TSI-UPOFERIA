@@ -1,0 +1,51 @@
+# -*- coding: utf-8 -*-
+# Tabla ESPACIO_PUBLICITARIO del modelo relacional · bloque PATROCINIO Y SERVICIOS
+# Validaciones de atributo: implementadas al final de la clase.
+#
+# Pendiente para la fase de relaciones (no incluido aquí):
+#   Claves ajenas:
+#     - nombre_caseta, nombre_zona_caseta -> ZONA_CASETA (opcional)
+#   Atributos derivados (campos compute):
+#     - superficie_m2 = ancho_m x alto_m
+
+from odoo import models, fields, api
+from odoo.exceptions import ValidationError
+
+
+class EspacioPublicitario(models.Model):
+    _name = 'feria.espacio_publicitario'
+    _description = 'Espacio publicitario'
+    _rec_name = 'codigo_lugar'
+    _sql_constraints = [
+        ('codigo_lugar_uniq', 'UNIQUE (codigo_lugar)',
+         'Ya existe un espacio publicitario con ese código.'),
+    ]
+
+    codigo_lugar = fields.Char(string='Código del lugar', required=True)
+    alto_m = fields.Float(string='Alto (m)')
+    # Lista cerrada según el E-R (Selection): valores por acordar en el grupo
+    tipo = fields.Char(string='Tipo')
+    ubicacion_exacta = fields.Char(string='Ubicación exacta')
+    ancho_m = fields.Float(string='Ancho (m)')
+    iluminado = fields.Boolean(string='Iluminado')
+
+    # «Código del lugar» obligatorio: no vale texto vacío ni solo espacios (básica)
+    @api.constrains('codigo_lugar')
+    def _check_codigo_lugar_obligatorio(self):
+        for record in self:
+            if not (record.codigo_lugar or '').strip():
+                raise ValidationError('El campo «Código del lugar» es obligatorio.')
+
+    # «Alto (m)» debe ser mayor que 0 (básica)
+    @api.constrains('alto_m')
+    def _check_alto_m(self):
+        for record in self:
+            if record.alto_m <= 0:
+                raise ValidationError('«Alto (m)» debe ser mayor que 0.')
+
+    # «Ancho (m)» debe ser mayor que 0 (básica)
+    @api.constrains('ancho_m')
+    def _check_ancho_m(self):
+        for record in self:
+            if record.ancho_m <= 0:
+                raise ValidationError('«Ancho (m)» debe ser mayor que 0.')
