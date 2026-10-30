@@ -18,4 +18,7 @@ class Marca(models.Model):
          'Ya existe una marca con ese nombre.'),
     ]
 
-    
+    nombre = fields.Char(string='Nombre', required=True)
+    # En el UML es String; si debe guardar el fichero, cambiar a fields.Binary
+    logotipo = fields.Char(string='Logotipo')
+    color_corporativo = fields.Char(string='Color corporativo')
