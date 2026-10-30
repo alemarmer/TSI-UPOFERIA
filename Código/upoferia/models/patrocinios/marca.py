@@ -26,13 +26,9 @@ class Marca(models.Model):
             if not sNombre.strip():
                 raise ValidationError('El campo «Nombre» es obligatorio.')
             if sNombre != sNombre.strip():
-                raise ValidationError(
-                    'El nombre de la marca no puede empezar ni terminar '
-                    'con espacios.')
+                raise ValidationError('El nombre de la marca no puede empezar ni terminar con espacios.')
             if not 2 <= len(sNombre) <= 100:
-                raise ValidationError(
-                    'El nombre de la marca debe tener entre 2 y 100 '
-                    'caracteres.')
+                raise ValidationError('El nombre de la marca debe tener entre 2 y 100 caracteres.')
 
     @api.constrains('sLogotipo')
     def _check_logotipo(self):
@@ -43,8 +39,7 @@ class Marca(models.Model):
             if ' ' in sLogotipo:
                 raise ValidationError('El logotipo no puede tener espacios.')
             if len(sLogotipo) > 255:
-                raise ValidationError(
-                    'El logotipo no puede tener más de 255 caracteres.')
+                raise ValidationError('El logotipo no puede tener más de 255 caracteres.')
 
     @api.constrains('sColorCorporativo')
     def _check_color_corporativo(self):
@@ -54,6 +49,4 @@ class Marca(models.Model):
             sColor = oRegistro.sColorCorporativo or ''
             if sColor and not re.fullmatch(
                     r'#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})', sColor):
-                raise ValidationError(
-                    'El color corporativo debe estar en hexadecimal, con el '
-                    'formato #RRGGBB o #RGB (por ejemplo #E30613).')
+                raise ValidationError('El color corporativo debe estar en hexadecimal, con el formato #RRGGBB o #RGB (por ejemplo #E30613).')

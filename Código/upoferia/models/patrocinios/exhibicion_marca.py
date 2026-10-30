@@ -27,13 +27,9 @@ class ExhibicionMarca(models.Model):
             if not sId.strip():
                 raise ValidationError('El campo «Id. exhibición» es obligatorio.')
             if not 2 <= len(sId) <= 20:
-                raise ValidationError(
-                    'El «Id. exhibición» debe tener entre 2 y 20 caracteres.')
+                raise ValidationError('El «Id. exhibición» debe tener entre 2 y 20 caracteres.')
             if not re.fullmatch(r'[A-Z0-9]+([-/._][A-Z0-9]+)*', sId):
-                raise ValidationError(
-                    'El «Id. exhibición» solo puede tener letras mayúsculas y '
-                    'números, separados por - / . _ y sin espacios '
-                    '(por ejemplo EXH-2026-01).')
+                raise ValidationError('El «Id. exhibición» solo puede tener letras mayúsculas y números, separados por - / . _ y sin espacios (por ejemplo EXH-2026-01).')
 
     @api.constrains('dFechaMontaje')
     def _check_fecha_montaje(self):
@@ -41,9 +37,7 @@ class ExhibicionMarca(models.Model):
         dHoy = fields.Date.context_today(self)
         for oRegistro in self:
             if oRegistro.dFechaMontaje and (oRegistro.dFechaMontaje - dHoy).days > 730:
-                raise ValidationError(
-                    'La «Fecha de montaje» no puede ser más de dos años '
-                    'posterior a hoy.')
+                raise ValidationError('La «Fecha de montaje» no puede ser más de dos años posterior a hoy.')
 
     @api.constrains('dFechaMontaje', 'dFechaRetirada')
     def _check_fecha_retirada(self):
@@ -52,15 +46,11 @@ class ExhibicionMarca(models.Model):
             if not oRegistro.dFechaRetirada:
                 continue
             if not oRegistro.dFechaMontaje:
-                raise ValidationError(
-                    'No se puede indicar la «Fecha de retirada» sin la '
-                    '«Fecha de montaje».')
+                raise ValidationError('No se puede indicar la «Fecha de retirada» sin la «Fecha de montaje».')
             if oRegistro.dFechaRetirada < oRegistro.dFechaMontaje:
                 raise ValidationError('«Fecha de retirada» no puede ser anterior a «Fecha de montaje».')
             if (oRegistro.dFechaRetirada - oRegistro.dFechaMontaje).days > 365:
-                raise ValidationError(
-                    'Una exhibición no puede durar más de un año entre el '
-                    'montaje y la retirada.')
+                raise ValidationError('Una exhibición no puede durar más de un año entre el montaje y la retirada.')
 
     @api.constrains('sArteFinal')
     def _check_arte_final(self):
@@ -71,22 +61,15 @@ class ExhibicionMarca(models.Model):
             if not sArte:
                 continue
             if not sArte.strip():
-                raise ValidationError(
-                    'El «Arte final» no puede estar formado solo por espacios.')
+                raise ValidationError('El «Arte final» no puede estar formado solo por espacios.')
             if len(sArte) > 255:
-                raise ValidationError(
-                    'El «Arte final» no puede tener más de 255 caracteres.')
+                raise ValidationError('El «Arte final» no puede tener más de 255 caracteres.')
             if ' ' in sArte:
-                raise ValidationError(
-                    'El «Arte final» es una URL o una ruta de archivo y no '
-                    'puede tener espacios.')
+                raise ValidationError('El «Arte final» es una URL o una ruta de archivo y no puede tener espacios.')
             if not re.fullmatch(
                     r'(?i)https?://\S+|\S+\.(pdf|png|jpe?g|svg|ai|eps|tiff?)',
                     sArte):
-                raise ValidationError(
-                    'El «Arte final» debe ser una URL que empiece por http:// o '
-                    'https://, o un archivo .pdf, .png, .jpg, .jpeg, .svg, '
-                    '.ai, .eps, .tif o .tiff.')
+                raise ValidationError('El «Arte final» debe ser una URL que empiece por http:// o https://, o un archivo .pdf, .png, .jpg, .jpeg, .svg, .ai, .eps, .tif o .tiff.')
 
     @api.onchange('dFechaMontaje', 'dFechaRetirada')
     def _onchange_valores(self):
