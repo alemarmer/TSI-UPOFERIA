@@ -15,25 +15,26 @@ from odoo.exceptions import ValidationError
 class EspacioPublicitario(models.Model):
     _name = 'feria.espacio_publicitario'
     _description = 'Espacio publicitario'
-    _rec_name = 'codigo_lugar'
+    _rec_name = 'sCodigoLugar'
     _sql_constraints = [
-        ('codigo_lugar_uniq', 'UNIQUE (codigo_lugar)',
+        ('codigo_lugar_uniq', 'UNIQUE ("sCodigoLugar")',
          'Ya existe un espacio publicitario con ese código.'),
     ]
 
-    codigo_lugar = fields.Char(string='Código del lugar', required=True)
+    sCodigoLugar = fields.Char(string='Código del lugar', required=True)
     alto_m = fields.Float(string='Alto (m)')
     # Lista cerrada según el E-R (Selection): valores por acordar en el grupo
-    tipo = fields.Char(string='Tipo')
-    ubicacion_exacta = fields.Char(string='Ubicación exacta')
+    sTipo = fields.Char(string='Tipo')
+    sUbicacionExacta = fields.Char(string='Ubicación exacta')
     ancho_m = fields.Float(string='Ancho (m)')
-    iluminado = fields.Boolean(string='Iluminado')
+    bIluminado = fields.Boolean(string='Iluminado')
 
     # «Código del lugar» obligatorio: no vale texto vacío ni solo espacios (básica)
-    @api.constrains('codigo_lugar')
+    @api.constrains('sCodigoLugar')
     def _check_codigo_lugar_obligatorio(self):
-        for record in self:
-            if not (record.codigo_lugar or '').strip():
+        oRegistro = None
+        for oRegistro in self:
+            if not (oRegistro.sCodigoLugar or '').strip():
                 raise ValidationError('El campo «Código del lugar» es obligatorio.')
 
     # «Alto (m)» debe ser mayor que 0 (básica)
