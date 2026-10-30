@@ -1,17 +1,3 @@
-# -*- coding: utf-8 -*-
-# Tabla EXHIBICION_MARCA del modelo relacional · bloque PATROCINIO Y SERVICIOS
-# Validaciones de atributo: implementadas al final de la clase.
-#
-# Pendiente para la fase de relaciones (no incluido aquí):
-#   Claves ajenas:
-#     - nombre_marca -> MARCA (opcional)
-#     - dni_tecnico -> TECNICO (opcional)
-#     - codigo_lugar_espacio_publicitario -> ESPACIO_PUBLICITARIO (opcional)
-#   Atributos derivados (campos compute):
-#     - estado (se calcula con las fechas, no se guarda)
-#   Validaciones que necesitan claves ajenas:
-#     - No se solapa con otra exhibición del mismo ESPACIO_PUBLICITARIO (necesita la FK)
-
 import re
 
 from odoo import models, fields, api
@@ -27,15 +13,11 @@ class ExhibicionMarca(models.Model):
          'Ya existe una exhibición con ese identificador.'),
     ]
 
-    # Clave artificial del E-R (Odoo crea además su propio id)
     sIdExhibicion = fields.Char(string='Id. exhibición', required=True)
     dFechaMontaje = fields.Date(string='Fecha de montaje')
-    # En el UML es String; si debe guardar el fichero, cambiar a fields.Binary
     sArteFinal = fields.Char(string='Arte final')
     dFechaRetirada = fields.Date(string='Fecha de retirada')
 
-    # «Id. exhibición»: obligatorio, de 2 a 20 caracteres y con formato de código
-    # en mayúsculas (letras y números separados por - / . _)
     @api.constrains('sIdExhibicion')
     def _check_id_exhibicion(self):
         oRegistro = None
@@ -53,7 +35,6 @@ class ExhibicionMarca(models.Model):
                     'números, separados por - / . _ y sin espacios '
                     '(por ejemplo EXH-2026-01).')
 
-    # «Fecha de montaje»: no más de dos años por delante de hoy (criterio propio)
     @api.constrains('dFechaMontaje')
     def _check_fecha_montaje(self):
         oRegistro = None
@@ -64,8 +45,6 @@ class ExhibicionMarca(models.Model):
                     'La «Fecha de montaje» no puede ser más de dos años '
                     'posterior a hoy.')
 
-    # «Fecha de retirada»: necesita fecha de montaje, no puede ser anterior a ella
-    # (E-R) y la exhibición no puede durar más de un año (criterio propio)
     @api.constrains('dFechaMontaje', 'dFechaRetirada')
     def _check_fecha_retirada(self):
         oRegistro = None
@@ -83,8 +62,6 @@ class ExhibicionMarca(models.Model):
                     'Una exhibición no puede durar más de un año entre el '
                     'montaje y la retirada.')
 
-    # «Arte final»: URL o archivo de imprenta, sin espacios y de como mucho
-    # 255 caracteres (criterio propio)
     @api.constrains('sArteFinal')
     def _check_arte_final(self):
         oRegistro = None
@@ -111,7 +88,6 @@ class ExhibicionMarca(models.Model):
                     'https://, o un archivo .pdf, .png, .jpg, .jpeg, .svg, '
                     '.ai, .eps, .tif o .tiff.')
 
-    # Aviso inmediato en el formulario, antes de guardar (como el onchange de gym_2)
     @api.onchange('dFechaMontaje', 'dFechaRetirada')
     def _onchange_valores(self):
         sMensaje = False

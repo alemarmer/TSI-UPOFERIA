@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-# Tabla MARCA del modelo relacional · bloque PATROCINIO Y SERVICIOS
-#
-# Pendiente:
-# Claves ajenas:
-#     - dni_proveedor -> PROVEEDOR (opcional)
-
 import re
 
 from odoo import models, fields, api
