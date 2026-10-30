@@ -12,6 +12,8 @@
 #   Validaciones que necesitan claves ajenas:
 #     - No se solapa con otra exhibición del mismo ESPACIO_PUBLICITARIO (necesita la FK)
 
+import re
+
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 
@@ -32,13 +34,24 @@ class ExhibicionMarca(models.Model):
     sArteFinal = fields.Char(string='Arte final')
     dFechaRetirada = fields.Date(string='Fecha de retirada')
 
-    # «Id. exhibición» obligatorio: no vale texto vacío ni solo espacios (básica)
+    # «Id. exhibición»: obligatorio, de 2 a 20 caracteres y con formato de código
+    # en mayúsculas (letras y números separados por - / . _)
     @api.constrains('sIdExhibicion')
-    def _check_id_exhibicion_obligatorio(self):
+    def _check_id_exhibicion(self):
         oRegistro = None
+        sId = ''
         for oRegistro in self:
-            if not (oRegistro.sIdExhibicion or '').strip():
+            sId = oRegistro.sIdExhibicion or ''
+            if not sId.strip():
                 raise ValidationError('El campo «Id. exhibición» es obligatorio.')
+            if not 2 <= len(sId) <= 20:
+                raise ValidationError(
+                    'El «Id. exhibición» debe tener entre 2 y 20 caracteres.')
+            if not re.fullmatch(r'[A-Z0-9]+([-/._][A-Z0-9]+)*', sId):
+                raise ValidationError(
+                    'El «Id. exhibición» solo puede tener letras mayúsculas y '
+                    'números, separados por - / . _ y sin espacios '
+                    '(por ejemplo EXH-2026-01).')
 
     # «Fecha de retirada» no puede ser anterior a «Fecha de montaje» (E-R)
     @api.constrains('dFechaMontaje', 'dFechaRetirada')
