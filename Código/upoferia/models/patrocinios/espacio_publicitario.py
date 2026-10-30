@@ -22,11 +22,11 @@ class EspacioPublicitario(models.Model):
     ]
 
     sCodigoLugar = fields.Char(string='Código del lugar', required=True)
-    alto_m = fields.Float(string='Alto (m)')
+    fAltoM = fields.Float(string='Alto (m)')
     # Lista cerrada según el E-R (Selection): valores por acordar en el grupo
     sTipo = fields.Char(string='Tipo')
     sUbicacionExacta = fields.Char(string='Ubicación exacta')
-    ancho_m = fields.Float(string='Ancho (m)')
+    fAnchoM = fields.Float(string='Ancho (m)')
     bIluminado = fields.Boolean(string='Iluminado')
 
     # «Código del lugar» obligatorio: no vale texto vacío ni solo espacios (básica)
@@ -38,15 +38,17 @@ class EspacioPublicitario(models.Model):
                 raise ValidationError('El campo «Código del lugar» es obligatorio.')
 
     # «Alto (m)» debe ser mayor que 0 (básica)
-    @api.constrains('alto_m')
+    @api.constrains('fAltoM')
     def _check_alto_m(self):
-        for record in self:
-            if record.alto_m <= 0:
+        oRegistro = None
+        for oRegistro in self:
+            if oRegistro.fAltoM <= 0:
                 raise ValidationError('«Alto (m)» debe ser mayor que 0.')
 
     # «Ancho (m)» debe ser mayor que 0 (básica)
-    @api.constrains('ancho_m')
+    @api.constrains('fAnchoM')
     def _check_ancho_m(self):
-        for record in self:
-            if record.ancho_m <= 0:
+        oRegistro = None
+        for oRegistro in self:
+            if oRegistro.fAnchoM <= 0:
                 raise ValidationError('«Ancho (m)» debe ser mayor que 0.')
