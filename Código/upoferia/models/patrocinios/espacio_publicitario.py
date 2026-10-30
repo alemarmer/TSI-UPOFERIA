@@ -75,3 +75,37 @@ class EspacioPublicitario(models.Model):
             if round(oRegistro.fAnchoM, 2) != oRegistro.fAnchoM:
                 raise ValidationError(
                     '«Ancho (m)» solo admite dos decimales (centímetros).')
+
+    # «Tipo» (opcional): sin espacios sobrantes y de 2 a 50 caracteres
+    @api.constrains('sTipo')
+    def _check_tipo(self):
+        oRegistro = None
+        sTipo = ''
+        for oRegistro in self:
+            sTipo = oRegistro.sTipo or ''
+            if not sTipo:
+                continue
+            if sTipo != sTipo.strip() or '  ' in sTipo:
+                raise ValidationError(
+                    'El «Tipo» no puede empezar ni terminar con espacios ni '
+                    'tener dos espacios seguidos.')
+            if not 2 <= len(sTipo) <= 50:
+                raise ValidationError(
+                    'El «Tipo» debe tener entre 2 y 50 caracteres.')
+
+    # «Ubicación exacta» (opcional): sin espacios sobrantes y de 3 a 200 caracteres
+    @api.constrains('sUbicacionExacta')
+    def _check_ubicacion_exacta(self):
+        oRegistro = None
+        sUbicacion = ''
+        for oRegistro in self:
+            sUbicacion = oRegistro.sUbicacionExacta or ''
+            if not sUbicacion:
+                continue
+            if sUbicacion != sUbicacion.strip() or '  ' in sUbicacion:
+                raise ValidationError(
+                    'La «Ubicación exacta» no puede empezar ni terminar con '
+                    'espacios ni tener dos espacios seguidos.')
+            if not 3 <= len(sUbicacion) <= 200:
+                raise ValidationError(
+                    'La «Ubicación exacta» debe tener entre 3 y 200 caracteres.')
