@@ -6,7 +6,7 @@
 #   Claves ajenas:
 #     - nombre_caseta, nombre_zona_caseta -> ZONA_CASETA (opcional)
 #   Atributos derivados (campos compute):
-#     - superficie_m2 = ancho_m x alto_m
+#     - fSuperficieM2 = fAnchoM x fAltoM
 
 import re
 
@@ -50,18 +50,28 @@ class EspacioPublicitario(models.Model):
                     'números, separados por - / . _ y sin espacios '
                     '(por ejemplo PORTADA-01).')
 
-    # «Alto (m)» debe ser mayor que 0 (básica)
+    # «Alto (m)»: mayor que 0, como mucho 30 m y con precisión de centímetros
     @api.constrains('fAltoM')
     def _check_alto_m(self):
         oRegistro = None
         for oRegistro in self:
             if oRegistro.fAltoM <= 0:
                 raise ValidationError('«Alto (m)» debe ser mayor que 0.')
+            if oRegistro.fAltoM > 30:
+                raise ValidationError('«Alto (m)» no puede superar los 30 metros.')
+            if round(oRegistro.fAltoM, 2) != oRegistro.fAltoM:
+                raise ValidationError(
+                    '«Alto (m)» solo admite dos decimales (centímetros).')
 
-    # «Ancho (m)» debe ser mayor que 0 (básica)
+    # «Ancho (m)»: mayor que 0, como mucho 30 m y con precisión de centímetros
     @api.constrains('fAnchoM')
     def _check_ancho_m(self):
         oRegistro = None
         for oRegistro in self:
             if oRegistro.fAnchoM <= 0:
                 raise ValidationError('«Ancho (m)» debe ser mayor que 0.')
+            if oRegistro.fAnchoM > 30:
+                raise ValidationError('«Ancho (m)» no puede superar los 30 metros.')
+            if round(oRegistro.fAnchoM, 2) != oRegistro.fAnchoM:
+                raise ValidationError(
+                    '«Ancho (m)» solo admite dos decimales (centímetros).')
