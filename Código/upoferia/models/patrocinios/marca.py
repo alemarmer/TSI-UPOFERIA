@@ -19,8 +19,8 @@ class Marca(models.Model):
     ]
 
     sNombre = fields.Char(string='Nombre', required=True)
-    logotipo = fields.Char(string='Logotipo')
-    color_corporativo = fields.Char(string='Color corporativo')
+    sLogotipo = fields.Char(string='Logotipo')
+    sColorCorporativo = fields.Char(string='Color corporativo')
 
     @api.constrains('sNombre')
     def _check_nombre_obligatorio(self):
