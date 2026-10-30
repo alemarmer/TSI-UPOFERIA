@@ -1,7 +1,3 @@
-# -*- coding: utf-8 -*-
-# Tabla SERVICIO del modelo relacional · bloque PATROCINIO Y SERVICIOS
-# Validaciones de atributo: implementadas al final de la clase.
-
 import re
 
 from odoo import models, fields, api
@@ -18,7 +14,6 @@ class Servicio(models.Model):
     ]
 
     sCodigo = fields.Char(string='Código', required=True)
-    # Lista cerrada según el E-R (Selection): valores por acordar en el grupo
     sUnidadFacturacion = fields.Char(string='Unidad de facturación')
     bRequiereTecnico = fields.Boolean(string='Requiere técnico')
     sNombre = fields.Char(string='Nombre', required=True)

@@ -1,12 +1,3 @@
-# -*- coding: utf-8 -*-
-# Tabla TECNICO del modelo relacional · bloque PATROCINIO Y SERVICIOS
-# Subtipo de PERSONA: su clave (dni) es la del supertipo
-# y se resolverá con herencia en la fase de relaciones.
-#
-# Pendiente para la fase de relaciones (no incluido aquí):
-#   Validaciones que necesitan claves ajenas:
-#     - Un TECNICO es siempre una persona física (necesita la herencia de PERSONA)
-
 import re
 
 from odoo import models, fields, api
@@ -21,7 +12,6 @@ class Tecnico(models.Model):
          'Ya existe un técnico con ese código de carné profesional.'),
     ]
 
-    # Lista cerrada según el E-R (Selection): valores por acordar en el grupo
     sEspecialidad = fields.Char(string='Especialidad')
     dFechaCaducidadCarnet = fields.Date(string='Caducidad del carné')
     sCodCarnetProfesional = fields.Char(string='Código del carné profesional')
