@@ -21,7 +21,7 @@ class Servicio(models.Model):
     # Lista cerrada según el E-R (Selection): valores por acordar en el grupo
     sUnidadFacturacion = fields.Char(string='Unidad de facturación')
     bRequiereTecnico = fields.Boolean(string='Requiere técnico')
-    sNombre = fields.Char(string='Nombre')
+    sNombre = fields.Char(string='Nombre', required=True)
 
     @api.constrains('sCodigo')
     def _check_codigo(self):
@@ -35,3 +35,16 @@ class Servicio(models.Model):
                 raise ValidationError('El «Código» del servicio debe tener entre 2 y 20 caracteres.')
             if not re.fullmatch(r'[A-Z0-9]+([-/._][A-Z0-9]+)*', sCodigo):
                 raise ValidationError('El «Código» del servicio solo puede tener letras mayúsculas y números, separados por - / . _ y sin espacios (por ejemplo SRV-SONIDO).')
+
+    @api.constrains('sNombre')
+    def _check_nombre(self):
+        oRegistro = None
+        sNombre = ''
+        for oRegistro in self:
+            sNombre = oRegistro.sNombre or ''
+            if not sNombre.strip():
+                raise ValidationError('El campo «Nombre» del servicio es obligatorio.')
+            if sNombre != sNombre.strip():
+                raise ValidationError('El nombre del servicio no puede empezar ni terminar con espacios.')
+            if not 2 <= len(sNombre) <= 100:
+                raise ValidationError('El nombre del servicio debe tener entre 2 y 100 caracteres.')
