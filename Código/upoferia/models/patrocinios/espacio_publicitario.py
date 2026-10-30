@@ -8,6 +8,8 @@
 #   Atributos derivados (campos compute):
 #     - superficie_m2 = ancho_m x alto_m
 
+import re
+
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 
@@ -29,13 +31,24 @@ class EspacioPublicitario(models.Model):
     fAnchoM = fields.Float(string='Ancho (m)')
     bIluminado = fields.Boolean(string='Iluminado')
 
-    # «Código del lugar» obligatorio: no vale texto vacío ni solo espacios (básica)
+    # «Código del lugar»: obligatorio, de 2 a 20 caracteres y con formato de
+    # código en mayúsculas (letras y números separados por - / . _)
     @api.constrains('sCodigoLugar')
-    def _check_codigo_lugar_obligatorio(self):
+    def _check_codigo_lugar(self):
         oRegistro = None
+        sCodigo = ''
         for oRegistro in self:
-            if not (oRegistro.sCodigoLugar or '').strip():
+            sCodigo = oRegistro.sCodigoLugar or ''
+            if not sCodigo.strip():
                 raise ValidationError('El campo «Código del lugar» es obligatorio.')
+            if not 2 <= len(sCodigo) <= 20:
+                raise ValidationError(
+                    'El «Código del lugar» debe tener entre 2 y 20 caracteres.')
+            if not re.fullmatch(r'[A-Z0-9]+([-/._][A-Z0-9]+)*', sCodigo):
+                raise ValidationError(
+                    'El «Código del lugar» solo puede tener letras mayúsculas y '
+                    'números, separados por - / . _ y sin espacios '
+                    '(por ejemplo PORTADA-01).')
 
     # «Alto (m)» debe ser mayor que 0 (básica)
     @api.constrains('fAltoM')
