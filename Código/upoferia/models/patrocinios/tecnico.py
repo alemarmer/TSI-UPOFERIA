@@ -15,6 +15,6 @@ class Tecnico(models.Model):
     _description = 'Técnico'
 
     # Lista cerrada según el E-R (Selection): valores por acordar en el grupo
-    especialidad = fields.Char(string='Especialidad')
-    fecha_caducidad_carnet = fields.Date(string='Caducidad del carné')
-    cod_carnet_profesional = fields.Char(string='Código del carné profesional')
+    sEspecialidad = fields.Char(string='Especialidad')
+    dFechaCaducidadCarnet = fields.Date(string='Caducidad del carné')
+    sCodCarnetProfesional = fields.Char(string='Código del carné profesional')
