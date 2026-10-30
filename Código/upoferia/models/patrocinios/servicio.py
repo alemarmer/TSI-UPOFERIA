@@ -14,7 +14,15 @@ class Servicio(models.Model):
     ]
 
     sCodigo = fields.Char(string='Código', required=True)
-    sUnidadFacturacion = fields.Char(string='Unidad de facturación')
+    sUnidadFacturacion = fields.Selection([
+        ('hora', 'Por hora'),
+        ('dia', 'Por día'),
+        ('evento', 'Por evento'),
+        ('unidad', 'Por unidad'),
+        ('persona', 'Por persona'),
+        ('metro_cuadrado', 'Por metro cuadrado'),
+        ('precio_cerrado', 'Precio cerrado'),
+    ], string='Unidad de facturación')
     bRequiereTecnico = fields.Boolean(string='Requiere técnico')
     sNombre = fields.Char(string='Nombre', required=True)
 
@@ -43,16 +51,3 @@ class Servicio(models.Model):
                 raise ValidationError('El nombre del servicio no puede empezar ni terminar con espacios.')
             if not 2 <= len(sNombre) <= 100:
                 raise ValidationError('El nombre del servicio debe tener entre 2 y 100 caracteres.')
-
-    @api.constrains('sUnidadFacturacion')
-    def _check_unidad_facturacion(self):
-        oRegistro = None
-        sUnidad = ''
-        for oRegistro in self:
-            sUnidad = oRegistro.sUnidadFacturacion or ''
-            if not sUnidad:
-                continue
-            if sUnidad != sUnidad.strip() or '  ' in sUnidad:
-                raise ValidationError('La «Unidad de facturación» no puede empezar ni terminar con espacios ni tener dos espacios seguidos.')
-            if not 2 <= len(sUnidad) <= 30:
-                raise ValidationError('La «Unidad de facturación» debe tener entre 2 y 30 caracteres.')
