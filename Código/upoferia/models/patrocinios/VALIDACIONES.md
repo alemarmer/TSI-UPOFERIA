@@ -30,7 +30,7 @@ Todas las validaciones de esta lista están implementadas.
 - Código en mayúsculas, sin espacios (ej. `EXH-2026-01`) — `@api.constrains`
 
 ### `dFechaMontaje` (Date)
-- Como mucho dos años después de hoy — `@api.constrains`
+- Entre el 01/01/1970 y dos años después de hoy — `@api.constrains`
 
 ### `dFechaRetirada` (Date)
 - No anterior a la fecha de montaje — `@api.constrains` + aviso `onchange`

@@ -35,8 +35,13 @@ class ExhibicionMarca(models.Model):
     def _check_fecha_montaje(self):
         oRegistro = None
         dHoy = fields.Date.context_today(self)
+        dFechaMinima = fields.Date.to_date('1970-01-01')
         for oRegistro in self:
-            if oRegistro.dFechaMontaje and (oRegistro.dFechaMontaje - dHoy).days > 730:
+            if not oRegistro.dFechaMontaje:
+                continue
+            if oRegistro.dFechaMontaje < dFechaMinima:
+                raise ValidationError('La «Fecha de montaje» no puede ser anterior al 01/01/1970.')
+            if (oRegistro.dFechaMontaje - dHoy).days > 730:
                 raise ValidationError('La «Fecha de montaje» no puede ser más de dos años posterior a hoy.')
 
     @api.constrains('dFechaMontaje', 'dFechaRetirada')
