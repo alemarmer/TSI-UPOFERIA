@@ -14,6 +14,7 @@ Todas las validaciones de esta lista están implementadas.
 ### `sLogotipo` (Char)
 - Sin espacios — `@api.constrains`
 - Como mucho 255 caracteres — `@api.constrains`
+- URL `http(s)://` o archivo `.png/.jpg/.jpeg/.svg/.webp` — `@api.constrains`
 
 ### `sColorCorporativo` (Char)
 - Formato `#RRGGBB` o `#RGB` — `@api.constrains`

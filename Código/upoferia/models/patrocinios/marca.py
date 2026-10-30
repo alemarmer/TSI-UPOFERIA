@@ -40,6 +40,8 @@ class Marca(models.Model):
                 raise ValidationError('El logotipo no puede tener espacios.')
             if len(sLogotipo) > 255:
                 raise ValidationError('El logotipo no puede tener más de 255 caracteres.')
+            if sLogotipo and not re.fullmatch(r'(?i)https?://\S+|\S+\.(png|jpe?g|svg|webp)', sLogotipo):
+                raise ValidationError('El logotipo debe ser una URL que empiece por http:// o https://, o un archivo .png, .jpg, .jpeg, .svg o .webp.')
 
     @api.constrains('sColorCorporativo')
     def _check_color_corporativo(self):
