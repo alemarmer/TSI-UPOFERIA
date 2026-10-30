@@ -7,7 +7,8 @@
 #   Validaciones que necesitan claves ajenas:
 #     - Un TECNICO es siempre una persona física (necesita la herencia de PERSONA)
 
-from odoo import models, fields
+from odoo import models, fields, api
+from odoo.exceptions import ValidationError
 
 
 class Tecnico(models.Model):
@@ -18,3 +19,16 @@ class Tecnico(models.Model):
     sEspecialidad = fields.Char(string='Especialidad')
     dFechaCaducidadCarnet = fields.Date(string='Caducidad del carné')
     sCodCarnetProfesional = fields.Char(string='Código del carné profesional')
+
+    @api.constrains('sEspecialidad')
+    def _check_especialidad(self):
+        oRegistro = None
+        sEspecialidad = ''
+        for oRegistro in self:
+            sEspecialidad = oRegistro.sEspecialidad or ''
+            if not sEspecialidad:
+                continue
+            if sEspecialidad != sEspecialidad.strip() or '  ' in sEspecialidad:
+                raise ValidationError('La «Especialidad» no puede empezar ni terminar con espacios ni tener dos espacios seguidos.')
+            if not 2 <= len(sEspecialidad) <= 50:
+                raise ValidationError('La «Especialidad» debe tener entre 2 y 50 caracteres.')
