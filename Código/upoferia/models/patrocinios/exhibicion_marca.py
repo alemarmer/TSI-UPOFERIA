@@ -27,10 +27,10 @@ class ExhibicionMarca(models.Model):
 
     # Clave artificial del E-R (Odoo crea además su propio id)
     sIdExhibicion = fields.Char(string='Id. exhibición', required=True)
-    fecha_montaje = fields.Date(string='Fecha de montaje')
+    dFechaMontaje = fields.Date(string='Fecha de montaje')
     # En el UML es String; si debe guardar el fichero, cambiar a fields.Binary
     sArteFinal = fields.Char(string='Arte final')
-    fecha_retirada = fields.Date(string='Fecha de retirada')
+    dFechaRetirada = fields.Date(string='Fecha de retirada')
 
     # «Id. exhibición» obligatorio: no vale texto vacío ni solo espacios (básica)
     @api.constrains('sIdExhibicion')
@@ -41,22 +41,23 @@ class ExhibicionMarca(models.Model):
                 raise ValidationError('El campo «Id. exhibición» es obligatorio.')
 
     # «Fecha de retirada» no puede ser anterior a «Fecha de montaje» (E-R)
-    @api.constrains('fecha_montaje', 'fecha_retirada')
+    @api.constrains('dFechaMontaje', 'dFechaRetirada')
     def _check_fecha_retirada(self):
-        for record in self:
-            if record.fecha_montaje and record.fecha_retirada and record.fecha_retirada < record.fecha_montaje:
+        oRegistro = None
+        for oRegistro in self:
+            if oRegistro.dFechaMontaje and oRegistro.dFechaRetirada and oRegistro.dFechaRetirada < oRegistro.dFechaMontaje:
                 raise ValidationError('«Fecha de retirada» no puede ser anterior a «Fecha de montaje».')
 
     # Aviso inmediato en el formulario, antes de guardar (como el onchange de gym_2)
-    @api.onchange('fecha_montaje', 'fecha_retirada')
+    @api.onchange('dFechaMontaje', 'dFechaRetirada')
     def _onchange_valores(self):
-        mensaje = False
-        if self.fecha_montaje and self.fecha_retirada and self.fecha_retirada < self.fecha_montaje:
-            mensaje = '«Fecha de retirada» no puede ser anterior a «Fecha de montaje».'
-        if mensaje:
+        sMensaje = False
+        if self.dFechaMontaje and self.dFechaRetirada and self.dFechaRetirada < self.dFechaMontaje:
+            sMensaje = '«Fecha de retirada» no puede ser anterior a «Fecha de montaje».'
+        if sMensaje:
             return {
                 'warning': {
                     'title': 'Valores incorrectos',
-                    'message': mensaje,
+                    'message': sMensaje,
                 }
             }
