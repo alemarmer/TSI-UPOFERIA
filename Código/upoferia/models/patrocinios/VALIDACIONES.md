@@ -56,6 +56,7 @@ Todas las validaciones de esta lista están implementadas.
 - Código en mayúsculas, sin espacios (ej. `PORTADA-01`) — `@api.constrains`
 
 ### `fAltoM` y `fAnchoM` (Float)
+- Obligatorios — `required`
 - Mayor que 0 — `@api.constrains`
 - Como mucho 30 m — `@api.constrains`
 - Como mucho dos decimales — `@api.constrains`

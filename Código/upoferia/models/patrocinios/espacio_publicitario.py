@@ -14,10 +14,10 @@ class EspacioPublicitario(models.Model):
     ]
 
     sCodigoLugar = fields.Char(string='Código del lugar', required=True)
-    fAltoM = fields.Float(string='Alto (m)')
+    fAltoM = fields.Float(string='Alto (m)', required=True)
     sTipo = fields.Char(string='Tipo')
     sUbicacionExacta = fields.Char(string='Ubicación exacta')
-    fAnchoM = fields.Float(string='Ancho (m)')
+    fAnchoM = fields.Float(string='Ancho (m)', required=True)
     bIluminado = fields.Boolean(string='Iluminado')
 
     @api.constrains('sCodigoLugar')
