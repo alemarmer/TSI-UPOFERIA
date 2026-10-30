@@ -7,6 +7,8 @@
 #   Validaciones que necesitan claves ajenas:
 #     - Un TECNICO es siempre una persona física (necesita la herencia de PERSONA)
 
+import re
+
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 
@@ -14,6 +16,10 @@ from odoo.exceptions import ValidationError
 class Tecnico(models.Model):
     _name = 'feria.tecnico'
     _description = 'Técnico'
+    _sql_constraints = [
+        ('cod_carnet_profesional_uniq', 'UNIQUE ("sCodCarnetProfesional")',
+         'Ya existe un técnico con ese código de carné profesional.'),
+    ]
 
     # Lista cerrada según el E-R (Selection): valores por acordar en el grupo
     sEspecialidad = fields.Char(string='Especialidad')
@@ -32,3 +38,16 @@ class Tecnico(models.Model):
                 raise ValidationError('La «Especialidad» no puede empezar ni terminar con espacios ni tener dos espacios seguidos.')
             if not 2 <= len(sEspecialidad) <= 50:
                 raise ValidationError('La «Especialidad» debe tener entre 2 y 50 caracteres.')
+
+    @api.constrains('sCodCarnetProfesional')
+    def _check_cod_carnet_profesional(self):
+        oRegistro = None
+        sCodigo = ''
+        for oRegistro in self:
+            sCodigo = oRegistro.sCodCarnetProfesional or ''
+            if not sCodigo:
+                continue
+            if not 4 <= len(sCodigo) <= 20:
+                raise ValidationError('El «Código del carné profesional» debe tener entre 4 y 20 caracteres.')
+            if not re.fullmatch(r'[A-Z0-9]+([-/._][A-Z0-9]+)*', sCodigo):
+                raise ValidationError('El «Código del carné profesional» solo puede tener letras mayúsculas y números, separados por - / . _ y sin espacios (por ejemplo ELEC-12345).')
