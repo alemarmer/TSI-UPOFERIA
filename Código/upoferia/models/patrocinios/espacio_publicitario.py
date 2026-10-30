@@ -15,7 +15,15 @@ class EspacioPublicitario(models.Model):
 
     sCodigoLugar = fields.Char(string='Código del lugar', required=True)
     fAltoM = fields.Float(string='Alto (m)', required=True)
-    sTipo = fields.Char(string='Tipo')
+    sTipo = fields.Selection([
+        ('lona', 'Lona'),
+        ('valla', 'Valla'),
+        ('banderola', 'Banderola'),
+        ('pantalla', 'Pantalla digital'),
+        ('photocall', 'Photocall'),
+        ('mupi', 'Mupi'),
+        ('suelo', 'Vinilo de suelo'),
+    ], string='Tipo')
     sUbicacionExacta = fields.Char(string='Ubicación exacta')
     fAnchoM = fields.Float(string='Ancho (m)', required=True)
     bIluminado = fields.Boolean(string='Iluminado')
@@ -54,19 +62,6 @@ class EspacioPublicitario(models.Model):
                 raise ValidationError('«Ancho (m)» no puede superar los 30 metros.')
             if round(oRegistro.fAnchoM, 2) != oRegistro.fAnchoM:
                 raise ValidationError('«Ancho (m)» solo admite dos decimales (centímetros).')
-
-    @api.constrains('sTipo')
-    def _check_tipo(self):
-        oRegistro = None
-        sTipo = ''
-        for oRegistro in self:
-            sTipo = oRegistro.sTipo or ''
-            if not sTipo:
-                continue
-            if sTipo != sTipo.strip() or '  ' in sTipo:
-                raise ValidationError('El «Tipo» no puede empezar ni terminar con espacios ni tener dos espacios seguidos.')
-            if not 2 <= len(sTipo) <= 50:
-                raise ValidationError('El «Tipo» debe tener entre 2 y 50 caracteres.')
 
     @api.constrains('sUbicacionExacta')
     def _check_ubicacion_exacta(self):
