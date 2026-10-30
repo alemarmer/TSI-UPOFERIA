@@ -5,6 +5,8 @@
 # Claves ajenas:
 #     - dni_proveedor -> PROVEEDOR (opcional)
 
+import re
+
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 
@@ -54,3 +56,19 @@ class Marca(models.Model):
                 raise ValidationError(
                     'El nombre de la marca debe tener entre 2 y 100 '
                     'caracteres.')
+
+    @api.constrains('sNombre')
+    def _check_nombre_caracteres(self):
+        oRegistro = None
+        sNombre = ''
+        for oRegistro in self:
+            sNombre = (oRegistro.sNombre or '').strip()
+            if not sNombre:
+                continue
+            if not re.fullmatch(r"(?:[^\W_]|[ &'.\-])+", sNombre):
+                raise ValidationError(
+                    'El nombre de la marca solo puede tener letras, números, '
+                    'espacios y los signos & \' . -')
+            if not re.search(r'[^\W\d_]', sNombre):
+                raise ValidationError(
+                    'El nombre de la marca debe tener al menos una letra.')
