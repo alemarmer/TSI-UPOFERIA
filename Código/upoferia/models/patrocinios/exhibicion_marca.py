@@ -19,24 +19,25 @@ from odoo.exceptions import ValidationError
 class ExhibicionMarca(models.Model):
     _name = 'feria.exhibicion_marca'
     _description = 'Exhibición de marca'
-    _rec_name = 'id_exhibicion'
+    _rec_name = 'sIdExhibicion'
     _sql_constraints = [
-        ('id_exhibicion_uniq', 'UNIQUE (id_exhibicion)',
+        ('id_exhibicion_uniq', 'UNIQUE ("sIdExhibicion")',
          'Ya existe una exhibición con ese identificador.'),
     ]
 
     # Clave artificial del E-R (Odoo crea además su propio id)
-    id_exhibicion = fields.Char(string='Id. exhibición', required=True)
+    sIdExhibicion = fields.Char(string='Id. exhibición', required=True)
     fecha_montaje = fields.Date(string='Fecha de montaje')
     # En el UML es String; si debe guardar el fichero, cambiar a fields.Binary
-    arte_final = fields.Char(string='Arte final')
+    sArteFinal = fields.Char(string='Arte final')
     fecha_retirada = fields.Date(string='Fecha de retirada')
 
     # «Id. exhibición» obligatorio: no vale texto vacío ni solo espacios (básica)
-    @api.constrains('id_exhibicion')
+    @api.constrains('sIdExhibicion')
     def _check_id_exhibicion_obligatorio(self):
-        for record in self:
-            if not (record.id_exhibicion or '').strip():
+        oRegistro = None
+        for oRegistro in self:
+            if not (oRegistro.sIdExhibicion or '').strip():
                 raise ValidationError('El campo «Id. exhibición» es obligatorio.')
 
     # «Fecha de retirada» no puede ser anterior a «Fecha de montaje» (E-R)
