@@ -53,13 +53,35 @@ class ExhibicionMarca(models.Model):
                     'números, separados por - / . _ y sin espacios '
                     '(por ejemplo EXH-2026-01).')
 
-    # «Fecha de retirada» no puede ser anterior a «Fecha de montaje» (E-R)
+    # «Fecha de montaje»: no más de dos años por delante de hoy (criterio propio)
+    @api.constrains('dFechaMontaje')
+    def _check_fecha_montaje(self):
+        oRegistro = None
+        dHoy = fields.Date.context_today(self)
+        for oRegistro in self:
+            if oRegistro.dFechaMontaje and (oRegistro.dFechaMontaje - dHoy).days > 730:
+                raise ValidationError(
+                    'La «Fecha de montaje» no puede ser más de dos años '
+                    'posterior a hoy.')
+
+    # «Fecha de retirada»: necesita fecha de montaje, no puede ser anterior a ella
+    # (E-R) y la exhibición no puede durar más de un año (criterio propio)
     @api.constrains('dFechaMontaje', 'dFechaRetirada')
     def _check_fecha_retirada(self):
         oRegistro = None
         for oRegistro in self:
-            if oRegistro.dFechaMontaje and oRegistro.dFechaRetirada and oRegistro.dFechaRetirada < oRegistro.dFechaMontaje:
+            if not oRegistro.dFechaRetirada:
+                continue
+            if not oRegistro.dFechaMontaje:
+                raise ValidationError(
+                    'No se puede indicar la «Fecha de retirada» sin la '
+                    '«Fecha de montaje».')
+            if oRegistro.dFechaRetirada < oRegistro.dFechaMontaje:
                 raise ValidationError('«Fecha de retirada» no puede ser anterior a «Fecha de montaje».')
+            if (oRegistro.dFechaRetirada - oRegistro.dFechaMontaje).days > 365:
+                raise ValidationError(
+                    'Una exhibición no puede durar más de un año entre el '
+                    'montaje y la retirada.')
 
     # Aviso inmediato en el formulario, antes de guardar (como el onchange de gym_2)
     @api.onchange('dFechaMontaje', 'dFechaRetirada')
