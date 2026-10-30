@@ -12,22 +12,17 @@ class Tecnico(models.Model):
          'Ya existe un técnico con ese código de carné profesional.'),
     ]
 
-    sEspecialidad = fields.Char(string='Especialidad')
+    sEspecialidad = fields.Selection([
+        ('electricidad', 'Electricidad'),
+        ('sonido', 'Sonido'),
+        ('iluminacion', 'Iluminación'),
+        ('montaje', 'Montaje y estructuras'),
+        ('fontaneria', 'Fontanería'),
+        ('climatizacion', 'Climatización'),
+        ('gas', 'Gas'),
+    ], string='Especialidad')
     dFechaCaducidadCarnet = fields.Date(string='Caducidad del carné')
     sCodCarnetProfesional = fields.Char(string='Código del carné profesional')
-
-    @api.constrains('sEspecialidad')
-    def _check_especialidad(self):
-        oRegistro = None
-        sEspecialidad = ''
-        for oRegistro in self:
-            sEspecialidad = oRegistro.sEspecialidad or ''
-            if not sEspecialidad:
-                continue
-            if sEspecialidad != sEspecialidad.strip() or '  ' in sEspecialidad:
-                raise ValidationError('La «Especialidad» no puede empezar ni terminar con espacios ni tener dos espacios seguidos.')
-            if not 2 <= len(sEspecialidad) <= 50:
-                raise ValidationError('La «Especialidad» debe tener entre 2 y 50 caracteres.')
 
     @api.constrains('sCodCarnetProfesional')
     def _check_cod_carnet_profesional(self):
