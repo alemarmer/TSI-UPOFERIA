@@ -115,3 +115,20 @@ class Marca(models.Model):
                 raise ValidationError(
                     'El logotipo debe ser una URL que empiece por http:// o '
                     'https://, o un archivo .png, .jpg, .jpeg, .svg o .webp.')
+
+    @api.constrains('sColorCorporativo')
+    def _check_color_corporativo(self):
+        oRegistro = None
+        sColor = ''
+        for oRegistro in self:
+            sColor = oRegistro.sColorCorporativo or ''
+            if not sColor:
+                continue
+            if not re.fullmatch(r'#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})', sColor):
+                raise ValidationError(
+                    'El color corporativo debe estar en hexadecimal, con el '
+                    'formato #RRGGBB o #RGB (por ejemplo #E30613).')
+            if sColor != sColor.upper():
+                raise ValidationError(
+                    'El color corporativo debe escribirse en mayúsculas '
+                    '(por ejemplo #E30613, no #e30613).')
