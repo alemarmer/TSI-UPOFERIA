@@ -25,18 +25,15 @@ class Marca(models.Model):
     sColorCorporativo = fields.Char(string='Color corporativo')
 
     @api.constrains('sNombre')
-    def _check_nombre_obligatorio(self):
-        oRegistro = None
-        for oRegistro in self:
-            if not (oRegistro.sNombre or '').strip():
-                raise ValidationError('El campo «Nombre» es obligatorio.')
-
-    @api.constrains('sNombre')
-    def _check_nombre_espacios(self):
+    def _check_nombre(self):
         oRegistro = None
         sNombre = ''
+        iLongitud = 0
+        oParecidas = None
         for oRegistro in self:
             sNombre = oRegistro.sNombre or ''
+            if not sNombre.strip():
+                raise ValidationError('El campo «Nombre» es obligatorio.')
             if sNombre != sNombre.strip():
                 raise ValidationError(
                     'El nombre de la marca no puede empezar ni terminar '
@@ -45,26 +42,11 @@ class Marca(models.Model):
                 raise ValidationError(
                     'El nombre de la marca no puede tener dos espacios '
                     'seguidos.')
-
-    @api.constrains('sNombre')
-    def _check_nombre_longitud(self):
-        oRegistro = None
-        iLongitud = 0
-        for oRegistro in self:
-            iLongitud = len((oRegistro.sNombre or '').strip())
-            if iLongitud and not 2 <= iLongitud <= 100:
+            iLongitud = len(sNombre)
+            if not 2 <= iLongitud <= 100:
                 raise ValidationError(
                     'El nombre de la marca debe tener entre 2 y 100 '
                     'caracteres.')
-
-    @api.constrains('sNombre')
-    def _check_nombre_caracteres(self):
-        oRegistro = None
-        sNombre = ''
-        for oRegistro in self:
-            sNombre = (oRegistro.sNombre or '').strip()
-            if not sNombre:
-                continue
             if not re.fullmatch(r"(?:[^\W_]|[ &'.\-])+", sNombre):
                 raise ValidationError(
                     'El nombre de la marca solo puede tener letras, números, '
@@ -72,16 +54,6 @@ class Marca(models.Model):
             if not re.search(r'[^\W\d_]', sNombre):
                 raise ValidationError(
                     'El nombre de la marca debe tener al menos una letra.')
-
-    @api.constrains('sNombre')
-    def _check_nombre_unico(self):
-        oRegistro = None
-        sNombre = ''
-        oParecidas = None
-        for oRegistro in self:
-            sNombre = (oRegistro.sNombre or '').strip()
-            if not sNombre:
-                continue
             oParecidas = self.search([
                 ('sNombre', 'ilike', sNombre),
                 ('id', '!=', oRegistro.id),
