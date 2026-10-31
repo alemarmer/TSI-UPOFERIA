@@ -1,8 +1,10 @@
-class Artista(models.Model):
-    _name = 'feria.artista'
-    _description = 'Artista'
+from odoo import models,fields,api
 
-    sDni= fields.Char(string="Nombre del evento", size=60, required=True)
+class Artista(models.Model):
+    _name = 'upoferia.artista'
+    _description = 'Upoferia.artista'
+
+    sDni= fields.Char(string="DNI del artista", size=60, required=True)
     fCache_base = fields.Float(string='Caché base')
     sMontaje = fields.Char(string='Montaje')
     sIluminacion = fields.Char(string='Iluminación')
