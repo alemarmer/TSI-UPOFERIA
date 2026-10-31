@@ -3,6 +3,6 @@ class Beneficiario(models.Model):
     _name = 'upoferia.socios.beneficiario'
     _description = 'Familiares de los socios titulares'
 
-    dni = fields.Char("DNI", size=9, required=True)
-    parentesco = fields.Char("Parentesco con el socio", required=True)
-    socio_dni = fields.Char("DNI del socio titular", size=9)
+    name = fields.Char("DNI", size=9, required=True)
+    parentesco = fields.Char("Parentesco con el socio")
+    name2 = fields.Char("DNI del socio titular", size=9, required=True)

@@ -4,7 +4,7 @@ class PuntoAcceso(models.Model):
     _name = 'upoferia.control_accesos.punto_acceso'
     _description = 'Punto de acceso'
 
-    nombre_entrada = fields.Char("Nombre", required=True)
+    name = fields.Char("Nombre", required=True)
     ip_dispositivo = fields.Char("IP del dispositivo")
     tipo_dispositivo = fields.Char("Tipo de dispositivo")
     nombre_case = fields.Char("Nombre de la caseta")

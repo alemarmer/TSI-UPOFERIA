@@ -22,12 +22,14 @@ Long description of module's purpose
 
     # always loaded
     'data': [
+        'security/security.xml',
         'security/ir.model.access.csv',
         'views/socios/socio_view.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
-        'demo/demo.xml',
+        #'demo/demo.xml',
     ],
+    'application': True,
 }
 

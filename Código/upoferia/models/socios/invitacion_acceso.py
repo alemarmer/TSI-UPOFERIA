@@ -3,6 +3,6 @@ class InvitacionAcceso(models.Model):
     _name = 'upoferia.socios.invitacion_acceso'
     _description = 'Invitación de acceso'
 
-    socio_dni = fields.Char("DNI del socio",size=9, required=True)
-    invitado_dni = fields.Char("DNI del invitado",size=9, required=True)
-    fecha_validez = fields.Date("Fecha de validez")
+    name = fields.Char("DNI del socio",size=9, required=True)
+    name2 = fields.Char("DNI del invitado",size=9, required=True)
+    fecha_validez = fields.Date("Fecha de validez", autodate=True)

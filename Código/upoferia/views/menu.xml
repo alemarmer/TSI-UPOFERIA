@@ -1,0 +1,7 @@
+<odoo>
+    <menuitem name="UPO Feria" id="main_upoferia_menu" group="group_upoferia_manager"/>
+
+    <menuitem name="Socios" id="upoferia_socios_menu" group="group_upoferia_manager"/>
+
+    <menuitem name="Socios" id="socios_menu" parent="upoferia_socios_menu" group="group_upoferia_manager" action="upoferia_socios_socio_action"/>
+</odoo>

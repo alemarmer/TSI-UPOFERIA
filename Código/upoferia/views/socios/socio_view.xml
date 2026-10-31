@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Menu temporal para prueba -->
-    <menuitem id="menu_root" name="UPO Feria" sequence="1"/>
-
     <!-- Vista Lista -->
-    <record id="upoferia_socios_socio_view_list" model="ir.ui.view">
+    <record id="upoferia_socios_socio_list_view" model="ir.ui.view">
         <field name="name">upoferia.socios.socio.list</field>
         <field name="model">upoferia.socios.socio</field>
         <field name="arch" type="xml">
@@ -17,7 +14,7 @@
     </record>
 
     <!-- Vista Formulario -->
-    <record id="upoferia_socios_socio_view_form" model="ir.ui.view">
+    <record id="upoferia_socios_socio_form_view" model="ir.ui.view">
         <field name="name">upoferia.socios.socio.form</field>
         <field name="model">upoferia.socios.socio</field>
         <field name="arch" type="xml">
@@ -44,10 +41,4 @@
             </p>
         </field>
     </record>
-
-    <!-- Menú de Socios -->
-    <menuitem id="upoferia_socios_socio_menu"
-              name="Socios"
-              parent="upoferia.menu_root"
-              action="upoferia_socios_socio_action"/>
 </odoo>
