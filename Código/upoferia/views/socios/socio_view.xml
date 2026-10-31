@@ -6,7 +6,7 @@
         <field name="model">upoferia.socios.socio</field>
         <field name="arch" type="xml">
             <list string="Socio">
-                <field name="dni"/>
+                <field name="name"/>
                 <field name="tipo_socio"/>
                 <field name="clan"/>
             </list>
@@ -21,7 +21,7 @@
             <form string="Socio">
                 <sheet>
                     <group>
-                        <field name="dni"/>
+                        <field name="name"/>
                         <field name="tipo_socio"/>
                         <field name="clan"/>
                     </group>
