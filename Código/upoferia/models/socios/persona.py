@@ -5,9 +5,9 @@ class Persona(models.Model):
     _name = 'upoferia.socios.persona'
     _description = 'Persona'
     
-    dni = fields.Char("DNI",9, required=True)
+    dni = fields.Char("DNI", size=9, required=True)
     nombre = fields.Char("Nombre")
-    telefono = fields.Char("Teléfono", 9)
+    telefono = fields.Char("Teléfono", size=9)
     codigo_persona = fields.Char("Código Persona")
     email = fields.Char("Correo")
     direccion_calle = fields.Char("Calle")

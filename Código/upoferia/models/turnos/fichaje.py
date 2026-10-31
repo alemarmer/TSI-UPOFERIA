@@ -7,4 +7,3 @@ class Fichaje(models.Model):
     id_evento_puerta = fields.Integer("ID del evento de puerta", required=True)
     fecha_turno = fields.Date("Fecha del turno")
     referencia_nomina = fields.Char("Referencia a la nomina del trabajador")
-    
