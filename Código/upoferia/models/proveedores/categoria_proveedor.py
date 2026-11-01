@@ -24,10 +24,19 @@ class CategoriaProveedor(models.Model):
     sNombre = fields.Char(string='Nombre', required=True)
     sColor = fields.Char(string='Color')
 
-    # «Nombre» obligatorio: no vale texto vacío ni solo espacios (básica)
     @api.constrains('sNombre')
-    def _check_nombre_obligatorio(self):
+    def _check_nombre(self):
         oRegistro = None
+        sNombre = ''
+        oCategoria = None
         for oRegistro in self:
-            if not (oRegistro.sNombre or '').strip():
+            sNombre = oRegistro.sNombre or ''
+            if not sNombre.strip():
                 raise ValidationError('El campo «Nombre» es obligatorio.')
+            if sNombre != sNombre.strip():
+                raise ValidationError('El nombre de la categoría no puede empezar ni terminar con espacios.')
+            if not 2 <= len(sNombre) <= 50:
+                raise ValidationError('El nombre de la categoría debe tener entre 2 y 50 caracteres.')
+            for oCategoria in self.search([('sNombre', 'ilike', sNombre), ('id', '!=', oRegistro.id)]):
+                if oCategoria.sNombre.lower() == sNombre.lower():
+                    raise ValidationError('Ya existe una categoría llamada «%s» (aunque esté escrita con otras mayúsculas).' % oCategoria.sNombre)
