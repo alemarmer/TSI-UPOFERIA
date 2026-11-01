@@ -15,18 +15,19 @@ from odoo.exceptions import ValidationError
 class CategoriaProveedor(models.Model):
     _name = 'feria.categoria_proveedor'
     _description = 'Categoría de proveedor'
-    _rec_name = 'nombre'
+    _rec_name = 'sNombre'
     _sql_constraints = [
-        ('nombre_uniq', 'UNIQUE (nombre)',
+        ('nombre_uniq', 'UNIQUE ("sNombre")',
          'Ya existe una categoría de proveedor con ese nombre.'),
     ]
 
-    nombre = fields.Char(string='Nombre', required=True)
-    color = fields.Char(string='Color')
+    sNombre = fields.Char(string='Nombre', required=True)
+    sColor = fields.Char(string='Color')
 
     # «Nombre» obligatorio: no vale texto vacío ni solo espacios (básica)
-    @api.constrains('nombre')
+    @api.constrains('sNombre')
     def _check_nombre_obligatorio(self):
-        for record in self:
-            if not (record.nombre or '').strip():
+        oRegistro = None
+        for oRegistro in self:
+            if not (oRegistro.sNombre or '').strip():
                 raise ValidationError('El campo «Nombre» es obligatorio.')
