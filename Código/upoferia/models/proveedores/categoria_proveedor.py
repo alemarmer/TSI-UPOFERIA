@@ -1,13 +1,3 @@
-# -*- coding: utf-8 -*-
-# Tabla CATEGORIA_PROVEEDOR del modelo relacional · bloque PROVEEDORES Y CONTRATOS
-# Validaciones de atributo: implementadas al final de la clase.
-#
-# Pendiente para la fase de relaciones (no incluido aquí):
-#   Claves ajenas:
-#     - nombre_padre -> CATEGORIA_PROVEEDOR (opcional, reflexiva)
-#   Validaciones que necesitan claves ajenas:
-#     - No puede ser subcategoría de sí misma ni formar ciclos (en Odoo 18: _has_cycle)
-
 import re
 
 from odoo import models, fields, api

@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-# Tabla PROVEEDOR del modelo relacional · bloque PROVEEDORES Y CONTRATOS
-# Subtipo de PERSONA: su clave (dni) es la del supertipo
-# y se resolverá con herencia en la fase de relaciones.
-# Validaciones de atributo: implementadas al final de la clase.
-
 import re
 
 from odoo import models, fields, api
@@ -18,7 +12,6 @@ class Proveedor(models.Model):
          'Ya existe un proveedor con ese CIF.'),
     ]
 
-    # Único; solo se rellena si el proveedor es una empresa (E-R)
     sCif = fields.Char(string='CIF')
 
     @api.constrains('sCif')
