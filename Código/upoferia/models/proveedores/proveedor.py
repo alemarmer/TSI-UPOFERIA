@@ -21,10 +21,40 @@ class Proveedor(models.Model):
     # Único; solo se rellena si el proveedor es una empresa (E-R)
     sCif = fields.Char(string='CIF')
 
-    # Formato de «CIF» (básica)
     @api.constrains('sCif')
-    def _check_cif_formato(self):
+    def _check_cif(self):
         oRegistro = None
+        sCif = ''
+        iSumaPares = 0
+        iSumaImpares = 0
+        iDoble = 0
+        iPosicion = 0
+        iControl = 0
+        sControlNumero = ''
+        sControlLetra = ''
+        bValido = False
         for oRegistro in self:
-            if oRegistro.sCif and not re.fullmatch(r'[ABCDEFGHJNPQRSUVW][0-9]{7}[0-9A-J]', oRegistro.sCif):
-                raise ValidationError('El CIF debe tener una letra, 7 dígitos y un carácter de control (por ejemplo B12345678).')
+            sCif = oRegistro.sCif or ''
+            if not sCif:
+                continue
+            if not re.fullmatch(r'[ABCDEFGHJNPQRSUVW][0-9]{7}[0-9A-J]', sCif):
+                raise ValidationError('El CIF debe tener una letra mayúscula, 7 dígitos y un carácter de control, sin espacios (por ejemplo B12345674).')
+            iSumaPares = 0
+            iSumaImpares = 0
+            for iPosicion in range(1, 8):
+                if iPosicion % 2 == 0:
+                    iSumaPares += int(sCif[iPosicion])
+                else:
+                    iDoble = int(sCif[iPosicion]) * 2
+                    iSumaImpares += iDoble // 10 + iDoble % 10
+            iControl = (10 - (iSumaPares + iSumaImpares) % 10) % 10
+            sControlNumero = str(iControl)
+            sControlLetra = 'JABCDEFGHI'[iControl]
+            if sCif[0] in 'PQRSNW':
+                bValido = sCif[8] == sControlLetra
+            elif sCif[0] in 'ABEH':
+                bValido = sCif[8] == sControlNumero
+            else:
+                bValido = sCif[8] in (sControlNumero, sControlLetra)
+            if not bValido:
+                raise ValidationError('El carácter de control del CIF %s no es correcto.' % sCif)
