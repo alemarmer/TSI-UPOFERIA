@@ -8,6 +8,8 @@
 #   Validaciones que necesitan claves ajenas:
 #     - No puede ser subcategoría de sí misma ni formar ciclos (en Odoo 18: _has_cycle)
 
+import re
+
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 
@@ -40,3 +42,12 @@ class CategoriaProveedor(models.Model):
             for oCategoria in self.search([('sNombre', 'ilike', sNombre), ('id', '!=', oRegistro.id)]):
                 if oCategoria.sNombre.lower() == sNombre.lower():
                     raise ValidationError('Ya existe una categoría llamada «%s» (aunque esté escrita con otras mayúsculas).' % oCategoria.sNombre)
+
+    @api.constrains('sColor')
+    def _check_color(self):
+        oRegistro = None
+        sColor = ''
+        for oRegistro in self:
+            sColor = oRegistro.sColor or ''
+            if sColor and not re.fullmatch(r'#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})', sColor):
+                raise ValidationError('El color de la categoría debe estar en hexadecimal, con el formato #RRGGBB o #RGB (por ejemplo #1F77B4).')
