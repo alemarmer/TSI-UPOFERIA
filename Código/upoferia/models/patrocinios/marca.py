@@ -14,7 +14,7 @@ class Marca(models.Model):
     ]
 
     sNombre = fields.Char(string='Nombre', required=True)
-    sLogotipo = fields.Char(string='Logotipo')
+    binLogotipo = fields.Image(string='Logotipo', max_width=512, max_height=512)
     sColorCorporativo = fields.Char(string='Color corporativo')
 
     @api.constrains('sNombre')
@@ -33,19 +33,6 @@ class Marca(models.Model):
             for oMarca in self.search([('sNombre', 'ilike', sNombre), ('id', '!=', oRegistro.id)]):
                 if oMarca.sNombre.lower() == sNombre.lower():
                     raise ValidationError('Ya existe una marca llamada «%s» (aunque esté escrita con otras mayúsculas).' % oMarca.sNombre)
-
-    @api.constrains('sLogotipo')
-    def _check_logotipo(self):
-        oRegistro = None
-        sLogotipo = ''
-        for oRegistro in self:
-            sLogotipo = oRegistro.sLogotipo or ''
-            if ' ' in sLogotipo:
-                raise ValidationError('El logotipo no puede tener espacios.')
-            if len(sLogotipo) > 255:
-                raise ValidationError('El logotipo no puede tener más de 255 caracteres.')
-            if sLogotipo and not re.fullmatch(r'(?i)https?://\S+|\S+\.(png|jpe?g|svg|webp)', sLogotipo):
-                raise ValidationError('El logotipo debe ser una URL que empiece por http:// o https://, o un archivo .png, .jpg, .jpeg, .svg o .webp.')
 
     @api.constrains('sColorCorporativo')
     def _check_color_corporativo(self):
