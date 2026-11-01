@@ -32,6 +32,8 @@ class Proveedor(models.Model):
                 continue
             if not re.fullmatch(r'[ABCDEFGHJNPQRSUVW][0-9]{7}[0-9A-J]', sCif):
                 raise ValidationError('El CIF debe tener una letra mayúscula, 7 dígitos y un carácter de control, sin espacios (por ejemplo B12345674).')
+            
+            #a partir de aquí es la forma de validar el algoritmo matemático oficial de la Agencia Tributaria, que comprueba automaticamente con el digito de control haber si te has inventado o escrito mal algun numero
             iSumaPares = 0
             iSumaImpares = 0
             for iPosicion in range(1, 8):
