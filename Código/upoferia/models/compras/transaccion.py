@@ -1,3 +1,5 @@
+import re
+
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 
@@ -38,11 +40,17 @@ class Transaccion(models.Model):
     sRefProveedor = fields.Char(string='Referencia del proveedor')
 
     @api.constrains('sIdTransaccion')
-    def _check_id_transaccion_obligatorio(self):
+    def _check_id_transaccion(self):
         oRegistro = None
+        sId = ''
         for oRegistro in self:
-            if not (oRegistro.sIdTransaccion or '').strip():
+            sId = oRegistro.sIdTransaccion or ''
+            if not sId.strip():
                 raise ValidationError('El campo «Id. transacción» es obligatorio.')
+            if not 2 <= len(sId) <= 20:
+                raise ValidationError('El «Id. transacción» debe tener entre 2 y 20 caracteres.')
+            if not re.fullmatch(r'[A-Z0-9]+([-/._][A-Z0-9]+)*', sId):
+                raise ValidationError('El «Id. transacción» solo puede tener letras mayúsculas y números, separados por - / . _ y sin espacios (por ejemplo PED-2026-001).')
 
     @api.constrains('fImporte')
     def _check_importe(self):
