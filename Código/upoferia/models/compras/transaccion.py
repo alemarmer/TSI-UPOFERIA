@@ -63,6 +63,19 @@ class Transaccion(models.Model):
             if round(oRegistro.fImporte, 2) != oRegistro.fImporte:
                 raise ValidationError('«Importe» solo admite dos decimales (céntimos).')
 
+    @api.constrains('dFechaInicial')
+    def _check_fecha_inicial(self):
+        oRegistro = None
+        dHoy = fields.Date.context_today(self)
+        dFechaMinima = fields.Date.to_date('1970-01-01')
+        for oRegistro in self:
+            if not oRegistro.dFechaInicial:
+                continue
+            if oRegistro.dFechaInicial < dFechaMinima:
+                raise ValidationError('La «Fecha inicial» no puede ser anterior al 01/01/1970.')
+            if (oRegistro.dFechaInicial - dHoy).days > 730:
+                raise ValidationError('La «Fecha inicial» no puede ser más de dos años posterior a hoy.')
+
     @api.constrains('dFechaInicial', 'dVencimiento')
     def _check_vencimiento(self):
         oRegistro = None
