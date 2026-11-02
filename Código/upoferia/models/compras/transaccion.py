@@ -80,8 +80,14 @@ class Transaccion(models.Model):
     def _check_vencimiento(self):
         oRegistro = None
         for oRegistro in self:
-            if oRegistro.dFechaInicial and oRegistro.dVencimiento and oRegistro.dVencimiento < oRegistro.dFechaInicial:
+            if not oRegistro.dVencimiento:
+                continue
+            if not oRegistro.dFechaInicial:
+                raise ValidationError('No se puede indicar el «Vencimiento» sin la «Fecha inicial».')
+            if oRegistro.dVencimiento < oRegistro.dFechaInicial:
                 raise ValidationError('«Vencimiento» no puede ser anterior a «Fecha inicial».')
+            if (oRegistro.dVencimiento - oRegistro.dFechaInicial).days > 365:
+                raise ValidationError('El «Vencimiento» no puede ser más de un año posterior a la «Fecha inicial».')
 
     @api.constrains('dFechaInicial', 'dFechaPrevistaFin')
     def _check_fecha_prevista_fin(self):
