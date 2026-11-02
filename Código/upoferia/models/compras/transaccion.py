@@ -93,8 +93,14 @@ class Transaccion(models.Model):
     def _check_fecha_prevista_fin(self):
         oRegistro = None
         for oRegistro in self:
-            if oRegistro.dFechaInicial and oRegistro.dFechaPrevistaFin and oRegistro.dFechaPrevistaFin < oRegistro.dFechaInicial:
+            if not oRegistro.dFechaPrevistaFin:
+                continue
+            if not oRegistro.dFechaInicial:
+                raise ValidationError('No se puede indicar la «Fecha prevista de fin» sin la «Fecha inicial».')
+            if oRegistro.dFechaPrevistaFin < oRegistro.dFechaInicial:
                 raise ValidationError('«Fecha prevista de fin» no puede ser anterior a «Fecha inicial».')
+            if (oRegistro.dFechaPrevistaFin - oRegistro.dFechaInicial).days > 10 * 365:
+                raise ValidationError('La «Fecha prevista de fin» no puede ser más de diez años posterior a la «Fecha inicial».')
 
     @api.onchange('dFechaInicial', 'dVencimiento', 'dFechaPrevistaFin')
     def _onchange_valores(self):
