@@ -8,7 +8,7 @@ class LineaTransaccion(models.Model):
     _rec_name = 'iNumeroLinea'
 
     iNumeroLinea = fields.Integer(string='Número de línea', required=True)
-    iCantidad = fields.Integer(string='Cantidad')
+    iCantidad = fields.Integer(string='Cantidad', required=True)
     iCantidadRecibida = fields.Integer(string='Cantidad recibida')
     fPrecioUnitario = fields.Float(string='Precio unitario')
 
@@ -25,6 +25,8 @@ class LineaTransaccion(models.Model):
         for oRegistro in self:
             if oRegistro.iCantidad <= 0:
                 raise ValidationError('«Cantidad» debe ser mayor que 0.')
+            if oRegistro.iCantidad > 1000000:
+                raise ValidationError('«Cantidad» no puede superar 1.000.000 de unidades.')
 
     @api.constrains('iCantidadRecibida')
     def _check_cantidad_recibida(self):
