@@ -102,6 +102,21 @@ class Transaccion(models.Model):
             if (oRegistro.dFechaPrevistaFin - oRegistro.dFechaInicial).days > 10 * 365:
                 raise ValidationError('La «Fecha prevista de fin» no puede ser más de diez años posterior a la «Fecha inicial».')
 
+    @api.constrains('sDocumento')
+    def _check_documento(self):
+        oRegistro = None
+        sDocumento = ''
+        for oRegistro in self:
+            sDocumento = oRegistro.sDocumento or ''
+            if not sDocumento:
+                continue
+            if ' ' in sDocumento:
+                raise ValidationError('El «Documento» es una URL o una ruta de archivo y no puede tener espacios.')
+            if len(sDocumento) > 255:
+                raise ValidationError('El «Documento» no puede tener más de 255 caracteres.')
+            if not re.fullmatch(r'(?i)https?://\S+|\S+\.(pdf|docx?|odt)', sDocumento):
+                raise ValidationError('El «Documento» debe ser una URL que empiece por http:// o https://, o un archivo .pdf, .doc, .docx u .odt.')
+
     @api.onchange('dFechaInicial', 'dVencimiento', 'dFechaPrevistaFin')
     def _onchange_valores(self):
         sMensaje = False
