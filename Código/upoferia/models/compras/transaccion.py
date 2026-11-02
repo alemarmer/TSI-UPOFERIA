@@ -58,6 +58,10 @@ class Transaccion(models.Model):
         for oRegistro in self:
             if oRegistro.fImporte < 0:
                 raise ValidationError('«Importe» no puede ser menor que 0.')
+            if oRegistro.fImporte > 10000000:
+                raise ValidationError('«Importe» no puede superar los 10.000.000 €.')
+            if round(oRegistro.fImporte, 2) != oRegistro.fImporte:
+                raise ValidationError('«Importe» solo admite dos decimales (céntimos).')
 
     @api.constrains('dFechaInicial', 'dVencimiento')
     def _check_vencimiento(self):
