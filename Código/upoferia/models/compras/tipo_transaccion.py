@@ -34,3 +34,16 @@ class TipoTransaccion(models.Model):
                 raise ValidationError('El nombre del tipo de transacción no puede empezar ni terminar con espacios.')
             if not 2 <= len(sNombre) <= 50:
                 raise ValidationError('El nombre del tipo de transacción debe tener entre 2 y 50 caracteres.')
+
+    @api.constrains('sDescripcion')
+    def _check_descripcion(self):
+        oRegistro = None
+        sDescripcion = ''
+        for oRegistro in self:
+            sDescripcion = oRegistro.sDescripcion or ''
+            if not sDescripcion:
+                continue
+            if sDescripcion != sDescripcion.strip():
+                raise ValidationError('La descripción del tipo de transacción no puede empezar ni terminar con espacios.')
+            if len(sDescripcion) > 255:
+                raise ValidationError('La descripción del tipo de transacción no puede tener más de 255 caracteres.')
