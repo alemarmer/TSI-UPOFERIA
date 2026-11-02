@@ -43,6 +43,8 @@ class LineaTransaccion(models.Model):
         for oRegistro in self:
             if oRegistro.fPrecioUnitario < 0:
                 raise ValidationError('«Precio unitario» no puede ser menor que 0.')
+            if oRegistro.fPrecioUnitario > 1000000:
+                raise ValidationError('«Precio unitario» no puede superar 1.000.000 €.')
 
     @api.onchange('iCantidadRecibida', 'iCantidad')
     def _onchange_valores(self):
