@@ -117,6 +117,21 @@ class Transaccion(models.Model):
             if not re.fullmatch(r'(?i)https?://\S+|\S+\.(pdf|docx?|odt)', sDocumento):
                 raise ValidationError('El «Documento» debe ser una URL que empiece por http:// o https://, o un archivo .pdf, .doc, .docx u .odt.')
 
+    @api.constrains('sRefProveedor')
+    def _check_ref_proveedor(self):
+        oRegistro = None
+        sReferencia = ''
+        for oRegistro in self:
+            sReferencia = oRegistro.sRefProveedor or ''
+            if not sReferencia:
+                continue
+            if sReferencia != sReferencia.strip() or '  ' in sReferencia:
+                raise ValidationError('La «Referencia del proveedor» no puede empezar ni terminar con espacios ni tener dos espacios seguidos.')
+            if len(sReferencia) > 30:
+                raise ValidationError('La «Referencia del proveedor» no puede tener más de 30 caracteres.')
+            if not re.fullmatch(r"[A-Za-z0-9 \-/._]+", sReferencia):
+                raise ValidationError('La «Referencia del proveedor» solo puede tener letras, números, espacios y los signos - / . _ (por ejemplo F-2026/0001).')
+
     @api.onchange('dFechaInicial', 'dVencimiento', 'dFechaPrevistaFin')
     def _onchange_valores(self):
         sMensaje = False
