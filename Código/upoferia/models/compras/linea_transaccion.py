@@ -28,17 +28,12 @@ class LineaTransaccion(models.Model):
             if oRegistro.iCantidad > 1000000:
                 raise ValidationError('«Cantidad» no puede superar 1.000.000 de unidades.')
 
-    @api.constrains('iCantidadRecibida')
+    @api.constrains('iCantidadRecibida', 'iCantidad')
     def _check_cantidad_recibida(self):
         oRegistro = None
         for oRegistro in self:
             if oRegistro.iCantidadRecibida < 0:
                 raise ValidationError('«Cantidad recibida» no puede ser menor que 0.')
-
-    @api.constrains('iCantidadRecibida', 'iCantidad')
-    def _check_cantidad_recibida_cantidad(self):
-        oRegistro = None
-        for oRegistro in self:
             if oRegistro.iCantidadRecibida > oRegistro.iCantidad:
                 raise ValidationError('«Cantidad recibida» no puede superar «Cantidad».')
 
