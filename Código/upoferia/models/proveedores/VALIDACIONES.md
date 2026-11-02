@@ -1,7 +1,3 @@
-# Validaciones del bloque Proveedores y contratos
-
-Todas las validaciones de esta lista están implementadas.
-
 ## CategoriaProveedor (`feria.categoria_proveedor`) — `categoria_proveedor.py`
 
 ### `sNombre` (Char) — clave

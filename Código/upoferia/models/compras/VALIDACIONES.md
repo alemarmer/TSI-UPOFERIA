@@ -1,7 +1,3 @@
-# Validaciones del bloque Compras a proveedores
-
-Todas las validaciones de esta lista están implementadas.
-
 ## TipoTransaccion (`feria.tipo_transaccion`) — `tipo_transaccion.py`
 
 ### `sCodigo` (Char) — clave

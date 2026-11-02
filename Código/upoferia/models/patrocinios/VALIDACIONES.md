@@ -1,7 +1,3 @@
-# Validaciones del bloque Patrocinio y servicios
-
-Todas las validaciones de esta lista están implementadas.
-
 ## Marca (`feria.marca`) — `marca.py`
 
 ### `sNombre` (Char) — clave
