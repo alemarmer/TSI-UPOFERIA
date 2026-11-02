@@ -16,8 +16,8 @@ class LineaTransaccion(models.Model):
     def _check_numero_linea(self):
         oRegistro = None
         for oRegistro in self:
-            if oRegistro.iNumeroLinea <= 0:
-                raise ValidationError('«Número de línea» debe ser mayor que 0.')
+            if not 1 <= oRegistro.iNumeroLinea <= 9999:
+                raise ValidationError('«Número de línea» debe estar entre 1 y 9999.')
 
     @api.constrains('iCantidad')
     def _check_cantidad(self):
