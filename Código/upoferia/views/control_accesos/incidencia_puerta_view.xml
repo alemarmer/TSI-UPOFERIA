@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vista Lista -->
+    <record id="upoferia_control_accesos_incidencia_puerta_list_view" model="ir.ui.view">
+        <field name="name">upoferia.control.accesos.incidencia.puerta.list</field>
+        <field name="model">upoferia.control.accesos.incidencia.puerta</field>
+        <field name="arch" type="xml">
+            <list string="Incidencia de Puerta">
+                <field name="name"/>
+                <field name="motivo"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Vista Formulario -->
+    <record id="upoferia_control_accesos_incidencia_puerta_form_view" model="ir.ui.view">
+        <field name="name">upoferia.control.accesos.incidencia.puerta.form</field>
+        <field name="model">upoferia.control.accesos.incidencia.puerta</field>
+        <field name="arch" type="xml">
+            <form string="Incidencia de Puerta">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="motivo"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Acción de Ventana -->
+    <record id="upoferia_control_accesos_incidencia_puerta_action" model="ir.actions.act_window">
+        <field name="name">Incidencias de Puerta</field>
+        <field name="res_model">upoferia.control.accesos.incidencia.puerta</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Crea la primera incidencia de puerta para comenzar a gestionar el control de accesos.
+            </p>
+        </field>
+    </record>
+</odoo>

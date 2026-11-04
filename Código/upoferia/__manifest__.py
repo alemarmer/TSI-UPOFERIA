@@ -33,6 +33,7 @@ Long description of module's purpose
         'views/control_accesos/punto_acceso_view.xml',
         'views/control_accesos/evento_puerta_view.xml',
         'views/control_accesos/control_aforo_view.xml',
+        'views/control_accesos/incidencia_puerta_view.xml',
         'views/menu.xml',
     ],
     # only loaded in demonstration mode
