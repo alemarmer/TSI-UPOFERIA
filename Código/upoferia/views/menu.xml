@@ -14,4 +14,5 @@
 
     <menuitem name="Puntos de Acceso" id="puntos_acceso_menu" parent="upoferia_control_acceso_menu" groups="group_upoferia_manager" action="upoferia_control_accesos_punto_acceso_action"/>
     <menuitem name="Eventos de Puerta" id="eventos_puerta_menu" parent="upoferia_control_acceso_menu" groups="group_upoferia_manager" action="upoferia_evento_puerta_action"/>
+    <menuitem name="Control de Aforo" id="control_aforo_menu" parent="upoferia_control_acceso_menu" groups="group_upoferia_manager" action="upoferia_control_accesos_control_aforo_action"/>
 </odoo>

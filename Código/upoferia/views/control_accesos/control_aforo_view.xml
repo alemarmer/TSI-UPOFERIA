@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vista Lista -->
+    <record id="upoferia_control_accesos_control_aforo_list_view" model="ir.ui.view">
+        <field name="name">upoferia.control.accesos.control.aforo.list</field>
+        <field name="model">upoferia.control.accesos.control.aforo</field>
+        <field name="arch" type="xml">
+            <list string="Control de Aforo">
+                <field name="name"/>
+                <field name="ocupacion_actual"/>
+                <field name="aforo_maximo"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Vista Formulario -->
+    <record id="upoferia_control_accesos_control_aforo_form_view" model="ir.ui.view">
+        <field name="name">upoferia.control.accesos.control.aforo.form</field>
+        <field name="model">upoferia.control.accesos.control.aforo</field>
+        <field name="arch" type="xml">
+            <form string="Control de Aforo">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="ocupacion_actual"/>
+                        <field name="aforo_maximo"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Acción de Ventana -->
+    <record id="upoferia_control_accesos_control_aforo_action" model="ir.actions.act_window">
+        <field name="name">Control de Aforo</field>
+        <field name="res_model">upoferia.control.accesos.control.aforo</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Crea el primer control de aforo para comenzar a gestionar el control de accesos.
+            </p>
+        </field>
+    </record>
+</odoo>

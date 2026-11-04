@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <!-- Vista Lista -->
-    <record id="upoferia_evento_puerta_list_view" model="ir.ui.view">
-        <field name="name">upoferia.evento.puerta.list</field>
-        <field name="model">upoferia.evento.puerta</field>
+    <record id="upoferia_control_accesos_evento_puerta_list_view" model="ir.ui.view">
+        <field name="name">upoferia.control.accesos.evento.puerta.list</field>
+        <field name="model">upoferia.control.accesos.evento.puerta</field>
         <field name="arch" type="xml">
             <list string="Evento de Puerta">
                 <field name="name"/>
@@ -12,9 +12,9 @@
     </record>
 
     <!-- Vista Formulario -->
-    <record id="upoferia_evento_puerta_form_view" model="ir.ui.view">
-        <field name="name">upoferia.evento.puerta.form</field>
-        <field name="model">upoferia.evento.puerta</field>
+    <record id="upoferia_control_accesos_evento_puerta_form_view" model="ir.ui.view">
+        <field name="name">upoferia.control.accesos.evento.puerta.form</field>
+        <field name="model">upoferia.control.accesos.evento.puerta</field>
         <field name="arch" type="xml">
             <form string="Evento de Puerta">
                 <sheet>
@@ -27,9 +27,9 @@
     </record>
 
     <!-- Acción de Ventana -->
-    <record id="upoferia_evento_puerta_action" model="ir.actions.act_window">
+    <record id="upoferia_control_accesos_evento_puerta_action" model="ir.actions.act_window">
         <field name="name">Eventos de Puerta</field>
-        <field name="res_model">upoferia.evento.puerta</field>
+        <field name="res_model">upoferia.control.accesos.evento.puerta</field>
         <field name="view_mode">list,form</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
