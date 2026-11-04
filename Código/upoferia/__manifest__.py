@@ -24,6 +24,7 @@ Long description of module's purpose
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
+        'views/socios/persona_view.xml',
         'views/socios/socio_view.xml',
         'views/socios/beneficiario_view.xml',
         'views/socios/tipo_socio_view.xml',

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vista Lista -->
+    <record id="upoferia_socios_persona_list_view" model="ir.ui.view">
+        <field name="name">upoferia.socios.persona.list</field>
+        <field name="model">upoferia.socios.persona</field>
+        <field name="arch" type="xml">
+            <list string="Persona">
+                <field name="name"/>
+                <field name="nombre"/>
+                <field name="telefono"/>
+                <field name="email"/>
+                <field name="direccion_calle"/>
+                <field name="direccion_ciudad"/>
+                <field name="direccion_cp"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Vista Formulario -->
+    <record id="upoferia_socios_persona_form_view" model="ir.ui.view">
+        <field name="name">upoferia.socios.persona.form</field>
+        <field name="model">upoferia.socios.persona</field>
+        <field name="arch" type="xml">
+            <form string="Persona">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="nombre"/>
+                        <field name="telefono"/>
+                        <field name="codigo_persona"/>
+                        <field name="email"/>
+                        <field name="direccion_calle"/>
+                        <field name="direccion_ciudad"/>
+                        <field name="direccion_cp"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Acción de Ventana -->
+    <record id="upoferia_socios_persona_action" model="ir.actions.act_window">
+        <field name="name">Personas</field>
+        <field name="res_model">upoferia.socios.persona</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Crea la primera persona de la caseta
+            </p>
+        </field>
+    </record>
+</odoo>
