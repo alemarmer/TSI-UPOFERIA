@@ -28,6 +28,7 @@ Long description of module's purpose
         'views/socios/beneficiario_view.xml',
         'views/socios/tipo_socio_view.xml',
         'views/socios/consentimiento_biometrico_view.xml',
+        'views/socios/invitacion_acceso_view.xml',
         'views/menu.xml',
     ],
     # only loaded in demonstration mode

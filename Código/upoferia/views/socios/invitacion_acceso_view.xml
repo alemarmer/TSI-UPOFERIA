@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vista Lista -->
+    <record id="upoferia_socios_invitacion_acceso_list_view" model="ir.ui.view">
+        <field name="name">upoferia.socios.invitacion_acceso.list</field>
+        <field name="model">upoferia.socios.invitacion_acceso</field>
+        <field name="arch" type="xml">
+            <list string="Invitación de acceso">
+                <field name="name"/>
+                <field name="name2"/>
+                <field name="fecha_validez"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Vista Formulario -->
+    <record id="upoferia_socios_invitacion_acceso_form_view" model="ir.ui.view">
+        <field name="name">upoferia.socios.invitacion_acceso.form</field>
+        <field name="model">upoferia.socios.invitacion_acceso</field>
+        <field name="arch" type="xml">
+            <form string="Invitación de acceso">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="name2"/>
+                        <field name="fecha_validez"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Acción de Ventana -->
+    <record id="upoferia_socios_invitacion_acceso_action" model="ir.actions.act_window">
+        <field name="name">Invitaciones de acceso</field>
+        <field name="res_model">upoferia.socios.invitacion_acceso</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Crea el primer tipo de socio
+            </p>
+        </field>
+    </record>
+</odoo>

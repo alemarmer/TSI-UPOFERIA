@@ -7,4 +7,5 @@
     <menuitem name="Beneficiario" id="beneficiario_menu" parent="upoferia_socios_menu" groups="group_upoferia_manager" action="upoferia_socios_beneficiario_action"/>
     <menuitem name="Tipo de socio" id="tipo_socio_menu" parent="upoferia_socios_menu" groups="group_upoferia_manager" action="upoferia_socios_tipo_socio_action"/>
     <menuitem name="Consentimiento biometrico" id="consentimiento_biometrico_menu" parent="upoferia_socios_menu" groups="group_upoferia_manager" action="upoferia_socios_consentimiento_biometrico_action"/>
+    <menuitem name="Invitacion de Acceso" id="invitacion_acceso_menu" parent="upoferia_socios_menu" groups="group_upoferia_manager" action="upoferia_socios_invitacion_acceso_action"/>
 </odoo>
