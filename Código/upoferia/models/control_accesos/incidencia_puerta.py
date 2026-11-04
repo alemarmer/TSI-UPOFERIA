@@ -1,8 +1,8 @@
 from odoo import models, fields, api
 
-class ControlAforo(models.Model):
-    _name = 'upoferia.control_accesos.control_aforo'
-    _description = 'Control de aforo'
+class IncidenciaPuerta(models.Model):
+    _name = 'upoferia.control_accesos.incidencia_puerta'
+    _description = 'Incidencia de puerta'
 
     name = fields.Integer("ID del evento de puerta", required=True)
     motivo = fields.Char("Motivo")

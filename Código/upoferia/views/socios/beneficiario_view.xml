@@ -21,7 +21,7 @@
             <form string="Beneficiario">
                 <sheet>
                     <group>
-                        <field name="dni"/>
+                        <field name="name"/>
                         <field name="name2"/>
                         <field name="parentesco"/>
                     </group>
