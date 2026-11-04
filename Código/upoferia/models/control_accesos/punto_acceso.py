@@ -8,5 +8,5 @@ class PuntoAcceso(models.Model):
     ip_dispositivo = fields.Char("IP del dispositivo")
     tipo_dispositivo = fields.Char("Tipo de dispositivo")
     nombre_case = fields.Char("Nombre de la caseta")
-    nombre_zona_cas = fields.Char("Nombre de la zona de la caseta")
+    nombre_zona_caseta = fields.Char("Nombre de la zona de la caseta")
     

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vista Lista -->
+    <record id="upoferia_control_accesos_punto_acceso_list_view" model="ir.ui.view">
+        <field name="name">upoferia.control.accesos.punto.acceso.list</field>
+        <field name="model">upoferia.control.accesos.punto.acceso</field>
+        <field name="arch" type="xml">
+            <list string="Punto de Acceso">
+                <field name="name"/>
+                <field name="ip_dispositivo"/>
+                <field name="tipo_dispositivo"/>
+                <field name="nombre_case"/>
+                <field name="nombre_zona_caseta"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Vista Formulario -->
+    <record id="upoferia_control_accesos_punto_acceso_form_view" model="ir.ui.view">
+        <field name="name">upoferia.control.accesos.punto.acceso.form</field>
+        <field name="model">upoferia.control.accesos.punto.acceso</field>
+        <field name="arch" type="xml">
+            <form string="Punto de Acceso">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="ip_dispositivo"/>
+                        <field name="tipo_dispositivo"/>
+                        <field name="nombre_case"/>
+                        <field name="nombre_zona_caseta"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Acción de Ventana -->
+    <record id="upoferia_control_accesos_punto_acceso_action" model="ir.actions.act_window">
+        <field name="name">Puntos de Acceso</field>
+        <field name="res_model">upoferia.control.accesos.punto.acceso</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Crea el primer punto de acceso para comenzar a gestionar el control de accesos.
+            </p>
+        </field>
+    </record>
+</odoo>
