@@ -26,6 +26,7 @@ Long description of module's purpose
         'security/ir.model.access.csv',
         'views/socios/socio_view.xml',
         'views/socios/beneficiario_view.xml',
+        'views/socios/tipo_socio_view.xml',
         'views/menu.xml',
     ],
     # only loaded in demonstration mode

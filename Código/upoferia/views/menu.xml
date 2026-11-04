@@ -5,4 +5,5 @@
 
     <menuitem name="Socios" id="socios_menu" parent="upoferia_socios_menu" groups="group_upoferia_manager" action="upoferia_socios_socio_action"/>
     <menuitem name="Beneficiario" id="beneficiario_menu" parent="upoferia_socios_menu" groups="group_upoferia_manager" action="upoferia_socios_beneficiario_action"/>
+    <menuitem name="Tipo de socio" id="tipo_socio_menu" parent="upoferia_socios_menu" groups="group_upoferia_manager" action="upoferia_socios_tipo_socio_action"/>
 </odoo>
