@@ -30,7 +30,8 @@ Long description of module's purpose
         'views/socios/tipo_socio_view.xml',
         'views/socios/consentimiento_biometrico_view.xml',
         'views/socios/invitacion_acceso_view.xml',
-        'views/socios/punto_acceso_view.xml',
+        'views/control_accesos/punto_acceso_view.xml',
+        'views/control_accesos/evento_puerta_view.xml',
         'views/menu.xml',
     ],
     # only loaded in demonstration mode
