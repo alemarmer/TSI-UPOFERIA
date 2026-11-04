@@ -13,7 +13,8 @@
     <menuitem name="Control de acceso" id="upoferia_control_acceso_menu" parent="main_upoferia_menu" groups="group_upoferia_manager"/>
 
     <menuitem name="Puntos de Acceso" id="puntos_acceso_menu" parent="upoferia_control_acceso_menu" groups="group_upoferia_manager" action="upoferia_control_accesos_punto_acceso_action"/>
-    <menuitem name="Eventos de Puerta" id="eventos_puerta_menu" parent="upoferia_control_acceso_menu" groups="group_upoferia_manager" action="upoferia_evento_puerta_action"/>
+    <menuitem name="Eventos de Puerta" id="eventos_puerta_menu" parent="upoferia_control_acceso_menu" groups="group_upoferia_manager" action="upoferia_control_accesos_evento_puerta_action"/>
     <menuitem name="Control de Aforo" id="control_aforo_menu" parent="upoferia_control_acceso_menu" groups="group_upoferia_manager" action="upoferia_control_accesos_control_aforo_action"/>
     <menuitem name="Incidencias de Puerta" id="incidencias_puerta_menu" parent="upoferia_control_acceso_menu" groups="group_upoferia_manager" action="upoferia_control_accesos_incidencia_puerta_action"/>
+    <menuitem name="Registros de Accesos" id="registros_accesos_menu" parent="upoferia_control_acceso_menu" groups="group_upoferia_manager" action="upoferia_control_accesos_registro_accesos_action"/>
 </odoo>
