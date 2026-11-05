@@ -7,7 +7,7 @@ class Caballo(models.Model):
     _description='Upoferia.caballo'
     _sql_constraints = [
         ('sMicrochip_uniq', 'UNIQUE (sMicrochip)',
-         'Ya existe un caballo con ese sMicrochip.'),
+         'Ya existe un caballo con ese Microchip.'),
     ]
 
     sMicrochip= fields.Char(string="Microchip del caballo", size=60, required=True) 
