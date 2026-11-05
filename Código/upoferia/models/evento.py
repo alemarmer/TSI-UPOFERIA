@@ -16,7 +16,7 @@ class Evento(models.Model):
     def _check_sNombre_evento_obligatorio(self):
         for record in self:
             if not (record.sNombre_evento or '').strip():
-                raise ValidationError('El campo «Nombre_evento» es obligatorio.')
+                raise ValidationError('El campo «sNombre_evento» es obligatorio.')
 
     @api.constrains('dFecha_hora_inicio', 'dFecha_hora_fin')
     def _check_dFecha_hora_fin(self):

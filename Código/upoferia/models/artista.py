@@ -17,6 +17,9 @@ class Artista(models.Model):
 
     disciplina_nombres = fields.One2many('upoferia.artista_disciplina', 'artista_id', string='Disciplinas')
 
+    actuacion_ids = fields.Many2many('upoferia.actuacion', 'upoferia_actuacion_artista',
+                                     'artista_id', 'actuacion_id', string='Actuaciones')
+
     @api.constrains('fCache_base')
     def _check_cache_base(self):
         for record in self:

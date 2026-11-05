@@ -10,9 +10,12 @@ class Actuacion(models.Model):
 
     fCache_pactado = fields.Float(string='Caché pactado')
 
-    sNombre_evento = fields.Many2one('upoferia.evento', string='Evento', required=True, ondelete='cascade')
+    evento_id = fields.Many2one('upoferia.evento', string='Evento', required=True, ondelete='cascade')
 
     #FK id_transaccion
+
+    artista_ids = fields.Many2many('upoferia.artista', 'upoferia_actuacion_artista',
+                                   'actuacion_id', 'artista_id', string='Artistas')
 
     @api.constrains('fCache_pactado')
     def _check_fCache_pactado(self):
