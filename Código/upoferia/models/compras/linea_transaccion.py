@@ -6,6 +6,7 @@ class LineaTransaccion(models.Model):
     _name = 'feria.linea_transaccion'
     _description = 'Línea de transacción'
     _rec_name = 'iNumeroLinea'
+    _rec_names_search = ['transaccion_id', 'iNumeroLinea']
     _sql_constraints = [
         ('numero_linea_uniq', 'UNIQUE ("transaccion_id", "iNumeroLinea")',
          'Ya existe una línea con ese número en esta transacción.'),
@@ -66,3 +67,9 @@ class LineaTransaccion(models.Model):
                     'message': sMensaje,
                 }
             }
+
+    @api.depends('transaccion_id.sIdTransaccion', 'iNumeroLinea')
+    def _compute_display_name(self):
+        oRegistro = None
+        for oRegistro in self:
+            oRegistro.display_name = '%s / %s' % (oRegistro.transaccion_id.sIdTransaccion or '', oRegistro.iNumeroLinea)
