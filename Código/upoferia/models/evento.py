@@ -6,49 +6,49 @@ class Evento(models.Model):
     _name='upoferia.evento' 
     _description='Upoferia.evento'
 
-    sNombre_evento= fields.Char(string="Nombre del evento", size=60, required=True) #obligatorio para todas las clases de python, y simula la pk. odoo por dentro lo hace pk. Si la pk es dni, se cambia en string no en el nombre
-    dFecha_hora_inicio = fields.Datetime(string='Fecha y hora de inicio')
+    ssNombre_evento_evento= fields.Char(string="Nombre del evento", size=60, required=True) #obligatorio para todas las clases de python, y simula la pk. odoo por dentro lo hace pk. Si la pk es dni, se cambia en string no en el sNombre_evento
+    dFecha_dFecha_hora_inicio = fields.Datetime(string='Fecha y hora de inicio')
     dFecha_hora_fin = fields.Datetime(string='Fecha y hora de finalizacion')
     iAforo_reservado = fields.Integer(string='Aforo reservado')
     sEstado = fields.Char(string='Estado')
 
-    @api.constrains('nombre')
-    def _check_nombre_obligatorio(self):
+    @api.constrains('sNombre_evento')
+    def _check_sNombre_evento_obligatorio(self):
         for record in self:
-            if not (record.nombre or '').strip():
-                raise ValidationError('El campo «Nombre» es obligatorio.')
+            if not (record.sNombre_evento or '').strip():
+                raise ValidationError('El campo «Nombre_evento» es obligatorio.')
 
-    @api.constrains('hora_inicio', 'fin')
-    def _check_fin(self):
+    @api.constrains('dFecha_hora_inicio', 'dFecha_hora_fin')
+    def _check_dFecha_hora_fin(self):
         for record in self:
-            if record.hora_inicio and record.fin and record.fin <= record.hora_inicio:
-                raise ValidationError('«Fin» debe ser posterior a «Hora de inicio».')
+            if record.dFecha_hora_inicio and record.dFecha_hora_fin and record.dFecha_hora_fin <= record.dFecha_hora_inicio:
+                raise ValidationError('«dFecha_hora_fin» debe ser posterior a «Hora de inicio».')
 
 
-    @api.constrains('aforo_reservado')
-    def _check_aforo_reservado(self):
+    @api.constrains('iAforo_reservado')
+    def _check_iAforo_reservado(self):
         for record in self:
-            if record.aforo_reservado < 0:
+            if record.iAforo_reservado < 0:
                 raise ValidationError('«Aforo reservado» no puede ser menor que 0.')
 
-    @api.constrains('fin', 'hora_inicio')
-    def _check_hora_inicio_si_fin(self):
+    @api.constrains('dFecha_hora_fin', 'dFecha_hora_inicio')
+    def _check_dFecha_hora_inicio_si_dFecha_hora_fin(self):
         for record in self:
-            if record.fin and not record.hora_inicio:
-                raise ValidationError('Si se indica «Fin», también hay que indicar «Hora de inicio».')
+            if record.dFecha_hora_fin and not record.dFecha_hora_inicio:
+                raise ValidationError('Si se indica «dFecha_hora_fin», también hay que indicar «Hora de inicio».')
 
-    @api.constrains('nombre', 'tipo', 'estado')
+    @api.constrains('sNombre_evento', 'sEstado')
     def _check_longitud(self):
         for record in self:
-            for campo in ('nombre', 'tipo', 'estado'):
+            for campo in ('sNombre_evento','sEstado'):
                 if record[campo] and len(record[campo]) > 100:
                     raise ValidationError(
                         '«%s» no puede superar los 100 caracteres.' % record._fields[campo].string)
 
-    @api.constrains('tipo', 'estado')
+    @api.constrains('sEstado')
     def _check_textos_opcionales(self):
         for record in self:
-            for campo in ('tipo', 'estado'):
+            for campo in ('sEstado'):
                 if record[campo] and not record[campo].strip():
                     raise ValidationError(
                         '«%s» no puede contener solo espacios.' % record._fields[campo].string)

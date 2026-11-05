@@ -9,36 +9,36 @@ class Carruaje(models.Model):
     sModelo = fields.Char(string='Modelo')
     iPlazas = fields.Integer(string='Plazas')
 
-    @api.constrains('num_registro')
-    def _check_num_registro_obligatorio(self):
+    @api.constrains('sNum_registro')
+    def _check_sNum_registro_obligatorio(self):
         for record in self:
-            if not (record.num_registro or '').strip():
+            if not (record.sNum_registro or '').strip():
                 raise ValidationError('El campo «Número de registro» es obligatorio.')
 
-    @api.constrains('plazas')
-    def _check_plazas(self):
+    @api.constrains('iPlazas')
+    def _check_iPlazas(self):
         for record in self:
-            if record.plazas <= 0:
-                raise ValidationError('«Plazas» debe ser mayor que 0.')
+            if record.iPlazas <= 0:
+                raise ValidationError('«iPlazas» debe ser mayor que 0.')
 
-    @api.constrains('num_registro')
-    def _check_num_registro_formato(self):
+    @api.constrains('sNum_registro')
+    def _check_sNum_registro_formato(self):
         for record in self:
-            if not re.fullmatch(r'[A-Za-z0-9]+([-/._][A-Za-z0-9]+)*', record.num_registro or ''):
+            if not re.fullmatch(r'[A-Za-z0-9]+([-/._][A-Za-z0-9]+)*', record.sNum_registro or ''):
                 raise ValidationError('«Número de registro» solo admite letras y números, separados por - / . _ y sin espacios.')
 
-    @api.constrains('num_registro', 'modelo')
+    @api.constrains('sNum_registro', 'sModelo')
     def _check_longitud(self):
         for record in self:
-            for campo in ('num_registro', 'modelo'):
+            for campo in ('sNum_registro', 'sModelo'):
                 if record[campo] and len(record[campo]) > 100:
                     raise ValidationError(
                         '«%s» no puede superar los 100 caracteres.' % record._fields[campo].string)
 
-    @api.constrains('modelo')
+    @api.constrains('sModelo')
     def _check_textos_opcionales(self):
         for record in self:
-            for campo in ('modelo',):
+            for campo in ('sModelo',):
                 if record[campo] and not record[campo].strip():
                     raise ValidationError(
                         '«%s» no puede contener solo espacios.' % record._fields[campo].string)
