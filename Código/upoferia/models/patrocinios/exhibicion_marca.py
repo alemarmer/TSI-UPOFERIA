@@ -18,9 +18,9 @@ class ExhibicionMarca(models.Model):
     sArteFinal = fields.Char(string='Arte final')
     dFechaRetirada = fields.Date(string='Fecha de retirada')
 
-    marca_id = fields.Many2one('feria.marca', string='Marca', ondelete='set null')
+    marca_id = fields.Many2one('feria.marca', string='Marca', required=True, ondelete='restrict')
     tecnico_id = fields.Many2one('feria.tecnico', string='Técnico', ondelete='set null')
-    espacio_publicitario_id = fields.Many2one('feria.espacio_publicitario', string='Espacio publicitario', ondelete='set null')
+    espacio_publicitario_id = fields.Many2one('feria.espacio_publicitario', string='Espacio publicitario', required=True, ondelete='restrict')
 
     @api.constrains('sIdExhibicion')
     def _check_id_exhibicion(self):
