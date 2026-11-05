@@ -14,6 +14,9 @@
 - Sin espacios al principio ni al final — `@api.constrains`
 - Como mucho 255 caracteres — `@api.constrains`
 
+### Relaciones
+- `transaccion_ids` (One2many → Transaccion) — las transacciones de este tipo (inverso de `tipo_transaccion_id`).
+
 ## Transaccion (`feria.transaccion`) — `transaccion.py`
 
 ### `sIdTransaccion` (Char) — clave
@@ -54,6 +57,13 @@
 - Sin espacios sobrantes, como mucho 30 caracteres — `@api.constrains`
 - Solo letras, números, espacios y `- / . _` (ej. `F-2026/0001`) — `@api.constrains`
 
+### Relaciones
+- `tipo_transaccion_id` (Many2one → TipoTransaccion) — obligatorio (`required`); no se puede borrar un tipo que tenga transacciones (`ondelete='restrict'`).
+- `proveedor_id` (Many2one → Proveedor) — obligatorio (`required`), relación «interviene en»; no se puede borrar un proveedor que tenga transacciones (`ondelete='restrict'`).
+- `transaccion_origen_id` (Many2one → Transaccion) — opcional, relación reflexiva «genera»; si se borra la de origen, la generada se queda sin origen (`ondelete='set null'`).
+- `transaccion_derivada_ids` (One2many → Transaccion) — transacciones generadas a partir de esta (inverso de `transaccion_origen_id`).
+- `linea_ids` (One2many → LineaTransaccion) — líneas de la transacción (inverso de `transaccion_id`); opcional.
+
 ## LineaTransaccion (`feria.linea_transaccion`) — `linea_transaccion.py`
 
 ### `iNumeroLinea` (Integer) — clave (junto con la transacción)
@@ -71,6 +81,12 @@
 ### `fPrecioUnitario` (Float)
 - No menor que 0 y como mucho 1.000.000 € — `@api.constrains`
 
+### Relaciones
+- `transaccion_id` (Many2one → Transaccion) — obligatorio (`required`), entidad débil: si se borra la transacción se borran sus líneas (`ondelete='cascade'`).
+- La pareja transacción + `iNumeroLinea` no se repite (clave de la entidad débil) — `_sql_constraints` `UNIQUE ("transaccion_id", "iNumeroLinea")`.
+- `linea_pedido_id` (Many2one → LineaTransaccion) — opcional, relación reflexiva «se factura en»; `ondelete='set null'`.
+- `linea_factura_ids` (One2many → LineaTransaccion) — líneas de factura que facturan esta línea de pedido (inverso de `linea_pedido_id`).
+
 ---
 
 # Notas sobre la documentación
@@ -80,3 +96,17 @@ Los diagramas (E-R, relacional y UML) mantienen los nombres originales de los at
 Nota: los atributos `Decimal` del UML (`importe`, `precio_unitario`) se guardan como `Float` en Odoo. No hace falta cambiar el diagrama.
 
 Nota: `estado` es `String` en el UML y `Selection` en el código, porque el E-R dice que es una lista cerrada.
+
+---
+
+# Pendiente de revisar
+
+- **Los modelos todavía no se cargan en Odoo.** `models/__init__.py` no importa esta carpeta (ni ninguna de las otras) y `security/ir.model.access.csv` no tiene permisos para estos modelos. Hasta que se añadan, nada de esto se puede probar en Odoo.
+- **Diagramas.** En el código los campos de relación siguen la convención de Odoo que usa el profesor (`_id` / `_ids`), mientras que el relacional usa los nombres de las claves ajenas (`dni_proveedor`, `codigo_tipo_transaccion`…). Las claves ajenas compuestas del relacional se convierten en un único Many2one, porque Odoo enlaza por su `id` interno.
+- **Tipos de transacción.** Como `tipo_transaccion_id` es obligatorio, antes de crear transacciones tienen que existir los tipos PED, ALB, FAC, ABO y CON. Habría que cargarlos con un archivo de datos XML al instalar el módulo.
+- **Revisar con el E-R: qué es obligatorio en una transacción.** Ahora son obligatorios el tipo y el proveedor (el relacional los marca `NOT NULL` y el cuadro de restricciones dice que el tipo es obligatorio y que toda transacción tiene proveedor). Son opcionales la transacción de origen, las transacciones generadas y las líneas, así que puede haber, por ejemplo, un contrato sin facturas o un pedido sin albarán. Si la idea del grupo era otra, hay que cambiar el E-R y el relacional, o el código.
+- **Validaciones con claves ajenas (pendientes):** líneas solo en PED/FAC/ABO y como mínimo una; `cantidad_recibida` solo en líneas de PED; atributos y estados permitidos según el tipo; parejas válidas de «genera» (CON → PED, CON → FAC/ABO, PED → ALB) con el mismo proveedor; PROVEEDOR + `ref_proveedor` no se repite en FAC/ABO; «se factura en» une una línea de PED con una de FAC/ABO del mismo producto.
+- **Botones de cambio de estado (pendientes)** según el recorrido de estados de cada tipo, con `write`.
+- **Campos calculados (pendientes):** `importe_facturado`, `subtotal`, `cantidad_facturada`.
+- **Relaciones con modelos de los compañeros (pendientes):** Transaccion → Caseta (`caseta_id`) y → LineaPresupuesto (`linea_presupuesto_id`); LineaTransaccion → Producto (`producto_id`). Y al revés, Movimiento, Mantenimiento, Prestamo, Actuacion y Salida apuntan a Transaccion.
+- **Nombre que se muestra de una línea.** `_rec_name` es `iNumeroLinea`, así que en los desplegables una línea aparece solo como «1», «2»… sin la transacción. Revisar si conviene cambiarlo.
