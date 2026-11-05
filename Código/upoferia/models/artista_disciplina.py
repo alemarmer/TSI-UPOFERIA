@@ -1,6 +1,6 @@
 class ArtistaDisciplina(models.Model):
-    _name = 'feria.artista_disciplina'
-    _description = 'Disciplina de artista'
+    _name = 'upoferia.artista_disciplina'
+    _description = 'Upoferia.artista_disciplina'
 
     disciplina = fields.Char(string='Disciplina', required=True)
 
