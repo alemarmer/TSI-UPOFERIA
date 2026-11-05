@@ -9,6 +9,8 @@ class Carruaje(models.Model):
     sModelo = fields.Char(string='Modelo')
     iPlazas = fields.Integer(string='Plazas')
 
+    salida_ids = fields.One2many('upoferia.salida', 'carruaje_id', string='Salidas')
+
     @api.constrains('sNum_registro')
     def _check_sNum_registro_obligatorio(self):
         for record in self:

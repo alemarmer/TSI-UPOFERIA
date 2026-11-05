@@ -4,22 +4,23 @@ from odoo.exceptions import ValidationError
 
 class Premio(models.Model):
     _name = 'upoferia.premio'
-    _description = 'Premio'
+    _description = 'Upoferia.premio'
     _rec_name = 'iPuesto'
     _sql_constraints = [
         # PK compuesta (nombre_concurso, iPuesto)
         ('concurso_iPuesto_uniq', 'UNIQUE (concurso_id, iPuesto)',
-         'Ese concurso ya tiene un premio para ese iPuesto.'),
+         'Ese concurso ya tiene un premio para ese Puesto.'),
     ]
 
-    iPuesto = fields.Integer(string='iPuesto', required=True)
+    iPuesto = fields.Integer(string='Puesto', required=True)
     sDescripcion = fields.Char(string='Descripción')
-    fImporte = fields.Float(string='fImporte')
+    fImporte = fields.Float(string='Importe')
     iXp_otorgada = fields.Integer(string='XP otorgada')
 
     concurso_id = fields.Many2one('upoferia.concurso', string='Concurso',
                                   required=True, ondelete='cascade')
 
+    #ojo relacion con REGISTRO_XP
 
     @api.constrains('iPuesto')
     def _check_iPuesto(self):
