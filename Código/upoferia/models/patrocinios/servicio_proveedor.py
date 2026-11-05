@@ -11,7 +11,7 @@ class ServicioProveedor(models.Model):
          'Este proveedor ya tiene una tarifa para ese servicio.'),
     ]
 
-    fPrecioTarifa = fields.Float(string='Precio de tarifa')
+    fPrecioTarifa = fields.Float(string='Precio de tarifa', required=True)
 
     servicio_id = fields.Many2one('feria.servicio', string='Servicio', required=True, ondelete='cascade')
     proveedor_id = fields.Many2one('feria.proveedor', string='Proveedor', required=True, ondelete='cascade')
