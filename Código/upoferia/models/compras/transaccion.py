@@ -39,6 +39,12 @@ class Transaccion(models.Model):
     sDocumento = fields.Char(string='Documento')
     sRefProveedor = fields.Char(string='Referencia del proveedor')
 
+    tipo_transaccion_id = fields.Many2one('feria.tipo_transaccion', string='Tipo de transacción', required=True, ondelete='restrict')
+    proveedor_id = fields.Many2one('feria.proveedor', string='Proveedor', required=True, ondelete='restrict')
+    transaccion_origen_id = fields.Many2one('feria.transaccion', string='Transacción de origen', ondelete='set null')
+    transaccion_derivada_ids = fields.One2many('feria.transaccion', 'transaccion_origen_id', string='Transacciones generadas')
+    linea_ids = fields.One2many('feria.linea_transaccion', 'transaccion_id', string='Líneas')
+
     @api.constrains('sIdTransaccion')
     def _check_id_transaccion(self):
         oRegistro = None

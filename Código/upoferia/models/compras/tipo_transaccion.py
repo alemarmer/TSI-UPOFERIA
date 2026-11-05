@@ -15,6 +15,8 @@ class TipoTransaccion(models.Model):
     sDescripcion = fields.Char(string='Descripción')
     sNombre = fields.Char(string='Nombre', required=True)
 
+    transaccion_ids = fields.One2many('feria.transaccion', 'tipo_transaccion_id', string='Transacciones')
+
     @api.constrains('sCodigo')
     def _check_codigo_valor(self):
         oRegistro = None

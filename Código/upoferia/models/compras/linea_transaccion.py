@@ -6,11 +6,19 @@ class LineaTransaccion(models.Model):
     _name = 'feria.linea_transaccion'
     _description = 'Línea de transacción'
     _rec_name = 'iNumeroLinea'
+    _sql_constraints = [
+        ('numero_linea_uniq', 'UNIQUE ("transaccion_id", "iNumeroLinea")',
+         'Ya existe una línea con ese número en esta transacción.'),
+    ]
 
     iNumeroLinea = fields.Integer(string='Número de línea', required=True)
     iCantidad = fields.Integer(string='Cantidad', required=True)
     iCantidadRecibida = fields.Integer(string='Cantidad recibida')
     fPrecioUnitario = fields.Float(string='Precio unitario')
+
+    transaccion_id = fields.Many2one('feria.transaccion', string='Transacción', required=True, ondelete='cascade')
+    linea_pedido_id = fields.Many2one('feria.linea_transaccion', string='Línea de pedido', ondelete='set null')
+    linea_factura_ids = fields.One2many('feria.linea_transaccion', 'linea_pedido_id', string='Líneas de factura')
 
     @api.constrains('iNumeroLinea')
     def _check_numero_linea(self):

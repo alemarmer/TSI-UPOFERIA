@@ -14,6 +14,8 @@ class Proveedor(models.Model):
 
     sCif = fields.Char(string='CIF')
 
+    transaccion_ids = fields.One2many('feria.transaccion', 'proveedor_id', string='Transacciones')
+
     @api.constrains('sCif')
     def _check_cif(self):
         oRegistro = None
