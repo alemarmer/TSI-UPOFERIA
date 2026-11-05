@@ -28,6 +28,8 @@ class EspacioPublicitario(models.Model):
     fAnchoM = fields.Float(string='Ancho (m)', required=True)
     bIluminado = fields.Boolean(string='Iluminado')
 
+    exhibicion_ids = fields.One2many('feria.exhibicion_marca', 'espacio_publicitario_id', string='Exhibiciones')
+
     @api.constrains('sCodigoLugar')
     def _check_codigo_lugar(self):
         oRegistro = None

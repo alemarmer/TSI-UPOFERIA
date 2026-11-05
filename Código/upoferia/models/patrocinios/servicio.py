@@ -26,6 +26,8 @@ class Servicio(models.Model):
     bRequiereTecnico = fields.Boolean(string='Requiere técnico')
     sNombre = fields.Char(string='Nombre', required=True)
 
+    servicio_proveedor_ids = fields.One2many('feria.servicio_proveedor', 'servicio_id', string='Proveedores que lo ofrecen')
+
     @api.constrains('sCodigo')
     def _check_codigo(self):
         oRegistro = None

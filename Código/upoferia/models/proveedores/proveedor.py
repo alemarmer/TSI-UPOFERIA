@@ -16,6 +16,8 @@ class Proveedor(models.Model):
 
     transaccion_ids = fields.One2many('feria.transaccion', 'proveedor_id', string='Transacciones')
     categoria_ids = fields.Many2many('feria.categoria_proveedor', 'feria_proveedor_categoria_rel', 'proveedor_id', 'categoria_proveedor_id', string='Categorías')
+    marca_ids = fields.One2many('feria.marca', 'proveedor_id', string='Marcas')
+    servicio_proveedor_ids = fields.One2many('feria.servicio_proveedor', 'proveedor_id', string='Servicios que ofrece')
 
     @api.constrains('sCif')
     def _check_cif(self):

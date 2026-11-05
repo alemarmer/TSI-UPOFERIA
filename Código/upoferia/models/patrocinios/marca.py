@@ -17,6 +17,9 @@ class Marca(models.Model):
     binLogotipo = fields.Image(string='Logotipo', max_width=512, max_height=512)
     sColorCorporativo = fields.Char(string='Color corporativo')
 
+    proveedor_id = fields.Many2one('feria.proveedor', string='Proveedor', ondelete='set null')
+    exhibicion_ids = fields.One2many('feria.exhibicion_marca', 'marca_id', string='Exhibiciones')
+
     @api.constrains('sNombre')
     def _check_nombre(self):
         oRegistro = None

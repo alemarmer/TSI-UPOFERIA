@@ -24,6 +24,8 @@ class Tecnico(models.Model):
     dFechaCaducidadCarnet = fields.Date(string='Caducidad del carné')
     sCodCarnetProfesional = fields.Char(string='Código del carné profesional')
 
+    exhibicion_ids = fields.One2many('feria.exhibicion_marca', 'tecnico_id', string='Exhibiciones')
+
     @api.constrains('sCodCarnetProfesional')
     def _check_cod_carnet_profesional(self):
         oRegistro = None
