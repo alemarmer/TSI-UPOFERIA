@@ -10,6 +10,9 @@ class Reserva(models.Model):
     iNum_personas = fields.Integer(string='Número de personas')
     sEstado = fields.Char(string='sEstado')
 
+    #MANY2ONE CON MESA (OJO ES TAMBIEN PK)
+    #MANY2ONE CON SOCIO
+
     @api.constrains('iNum_personas')
     def _check_iNum_personas(self):
         for record in self:
