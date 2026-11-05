@@ -10,7 +10,11 @@ class Evento(models.Model):
     dFecha_dFecha_hora_inicio = fields.Datetime(string='Fecha y hora de inicio')
     dFecha_hora_fin = fields.Datetime(string='Fecha y hora de finalizacion')
     iAforo_reservado = fields.Integer(string='Aforo reservado')
-    sEstado = fields.Char(string='Estado')
+    sEstado = fields.Selection([('programado', 'Programado'),
+                               ('en_curso', 'En curso'),
+                               ('finalizado', 'Finalizado'),
+                               ('cancelado', 'Cancelado')],
+                              string='Estado', default='programado')
 
     #FK CON CASETA
 
@@ -46,7 +50,7 @@ class Evento(models.Model):
             if record.dFecha_hora_fin and not record.dFecha_hora_inicio:
                 raise ValidationError('Si se indica «dFecha_hora_fin», también hay que indicar «Hora de inicio».')
 
-    @api.constrains('sNombre_evento', 'sEstado')
+    @api.constrains('sNombre_evento')
     def _check_longitud(self):
         for record in self:
             for campo in ('sNombre_evento','sEstado'):
@@ -54,11 +58,5 @@ class Evento(models.Model):
                     raise ValidationError(
                         '«%s» no puede superar los 100 caracteres.' % record._fields[campo].string)
 
-    @api.constrains('sEstado')
-    def _check_textos_opcionales(self):
-        for record in self:
-            for campo in ('sEstado'):
-                if record[campo] and not record[campo].strip():
-                    raise ValidationError(
-                        '«%s» no puede contener solo espacios.' % record._fields[campo].string)
+
 

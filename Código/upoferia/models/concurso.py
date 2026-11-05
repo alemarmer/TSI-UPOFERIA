@@ -14,7 +14,10 @@ class Concurso(models.Model):
     sBases = fields.Text(string='Bases')
     dFecha_resultado = fields.Date(string='Fecha del resultado')
     # Lista cerrada según el E-R (Selection): valores por acordar en el grupo
-    sEstado = fields.Char(string='Estado')
+    sEstado = fields.Selection([('abierto', 'Inscripción abierta'),
+                               ('cerrado', 'Inscripción cerrada'),
+                               ('resuelto', 'Resuelto')],
+                              string='Estado', default='abierto')
 
     evento_id = fields.Many2one('upoferia.evento', string='Evento', required=True, ondelete='cascade')
 
@@ -24,15 +27,7 @@ class Concurso(models.Model):
 
     premio_ids = fields.One2many('upoferia.premio', 'concurso_id', string='Premios')
 
-    @api.constrains('sEstado')
-    def _check_longitud(self):
-        for record in self:
-            for campo in ('sEstado',):
-                if record[campo] and len(record[campo]) > 100:
-                    raise ValidationError(
-                        '«%s» no puede superar los 100 caracteres.' % record._fields[campo].string)
-
-    @api.constrains('sBases', 'sEstado')
+    @api.constrains('sBases')
     def _check_textos_opcionales(self):
         for record in self:
             for campo in ('sBases', 'sEstado'):

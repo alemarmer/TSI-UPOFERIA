@@ -10,7 +10,7 @@ class Artista(models.Model):
     sDni= fields.Char(string="DNI del artista", size=60, required=True)
     fCache_base = fields.Float(string='Caché base')
     sMontaje = fields.Char(string='Montaje')
-    sIluminacion = fields.Char(string='Iluminación')
+    bIluminacion = fields.Boolean(string='Iluminación')
     fPotencia_kw = fields.Float(string='Potencia (kW)')
     sSonido = fields.Char(string='Sonido')
     sEspacio = fields.Char(string='Espacio')
@@ -32,14 +32,14 @@ class Artista(models.Model):
             if record.fPotencia_kw < 0:
                 raise ValidationError('«Potencia (kW)» no puede ser menor que 0.')
 
-    @api.constrains('sMontaje', 'sIluminacion', 'sSonido', 'sEspacio')
+    @api.constrains('sMontaje', 'sSonido', 'sEspacio')
     def _check_longitud(self):
         for record in self:
             for campo in ('sMontaje', 'sIluminacion', 'sSonido', 'sEspacio'):
                 if record[campo] and len(record[campo]) > 100:
                     raise ValidationError('«%s» no puede superar los 100 caracteres.' % record._fields[campo].string)
 
-    @api.constrains('sMontaje', 'sIluminacion', 'sSonido', 'sEspacio')
+    @api.constrains('sMontaje', 'sSonido', 'sEspacio')
     def _check_textos_opcionales(self):
         for record in self:
             for campo in ('sMontaje', 'sIluminacion', 'sSonido', 'sEspacio'):

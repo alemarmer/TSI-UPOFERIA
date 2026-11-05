@@ -16,7 +16,11 @@ class Salida(models.Model):
     dFecha_hora_vuelta = fields.Datetime(string='Fecha y hora de vuelta')
     iNum_pasajeros = fields.Integer(string='Número de pasajeros')
     # Lista cerrada según el E-R (Selection): valores por acordar en el grupo
-    sEstado = fields.Char(string='Estado')
+    sEstado = fields.Selection([('programada', 'Programada'),
+                               ('en_curso', 'En curso'),
+                               ('finalizada', 'Finalizada'),
+                               ('cancelada', 'Cancelada')],
+                              string='Estado', default='programada')
 
     carruaje_id = fields.Many2one('upoferia.carruaje', string='Carruaje',
                                   required=True, ondelete='cascade')
@@ -37,22 +41,6 @@ class Salida(models.Model):
         for record in self:
             if record.iNum_pasajeros < 0:
                 raise ValidationError('«Número de pasajeros» no puede ser menor que 0.')
-
-    @api.constrains('sEstado')
-    def _check_longitud(self):
-        for record in self:
-            for campo in ('sEstado',):
-                if record[campo] and len(record[campo]) > 100:
-                    raise ValidationError(
-                        '«%s» no puede superar los 100 caracteres.' % record._fields[campo].string)
-
-    @api.constrains('sEstado')
-    def _check_textos_opcionales(self):
-        for record in self:
-            for campo in ('sEstado',):
-                if record[campo] and not record[campo].strip():
-                    raise ValidationError(
-                        '«%s» no puede contener solo espacios.' % record._fields[campo].string)
 
     @api.onchange('dFecha_hora_salida', 'dFecha_hora_vuelta')
     def _onchange_valores(self):
