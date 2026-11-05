@@ -17,4 +17,9 @@
     <menuitem name="Control de Aforo" id="control_aforo_menu" parent="upoferia_control_acceso_menu" groups="group_upoferia_manager" action="upoferia_control_accesos_control_aforo_action"/>
     <menuitem name="Incidencias de Puerta" id="incidencias_puerta_menu" parent="upoferia_control_acceso_menu" groups="group_upoferia_manager" action="upoferia_control_accesos_incidencia_puerta_action"/>
     <menuitem name="Registros de Accesos" id="registros_accesos_menu" parent="upoferia_control_acceso_menu" groups="group_upoferia_manager" action="upoferia_control_accesos_registro_accesos_action"/>
+
+    <menuitem name="Turnos" id="upoferia_turnos_menu" parent="main_upoferia_menu" groups="group_upoferia_manager"/>
+
+    <menuitem name="Fichajes" id="fichajes_menu" parent="upoferia_turnos_menu" groups="group_upoferia_manager" action="upoferia_turnos_fichajes_action"/>
+
 </odoo>

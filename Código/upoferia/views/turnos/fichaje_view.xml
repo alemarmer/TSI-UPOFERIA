@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vista Lista -->
+    <record id="upoferia_turnos_fichajes_list_view" model="ir.ui.view">
+        <field name="name">upoferia.turnos.fichajes.list</field>
+        <field name="model">upoferia.turnos.fichajes</field>
+        <field name="arch" type="xml">
+            <list string="Fichajes">
+                <field name="name"/>
+                <field name="fecha_turno"/>
+                <field name="referencia_nomina"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Vista Formulario -->
+    <record id="upoferia_turnos_fichajes_form_view" model="ir.ui.view">
+        <field name="name">upoferia.turnos.fichajes.form</field>
+        <field name="model">upoferia.turnos.fichajes</field>
+        <field name="arch" type="xml">
+            <form string="Fichajes">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="fecha_turno"/>
+                        <field name="referencia_nomina"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Acción de Ventana -->
+    <record id="upoferia_turnos_fichajes_action" model="ir.actions.act_window">
+        <field name="name">Fichajes</field>
+        <field name="res_model">upoferia.turnos.fichajes</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Comienza ha fichar para poder ver la lista.
+            </p>
+        </field>
+    </record>
+</odoo>
