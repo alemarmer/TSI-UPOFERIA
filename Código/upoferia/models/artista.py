@@ -15,7 +15,7 @@ class Artista(models.Model):
     sSonido = fields.Char(string='Sonido')
     sEspacio = fields.Char(string='Espacio')
 
-    disciplina_nombres = fields.One2many('upoferia.artista_disciplina', 'artista_id', string='Disciplinas')
+    disciplina_ids = fields.One2many('upoferia.artista_disciplina', 'artista_id', string='Disciplinas')
 
     actuacion_ids = fields.Many2many('upoferia.actuacion', 'upoferia_actuacion_artista',
                                      'artista_id', 'actuacion_id', string='Actuaciones')

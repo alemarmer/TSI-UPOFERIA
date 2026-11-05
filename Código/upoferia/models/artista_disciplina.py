@@ -8,7 +8,7 @@ class ArtistaDisciplina(models.Model):
 
     sDisciplina = fields.Char(string='Disciplina', required=True)
 
-    sDni = fields.Many2one('upoferia.artista', string='Artista', required=True, ondelete='cascade') 
+    artista_id = fields.Many2one('upoferia.artista', string='Artista', required=True, ondelete='cascade') 
 
     @api.constrains('sDisciplina')
     def _check_sDisciplina_obligatorio(self):
