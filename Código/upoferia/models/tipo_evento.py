@@ -9,6 +9,8 @@ class Tipo_evento(models.Model):
     sNombre_tipo_evento_tipo_evento= fields.Char(string="Nombre del tipo de evento", size=60, required=True) 
     sDescripcion = fields.Text(string="Descripción del tipo de evento", size=100)
 
+    evento_ids = fields.One2many('upoferia.evento', 'tipo_evento_id', string='Eventos')
+
     @api.constrains('sNombre_tipo_evento')
     def _check_sNombre_tipo_evento_obligatorio(self):
         for record in self:

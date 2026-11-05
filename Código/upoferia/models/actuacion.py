@@ -14,6 +14,8 @@ class Actuacion(models.Model):
 
     #FK id_transaccion
 
+    #FALTA MANY2MANY CON SERVICIO
+
     artista_ids = fields.Many2many('upoferia.artista', 'upoferia_actuacion_artista',
                                    'actuacion_id', 'artista_id', string='Artistas')
 

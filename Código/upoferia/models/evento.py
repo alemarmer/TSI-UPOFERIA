@@ -12,6 +12,13 @@ class Evento(models.Model):
     iAforo_reservado = fields.Integer(string='Aforo reservado')
     sEstado = fields.Char(string='Estado')
 
+    #FK CON CASETA
+
+    tipo_evento_id = fields.Many2one('upoferia.tipo_evento', string='Tipo de evento',
+                                     required=True, ondelete='restrict')
+
+    #OJO CONEXION CON PATROCINIO, CONCURSO, ACTUACION 
+
     @api.constrains('sNombre_evento')
     def _check_sNombre_evento_obligatorio(self):
         for record in self:
