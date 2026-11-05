@@ -21,6 +21,9 @@ class Salida(models.Model):
     carruaje_id = fields.Many2one('upoferia.carruaje', string='Carruaje',
                                   required=True, ondelete='cascade')
 
+    caballo_ids = fields.Many2many('upoferia.caballo', 'upoferia_salida_caballo',
+                                   'salida_id', 'caballo_id', string='Caballos')
+
     #CONEXION CON TRANSACCION
 
     @api.constrains('dFecha_hora_salida', 'dFecha_hora_vuelta')
