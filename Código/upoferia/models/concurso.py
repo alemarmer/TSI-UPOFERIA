@@ -22,6 +22,8 @@ class Concurso(models.Model):
 
     participacion_ids = fields.One2many('upoferia.participacion_concurso', 'concurso_id', string='Participantes')
 
+    premio_ids = fields.One2many('upoferia.premio', 'concurso_id', string='Premios')
+
     @api.constrains('sEstado')
     def _check_longitud(self):
         for record in self:
