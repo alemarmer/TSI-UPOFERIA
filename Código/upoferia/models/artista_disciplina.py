@@ -1,8 +1,10 @@
 from odoo import models,fields,api
+from odoo.exceptions import ValidationError
 
 class ArtistaDisciplina(models.Model):
     _name = 'upoferia.artista_disciplina'
     _description = 'Upoferia.artista_disciplina'
+    _rec_name = 'disciplina'
 
     artista_id = fields.Many2one('upoferia.artista', string='Artista', required=True, ondelete='cascade') 
     disciplina = fields.Char(string='Disciplina', required=True)

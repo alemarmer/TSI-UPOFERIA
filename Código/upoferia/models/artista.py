@@ -1,4 +1,5 @@
 from odoo import models,fields,api
+from odoo.exceptions import ValidationError
 
 class Artista(models.Model):
     _name = 'upoferia.artista'
@@ -11,6 +12,8 @@ class Artista(models.Model):
     fPotencia_kw = fields.Float(string='Potencia (kW)')
     sSonido = fields.Char(string='Sonido')
     sEspacio = fields.Char(string='Espacio')
+
+    disciplina_ids = fields.One2many('upoferia.artista_disciplina', 'artista_id', string='Disciplinas')
 
     @api.constrains('cache_base')
     def _check_cache_base(self):
