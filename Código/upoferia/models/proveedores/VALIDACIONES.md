@@ -35,16 +35,16 @@
 
 Los diagramas (E-R, relacional y UML) mantienen los nombres originales de los atributos (`nombre`, `color`, `cif`). En el código llevan la notación húngara (`sNombre`, `iColor`, `sCif`), pero de momento los diagramas no se cambian.
 
+Nota: en el código los campos de relación siguen la convención de Odoo que usa el profesor (`_id` / `_ids`), mientras que el relacional usa los nombres de las claves ajenas (`dni_proveedor`, `codigo_tipo_transaccion`…). Las claves ajenas compuestas del relacional se convierten en un único Many2one, porque Odoo enlaza por su `id` interno. Igual que con la notación húngara, los diagramas no se cambian.
+
+Nota: `proveedor.py` tiene relaciones inversas con modelos de compras (Transaccion) y de patrocinios (Marca, ServicioProveedor), así que las tres carpetas se tienen que cargar a la vez en Odoo.
+
 ---
 
 # Pendiente de revisar
 
 - **Los modelos todavía no se cargan en Odoo.** `models/__init__.py` no importa esta carpeta (ni ninguna de las otras) y `security/ir.model.access.csv` no tiene permisos para estos modelos. Hasta que se añadan, nada de esto se puede probar en Odoo.
-- **Diagramas.** En el código los campos de relación siguen la convención de Odoo que usa el profesor (`_id` / `_ids`), mientras que el relacional usa los nombres de las claves ajenas (`dni_proveedor`, `codigo_tipo_transaccion`…). Las claves ajenas compuestas del relacional se convierten en un único Many2one, porque Odoo enlaza por su `id` interno.
 - **Proveedor no tiene `_rec_name`.** En los desplegables (por ejemplo, al elegir el proveedor de una transacción o de una marca) aparecerá como «feria.proveedor,1». Se arreglará cuando herede de Persona y tenga nombre.
 - **Herencia de Persona (pendiente).** Según el UML, Proveedor es subtipo de Persona (en Odoo, `_inherits`). `socios/persona.py` todavía está vacío.
 - **Validación de ciclos en categorías (pendiente).** Falta comprobar que una categoría no sea su propia madre ni forme ciclos (regla del E-R).
-- **Revisar el borrado de categorías.** Con `ondelete='restrict'` no se puede borrar una categoría que tenga subcategorías; primero hay que quitarles la categoría padre. Si se prefiere que las subcategorías se queden sin padre, se cambia a `'set null'`.
-- **Revisar el borrado de proveedores.** No se puede borrar un proveedor que tenga transacciones (`restrict`); sus marcas se quedan sin proveedor (`set null`) y sus tarifas se borran (`cascade`).
-- **Dependencias entre carpetas.** `proveedor.py` tiene relaciones inversas con modelos de compras (Transaccion) y de patrocinios (Marca, ServicioProveedor). Las tres carpetas tienen que cargarse a la vez.
 - **Relaciones con modelos de los compañeros (pendientes):** Prestamo → Proveedor.

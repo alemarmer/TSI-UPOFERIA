@@ -40,9 +40,9 @@
 - URL `http(s)://` o archivo `.pdf/.png/.jpg/.jpeg/.svg/.ai/.eps/.tif/.tiff` — `@api.constrains`
 
 ### Relaciones
-- `marca_id` (Many2one → Marca) — opcional, relación «aparece en»; `ondelete='set null'`.
+- `marca_id` (Many2one → Marca) — obligatorio (`required`), relación «aparece en»; no se puede borrar una marca que tenga exhibiciones (`ondelete='restrict'`).
 - `tecnico_id` (Many2one → Tecnico) — opcional, relación «actualiza»; `ondelete='set null'`.
-- `espacio_publicitario_id` (Many2one → EspacioPublicitario) — opcional, relación «acoge»; `ondelete='set null'`.
+- `espacio_publicitario_id` (Many2one → EspacioPublicitario) — obligatorio (`required`), relación «acoge»; no se puede borrar un espacio que tenga exhibiciones (`ondelete='restrict'`).
 
 ## EspacioPublicitario (`feria.espacio_publicitario`) — `espacio_publicitario.py`
 
@@ -116,6 +116,7 @@
 Clase de asociación de la relación N:M «ofrece» entre Servicio y Proveedor (tabla SERVICIO_PROVEEDOR del relacional).
 
 ### `fPrecioTarifa` (Float)
+- Obligatorio — `required`
 - No menor que 0 y como mucho 1.000.000 € — `@api.constrains`
 - Como mucho dos decimales (céntimos) — `@api.constrains`
 
@@ -134,17 +135,16 @@ Nota: los atributos `Decimal` del UML (`alto_m`, `ancho_m`) se guardan como `Flo
 
 Nota: `logotipo` de Marca es `Binary` en el UML y `fields.Image` en el código. `Image` es un `Binary` de Odoo especializado en imágenes (comprueba que el archivo sea una imagen y la reduce de tamaño), así que los dos tipos coinciden.
 
+Nota: en el código los campos de relación siguen la convención de Odoo que usa el profesor (`_id` / `_ids`), mientras que el relacional usa los nombres de las claves ajenas (`dni_proveedor`, `codigo_tipo_transaccion`…). Las claves ajenas compuestas del relacional se convierten en un único Many2one, porque Odoo enlaza por su `id` interno. Igual que con la notación húngara, los diagramas no se cambian.
+
 ---
 
 # Pendiente de revisar
 
 - **Los modelos todavía no se cargan en Odoo.** `models/__init__.py` no importa esta carpeta (ni ninguna de las otras) y `security/ir.model.access.csv` no tiene permisos para estos modelos. Hasta que se añadan, nada de esto se puede probar en Odoo.
-- **Diagramas.** En el código los campos de relación siguen la convención de Odoo que usa el profesor (`_id` / `_ids`), mientras que el relacional usa los nombres de las claves ajenas (`dni_proveedor`, `codigo_tipo_transaccion`…). Las claves ajenas compuestas del relacional se convierten en un único Many2one, porque Odoo enlaza por su `id` interno.
 - **Modelo nuevo `servicio_proveedor.py`.** Cuando se añadan los imports, hay que incluirlo también. Es la clase de asociación ServicioProveedor del UML.
-- **Revisar si el precio de tarifa debe ser obligatorio.** Ahora una tarifa se puede guardar sin precio. La validación de que no sea negativo no está en el cuadro de restricciones del E-R; si se quiere, se añade.
 - **Técnico no tiene `_rec_name`.** En el desplegable de la exhibición aparecerá como «feria.tecnico,1». Se arreglará cuando herede de Persona.
 - **Herencia de Persona (pendiente).** Según el UML, Tecnico es subtipo de Persona (`_inherits`). `socios/persona.py` todavía está vacío.
-- **Revisar que la marca, el técnico y el espacio de una exhibición sean opcionales.** Así lo marcan el relacional (`NULL`) y el UML (0..1), pero una exhibición sin marca ni espacio tiene poco sentido. Si se hacen obligatorios, hay que cambiarlo también en los diagramas.
 - **Validaciones con claves ajenas (pendientes):** una exhibición no se solapa con otra del mismo espacio publicitario.
 - **Campos calculados (pendientes):** `superficie_m2` y el estado de la exhibición.
 - **Relaciones con modelos de los compañeros (pendientes):** Marca ↔ Evento (PATROCINIO, con `importe_aportacion` y `tipo_aportacion`, otra clase de asociación); EspacioPublicitario → ZonaCaseta. Y al revés, Producto apunta a Marca; Incidencia y Actuacion a Servicio; Mantenimiento a Tecnico.
