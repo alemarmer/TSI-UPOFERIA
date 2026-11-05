@@ -17,7 +17,9 @@ class Evento(models.Model):
     tipo_evento_id = fields.Many2one('upoferia.tipo_evento', string='Tipo de evento',
                                      required=True, ondelete='restrict')
 
-    #OJO CONEXION CON PATROCINIO, CONCURSO, ACTUACION 
+    concurso_ids = fields.One2many('upoferia.concurso', 'evento_id', string='Concurso')
+
+    #OJO CONEXION CON PATROCINIO, ACTUACION 
 
     @api.constrains('sNombre_evento')
     def _check_sNombre_evento_obligatorio(self):
