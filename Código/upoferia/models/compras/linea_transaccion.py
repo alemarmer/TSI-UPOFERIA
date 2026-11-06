@@ -106,6 +106,12 @@ class LineaTransaccion(models.Model):
                     'message': sMensaje,
                 }
             }
+    @api.ondelete(at_uninstall=False)
+    def _unlink_except_ultima_linea(self):
+        oTransaccion = None
+        for oTransaccion in self.mapped('transaccion_id'):
+            if oTransaccion.tipo_transaccion_id.sCodigo in ('PED', 'FAC', 'ABO') and not (oTransaccion.linea_ids - self):
+                raise ValidationError('No se puede borrar la última línea de %s: una transacción PED, FAC o ABO tiene que tener como mínimo una línea.' % oTransaccion.sIdTransaccion)
 
     @api.depends('transaccion_id.sIdTransaccion', 'iNumeroLinea')
     def _compute_display_name(self):

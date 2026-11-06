@@ -93,6 +93,7 @@
 - La pareja transacción + `iNumeroLinea` no se repite (clave de la entidad débil) — `_sql_constraints` `UNIQUE ("transaccion_id", "iNumeroLinea")`.
 - `linea_pedido_id` (Many2one → LineaTransaccion) — opcional, relación reflexiva «se factura en»; `ondelete='set null'`. Solo lo pueden tener las líneas de una FAC o un ABO, y tiene que apuntar a una línea de un PED — `@api.constrains`
 - `linea_factura_ids` (One2many → LineaTransaccion) — líneas de factura que facturan esta línea de pedido (inverso de `linea_pedido_id`). Solo las líneas de un PED pueden tenerlas — `@api.constrains`
+- No se puede borrar la última línea de un PED, FAC o ABO (tiene que quedar como mínimo una). Sí se puede borrar la transacción entera, y con ella sus líneas — `@api.ondelete`
 
 
 ### Nombre que se muestra
@@ -125,4 +126,4 @@ Nota: en el código los campos de relación siguen la convención de Odoo que us
 
 - **Tipos de transacción.** Como `tipo_transaccion_id` es obligatorio, antes de crear transacciones tienen que existir los tipos PED, ALB, FAC, ABO y CON. Habría que cargarlos con un archivo de datos XML al instalar el módulo.
 - **Botones de cambio de estado (pendientes)** según el recorrido de estados de cada tipo, con `write`.
-- **Borrar la última línea.** Si se borra la única línea de un PED, FAC o ABO directamente desde la lista de líneas (sin pasar por el formulario de la transacción), la regla «como mínimo una línea» no salta. Se podría impedir sobrescribiendo `unlink` en LineaTransaccion (Tema 6_2).
+
