@@ -57,6 +57,8 @@ class LineaTransaccion(models.Model):
                 raise ValidationError('«Precio unitario» no puede ser menor que 0.')
             if oRegistro.fPrecioUnitario > 1000000:
                 raise ValidationError('«Precio unitario» no puede superar 1.000.000 €.')
+            if round(oRegistro.fPrecioUnitario, 2) != oRegistro.fImporte:
+                            raise ValidationError('«Precio unitario» solo admite dos decimales (céntimos).')
 
     @api.onchange('iCantidadRecibida', 'iCantidad')
     def _onchange_valores(self):

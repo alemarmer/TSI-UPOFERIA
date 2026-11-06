@@ -83,6 +83,7 @@
 
 ### `fPrecioUnitario` (Float)
 - No menor que 0 y como mucho 1.000.000 € — `@api.constrains`
+-Solo admite dos decimales (céntimos). — `@api.constrains`
 
 ### Relaciones
 - `transaccion_id` (Many2one → Transaccion) — obligatorio (`required`), entidad débil: si se borra la transacción se borran sus líneas (`ondelete='cascade'`).
@@ -115,7 +116,8 @@ Nota: en el código los campos de relación siguen la convención de Odoo que us
 # Pendiente de revisar
 
 - **Los modelos todavía no se cargan en Odoo.** `models/__init__.py` no importa esta carpeta (ni ninguna de las otras) y `security/ir.model.access.csv` no tiene permisos para estos modelos. Hasta que se añadan, nada de esto se puede probar en Odoo.
+
+
 - **Tipos de transacción.** Como `tipo_transaccion_id` es obligatorio, antes de crear transacciones tienen que existir los tipos PED, ALB, FAC, ABO y CON. Habría que cargarlos con un archivo de datos XML al instalar el módulo.
 - **Validaciones con claves ajenas (pendientes):** líneas solo en PED/FAC/ABO y como mínimo una; `cantidad_recibida` solo en líneas de PED; atributos y estados permitidos según el tipo; parejas válidas de «genera» (CON → PED, CON → FAC/ABO, PED → ALB) con el mismo proveedor; PROVEEDOR + `ref_proveedor` no se repite en FAC/ABO; «se factura en» une una línea de PED con una de FAC/ABO del mismo producto.
 - **Botones de cambio de estado (pendientes)** según el recorrido de estados de cada tipo, con `write`.
-- **Relaciones con modelos de los compañeros (pendientes):** Transaccion → Caseta (`caseta_id`) y → LineaPresupuesto (`linea_presupuesto_id`); LineaTransaccion → Producto (`producto_id`). Y al revés, Movimiento, Mantenimiento, Prestamo, Actuacion y Salida apuntan a Transaccion.
