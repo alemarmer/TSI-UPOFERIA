@@ -58,8 +58,21 @@ class LineaTransaccion(models.Model):
             if oRegistro.fPrecioUnitario > 1000000:
                 raise ValidationError('«Precio unitario» no puede superar 1.000.000 €.')
             if round(oRegistro.fPrecioUnitario, 2) != oRegistro.fImporte:
-                            raise ValidationError('«Precio unitario» solo admite dos decimales (céntimos).')
+                raise ValidationError('«Precio unitario» solo admite dos decimales (céntimos).')
 
+
+    @api.constrains('iCantidad', 'linea_pedido_id')
+    def _check_cantidad_facturada(self):
+        oRegistro = None
+        oLinea = None
+        for oRegistro in self:
+            for oLinea in oRegistro | oRegistro.linea_pedido_id:
+                if oLinea.iCantidadFacturada > oLinea.iCantidad:
+                    raise ValidationError('La línea de pedido «%s» quedaría con %s unidades facturadas y solo tiene %s pedidas.' % (
+                        oLinea.display_name,
+                        oLinea.iCantidadFacturada,
+                        oLinea.iCantidad,
+                    ))
     @api.onchange('iCantidadRecibida', 'iCantidad')
     def _onchange_valores(self):
         sMensaje = False
