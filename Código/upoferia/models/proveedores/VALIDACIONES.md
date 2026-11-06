@@ -12,8 +12,7 @@
 - Número entre 0 y 11 (la paleta de colores de las etiquetas de Odoo); por defecto 0 — `@api.constrains`
 
 ### Relaciones
-- `padre_id` (Many2one → CategoriaProveedor) — opcional, relación reflexiva «es subcategoría de»; no se puede borrar una categoría que tenga subcategorías (`ondelete='restrict'`).
-- `hija_ids` (One2many → CategoriaProveedor) — subcategorías (inverso de `padre_id`).
+- `padre_id` (Many2one → CategoriaProveedor) — opcional, relación reflexiva «es subcategoría de»; no se puede borrar una categoría que tenga subcategorías (`ondelete='restrict'`). Una categoría no puede ser su propia madre ni tener como madre a una de sus subcategorías (no forma ciclos) — `@api.constrains` con `_has_cycle`- `hija_ids` (One2many → CategoriaProveedor) — subcategorías (inverso de `padre_id`).
 - `proveedor_ids` (Many2many → Proveedor) — relación «clasifica»; tabla intermedia `feria_proveedor_categoria_rel` (la PROVEEDOR_CATEGORIA del relacional).
 
 ## Proveedor (`feria.proveedor`) — `proveedor.py`
@@ -44,7 +43,8 @@ Nota: `proveedor.py` tiene relaciones inversas con modelos de compras (Transacci
 # Pendiente de revisar
 
 - **Los modelos todavía no se cargan en Odoo.** `models/__init__.py` no importa esta carpeta (ni ninguna de las otras) y `security/ir.model.access.csv` no tiene permisos para estos modelos. Hasta que se añadan, nada de esto se puede probar en Odoo.
-- **Proveedor no tiene `_rec_name`.** En los desplegables (por ejemplo, al elegir el proveedor de una transacción o de una marca) aparecerá como «feria.proveedor,1». Se arreglará cuando herede de Persona y tenga nombre.
+
+
+
 - **Herencia de Persona (pendiente).** Según el UML, Proveedor es subtipo de Persona (en Odoo, `_inherits`). `socios/persona.py` todavía está vacío.
-- **Validación de ciclos en categorías (pendiente).** Falta comprobar que una categoría no sea su propia madre ni forme ciclos (regla del E-R).
-- **Relaciones con modelos de los compañeros (pendientes):** Prestamo → Proveedor.
+- **Proveedor no tiene `_rec_name`.** En los desplegables (por ejemplo, al elegir el proveedor de una transacción o de una marca) aparecerá como «feria.proveedor,1». Se arreglará cuando herede de Persona y tenga nombre.

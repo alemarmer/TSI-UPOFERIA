@@ -41,3 +41,11 @@ class CategoriaProveedor(models.Model):
         for oRegistro in self:
             if not 0 <= oRegistro.iColor <= 11:
                 raise ValidationError('El color de la categoría debe ser un número entre 0 y 11 (los colores de las etiquetas de Odoo).')
+    @api.constrains('padre_id')
+    def _check_padre(self):
+        oRegistro = None
+        for oRegistro in self:
+            if oRegistro.padre_id == oRegistro:
+                raise ValidationError('Una categoría no puede ser su propia categoría padre.')
+            if self._has_cycle('padre_id'):
+                raise ValidationError('Una categoría no puede tener como padre a una de sus subcategorías.')
