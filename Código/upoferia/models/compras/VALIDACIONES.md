@@ -124,9 +124,5 @@ Nota: el recorrido de estados no está en los diagramas (el E-R solo dice qué e
 
 ---
 
-# Pendiente de revisar
 
-
-
-- **Tipos de transacción.** Como `tipo_transaccion_id` es obligatorio, antes de crear transacciones tienen que existir los tipos PED, ALB, FAC, ABO y CON. Habría que cargarlos con un archivo de datos XML al instalar el módulo.
 
