@@ -1,6 +1,8 @@
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 
+TIPOS_CON_PERIODO = ('liquidacion_cuenta', 'nomina')
+
 
 class Movimiento(models.Model):
 
@@ -25,7 +27,7 @@ class Movimiento(models.Model):
                             'Tipo', required=True)
     periodo = fields.Char(string="Periodo")
     concepto = fields.Char(string="Concepto")
-    
+
     _sql_constraints = [
         ('referencia_unique', 'UNIQUE(referencia)', 'Ya existe un movimiento con esa referencia.'),
         ('importe_positivo', 'CHECK(importe > 0)',
@@ -41,7 +43,7 @@ class Movimiento(models.Model):
     @api.constrains('tipo', 'periodo')
     def _check_periodo(self):
         for record in self:
-            if record.tipo in self.TIPOS_CON_PERIODO and not (record.periodo or '').strip():
+            if record.tipo in TIPOS_CON_PERIODO and not (record.periodo or '').strip():
                 raise ValidationError('Los movimientos de tipo «%s» deben indicar el periodo que cubren.'
                                       % dict(self._fields['tipo'].selection).get(record.tipo))
 
@@ -70,14 +72,14 @@ class Movimiento(models.Model):
 
     @api.onchange('tipo')
     def onchange_tipo(self):
-        if self.tipo in self.TIPOS_CON_PERIODO and not self.periodo:
+        if self.tipo in TIPOS_CON_PERIODO and not self.periodo:
             return {
                 'warning': {
                     'title': 'Falta el periodo',
                     'message': 'Este tipo de movimiento necesita el periodo que cubre (por ejemplo, «Abril 2026»).'
                 }
             }
-        if self.tipo not in self.TIPOS_CON_PERIODO and self.periodo:
+        if self.tipo not in TIPOS_CON_PERIODO and self.periodo:
             self.periodo = False
 
     @api.onchange('estado')
