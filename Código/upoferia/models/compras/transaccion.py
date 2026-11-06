@@ -45,6 +45,8 @@ class Transaccion(models.Model):
     transaccion_derivada_ids = fields.One2many('feria.transaccion', 'transaccion_origen_id', string='Transacciones generadas')
     linea_ids = fields.One2many('feria.linea_transaccion', 'transaccion_id', string='Líneas')
 
+    fImporteFacturado = fields.Float(string='Importe facturado', compute='_compute_importe_facturado')
+
     @api.constrains('sIdTransaccion')
     def _check_id_transaccion(self):
         oRegistro = None
@@ -152,3 +154,11 @@ class Transaccion(models.Model):
                     'message': sMensaje,
                 }
             }
+
+    @api.depends('transaccion_derivada_ids.fImporte', 'transaccion_derivada_ids.tipo_transaccion_id.sCodigo')
+    def _compute_importe_facturado(self):
+        oRegistro = None
+        oFacturas = None
+        for oRegistro in self:
+            oFacturas = oRegistro.transaccion_derivada_ids.filtered(lambda oTransaccion: oTransaccion.tipo_transaccion_id.sCodigo == 'FAC')
+            oRegistro.fImporteFacturado = sum(oFacturas.mapped('fImporte'))

@@ -21,6 +21,9 @@ class LineaTransaccion(models.Model):
     linea_pedido_id = fields.Many2one('feria.linea_transaccion', string='Línea de pedido', ondelete='set null')
     linea_factura_ids = fields.One2many('feria.linea_transaccion', 'linea_pedido_id', string='Líneas de factura')
 
+    fSubtotal = fields.Float(string='Subtotal', compute='_compute_subtotal')
+    iCantidadFacturada = fields.Integer(string='Cantidad facturada', compute='_compute_cantidad_facturada')
+
     @api.constrains('iNumeroLinea')
     def _check_numero_linea(self):
         oRegistro = None
@@ -73,3 +76,15 @@ class LineaTransaccion(models.Model):
         oRegistro = None
         for oRegistro in self:
             oRegistro.display_name = '%s / %s' % (oRegistro.transaccion_id.sIdTransaccion or '', oRegistro.iNumeroLinea)
+
+    @api.depends('iCantidad', 'fPrecioUnitario')
+    def _compute_subtotal(self):
+        oRegistro = None
+        for oRegistro in self:
+            oRegistro.fSubtotal = oRegistro.iCantidad * oRegistro.fPrecioUnitario
+
+    @api.depends('linea_factura_ids.iCantidad')
+    def _compute_cantidad_facturada(self):
+        oRegistro = None
+        for oRegistro in self:
+            oRegistro.iCantidadFacturada = sum(oRegistro.linea_factura_ids.mapped('iCantidad'))
