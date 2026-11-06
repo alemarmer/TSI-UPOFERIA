@@ -1,2 +1,12 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_upoferia_upoferia,upoferia.upoferia,model_upoferia_upoferia,base.group_user,1,1,1,1
+access_feria_tipo_transaccion,feria.tipo_transaccion,model_feria_tipo_transaccion,base.group_user,1,1,1,1
+access_feria_transaccion,feria.transaccion,model_feria_transaccion,base.group_user,1,1,1,1
+access_feria_linea_transaccion,feria.linea_transaccion,model_feria_linea_transaccion,base.group_user,1,1,1,1
+access_feria_categoria_proveedor,feria.categoria_proveedor,model_feria_categoria_proveedor,base.group_user,1,1,1,1
+access_feria_proveedor,feria.proveedor,model_feria_proveedor,base.group_user,1,1,1,1
+access_feria_marca,feria.marca,model_feria_marca,base.group_user,1,1,1,1
+access_feria_espacio_publicitario,feria.espacio_publicitario,model_feria_espacio_publicitario,base.group_user,1,1,1,1
+access_feria_tecnico,feria.tecnico,model_feria_tecnico,base.group_user,1,1,1,1
+access_feria_exhibicion_marca,feria.exhibicion_marca,model_feria_exhibicion_marca,base.group_user,1,1,1,1
+access_feria_servicio,feria.servicio,model_feria_servicio,base.group_user,1,1,1,1
+access_feria_servicio_proveedor,feria.servicio_proveedor,model_feria_servicio_proveedor,base.group_user,1,1,1,1

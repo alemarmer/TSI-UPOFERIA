@@ -42,9 +42,6 @@ Nota: `proveedor.py` tiene relaciones inversas con modelos de compras (Transacci
 
 # Pendiente de revisar
 
-- **Los modelos todavía no se cargan en Odoo.** `models/__init__.py` no importa esta carpeta (ni ninguna de las otras) y `security/ir.model.access.csv` no tiene permisos para estos modelos. Hasta que se añadan, nada de esto se puede probar en Odoo.
-
-
 
 - **Herencia de Persona (pendiente).** Según el UML, Proveedor es subtipo de Persona (en Odoo, `_inherits`). `socios/persona.py` todavía está vacío.
 - **Proveedor no tiene `_rec_name`.** En los desplegables (por ejemplo, al elegir el proveedor de una transacción o de una marca) aparecerá como «feria.proveedor,1». Se arreglará cuando herede de Persona y tenga nombre.
