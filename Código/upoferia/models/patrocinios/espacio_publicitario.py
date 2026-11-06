@@ -30,6 +30,8 @@ class EspacioPublicitario(models.Model):
 
     exhibicion_ids = fields.One2many('feria.exhibicion_marca', 'espacio_publicitario_id', string='Exhibiciones')
 
+    fSuperficieM2 = fields.Float(string='Superficie (m²)', compute='_compute_superficie_m2')
+
     @api.constrains('sCodigoLugar')
     def _check_codigo_lugar(self):
         oRegistro = None
@@ -77,3 +79,9 @@ class EspacioPublicitario(models.Model):
                 raise ValidationError('La «Ubicación exacta» no puede empezar ni terminar con espacios ni tener dos espacios seguidos.')
             if not 3 <= len(sUbicacion) <= 200:
                 raise ValidationError('La «Ubicación exacta» debe tener entre 3 y 200 caracteres.')
+
+    @api.depends('fAltoM', 'fAnchoM')
+    def _compute_superficie_m2(self):
+        oRegistro = None
+        for oRegistro in self:
+            oRegistro.fSuperficieM2 = oRegistro.fAltoM * oRegistro.fAnchoM
