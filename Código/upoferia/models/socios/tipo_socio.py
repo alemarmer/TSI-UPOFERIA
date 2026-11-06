@@ -9,3 +9,5 @@ class TipoSocio(models.Model):
     num_beneficiarios = fields.Integer("Número máximo de beneficiarios")
     num_invitciones = fields.Integer("Número máximo de invitaciones")
     limite_credito = fields.Float("Límite de crédito")
+    
+    socio_ids = fields.One2many('upoferia.socios.socio', 'tipo_socio_id', string="Socios")

@@ -3,6 +3,6 @@ class InvitacionAcceso(models.Model):
     _name = 'upoferia.socios.invitacion_acceso'
     _description = 'Invitación de acceso'
 
-    name = fields.Char("DNI del socio",size=9, required=True)
-    name2 = fields.Char("DNI del invitado",size=9, required=True)
+    socio_id = fields.Many2one('upoferia.socios.persona', string='Socio', required=True, ondelete='cascade')
+    persona_id = fields.Many2one('upoferia.socios.persona', string='Invitado', required=True, ondelete='cascade')
     fecha_validez = fields.Date("Fecha de validez", autodate=True)

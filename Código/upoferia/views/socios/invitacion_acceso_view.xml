@@ -6,8 +6,8 @@
         <field name="model">upoferia.socios.invitacion_acceso</field>
         <field name="arch" type="xml">
             <list string="Invitación de acceso">
-                <field name="name"/>
-                <field name="name2"/>
+                <field name="socio_id"/>
+                <field name="persona_id"/>
                 <field name="fecha_validez"/>
             </list>
         </field>
@@ -21,8 +21,8 @@
             <form string="Invitación de acceso">
                 <sheet>
                     <group>
-                        <field name="name"/>
-                        <field name="name2"/>
+                        <field name="socio_id"/>
+                        <field name="persona_id"/>
                         <field name="fecha_validez"/>
                     </group>
                 </sheet>

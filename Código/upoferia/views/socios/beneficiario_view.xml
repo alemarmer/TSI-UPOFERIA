@@ -6,8 +6,8 @@
         <field name="model">upoferia.socios.beneficiario</field>
         <field name="arch" type="xml">
             <list string="Beneficiario">
-                <field name="name"/>
-                <field name="name2"/>
+                <field name="beneficiario_id"/>
+                <field name="socio_id"/>
                 <field name="parentesco"/>
             </list>
         </field>
@@ -21,8 +21,8 @@
             <form string="Beneficiario">
                 <sheet>
                     <group>
-                        <field name="name"/>
-                        <field name="name2"/>
+                        <field name="beneficiario_id"/>
+                        <field name="socio_id"/>
                         <field name="parentesco"/>
                     </group>
                 </sheet>

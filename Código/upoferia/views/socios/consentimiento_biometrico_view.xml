@@ -6,7 +6,7 @@
         <field name="model">upoferia.socios.consentimiento_biometrico</field>
         <field name="arch" type="xml">
             <list string="Consentimiento biometrico">
-                <field name="name"/>
+                <field name="persona_id"/>
                 <field name="estado"/>
                 <field name="fecha_firma"/>
                 <field name="fecha_renovacion"/>
@@ -23,7 +23,7 @@
             <form string="Consentimiento biometrico">
                 <sheet>
                     <group>
-                        <field name="name"/>
+                        <field name="persona_id"/>
                         <field name="fecha_firma"/>
                         <field name="datos_biometricos"/>
                     </group>
