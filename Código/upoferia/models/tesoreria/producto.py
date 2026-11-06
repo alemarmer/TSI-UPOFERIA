@@ -15,6 +15,10 @@ class Producto(models.Model):
     precio_socio = fields.Float(string="Precio socio", digits=(10, 2))
     xp_otorgada = fields.Integer(string="XP otorgada", default=0)
     
+    # Relaciones
+    tipo_producto_id = fields.Many2one('upoferia.tipo_producto', string="Tipo de producto", required=True, ondelete='restrict')
+    linea_ticket_ids = fields.One2many('upoferia.linea_ticket', 'producto_id', string="Líneas de ticket")
+
     _sql_constraints = [
         ('codigo_interno_unique', 'UNIQUE(codigo_interno)', 'Ya existe un producto con ese código interno.'),
         ('precio_socio_no_negativo', 'CHECK(precio_socio >= 0)', 'El precio de socio no puede ser negativo.'),

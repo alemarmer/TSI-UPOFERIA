@@ -10,7 +10,13 @@ class LineaTicket(models.Model):
     cantidad = fields.Integer(string="Cantidad", required=True, default=1)
     precio_unitario = fields.Float(string="Precio unitario", required=True, digits=(10, 2))
     
+    # Relaciones
+    ticket_id = fields.Many2one('upoferia.ticket', string="Ticket", required=True, ondelete='cascade')
+    producto_id = fields.Many2one('upoferia.producto', string="Producto", required=True, ondelete='restrict')
+
     _sql_constraints = [
+        ('numero_linea_ticket_unique', 'UNIQUE(ticket_id, numero_linea)',
+         'Ya existe una línea con ese número en este ticket.'),
         ('numero_linea_positivo', 'CHECK(numero_linea > 0)', 'El número de línea debe ser mayor que 0.'),
         ('cantidad_positiva', 'CHECK(cantidad > 0)', 'La cantidad debe ser mayor que 0.'),
         ('precio_no_negativo', 'CHECK(precio_unitario >= 0)', 'El precio unitario no puede ser negativo.'),

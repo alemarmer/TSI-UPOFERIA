@@ -11,6 +11,11 @@ class Ticket(models.Model):
     referencia = fields.Char(string="Referencia", required=True, help="Identificador único del ticket")
     fecha = fields.Datetime(string="Fecha", required=True, default=fields.Datetime.now)
     
+    # Relaciones
+    tarifa_id = fields.Many2one('upoferia.tarifa', string="Tarifa", required=True, ondelete='restrict')
+    linea_ids = fields.One2many('upoferia.linea_ticket', 'ticket_id', string="Líneas del ticket")
+    movimiento_ids = fields.One2many('upoferia.movimiento', 'ticket_id', string="Movimiento")
+
     _sql_constraints = [
         ('referencia_unique', 'UNIQUE(referencia)', 'Ya existe un ticket con esa referencia.'),
     ]

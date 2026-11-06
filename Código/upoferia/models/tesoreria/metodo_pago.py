@@ -12,6 +12,9 @@ class MetodoPago(models.Model):
     comision_porcentaje = fields.Float(string="Comisión (%)", digits=(5, 2), default=0.0)
     activo = fields.Boolean(string="Activo", default=True)
     
+    # Relaciones
+    movimiento_ids = fields.One2many('upoferia.movimiento', 'metodo_pago_id', string="Movimientos")
+
     _sql_constraints = [
         ('nombre_unique', 'UNIQUE(nombre)', 'Ya existe un método de pago con ese nombre.'),
         ('comision_rango', 'CHECK(comision_porcentaje >= 0 AND comision_porcentaje <= 100)',

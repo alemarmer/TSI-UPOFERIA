@@ -28,7 +28,17 @@ class Movimiento(models.Model):
     periodo = fields.Char(string="Periodo")
     concepto = fields.Char(string="Concepto")
 
+    # Relaciones
+    cuota_id = fields.Many2one('upoferia.cuota', string="Cuota", ondelete='restrict')
+    ticket_id = fields.Many2one('upoferia.ticket', string="Ticket", ondelete='restrict')
+    linea_presupuesto_id = fields.Many2one('upoferia.linea_presupuesto', string="Línea de presupuesto", ondelete='set null')
+    metodo_pago_id = fields.Many2one('upoferia.metodo_pago', string="Método de pago", required=True, ondelete='restrict')
+    cuenta_bancaria_id = fields.Many2one('upoferia.cuenta_bancaria', string="Cuenta bancaria", ondelete='restrict')
+    caja_id = fields.Many2one('upoferia.caja', string="Caja", ondelete='restrict')
+    categoria_economica_id = fields.Many2one('upoferia.categoria_economica', string="Categoría económica", ondelete='restrict')
+
     _sql_constraints = [
+        ('ticket_unique', 'UNIQUE(ticket_id)', 'Ese ticket ya está asociado a otro movimiento.'),
         ('referencia_unique', 'UNIQUE(referencia)', 'Ya existe un movimiento con esa referencia.'),
         ('importe_positivo', 'CHECK(importe > 0)',
          'El importe debe ser mayor que 0; si es ingreso o gasto lo indica el tipo de movimiento.'),

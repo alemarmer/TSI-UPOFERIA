@@ -11,6 +11,9 @@ class Bonificacion(models.Model):
     nombre = fields.Char(string="Nombre", required=True, help="Identificador único de la bonificación")
     porcentaje_descuento = fields.Float(string="Porcentaje de descuento", required=True, digits=(5, 2))
     
+    # Relaciones
+    cuota_ids = fields.One2many('upoferia.cuota', 'bonificacion_id', string="Cuotas")
+
     _sql_constraints = [
         ('nombre_unique', 'UNIQUE(nombre)', 'Ya existe una bonificación con ese nombre.'),
         ('porcentaje_rango', 'CHECK(porcentaje_descuento > 0 AND porcentaje_descuento <= 100)',

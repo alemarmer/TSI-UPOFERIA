@@ -14,6 +14,9 @@ class CuentaBancaria(models.Model):
     titular = fields.Char(string="Titular", required=True)
     activa = fields.Boolean(string="Activa", default=True)
     
+    # Relaciones
+    movimiento_ids = fields.One2many('upoferia.movimiento', 'cuenta_bancaria_id', string="Movimientos")
+
     _sql_constraints = [
         ('iban_unique', 'UNIQUE(iban)', 'Ya existe una cuenta bancaria con ese IBAN.'),
     ]

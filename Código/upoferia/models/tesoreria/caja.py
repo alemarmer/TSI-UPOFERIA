@@ -12,6 +12,9 @@ class Caja(models.Model):
     ubicacion = fields.Char(string="Ubicación")
     activa = fields.Boolean(string="Activa", default=True)
         
+    # Relaciones
+    movimiento_ids = fields.One2many('upoferia.movimiento', 'caja_id', string="Movimientos")
+
     _sql_constraints = [
         ('nombre_unique', 'UNIQUE(nombre)', 'Ya existe una caja con ese nombre.'),
     ]

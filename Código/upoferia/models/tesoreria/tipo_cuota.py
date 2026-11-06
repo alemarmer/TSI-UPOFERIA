@@ -11,6 +11,9 @@ class TipoCuota(models.Model):
     nombre = fields.Char(string="Nombre", required=True, help="Identificador único del tipo de cuota")
     importe = fields.Float(string="Importe", required=True, digits=(10, 2))
     
+    # Relaciones
+    cuota_ids = fields.One2many('upoferia.cuota', 'tipo_cuota_id', string="Cuotas")
+
     _sql_constraints = [
         ('nombre_unique', 'UNIQUE(nombre)', 'Ya existe un tipo de cuota con ese nombre.'),
         ('importe_positivo', 'CHECK(importe > 0)', 'El importe del tipo de cuota debe ser mayor que 0.'),

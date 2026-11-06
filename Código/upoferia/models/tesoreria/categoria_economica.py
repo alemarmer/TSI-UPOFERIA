@@ -13,6 +13,10 @@ class CategoriaEconomica(models.Model):
                              ('gasto', 'Gasto'),],
                             'Tipo', required=True)
     
+    # Relaciones
+    linea_presupuesto_ids = fields.One2many('upoferia.linea_presupuesto', 'categoria_economica_id', string="Líneas de presupuesto")
+    movimiento_ids = fields.One2many('upoferia.movimiento', 'categoria_economica_id', string="Movimientos")
+
     _sql_constraints = [
         ('nombre_unique', 'UNIQUE(nombre)', 'Ya existe una categoría económica con ese nombre.'),
     ]

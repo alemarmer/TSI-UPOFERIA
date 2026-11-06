@@ -14,7 +14,14 @@ class LineaPresupuesto(models.Model):
                             'Tipo', required=True)
     importe_previsto = fields.Float(string="Importe previsto", required=True, digits=(10, 2))
     
+    # Relaciones
+    presupuesto_id = fields.Many2one('upoferia.presupuesto', string="Presupuesto", required=True, ondelete='cascade')
+    categoria_economica_id = fields.Many2one('upoferia.categoria_economica', string="Categoría económica", required=True, ondelete='restrict')
+    movimiento_ids = fields.One2many('upoferia.movimiento', 'linea_presupuesto_id', string="Movimientos")
+
     _sql_constraints = [
+        ('concepto_presupuesto_unique', 'UNIQUE(presupuesto_id, concepto)',
+         'Ya existe una línea con ese concepto en este presupuesto.'),
         ('importe_previsto_positivo', 'CHECK(importe_previsto >= 0)',
          'El importe previsto no puede ser negativo; indica si es ingreso o gasto con el campo «Tipo».'),
     ]

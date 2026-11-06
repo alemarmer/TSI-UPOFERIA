@@ -18,6 +18,11 @@ class Cuota(models.Model):
                                      ('unica', 'Única'),],
                                     'Periodicidad', default='anual')
     
+    # Relaciones
+    tipo_cuota_id = fields.Many2one('upoferia.tipo_cuota', string="Tipo de cuota", required=True, ondelete='restrict')
+    bonificacion_id = fields.Many2one('upoferia.bonificacion', string="Bonificación", ondelete='set null')
+    movimiento_ids = fields.One2many('upoferia.movimiento', 'cuota_id', string="Movimientos")
+
     _sql_constraints = [
         ('referencia_unique', 'UNIQUE(referencia)', 'Ya existe una cuota con esa referencia.'),
         ('ejercicio_rango', 'CHECK(ejercicio BETWEEN 2000 AND 2100)', 'El ejercicio debe ser un año válido (2000-2100).'),

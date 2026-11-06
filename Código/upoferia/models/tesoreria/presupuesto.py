@@ -18,6 +18,9 @@ class Presupuesto(models.Model):
                                ('cerrado', 'Cerrado'),],
                               'Estado', default='borrador')
     
+    # Relaciones
+    linea_ids = fields.One2many('upoferia.linea_presupuesto', 'presupuesto_id', string="Líneas de presupuesto")
+
     _sql_constraints = [
         ('ejercicio_unique', 'UNIQUE(ejercicio)', 'Ya existe un presupuesto para ese ejercicio.'),
         ('ejercicio_rango', 'CHECK(ejercicio BETWEEN 2000 AND 2100)', 'El ejercicio debe ser un año válido (2000-2100).'),

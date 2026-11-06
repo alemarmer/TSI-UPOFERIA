@@ -10,6 +10,11 @@ class TipoProducto(models.Model):
 
     nombre = fields.Char(string="Nombre", required=True, help="Identificador único del tipo de producto")
     
+    # Relaciones
+    padre_id = fields.Many2one('upoferia.tipo_producto', string="Tipo padre", ondelete='restrict')
+    hijo_ids = fields.One2many('upoferia.tipo_producto', 'padre_id', string="Subtipos")
+    producto_ids = fields.One2many('upoferia.producto', 'tipo_producto_id', string="Productos")
+
     _sql_constraints = [
         ('nombre_unique', 'UNIQUE(nombre)', 'Ya existe un tipo de producto con ese nombre.'),
     ]

@@ -12,6 +12,9 @@ class Tarifa(models.Model):
     nombre = fields.Char(string="Nombre", required=True, help="Identificador único de la tarifa")
     moneda = fields.Char(string="Moneda", size=3, default='EUR', help="Código ISO de la moneda (EUR, USD…)")
     
+    # Relaciones
+    ticket_ids = fields.One2many('upoferia.ticket', 'tarifa_id', string="Tickets")
+
     _sql_constraints = [
         ('nombre_unique', 'UNIQUE(nombre)', 'Ya existe una tarifa con ese nombre.'),
     ]
