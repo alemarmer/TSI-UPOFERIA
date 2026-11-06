@@ -147,9 +147,6 @@ Nota: en el código los campos de relación siguen la convención de Odoo que us
 - **Los modelos todavía no se cargan en Odoo.** `models/__init__.py` no importa esta carpeta (ni ninguna de las otras) y `security/ir.model.access.csv` no tiene permisos para estos modelos. Hasta que se añadan, nada de esto se puede probar en Odoo.
 - **Modelo nuevo `servicio_proveedor.py`.** Cuando se añadan los imports, hay que incluirlo también. Es la clase de asociación ServicioProveedor del UML.
 
-- **Validaciones con claves ajenas (pendientes):** una exhibición no se solapa con otra del mismo espacio publicitario.
-- **Estado de la exhibición (pendiente de decidir).** El cuadro de restricciones del E-R dice que el estado de EXHIBICION_MARCA «no se guarda: se calcula con esas fechas», pero no es un atributo ni en el E-R ni en el UML y no se dice qué estados tiene. O se añade como atributo derivado (`/estado` en el E-R y en el UML, con sus valores) y se calcula en el código, o se quita esa frase del cuadro.
-
 
 - **Técnico no tiene `_rec_name`.** En el desplegable de la exhibición aparecerá como «feria.tecnico,1». Se arreglará cuando herede de Persona.
 - **Herencia de Persona (pendiente).** Según el UML, Tecnico es subtipo de Persona (`_inherits`). `socios/persona.py` todavía está vacío.

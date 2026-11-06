@@ -22,12 +22,12 @@ class ExhibicionMarca(models.Model):
     tecnico_id = fields.Many2one('feria.tecnico', string='Técnico', ondelete='set null')
     espacio_publicitario_id = fields.Many2one('feria.espacio_publicitario', string='Espacio publicitario', required=True, ondelete='restrict')
 
-    sEstado = fields.Selection([
+    sEstadoExhibicion = fields.Selection([
         ('sin_programar', 'Sin programar'),
         ('programada', 'Programada'),
         ('montada', 'Montada'),
         ('retirada', 'Retirada'),
-    ], string='Estado', compute='_compute_estado')
+    ], string='Estado', compute='_compute_estadoExhibicion')
 
     @api.constrains('sIdExhibicion')
     def _check_id_exhibicion(self):
@@ -128,15 +128,15 @@ class ExhibicionMarca(models.Model):
             }
 
     @api.depends('dFechaMontaje', 'dFechaRetirada')
-    def _compute_estado(self):
+    def _compute_estadoExhibicion(self):
         oRegistro = None
         dHoy = fields.Date.context_today(self)
         for oRegistro in self:
             if not oRegistro.dFechaMontaje:
-                oRegistro.sEstado = 'sin_programar'
+                oRegistro.sEstadoExhibicion = 'sin_programar'
             elif dHoy < oRegistro.dFechaMontaje:
-                oRegistro.sEstado = 'programada'
+                oRegistro.sEstadoExhibicion = 'programada'
             elif not oRegistro.dFechaRetirada or dHoy <= oRegistro.dFechaRetirada:
-                oRegistro.sEstado = 'montada'
+                oRegistro.sEstadoExhibicion = 'montada'
             else:
-                oRegistro.sEstado = 'retirada'
+                oRegistro.sEstadoExhibicion = 'retirada'
