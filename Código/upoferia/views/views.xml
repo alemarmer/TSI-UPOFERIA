@@ -1,60 +1,190 @@
 <odoo>
-  <data>
-    <!-- explicit list view definition -->
-<!--
-    <record model="ir.ui.view" id="upoferia.list">
-      <field name="name">upoferia list</field>
-      <field name="model">upoferia.upoferia</field>
-      <field name="arch" type="xml">
-        <list>
-          <field name="name"/>
-          <field name="value"/>
-          <field name="value2"/>
-        </list>
-      </field>
-    </record>
--->
+    <data>
 
-    <!-- actions opening views on models -->
-<!--
-    <record model="ir.actions.act_window" id="upoferia.action_window">
-      <field name="name">upoferia window</field>
-      <field name="res_model">upoferia.upoferia</field>
-      <field name="view_mode">list,form</field>
-    </record>
--->
+       
 
-    <!-- server action to the one above -->
-<!--
-    <record model="ir.actions.server" id="upoferia.action_server">
-      <field name="name">upoferia server</field>
-      <field name="model_id" ref="model_upoferia_upoferia"/>
-      <field name="state">code</field>
-      <field name="code">
-        action = {
-          "type": "ir.actions.act_window",
-          "view_mode": "list,form",
-          "res_model": model._name,
-        }
-      </field>
-    </record>
--->
+        <record id="view_feria_transaccion_list" model="ir.ui.view">
+            <field name="name">feria.transaccion.list</field>
+            <field name="model">feria.transaccion</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="sIdTransaccion"/>
+                    <field name="tipo_transaccion_id"/>
+                    <field name="proveedor_id"/>
+                    <field name="dFechaInicial"/>
+                    <field name="fImporte"/>
+                    <field name="sEstado"/>
+                </list>
+            </field>
+        </record>
 
-    <!-- Top menu item -->
-<!--
-    <menuitem name="upoferia" id="upoferia.menu_root"/>
--->
-    <!-- menu categories -->
-<!--
-    <menuitem name="Menu 1" id="upoferia.menu_1" parent="upoferia.menu_root"/>
-    <menuitem name="Menu 2" id="upoferia.menu_2" parent="upoferia.menu_root"/>
--->
-    <!-- actions -->
-<!--
-    <menuitem name="List" id="upoferia.menu_1_list" parent="upoferia.menu_1"
-              action="upoferia.action_window"/>
-    <menuitem name="Server to list" id="upoferia" parent="upoferia.menu_2"
-              action="upoferia.action_server"/>
--->
-  </data>
+        <record id="view_feria_transaccion_form" model="ir.ui.view">
+            <field name="name">feria.transaccion.form</field>
+            <field name="model">feria.transaccion</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="action_confirmar" string="Confirmar" type="object" class="btn-primary"
+                                invisible="sCodigoTipo != 'PED' or sEstado != 'borrador'"/>
+                        <button name="action_recibir" string="Recibido" type="object" class="btn-primary"
+                                invisible="sCodigoTipo != 'PED' or sEstado != 'confirmado'"/>
+                        <button name="action_cancelar" string="Cancelar" type="object"
+                                invisible="sCodigoTipo != 'PED' or sEstado not in ('borrador', 'confirmado')"/>
+                        <button name="action_hacer" string="Hecho" type="object" class="btn-primary"
+                                invisible="sCodigoTipo != 'ALB' or sEstado != 'previsto'"/>
+                        <button name="action_pagar" string="Pagada" type="object" class="btn-primary"
+                                invisible="sCodigoTipo not in ('FAC', 'ABO') or sEstado not in ('pendiente', 'vencida')"/>
+                        <button name="action_marcar_vencida" string="Vencida" type="object"
+                                invisible="sCodigoTipo not in ('FAC', 'ABO') or sEstado != 'pendiente'"/>
+                        <button name="action_activar" string="Activar" type="object" class="btn-primary"
+                                invisible="sCodigoTipo != 'CON' or sEstado != 'borrador'"/>
+                        <button name="action_marcar_vencido" string="Vencido" type="object"
+                                invisible="sCodigoTipo != 'CON' or sEstado != 'vigente'"/>
+                        <button name="action_rescindir" string="Rescindir" type="object"
+                                invisible="sCodigoTipo != 'CON' or sEstado != 'vigente'"/>
+                    </header>
+                    <sheet>
+                        <field name="sCodigoTipo" invisible="1"/>
+                        <group>
+                            <group>
+                                <field name="sIdTransaccion"/>
+                                <field name="tipo_transaccion_id" readonly="id"/>
+                                <field name="proveedor_id"/>
+                                <field name="sEstado" readonly="1" force_save="1"/>
+                            </group>
+                            <group>
+                                <field name="dFechaInicial"/>
+                                <field name="dVencimiento" invisible="sCodigoTipo not in ('FAC', 'ABO')"/>
+                                <field name="dFechaPrevistaFin" invisible="sCodigoTipo not in ('PED', 'ALB', 'CON')"/>
+                                <field name="fImporte" invisible="sCodigoTipo == 'ALB'"/>
+                                <field name="fImporteFacturado" invisible="sCodigoTipo != 'CON'"/>
+                                <field name="sRefProveedor" invisible="sCodigoTipo not in ('FAC', 'ABO')"/>
+                                <field name="sDocumento" invisible="sCodigoTipo != 'CON'"/>
+                                <field name="bRenovacionAuto" invisible="sCodigoTipo != 'CON'"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Líneas" invisible="sCodigoTipo not in ('PED', 'FAC', 'ABO')">
+                                <field name="linea_ids">
+                                    <list editable="bottom">
+                                        <field name="iNumeroLinea"/>
+                                        <field name="iCantidad"/>
+                                        <field name="fPrecioUnitario"/>
+                                        <field name="fSubtotal"/>
+                                        <field name="iCantidadRecibida" column_invisible="parent.sCodigoTipo != 'PED'"/>
+                                        <field name="iCantidadFacturada" column_invisible="parent.sCodigoTipo != 'PED'"/>
+                                        <field name="linea_pedido_id" column_invisible="parent.sCodigoTipo not in ('FAC', 'ABO')"
+                                               domain="[('transaccion_id.tipo_transaccion_id.sCodigo', '=', 'PED')]"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="Origen y derivadas">
+                                <group>
+                                    <field name="transaccion_origen_id"/>
+                                </group>
+                                <field name="transaccion_derivada_ids" readonly="1">
+                                    <list>
+                                        <field name="sIdTransaccion"/>
+                                        <field name="tipo_transaccion_id"/>
+                                        <field name="fImporte"/>
+                                        <field name="sEstado"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+     
+
+        <record id="action_feria_transaccion" model="ir.actions.act_window">
+            <field name="name">Transacciones</field>
+            <field name="res_model">feria.transaccion</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+        <record id="action_feria_linea_transaccion" model="ir.actions.act_window">
+            <field name="name">Líneas de transacción</field>
+            <field name="res_model">feria.linea_transaccion</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+        <record id="action_feria_tipo_transaccion" model="ir.actions.act_window">
+            <field name="name">Tipos de transacción</field>
+            <field name="res_model">feria.tipo_transaccion</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+        <record id="action_feria_proveedor" model="ir.actions.act_window">
+            <field name="name">Proveedores</field>
+            <field name="res_model">feria.proveedor</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+        <record id="action_feria_categoria_proveedor" model="ir.actions.act_window">
+            <field name="name">Categorías de proveedor</field>
+            <field name="res_model">feria.categoria_proveedor</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+        <record id="action_feria_marca" model="ir.actions.act_window">
+            <field name="name">Marcas</field>
+            <field name="res_model">feria.marca</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+        <record id="action_feria_exhibicion_marca" model="ir.actions.act_window">
+            <field name="name">Exhibiciones</field>
+            <field name="res_model">feria.exhibicion_marca</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+        <record id="action_feria_espacio_publicitario" model="ir.actions.act_window">
+            <field name="name">Espacios publicitarios</field>
+            <field name="res_model">feria.espacio_publicitario</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+        <record id="action_feria_servicio" model="ir.actions.act_window">
+            <field name="name">Servicios</field>
+            <field name="res_model">feria.servicio</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+        <record id="action_feria_servicio_proveedor" model="ir.actions.act_window">
+            <field name="name">Tarifas de proveedores</field>
+            <field name="res_model">feria.servicio_proveedor</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+        <record id="action_feria_tecnico" model="ir.actions.act_window">
+            <field name="name">Técnicos</field>
+            <field name="res_model">feria.tecnico</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+       
+
+        <menuitem id="menu_feria_root" name="Feria" sequence="10"/>
+
+        <menuitem id="menu_feria_compras" name="Compras" parent="menu_feria_root" sequence="10"/>
+        <menuitem id="menu_feria_transaccion" name="Transacciones" parent="menu_feria_compras" action="action_feria_transaccion" sequence="10"/>
+        <menuitem id="menu_feria_linea_transaccion" name="Líneas" parent="menu_feria_compras" action="action_feria_linea_transaccion" sequence="20"/>
+        <menuitem id="menu_feria_tipo_transaccion" name="Tipos de transacción" parent="menu_feria_compras" action="action_feria_tipo_transaccion" sequence="30"/>
+
+        <menuitem id="menu_feria_proveedores" name="Proveedores" parent="menu_feria_root" sequence="20"/>
+        <menuitem id="menu_feria_proveedor" name="Proveedores" parent="menu_feria_proveedores" action="action_feria_proveedor" sequence="10"/>
+        <menuitem id="menu_feria_categoria_proveedor" name="Categorías" parent="menu_feria_proveedores" action="action_feria_categoria_proveedor" sequence="20"/>
+
+        <menuitem id="menu_feria_patrocinios" name="Patrocinios" parent="menu_feria_root" sequence="30"/>
+        <menuitem id="menu_feria_marca" name="Marcas" parent="menu_feria_patrocinios" action="action_feria_marca" sequence="10"/>
+        <menuitem id="menu_feria_exhibicion_marca" name="Exhibiciones" parent="menu_feria_patrocinios" action="action_feria_exhibicion_marca" sequence="20"/>
+        <menuitem id="menu_feria_espacio_publicitario" name="Espacios publicitarios" parent="menu_feria_patrocinios" action="action_feria_espacio_publicitario" sequence="30"/>
+        <menuitem id="menu_feria_servicio" name="Servicios" parent="menu_feria_patrocinios" action="action_feria_servicio" sequence="40"/>
+        <menuitem id="menu_feria_servicio_proveedor" name="Tarifas" parent="menu_feria_patrocinios" action="action_feria_servicio_proveedor" sequence="50"/>
+        <menuitem id="menu_feria_tecnico" name="Técnicos" parent="menu_feria_patrocinios" action="action_feria_tecnico" sequence="60"/>
+
+    </data>
 </odoo>
