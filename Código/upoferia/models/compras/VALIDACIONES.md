@@ -56,6 +56,7 @@
 ### `sRefProveedor` (Char)
 - Sin espacios sobrantes, como mucho 30 caracteres — `@api.constrains`
 - Solo letras, números, espacios y `- / . _` (ej. `F-2026/0001`) — `@api.constrains`
+- En FAC y ABO, un mismo proveedor no puede repetir la referencia (dos proveedores distintos sí) — `@api.constrains` con `search`
 
 ### Relaciones
 - `tipo_transaccion_id` (Many2one → TipoTransaccion) — obligatorio (`required`); no se puede borrar un tipo que tenga transacciones (`ondelete='restrict'`).
@@ -98,6 +99,7 @@
 ### Atributos derivados
 - `fSubtotal` (Float) — `iCantidad × fPrecioUnitario`; solo lectura, no se guarda — `compute` + `@api.depends`
 - `iCantidadFacturada` (Integer) — suma de la cantidad de las líneas de factura que facturan esta línea de pedido (`linea_factura_ids`); solo lectura, no se guarda — `compute` + `@api.depends`
+  - No puede superar la cantidad de la línea de pedido. Se comprueba al guardar la línea de factura (su cantidad o su línea de pedido) y al cambiar la cantidad de la línea de pedido — `@api.constrains` sobre `iCantidad` y `linea_pedido_id`
 
 ---
 

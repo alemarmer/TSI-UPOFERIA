@@ -140,6 +140,26 @@ class Transaccion(models.Model):
             if not re.fullmatch(r"[A-Za-z0-9 \-/._]+", sReferencia):
                 raise ValidationError('La «Referencia del proveedor» solo puede tener letras, números, espacios y los signos - / . _ (por ejemplo F-2026/0001).')
 
+    @api.constrains('sRefProveedor', 'proveedor_id', 'tipo_transaccion_id')
+    def _check_ref_proveedor_unica(self):
+        oRegistro = None
+        oOtra = None
+        for oRegistro in self:
+            if not oRegistro.sRefProveedor:
+                continue
+            if oRegistro.tipo_transaccion_id.sCodigo not in ('FAC', 'ABO'):
+                continue
+            oOtra = self.search([
+                ('id', '!=', oRegistro.id),
+                ('proveedor_id', '=', oRegistro.proveedor_id.id),
+                ('sRefProveedor', '=', oRegistro.sRefProveedor),
+                ('tipo_transaccion_id.sCodigo', 'in', ('FAC', 'ABO')),
+            ], limit=1)
+            if oOtra:
+                raise ValidationError('El proveedor ya tiene otra factura o abono con la referencia «%s» (%s).' % (
+                    oRegistro.sRefProveedor,
+                    oOtra.sIdTransaccion,
+                ))
     @api.onchange('dFechaInicial', 'dVencimiento', 'dFechaPrevistaFin')
     def _onchange_valores(self):
         sMensaje = False
