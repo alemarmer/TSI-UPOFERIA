@@ -62,8 +62,7 @@
 - `tipo_transaccion_id` (Many2one → TipoTransaccion) — obligatorio (`required`); no se puede borrar un tipo que tenga transacciones (`ondelete='restrict'`).
 - `proveedor_id` (Many2one → Proveedor) — obligatorio (`required`), relación «interviene en»; no se puede borrar un proveedor que tenga transacciones (`ondelete='restrict'`).
 - `transaccion_origen_id` (Many2one → Transaccion) — opcional, relación reflexiva «genera»; si se borra la de origen, la generada se queda sin origen (`ondelete='set null'`). Solo se admiten las parejas origen → derivada CON → PED, CON → FAC, CON → ABO y PED → ALB, y las dos tienen que ser del mismo proveedor. Se comprueba al guardar la derivada y también al cambiar el tipo o el proveedor de la de origen. Como las parejas siempre bajan de nivel, no puede haber ciclos — `@api.constrains`- `transaccion_derivada_ids` (One2many → Transaccion) — transacciones generadas a partir de esta (inverso de `transaccion_origen_id`).
-- `linea_ids` (One2many → LineaTransaccion) — líneas de la transacción (inverso de `transaccion_id`); opcional.
-
+- `linea_ids` (One2many → LineaTransaccion) — líneas de la transacción (inverso de `transaccion_id`). PED, FAC y ABO tienen como mínimo una línea; ALB y CON no pueden tener ninguna. Al cambiar el tipo se vuelven a comprobar las reglas de sus líneas — `@api.constrains`
 ### Atributos derivados
 - `fImporteFacturado` (Float) — suma del importe de las transacciones FAC que genera esta (por la relación «genera»); solo lectura, no se guarda — `compute` + `@api.depends`
 
@@ -80,16 +79,18 @@
 ### `iCantidadRecibida` (Integer)
 - No menor que 0 — `@api.constrains`
 - No puede superar la cantidad — `@api.constrains` + aviso `onchange`
+- Solo se puede indicar en líneas de un PED — `@api.constrains`
 
 ### `fPrecioUnitario` (Float)
 - No menor que 0 y como mucho 1.000.000 € — `@api.constrains`
 -Solo admite dos decimales (céntimos). — `@api.constrains`
 
 ### Relaciones
-- `transaccion_id` (Many2one → Transaccion) — obligatorio (`required`), entidad débil: si se borra la transacción se borran sus líneas (`ondelete='cascade'`).
+- `transaccion_id` (Many2one → Transaccion) — obligatorio (`required`), entidad débil: si se borra la transacción se borran sus líneas (`ondelete='cascade'`). Solo puede ser un PED, una FAC o un ABO — `@api.constrains`
 - La pareja transacción + `iNumeroLinea` no se repite (clave de la entidad débil) — `_sql_constraints` `UNIQUE ("transaccion_id", "iNumeroLinea")`.
-- `linea_pedido_id` (Many2one → LineaTransaccion) — opcional, relación reflexiva «se factura en»; `ondelete='set null'`.
-- `linea_factura_ids` (One2many → LineaTransaccion) — líneas de factura que facturan esta línea de pedido (inverso de `linea_pedido_id`).
+- `linea_pedido_id` (Many2one → LineaTransaccion) — opcional, relación reflexiva «se factura en»; `ondelete='set null'`. Solo lo pueden tener las líneas de una FAC o un ABO, y tiene que apuntar a una línea de un PED — `@api.constrains`
+- `linea_factura_ids` (One2many → LineaTransaccion) — líneas de factura que facturan esta línea de pedido (inverso de `linea_pedido_id`). Solo las líneas de un PED pueden tenerlas — `@api.constrains`
+
 
 ### Nombre que se muestra
 - En los desplegables una línea aparece con el identificador de su transacción y su número (ej. `PED-2026-001 / 1`) — `_compute_display_name` con `@api.depends`
@@ -120,5 +121,6 @@ Nota: en el código los campos de relación siguen la convención de Odoo que us
 
 
 - **Tipos de transacción.** Como `tipo_transaccion_id` es obligatorio, antes de crear transacciones tienen que existir los tipos PED, ALB, FAC, ABO y CON. Habría que cargarlos con un archivo de datos XML al instalar el módulo.
-- **Validaciones con claves ajenas (pendientes):** líneas solo en PED/FAC/ABO y como mínimo una; `cantidad_recibida` solo en líneas de PED; atributos y estados permitidos según el tipo; «se factura en» une una línea de PED con una de FAC/ABO del mismo producto.
+- **Validaciones con claves ajenas (pendientes):** atributos y estados permitidos según el tipo.
 - **Botones de cambio de estado (pendientes)** según el recorrido de estados de cada tipo, con `write`.
+- **Borrar la última línea.** Si se borra la única línea de un PED, FAC o ABO directamente desde la lista de líneas (sin pasar por el formulario de la transacción), la regla «como mínimo una línea» no salta. Se podría impedir sobrescribiendo `unlink` en LineaTransaccion (Tema 6_2).

@@ -73,6 +73,27 @@ class LineaTransaccion(models.Model):
                         oLinea.iCantidadFacturada,
                         oLinea.iCantidad,
                     ))
+    @api.constrains('transaccion_id', 'iCantidadRecibida', 'linea_pedido_id')
+    def _check_tipo_linea(self):
+        oRegistro = None
+        sTipo = ''
+        for oRegistro in self:
+            sTipo = oRegistro.transaccion_id.tipo_transaccion_id.sCodigo
+            if sTipo not in ('PED', 'FAC', 'ABO'):
+                raise ValidationError('Solo las transacciones PED, FAC o ABO pueden tener líneas (%s es %s).' % (
+                    oRegistro.transaccion_id.sIdTransaccion,
+                    sTipo,
+                ))
+            if oRegistro.iCantidadRecibida and sTipo != 'PED':
+                raise ValidationError('La «Cantidad recibida» solo se puede indicar en líneas de un PED.')
+            if oRegistro.linea_factura_ids and sTipo != 'PED':
+                raise ValidationError('La línea %s tiene líneas de factura y solo se pueden facturar líneas de un PED.' % oRegistro.display_name)
+            if oRegistro.linea_pedido_id:
+                if sTipo not in ('FAC', 'ABO'):
+                    raise ValidationError('Solo las líneas de una FAC o un ABO pueden facturar una línea de pedido.')
+                if oRegistro.linea_pedido_id.transaccion_id.tipo_transaccion_id.sCodigo != 'PED':
+                    raise ValidationError('La «Línea de pedido» elegida (%s) tiene que ser de un PED.' % oRegistro.linea_pedido_id.display_name)
+                
     @api.onchange('iCantidadRecibida', 'iCantidad')
     def _onchange_valores(self):
         sMensaje = False

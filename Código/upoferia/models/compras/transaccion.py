@@ -185,6 +185,14 @@ class Transaccion(models.Model):
                         oTransaccion.sIdTransaccion,
                         oTransaccion.transaccion_origen_id.sIdTransaccion,
                     ))
+
+    @api.constrains('tipo_transaccion_id', 'linea_ids')
+    def _check_lineas(self):
+        oRegistro = None
+        for oRegistro in self:
+            if oRegistro.tipo_transaccion_id.sCodigo in ('PED', 'FAC', 'ABO') and not oRegistro.linea_ids:
+                raise ValidationError('Una transacción PED, FAC o ABO tiene que tener como mínimo una línea.')
+            oRegistro.linea_ids._check_tipo_linea()
     @api.onchange('dFechaInicial', 'dVencimiento', 'dFechaPrevistaFin')
     def _onchange_valores(self):
         sMensaje = False
