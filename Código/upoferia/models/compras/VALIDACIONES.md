@@ -29,9 +29,12 @@
 - No menor que 0 — `@api.constrains`
 - Como mucho 10.000.000 € — `@api.constrains`
 - Como mucho dos decimales (céntimos) — `@api.constrains`
+- Solo en PED, FAC, ABO y CON; en ALB tiene que quedar a 0 — `@api.constrains`
 
 ### `sEstado` (Selection)
 - Lista cerrada: borrador, confirmado, recibido, cancelado, previsto, hecho, pendiente, pagada, vencida, vigente, vencido, rescindido — `fields.Selection`
+- Según el tipo: PED → borrador, confirmado, recibido, cancelado; ALB → previsto, hecho; FAC y ABO → pendiente, pagada, vencida; CON → borrador, vigente, vencido, rescindido — `@api.constrains`
+- Al elegir el tipo se pone el estado inicial (PED y CON → borrador, ALB → previsto, FAC y ABO → pendiente) — `@api.onchange`
 
 ### `dFechaInicial` (Date)
 - Entre el 01/01/1970 y dos años después de hoy — `@api.constrains`
@@ -40,6 +43,7 @@
 - No anterior a la fecha inicial — `@api.constrains` + aviso `onchange`
 - Exige que haya fecha inicial — `@api.constrains`
 - Como mucho un año después de la fecha inicial — `@api.constrains`
+- Solo en FAC y ABO — `@api.constrains`
 
 ### `dFechaPrevistaFin` (Date)
 - No anterior a la fecha inicial — `@api.constrains` + aviso `onchange`
@@ -47,11 +51,11 @@
 - Como mucho diez años después de la fecha inicial — `@api.constrains`
 
 ### `bRenovacionAuto` (Boolean)
-- Sin validaciones.
-
+- Solo en CON; en el resto tiene que estar desmarcado — `@api.constrains`
 ### `sDocumento` (Char)
 - Sin espacios, como mucho 255 caracteres — `@api.constrains`
 - URL `http(s)://` o archivo `.pdf/.doc/.docx/.odt` — `@api.constrains`
+- Solo en CON — `@api.constrains`
 
 ### `sRefProveedor` (Char)
 - Sin espacios sobrantes, como mucho 30 caracteres — `@api.constrains`
@@ -64,8 +68,7 @@
 - `transaccion_origen_id` (Many2one → Transaccion) — opcional, relación reflexiva «genera»; si se borra la de origen, la generada se queda sin origen (`ondelete='set null'`). Solo se admiten las parejas origen → derivada CON → PED, CON → FAC, CON → ABO y PED → ALB, y las dos tienen que ser del mismo proveedor. Se comprueba al guardar la derivada y también al cambiar el tipo o el proveedor de la de origen. Como las parejas siempre bajan de nivel, no puede haber ciclos — `@api.constrains`- `transaccion_derivada_ids` (One2many → Transaccion) — transacciones generadas a partir de esta (inverso de `transaccion_origen_id`).
 - `linea_ids` (One2many → LineaTransaccion) — líneas de la transacción (inverso de `transaccion_id`). PED, FAC y ABO tienen como mínimo una línea; ALB y CON no pueden tener ninguna. Al cambiar el tipo se vuelven a comprobar las reglas de sus líneas — `@api.constrains`
 ### Atributos derivados
-- `fImporteFacturado` (Float) — suma del importe de las transacciones FAC que genera esta (por la relación «genera»); solo lectura, no se guarda — `compute` + `@api.depends`
-
+- `fImporteFacturado` (Float) — suma del importe de las transacciones FAC que genera esta (por la relación «genera»); solo lectura, no se guarda — `compute` + `@api.depends`. Solo tiene valor en CON: como solo un CON puede generar facturas, en el resto de tipos siempre es 0.
 ## LineaTransaccion (`feria.linea_transaccion`) — `linea_transaccion.py`
 
 ### `iNumeroLinea` (Integer) — clave (junto con la transacción)
@@ -121,6 +124,5 @@ Nota: en el código los campos de relación siguen la convención de Odoo que us
 
 
 - **Tipos de transacción.** Como `tipo_transaccion_id` es obligatorio, antes de crear transacciones tienen que existir los tipos PED, ALB, FAC, ABO y CON. Habría que cargarlos con un archivo de datos XML al instalar el módulo.
-- **Validaciones con claves ajenas (pendientes):** atributos y estados permitidos según el tipo.
 - **Botones de cambio de estado (pendientes)** según el recorrido de estados de cada tipo, con `write`.
 - **Borrar la última línea.** Si se borra la única línea de un PED, FAC o ABO directamente desde la lista de líneas (sin pasar por el formulario de la transacción), la regla «como mínimo una línea» no salta. Se podría impedir sobrescribiendo `unlink` en LineaTransaccion (Tema 6_2).

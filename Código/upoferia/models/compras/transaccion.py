@@ -193,6 +193,48 @@ class Transaccion(models.Model):
             if oRegistro.tipo_transaccion_id.sCodigo in ('PED', 'FAC', 'ABO') and not oRegistro.linea_ids:
                 raise ValidationError('Una transacción PED, FAC o ABO tiene que tener como mínimo una línea.')
             oRegistro.linea_ids._check_tipo_linea()
+    
+    @api.constrains('tipo_transaccion_id', 'sEstado', 'fImporte', 'dVencimiento', 'dFechaPrevistaFin', 'bRenovacionAuto', 'sDocumento', 'sRefProveedor')
+    def _check_segun_tipo(self):
+        oRegistro = None
+        sTipo = ''
+        sCampo = ''
+        sEtiqueta = ''
+        tTipos = ()
+        sTipoEstado = ''
+        tEstados = ()
+        lAtributos = [
+            ('fImporte', 'Importe', ('PED', 'FAC', 'ABO', 'CON')),
+            ('dVencimiento', 'Vencimiento', ('FAC', 'ABO')),
+            ('dFechaPrevistaFin', 'Fecha prevista de fin', ('PED', 'ALB', 'CON')),
+            ('bRenovacionAuto', 'Renovación automática', ('CON',)),
+            ('sDocumento', 'Documento', ('CON',)),
+            ('sRefProveedor', 'Referencia del proveedor', ('FAC', 'ABO')),
+        ]
+        lEstados = [
+            ('PED', ('borrador', 'confirmado', 'recibido', 'cancelado')),
+            ('ALB', ('previsto', 'hecho')),
+            ('FAC', ('pendiente', 'pagada', 'vencida')),
+            ('ABO', ('pendiente', 'pagada', 'vencida')),
+            ('CON', ('borrador', 'vigente', 'vencido', 'rescindido')),
+        ]
+        for oRegistro in self:
+            sTipo = oRegistro.tipo_transaccion_id.sCodigo
+            for sCampo, sEtiqueta, tTipos in lAtributos:
+                if oRegistro[sCampo] and sTipo not in tTipos:
+                    raise ValidationError('El campo «%s» solo se puede rellenar en transacciones %s (esta es %s).' % (
+                        sEtiqueta,
+                        ', '.join(tTipos),
+                        sTipo,
+                    ))
+            if not oRegistro.sEstado:
+                continue
+            for sTipoEstado, tEstados in lEstados:
+                if sTipoEstado == sTipo and oRegistro.sEstado not in tEstados:
+                    raise ValidationError('Una transacción %s solo puede estar en estado %s.' % (
+                        sTipo,
+                        ', '.join(tEstados),
+                    ))
     @api.onchange('dFechaInicial', 'dVencimiento', 'dFechaPrevistaFin')
     def _onchange_valores(self):
         sMensaje = False
@@ -207,6 +249,16 @@ class Transaccion(models.Model):
                     'message': sMensaje,
                 }
             }
+
+    @api.onchange('tipo_transaccion_id')
+    def _onchange_tipo_transaccion(self):
+        sTipo = self.tipo_transaccion_id.sCodigo
+        if sTipo in ('PED', 'CON'):
+            self.sEstado = 'borrador'
+        elif sTipo == 'ALB':
+            self.sEstado = 'previsto'
+        elif sTipo in ('FAC', 'ABO'):
+            self.sEstado = 'pendiente'
 
     @api.depends('transaccion_derivada_ids.fImporte', 'transaccion_derivada_ids.tipo_transaccion_id.sCodigo')
     def _compute_importe_facturado(self):
