@@ -64,6 +64,9 @@
 - `transaccion_derivada_ids` (One2many → Transaccion) — transacciones generadas a partir de esta (inverso de `transaccion_origen_id`).
 - `linea_ids` (One2many → LineaTransaccion) — líneas de la transacción (inverso de `transaccion_id`); opcional.
 
+### Atributos derivados
+- `fImporteFacturado` (Float) — suma del importe de las transacciones FAC que genera esta (por la relación «genera»); solo lectura, no se guarda — `compute` + `@api.depends`
+
 ## LineaTransaccion (`feria.linea_transaccion`) — `linea_transaccion.py`
 
 ### `iNumeroLinea` (Integer) — clave (junto con la transacción)
@@ -91,6 +94,10 @@
 - En los desplegables una línea aparece con el identificador de su transacción y su número (ej. `PED-2026-001 / 1`) — `_compute_display_name` con `@api.depends`
 - Se puede buscar por la transacción o por el número de línea — `_rec_names_search`
 
+### Atributos derivados
+- `fSubtotal` (Float) — `iCantidad × fPrecioUnitario`; solo lectura, no se guarda — `compute` + `@api.depends`
+- `iCantidadFacturada` (Integer) — suma de la cantidad de las líneas de factura que facturan esta línea de pedido (`linea_factura_ids`); solo lectura, no se guarda — `compute` + `@api.depends`
+
 ---
 
 # Notas sobre la documentación
@@ -111,5 +118,4 @@ Nota: en el código los campos de relación siguen la convención de Odoo que us
 - **Tipos de transacción.** Como `tipo_transaccion_id` es obligatorio, antes de crear transacciones tienen que existir los tipos PED, ALB, FAC, ABO y CON. Habría que cargarlos con un archivo de datos XML al instalar el módulo.
 - **Validaciones con claves ajenas (pendientes):** líneas solo en PED/FAC/ABO y como mínimo una; `cantidad_recibida` solo en líneas de PED; atributos y estados permitidos según el tipo; parejas válidas de «genera» (CON → PED, CON → FAC/ABO, PED → ALB) con el mismo proveedor; PROVEEDOR + `ref_proveedor` no se repite en FAC/ABO; «se factura en» une una línea de PED con una de FAC/ABO del mismo producto.
 - **Botones de cambio de estado (pendientes)** según el recorrido de estados de cada tipo, con `write`.
-- **Campos calculados (pendientes):** `importe_facturado`, `subtotal`, `cantidad_facturada`.
 - **Relaciones con modelos de los compañeros (pendientes):** Transaccion → Caseta (`caseta_id`) y → LineaPresupuesto (`linea_presupuesto_id`); LineaTransaccion → Producto (`producto_id`). Y al revés, Movimiento, Mantenimiento, Prestamo, Actuacion y Salida apuntan a Transaccion.
