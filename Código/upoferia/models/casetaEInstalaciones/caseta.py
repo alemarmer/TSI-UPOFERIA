@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Tabla CASETA del modelo relacional · bloque CASETA E INSTALACIONES
+
 
 import re
 
@@ -20,13 +20,10 @@ class Caseta(models.Model):
 
     sNombre = fields.Char(string='Nombre', required=True)
     sCalle = fields.Char(string='Calle')
-    # String en el UML
     sNumero = fields.Char(string='Número')
     iModulos = fields.Integer(string='Módulos', required=True, default=1)
     iAforoAutorizado = fields.Integer(string='Aforo autorizado', required=True)
-    # En el UML es Time: Odoo no tiene campo hora, se guarda como Float (en la vista: widget="float_time")
     fHoraApertura = fields.Float(string='Hora de apertura')
-    # En el UML es Time: Odoo no tiene campo hora, se guarda como Float (en la vista: widget="float_time")
     fHoraCierre = fields.Float(string='Hora de cierre')
 
     zona_ids = fields.One2many('feria.zona_caseta', 'caseta_id', string='Zonas')
