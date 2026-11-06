@@ -46,6 +46,7 @@ class Transaccion(models.Model):
     linea_ids = fields.One2many('feria.linea_transaccion', 'transaccion_id', string='Líneas')
 
     fImporteFacturado = fields.Float(string='Importe facturado', compute='_compute_importe_facturado')
+    sCodigoTipo = fields.Char(string='Código del tipo', related='tipo_transaccion_id.sCodigo')
 
     @api.constrains('sIdTransaccion')
     def _check_id_transaccion(self):
@@ -228,7 +229,7 @@ class Transaccion(models.Model):
                         sTipo,
                     ))
             if not oRegistro.sEstado:
-                continue
+                raise ValidationError('El «Estado» es obligatorio.')
             for sTipoEstado, tEstados in lEstados:
                 if sTipoEstado == sTipo and oRegistro.sEstado not in tEstados:
                     raise ValidationError('Una transacción %s solo puede estar en estado %s.' % (
@@ -267,3 +268,59 @@ class Transaccion(models.Model):
         for oRegistro in self:
             oFacturas = oRegistro.transaccion_derivada_ids.filtered(lambda oTransaccion: oTransaccion.tipo_transaccion_id.sCodigo == 'FAC')
             oRegistro.fImporteFacturado = sum(oFacturas.mapped('fImporte'))
+
+    def _cambiar_estado(self, sEstadoNuevo):
+        oRegistro = None
+        sTipo = ''
+        lRecorrido = [
+            ('PED', 'borrador', 'confirmado'),
+            ('PED', 'confirmado', 'recibido'),
+            ('PED', 'borrador', 'cancelado'),
+            ('PED', 'confirmado', 'cancelado'),
+            ('ALB', 'previsto', 'hecho'),
+            ('FAC', 'pendiente', 'pagada'),
+            ('FAC', 'pendiente', 'vencida'),
+            ('FAC', 'vencida', 'pagada'),
+            ('ABO', 'pendiente', 'pagada'),
+            ('ABO', 'pendiente', 'vencida'),
+            ('ABO', 'vencida', 'pagada'),
+            ('CON', 'borrador', 'vigente'),
+            ('CON', 'vigente', 'vencido'),
+            ('CON', 'vigente', 'rescindido'),
+        ]
+        for oRegistro in self:
+            sTipo = oRegistro.tipo_transaccion_id.sCodigo
+            if (sTipo, oRegistro.sEstado, sEstadoNuevo) not in lRecorrido:
+                raise ValidationError('Una transacción %s no puede pasar del estado «%s» a «%s».' % (
+                    sTipo,
+                    oRegistro.sEstado or 'sin estado',
+                    sEstadoNuevo,
+                ))
+            oRegistro.write({'sEstado': sEstadoNuevo})
+
+    def action_confirmar(self):
+        self._cambiar_estado('confirmado')
+
+    def action_recibir(self):
+        self._cambiar_estado('recibido')
+
+    def action_cancelar(self):
+        self._cambiar_estado('cancelado')
+
+    def action_hacer(self):
+        self._cambiar_estado('hecho')
+
+    def action_pagar(self):
+        self._cambiar_estado('pagada')
+
+    def action_marcar_vencida(self):
+        self._cambiar_estado('vencida')
+
+    def action_activar(self):
+        self._cambiar_estado('vigente')
+
+    def action_marcar_vencido(self):
+        self._cambiar_estado('vencido')
+
+    def action_rescindir(self):
+        self._cambiar_estado('rescindido')

@@ -35,6 +35,8 @@
 - Lista cerrada: borrador, confirmado, recibido, cancelado, previsto, hecho, pendiente, pagada, vencida, vigente, vencido, rescindido — `fields.Selection`
 - Según el tipo: PED → borrador, confirmado, recibido, cancelado; ALB → previsto, hecho; FAC y ABO → pendiente, pagada, vencida; CON → borrador, vigente, vencido, rescindido — `@api.constrains`
 - Al elegir el tipo se pone el estado inicial (PED y CON → borrador, ALB → previsto, FAC y ABO → pendiente) — `@api.onchange`
+- Solo se cambia con los botones del formulario (en la vista es de solo lectura). Recorrido permitido: PED borrador → confirmado → recibido, y borrador o confirmado → cancelado; ALB previsto → hecho; FAC y ABO pendiente → pagada, pendiente → vencida y vencida → pagada; CON borrador → vigente → vencido, y vigente → rescindido. Cualquier otro salto da error — `_cambiar_estado` con `write` + botones `action_*`
+- Obligatorio (se rellena solo al elegir el tipo) — `@api.constrains`
 
 ### `dFechaInicial` (Date)
 - Entre el 01/01/1970 y dos años después de hoy — `@api.constrains`
@@ -63,7 +65,7 @@
 - En FAC y ABO, un mismo proveedor no puede repetir la referencia (dos proveedores distintos sí) — `@api.constrains` con `search`
 
 ### Relaciones
-- `tipo_transaccion_id` (Many2one → TipoTransaccion) — obligatorio (`required`); no se puede borrar un tipo que tenga transacciones (`ondelete='restrict'`).
+- `tipo_transaccion_id` (Many2one → TipoTransaccion) — obligatorio (`required`); no se puede borrar un tipo que tenga transacciones (`ondelete='restrict'`). Solo se elige al crear la transacción; después no se puede cambiar (`readonly="id"` en la vista).
 - `proveedor_id` (Many2one → Proveedor) — obligatorio (`required`), relación «interviene en»; no se puede borrar un proveedor que tenga transacciones (`ondelete='restrict'`).
 - `transaccion_origen_id` (Many2one → Transaccion) — opcional, relación reflexiva «genera»; si se borra la de origen, la generada se queda sin origen (`ondelete='set null'`). Solo se admiten las parejas origen → derivada CON → PED, CON → FAC, CON → ABO y PED → ALB, y las dos tienen que ser del mismo proveedor. Se comprueba al guardar la derivada y también al cambiar el tipo o el proveedor de la de origen. Como las parejas siempre bajan de nivel, no puede haber ciclos — `@api.constrains`- `transaccion_derivada_ids` (One2many → Transaccion) — transacciones generadas a partir de esta (inverso de `transaccion_origen_id`).
 - `linea_ids` (One2many → LineaTransaccion) — líneas de la transacción (inverso de `transaccion_id`). PED, FAC y ABO tienen como mínimo una línea; ALB y CON no pueden tener ninguna. Al cambiar el tipo se vuelven a comprobar las reglas de sus líneas — `@api.constrains`
@@ -104,7 +106,8 @@
 - `fSubtotal` (Float) — `iCantidad × fPrecioUnitario`; solo lectura, no se guarda — `compute` + `@api.depends`
 - `iCantidadFacturada` (Integer) — suma de la cantidad de las líneas de factura que facturan esta línea de pedido (`linea_factura_ids`); solo lectura, no se guarda — `compute` + `@api.depends`
   - No puede superar la cantidad de la línea de pedido. Se comprueba al guardar la línea de factura (su cantidad o su línea de pedido) y al cambiar la cantidad de la línea de pedido — `@api.constrains` sobre `iCantidad` y `linea_pedido_id`
-
+### Campos auxiliares
+- `sCodigoTipo` (Char) — código del tipo de transacción (`related='tipo_transaccion_id.sCodigo'`); no se guarda. Solo sirve para que la vista sepa qué botones mostrar.
 ---
 
 # Notas sobre la documentación
@@ -117,6 +120,8 @@ Nota: `estado` es `String` en el UML y `Selection` en el código, porque el E-R 
 
 Nota: en el código los campos de relación siguen la convención de Odoo que usa el profesor (`_id` / `_ids`), mientras que el relacional usa los nombres de las claves ajenas (`dni_proveedor`, `codigo_tipo_transaccion`…). Las claves ajenas compuestas del relacional se convierten en un único Many2one, porque Odoo enlaza por su `id` interno. Igual que con la notación húngara, los diagramas no se cambian.
 
+Nota: el recorrido de estados no está en los diagramas (el E-R solo dice qué estados tiene cada tipo). Se ha decidido al programar los botones.
+
 ---
 
 # Pendiente de revisar
@@ -125,5 +130,4 @@ Nota: en el código los campos de relación siguen la convención de Odoo que us
 
 
 - **Tipos de transacción.** Como `tipo_transaccion_id` es obligatorio, antes de crear transacciones tienen que existir los tipos PED, ALB, FAC, ABO y CON. Habría que cargarlos con un archivo de datos XML al instalar el módulo.
-- **Botones de cambio de estado (pendientes)** según el recorrido de estados de cada tipo, con `write`.
 
