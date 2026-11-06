@@ -61,8 +61,7 @@
 ### Relaciones
 - `tipo_transaccion_id` (Many2one → TipoTransaccion) — obligatorio (`required`); no se puede borrar un tipo que tenga transacciones (`ondelete='restrict'`).
 - `proveedor_id` (Many2one → Proveedor) — obligatorio (`required`), relación «interviene en»; no se puede borrar un proveedor que tenga transacciones (`ondelete='restrict'`).
-- `transaccion_origen_id` (Many2one → Transaccion) — opcional, relación reflexiva «genera»; si se borra la de origen, la generada se queda sin origen (`ondelete='set null'`).
-- `transaccion_derivada_ids` (One2many → Transaccion) — transacciones generadas a partir de esta (inverso de `transaccion_origen_id`).
+- `transaccion_origen_id` (Many2one → Transaccion) — opcional, relación reflexiva «genera»; si se borra la de origen, la generada se queda sin origen (`ondelete='set null'`). Solo se admiten las parejas origen → derivada CON → PED, CON → FAC, CON → ABO y PED → ALB, y las dos tienen que ser del mismo proveedor. Se comprueba al guardar la derivada y también al cambiar el tipo o el proveedor de la de origen. Como las parejas siempre bajan de nivel, no puede haber ciclos — `@api.constrains`- `transaccion_derivada_ids` (One2many → Transaccion) — transacciones generadas a partir de esta (inverso de `transaccion_origen_id`).
 - `linea_ids` (One2many → LineaTransaccion) — líneas de la transacción (inverso de `transaccion_id`); opcional.
 
 ### Atributos derivados
@@ -121,5 +120,5 @@ Nota: en el código los campos de relación siguen la convención de Odoo que us
 
 
 - **Tipos de transacción.** Como `tipo_transaccion_id` es obligatorio, antes de crear transacciones tienen que existir los tipos PED, ALB, FAC, ABO y CON. Habría que cargarlos con un archivo de datos XML al instalar el módulo.
-- **Validaciones con claves ajenas (pendientes):** líneas solo en PED/FAC/ABO y como mínimo una; `cantidad_recibida` solo en líneas de PED; atributos y estados permitidos según el tipo; parejas válidas de «genera» (CON → PED, CON → FAC/ABO, PED → ALB) con el mismo proveedor; PROVEEDOR + `ref_proveedor` no se repite en FAC/ABO; «se factura en» une una línea de PED con una de FAC/ABO del mismo producto.
+- **Validaciones con claves ajenas (pendientes):** líneas solo en PED/FAC/ABO y como mínimo una; `cantidad_recibida` solo en líneas de PED; atributos y estados permitidos según el tipo; «se factura en» une una línea de PED con una de FAC/ABO del mismo producto.
 - **Botones de cambio de estado (pendientes)** según el recorrido de estados de cada tipo, con `write`.

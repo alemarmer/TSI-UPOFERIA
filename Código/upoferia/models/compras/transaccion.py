@@ -160,6 +160,31 @@ class Transaccion(models.Model):
                     oRegistro.sRefProveedor,
                     oOtra.sIdTransaccion,
                 ))
+    @api.constrains('transaccion_origen_id', 'tipo_transaccion_id', 'proveedor_id')
+    def _check_genera(self):
+        oRegistro = None
+        oTransaccion = None
+        sOrigen = ''
+        sDerivada = ''
+        lParejas = [('CON', 'PED'), ('CON', 'FAC'), ('CON', 'ABO'), ('PED', 'ALB')]
+        for oRegistro in self:
+            for oTransaccion in oRegistro | oRegistro.transaccion_derivada_ids:
+                if not oTransaccion.transaccion_origen_id:
+                    continue
+                sOrigen = oTransaccion.transaccion_origen_id.tipo_transaccion_id.sCodigo
+                sDerivada = oTransaccion.tipo_transaccion_id.sCodigo
+                if (sOrigen, sDerivada) not in lParejas:
+                    raise ValidationError('Una transacción %s no puede generarse a partir de una %s (%s → %s). Solo se permite CON → PED, CON → FAC, CON → ABO y PED → ALB.' % (
+                        sDerivada,
+                        sOrigen,
+                        oTransaccion.transaccion_origen_id.sIdTransaccion,
+                        oTransaccion.sIdTransaccion,
+                    ))
+                if oTransaccion.proveedor_id != oTransaccion.transaccion_origen_id.proveedor_id:
+                    raise ValidationError('La transacción %s y la transacción de origen %s tienen que ser del mismo proveedor.' % (
+                        oTransaccion.sIdTransaccion,
+                        oTransaccion.transaccion_origen_id.sIdTransaccion,
+                    ))
     @api.onchange('dFechaInicial', 'dVencimiento', 'dFechaPrevistaFin')
     def _onchange_valores(self):
         sMensaje = False
