@@ -15,9 +15,8 @@ class Cuadrilla(models.Model):
     activa = fields.Boolean(string="Activa", default=True)
 
     # Relaciones
-    cuadrilla_empleado_ids = fields.One2many(
-        "upoferia.cuadrilla_empleado", "cuadrilla_id", string="Miembros"
-    )
+    # PENDIENTE DE INTEGRAR CON RRHH (necesita upoferia.empleado):
+    # cuadrilla_empleado_ids = fields.One2many('upoferia.cuadrilla_empleado', 'cuadrilla_id', string="Miembros")
     tarea_montaje_ids = fields.One2many(
         "upoferia.tarea_montaje", "cuadrilla_id", string="Tareas de montaje"
     )

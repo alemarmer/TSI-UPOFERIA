@@ -1,3 +1,6 @@
+# PENDIENTE DE INTEGRAR CON RRHH: este modelo necesita upoferia.empleado, que es de otro.
+# No se importa en montaje/__init__.py hasta que se integre (entonces se descomenta esa línea).
+
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 

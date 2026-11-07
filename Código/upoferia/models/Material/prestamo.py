@@ -29,12 +29,9 @@ class Prestamo(models.Model):
     responsable = fields.Char(string="Responsable")
 
     # Relaciones
-    proveedor_id = fields.Many2one(
-        "upoferia.proveedor", string="Proveedor", ondelete="set null"
-    )
-    transaccion_id = fields.Many2one(
-        "upoferia.transaccion", string="Transacción (contrato)", ondelete="set null"
-    )
+    # PENDIENTE DE INTEGRAR CON COMPRAS (necesitan upoferia.proveedor y upoferia.transaccion):
+    # proveedor_id = fields.Many2one('upoferia.proveedor', string="Proveedor", ondelete='set null')
+    # transaccion_id = fields.Many2one('upoferia.transaccion', string="Transacción (contrato)", ondelete='set null')
     prestamo_linea_ids = fields.One2many(
         "upoferia.prestamo_linea", "prestamo_id", string="Líneas"
     )

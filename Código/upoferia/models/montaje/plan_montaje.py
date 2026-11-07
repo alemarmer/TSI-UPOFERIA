@@ -29,9 +29,8 @@ class PlanMontaje(models.Model):
     responsable = fields.Char(string="Responsable")
 
     # Relaciones
-    zona_caseta_id = fields.Many2one(
-        "upoferia.zona_caseta", string="Zona de caseta", ondelete="set null"
-    )
+    # PENDIENTE DE INTEGRAR CON INFRAESTRUCTURA (necesita upoferia.zona_caseta):
+    # zona_caseta_id = fields.Many2one('upoferia.zona_caseta', string="Zona de caseta", ondelete='set null')
     fase_montaje_ids = fields.One2many(
         "upoferia.fase_montaje", "plan_montaje_id", string="Fases"
     )
