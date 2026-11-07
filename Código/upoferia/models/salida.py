@@ -28,7 +28,8 @@ class Salida(models.Model):
     caballo_ids = fields.Many2many('upoferia.caballo', 'upoferia_salida_caballo',
                                    'salida_id', 'caballo_id', string='Caballos')
 
-    #CONEXION CON TRANSACCION
+    transaccion_id = fields.Many2one('feria.transaccion', string='Transacción', ondelete='set null')
+
 
     @api.constrains('dFecha_hora_salida', 'dFecha_hora_vuelta')
     def _check_dFecha_hora_vuelta(self):
