@@ -23,7 +23,15 @@ Long description of module's purpose
     # always loaded
     'data': [
         'security/ir.model.access.csv',
+        'views/tipo_evento_views.xml',
+        'views/evento_views.xml',
+        'views/actuacion_views.xml',
+        'views/concurso_views.xml',
+        'views/reserva_views.xml',
+        'views/artista_views.xml',
         'views/caballo_views.xml',
+        'views/carruaje_views.xml',
+        'views/salida_views.xml',
         'views/menu.xml',
     ],
     # only loaded in demonstration mode
