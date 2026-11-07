@@ -1,5 +1,6 @@
 from odoo import models,fields,api
 from odoo.exceptions import ValidationError
+from datetime import timedelta
 
 class Evento(models.Model):
 
@@ -59,6 +60,21 @@ class Evento(models.Model):
                 if record[campo] and len(record[campo]) > 100:
                     raise ValidationError(
                         '«%s» no puede superar los 100 caracteres.' % record._fields[campo].string)
+
+    @api.onchange('dFecha_hora_inicio')
+    def _onchange_dFecha_hora_inicio(self):
+        if self.dFecha_hora_inicio and not self.dFecha_hora_fin:
+            self.dFecha_hora_fin = self.dFecha_hora_inicio + timedelta(hours=2)
+
+    @api.onchange('dFecha_hora_inicio', 'dFecha_hora_fin')
+    def _onchange_fechas(self):
+        if self.dFecha_hora_inicio and self.dFecha_hora_fin and self.dFecha_hora_fin <= self.dFecha_hora_inicio:
+            return {
+                'warning': {
+                    'title': 'Valores incorrectos',
+                    'message': '«Fecha y hora de finalización» debe ser posterior a «Fecha y hora de inicio».',
+                }
+            }
 
 
 
