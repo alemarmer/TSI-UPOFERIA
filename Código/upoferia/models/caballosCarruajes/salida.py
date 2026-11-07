@@ -20,7 +20,7 @@ class Salida(models.Model):
                                ('en_curso', 'En curso'),
                                ('finalizada', 'Finalizada'),
                                ('cancelada', 'Cancelada')],
-                              string='Estado', default='programada')
+                              string='Estado', default='programada',group_expand=True)
 
     carruaje_id = fields.Many2one('upoferia.carruaje', string='Carruaje',
                                   required=True, ondelete='cascade')

@@ -1,6 +1,5 @@
 <odoo>
 
-  <!-- VISTA LISTA: la tabla con todos los caballos -->
   <record id="upoferia_caballo_list_view" model="ir.ui.view">
     <field name="name">upoferia.caballo.list</field>
     <field name="model">upoferia.caballo</field>
@@ -14,7 +13,6 @@
     </field>
   </record>
 
-  <!-- VISTA FORMULARIO: la ficha de un caballo -->
   <record id="upoferia_caballo_form_view" model="ir.ui.view">
     <field name="name">upoferia.caballo.form</field>
     <field name="model">upoferia.caballo</field>
@@ -41,7 +39,6 @@
     </field>
   </record>
 
-  <!-- ACCIÓN: "abre Caballos en modo lista y formulario" -->
   <record id="upoferia_caballo_action" model="ir.actions.act_window">
     <field name="name">Caballos</field>
     <field name="res_model">upoferia.caballo</field>
