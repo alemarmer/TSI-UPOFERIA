@@ -216,9 +216,10 @@ class Transaccion(models.Model):
             ('bRenovacionAuto', 'Renovación automática', ('CON',)),
             ('sDocumento', 'Documento', ('CON',)),
             ('sRefProveedor', 'Referencia del proveedor', ('FAC', 'ABO')),
-            ('linea_presupuesto_id', 'Línea de presupuesto', ('CON',)),
+            ('linea_presupuesto_id', 'Línea de presupuesto', ('CON',)),ç
             ('movimiento_ids', 'Movimientos', ('FAC', 'ABO')),
             ('actuacion_ids', 'Actuaciones', ('CON',)),
+            
         ]
         lEstados = [
             ('PED', ('borrador', 'confirmado', 'recibido', 'cancelado')),

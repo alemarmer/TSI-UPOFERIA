@@ -27,7 +27,8 @@ class Servicio(models.Model):
     sNombre = fields.Char(string='Nombre', required=True)
 
     servicio_proveedor_ids = fields.One2many('feria.servicio_proveedor', 'servicio_id', string='Proveedores que lo ofrecen')
-
+    actuacion_ids = fields.Many2many('upoferia.actuacion', 'upoferia_actuacion_servicio', 'servicio_id', 'actuacion_id', string='Actuaciones')
+    
     @api.constrains('sCodigo')
     def _check_codigo(self):
         oRegistro = None

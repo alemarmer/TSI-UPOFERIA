@@ -1,5 +1,8 @@
 <odoo>
     <data>
+
+       
+
         <record id="view_feria_transaccion_list" model="ir.ui.view">
             <field name="name">feria.transaccion.list</field>
             <field name="model">feria.transaccion</field>
@@ -58,7 +61,6 @@
                                 <field name="sRefProveedor" invisible="sCodigoTipo not in ('FAC', 'ABO')"/>
                                 <field name="sDocumento" invisible="sCodigoTipo != 'CON'"/>
                                 <field name="bRenovacionAuto" invisible="sCodigoTipo != 'CON'"/>
-                                <field name="linea_presupuesto_id" invisible="sCodigoTipo != 'CON'"/>
                             </group>
                         </group>
                         <notebook>
@@ -66,7 +68,6 @@
                                 <field name="linea_ids">
                                     <list editable="bottom">
                                         <field name="iNumeroLinea"/>
-                                        <field name="producto_id"/>
                                         <field name="iCantidad"/>
                                         <field name="fPrecioUnitario"/>
                                         <field name="fSubtotal"/>
@@ -77,7 +78,7 @@
                                     </list>
                                 </field>
                             </page>
-                            <page string="Movimientos" invisible="sCodigoTipo not in ('FAC', 'ABO')">
+                                                        <page string="Movimientos" invisible="sCodigoTipo not in ('FAC', 'ABO')">
                                 <field name="movimiento_ids" readonly="1">
                                     <list>
                                         <field name="referencia"/>
@@ -122,6 +123,8 @@
                 </form>
             </field>
         </record>
+
+     
 
         <record id="action_feria_transaccion" model="ir.actions.act_window">
             <field name="name">Transacciones</field>
@@ -188,6 +191,13 @@
             <field name="res_model">feria.tecnico</field>
             <field name="view_mode">list,form</field>
         </record>
+        <record id="action_feria_patrocinio" model="ir.actions.act_window">
+            <field name="name">Patrocinios</field>
+            <field name="res_model">feria.patrocinio</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+       
 
         <menuitem id="menu_feria_root" name="Feria" sequence="10"/>
 
@@ -207,6 +217,6 @@
         <menuitem id="menu_feria_servicio" name="Servicios" parent="menu_feria_patrocinios" action="action_feria_servicio" sequence="40"/>
         <menuitem id="menu_feria_servicio_proveedor" name="Tarifas" parent="menu_feria_patrocinios" action="action_feria_servicio_proveedor" sequence="50"/>
         <menuitem id="menu_feria_tecnico" name="Técnicos" parent="menu_feria_patrocinios" action="action_feria_tecnico" sequence="60"/>
-
+        <menuitem id="menu_feria_patrocinio" name="Patrocinios" parent="menu_feria_patrocinios" action="action_feria_patrocinio" sequence="15"/>
     </data>
 </odoo>

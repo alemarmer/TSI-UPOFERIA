@@ -43,6 +43,7 @@
 - `marca_id` (Many2one → Marca) — obligatorio (`required`), relación «aparece en»; no se puede borrar una marca que tenga exhibiciones (`ondelete='restrict'`).
 - `tecnico_id` (Many2one → Tecnico) — opcional, relación «actualiza»; `ondelete='set null'`.
 - `espacio_publicitario_id` (Many2one → EspacioPublicitario) — obligatorio (`required`), relación «acoge»; no se puede borrar un espacio que tenga exhibiciones (`ondelete='restrict'`).
+- `producto_ids` (One2many → Producto de tesorería) — productos de la marca (inverso de `marca_id` en Producto).
 
 ## EspacioPublicitario (`feria.espacio_publicitario`) — `espacio_publicitario.py`
 

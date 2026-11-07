@@ -19,8 +19,9 @@ class Marca(models.Model):
 
     proveedor_id = fields.Many2one('feria.proveedor', string='Proveedor', ondelete='set null')
     exhibicion_ids = fields.One2many('feria.exhibicion_marca', 'marca_id', string='Exhibiciones')
+    patrocinio_ids = fields.One2many('feria.patrocinio', 'marca_id', string='Patrocinios')
     producto_ids = fields.One2many('upoferia.producto', 'marca_id', string='Productos')
-
+    
     @api.constrains('sNombre')
     def _check_nombre(self):
         oRegistro = None

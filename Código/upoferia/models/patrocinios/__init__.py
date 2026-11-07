@@ -7,3 +7,4 @@ from . import tecnico
 from . import exhibicion_marca
 from . import servicio
 from . import servicio_proveedor
+from . import patrocinio

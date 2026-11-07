@@ -69,6 +69,9 @@
 - `proveedor_id` (Many2one → Proveedor) — obligatorio (`required`), relación «interviene en»; no se puede borrar un proveedor que tenga transacciones (`ondelete='restrict'`).
 - `transaccion_origen_id` (Many2one → Transaccion) — opcional, relación reflexiva «genera»; si se borra la de origen, la generada se queda sin origen (`ondelete='set null'`). Solo se admiten las parejas origen → derivada CON → PED, CON → FAC, CON → ABO y PED → ALB, y las dos tienen que ser del mismo proveedor. Se comprueba al guardar la derivada y también al cambiar el tipo o el proveedor de la de origen. Como las parejas siempre bajan de nivel, no puede haber ciclos — `@api.constrains`- `transaccion_derivada_ids` (One2many → Transaccion) — transacciones generadas a partir de esta (inverso de `transaccion_origen_id`).
 - `linea_ids` (One2many → LineaTransaccion) — líneas de la transacción (inverso de `transaccion_id`). PED, FAC y ABO tienen como mínimo una línea; ALB y CON no pueden tener ninguna. Al cambiar el tipo se vuelven a comprobar las reglas de sus líneas — `@api.constrains`
+- `movimiento_ids` (One2many → Movimiento de tesorería) — movimientos de pago o cobro (inverso de `transaccion_id` en Movimiento). Solo en FAC y ABO — `@api.constrains`
+- `actuacion_ids` (One2many → Actuación de eventos) — actuaciones que cubre el contrato (inverso de `transaccion_id` en Actuación). Solo en CON — `@api.constrains`
+- `salida_ids` (One2many → Salida de eventos) — salidas de carruaje asociadas (inverso de `transaccion_id` en Salida).
 ### Atributos derivados
 - `fImporteFacturado` (Float) — suma del importe de las transacciones FAC que genera esta (por la relación «genera»); solo lectura, no se guarda — `compute` + `@api.depends`. Solo tiene valor en CON: como solo un CON puede generar facturas, en el resto de tipos siempre es 0.
 ## LineaTransaccion (`feria.linea_transaccion`) — `linea_transaccion.py`
