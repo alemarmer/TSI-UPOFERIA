@@ -4,6 +4,7 @@ from odoo.exceptions import ValidationError
 class Artista(models.Model):
     _name = 'upoferia.artista'
     _description = 'Upoferia.artista'
+    _rec_name = 'sDni'
 
     #poner dni como FK
 

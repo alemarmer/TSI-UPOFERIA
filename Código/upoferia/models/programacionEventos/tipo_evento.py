@@ -5,8 +5,9 @@ class Tipo_evento(models.Model):
 
     _name='upoferia.tipo_evento' 
     _description='Upoferia.tipo_evento'
+    _rec_name = 'sNombre_tipo_evento'
 
-    sNombre_tipo_evento_tipo_evento= fields.Char(string="Nombre del tipo de evento", size=60, required=True) 
+    sNombre_tipo_evento= fields.Char(string="Nombre del tipo de evento", size=60, required=True) 
     sDescripcion = fields.Text(string="Descripción del tipo de evento", size=100)
 
     evento_ids = fields.One2many('upoferia.evento', 'tipo_evento_id', string='Eventos')

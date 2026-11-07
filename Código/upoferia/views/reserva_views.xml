@@ -1,0 +1,42 @@
+<odoo>
+
+  <record id="upoferia_reserva_list_view" model="ir.ui.view">
+    <field name="name">upoferia.reserva.list</field>
+    <field name="model">upoferia.reserva</field>
+    <field name="arch" type="xml">
+      <list string="Reservas">
+        <field name="dHora_llegada"/>
+        <field name="iNum_personas"/>
+        <field name="sEstado"/>
+      </list>
+    </field>
+  </record>
+
+  <record id="upoferia_reserva_form_view" model="ir.ui.view">
+    <field name="name">upoferia.reserva.form</field>
+    <field name="model">upoferia.reserva</field>
+    <field name="arch" type="xml">
+      <form string="Reserva">
+        <header>
+          <field name="sEstado" widget="statusbar" options="{'clickable': '1'}"/>
+        </header>
+        <sheet>
+          <group>
+            <field name="dHora_llegada"/>
+            <field name="iNum_personas"/>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="upoferia_reserva_action" model="ir.actions.act_window">
+    <field name="name">Reservas</field>
+    <field name="res_model">upoferia.reserva</field>
+    <field name="view_mode">list,form</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">Crea la primera reserva</p>
+    </field>
+  </record>
+
+</odoo>

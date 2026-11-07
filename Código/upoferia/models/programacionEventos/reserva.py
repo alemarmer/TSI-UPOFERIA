@@ -5,6 +5,7 @@ from odoo.exceptions import ValidationError
 class Reserva(models.Model):
     _name = 'upoferia.reserva'
     _description = 'Upoferia.reserva'
+    _rec_name = 'dHora_llegada'
 
     dHora_llegada = fields.Datetime(string='Hora de llegada', required=True)
     iNum_personas = fields.Integer(string='Número de personas')

@@ -5,6 +5,7 @@ import re
 class Carruaje(models.Model):
     _name = 'upoferia.carruaje'
     _description = 'Upoferia.carruaje'
+    _rec_name = 'sNum_registro'
 
     sNum_registro = fields.Char(string='Número de registro', required=True)
     sModelo = fields.Char(string='Modelo')

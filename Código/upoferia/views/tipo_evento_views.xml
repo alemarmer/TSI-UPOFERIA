@@ -1,0 +1,43 @@
+<odoo>
+
+  <record id="upoferia_tipo_evento_list_view" model="ir.ui.view">
+    <field name="name">upoferia.tipo_evento.list</field>
+    <field name="model">upoferia.tipo_evento</field>
+    <field name="arch" type="xml">
+      <list string="Tipos de evento">
+        <field name="sNombre_tipo_evento"/>
+        <field name="sDescripcion"/>
+      </list>
+    </field>
+  </record>
+
+  <record id="upoferia_tipo_evento_form_view" model="ir.ui.view">
+    <field name="name">upoferia.tipo_evento.form</field>
+    <field name="model">upoferia.tipo_evento</field>
+    <field name="arch" type="xml">
+      <form string="Tipo de evento">
+        <sheet>
+          <group>
+            <field name="sNombre_tipo_evento"/>
+            <field name="sDescripcion"/>
+          </group>
+          <notebook>
+            <page name="eventos" string="Eventos">
+              <field name="evento_ids" readonly="1"/>
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="upoferia_tipo_evento_action" model="ir.actions.act_window">
+    <field name="name">Tipos de evento</field>
+    <field name="res_model">upoferia.tipo_evento</field>
+    <field name="view_mode">list,form</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">Crea el primer tipo de evento</p>
+    </field>
+  </record>
+
+</odoo>

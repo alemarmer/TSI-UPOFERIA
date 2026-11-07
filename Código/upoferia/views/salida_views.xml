@@ -1,0 +1,55 @@
+<odoo>
+
+  <record id="upoferia_salida_list_view" model="ir.ui.view">
+    <field name="name">upoferia.salida.list</field>
+    <field name="model">upoferia.salida</field>
+    <field name="arch" type="xml">
+      <list string="Salidas">
+        <field name="carruaje_id"/>
+        <field name="dFecha_hora_salida"/>
+        <field name="dFecha_hora_vuelta"/>
+        <field name="iNum_pasajeros"/>
+        <field name="sEstado"/>
+      </list>
+    </field>
+  </record>
+
+  <record id="upoferia_salida_form_view" model="ir.ui.view">
+    <field name="name">upoferia.salida.form</field>
+    <field name="model">upoferia.salida</field>
+    <field name="arch" type="xml">
+      <form string="Salida">
+        <header>
+          <field name="sEstado" widget="statusbar" options="{'clickable': '1'}"/>
+        </header>
+        <sheet>
+          <group>
+            <group>
+              <field name="carruaje_id"/>
+              <field name="iNum_pasajeros"/>
+            </group>
+            <group>
+              <field name="dFecha_hora_salida"/>
+              <field name="dFecha_hora_vuelta"/>
+            </group>
+          </group>
+          <notebook>
+            <page name="caballos" string="Caballos">
+              <field name="caballo_ids"/>
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="upoferia_salida_action" model="ir.actions.act_window">
+    <field name="name">Salidas</field>
+    <field name="res_model">upoferia.salida</field>
+    <field name="view_mode">list,form</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">Programa la primera salida</p>
+    </field>
+  </record>
+
+</odoo>

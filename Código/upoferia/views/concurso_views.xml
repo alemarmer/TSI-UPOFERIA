@@ -1,0 +1,83 @@
+<odoo>
+
+  <!-- Gracias a _inherits, un concurso puede mostrar los campos de su evento.
+       Ojo: concurso tiene su propio sEstado, que tapa el sEstado del evento. -->
+  <record id="upoferia_concurso_list_view" model="ir.ui.view">
+    <field name="name">upoferia.concurso.list</field>
+    <field name="model">upoferia.concurso</field>
+    <field name="arch" type="xml">
+      <list string="Concursos">
+        <field name="sNombre_evento"/>
+        <field name="dFecha_hora_inicio"/>
+        <field name="dFecha_resultado"/>
+        <field name="sEstado"/>
+      </list>
+    </field>
+  </record>
+
+  <record id="upoferia_concurso_form_view" model="ir.ui.view">
+    <field name="name">upoferia.concurso.form</field>
+    <field name="model">upoferia.concurso</field>
+    <field name="arch" type="xml">
+      <form string="Concurso">
+        <header>
+          <field name="sEstado" widget="statusbar" options="{'clickable': '1'}"/>
+        </header>
+        <sheet>
+          <group>
+            <group string="Evento">
+              <field name="sNombre_evento"/>
+              <field name="tipo_evento_id"/>
+              <field name="dFecha_hora_inicio"/>
+              <field name="dFecha_hora_fin"/>
+              <field name="iAforo_reservado"/>
+            </group>
+            <group string="Concurso">
+              <field name="dFecha_resultado"/>
+            </group>
+          </group>
+          <notebook>
+            <page name="bases" string="Bases">
+              <field name="sBases"/>
+            </page>
+            <!-- Los hijos se editan aquí dentro, como tabla -->
+            <page name="premios" string="Premios">
+              <field name="premio_ids">
+                <list editable="bottom">
+                  <field name="iPuesto"/>
+                  <field name="sDescripcion"/>
+                  <field name="fImporte"/>
+                  <field name="iXp_otorgada"/>
+                </list>
+              </field>
+            </page>
+            <page name="jurado" string="Jurado">
+              <field name="jurado_ids">
+                <list editable="bottom">
+                  <field name="sRol"/>
+                </list>
+              </field>
+            </page>
+            <page name="participantes" string="Participantes">
+              <field name="participacion_ids">
+                <list editable="bottom">
+                  <field name="fecha"/>
+                </list>
+              </field>
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="upoferia_concurso_action" model="ir.actions.act_window">
+    <field name="name">Concursos</field>
+    <field name="res_model">upoferia.concurso</field>
+    <field name="view_mode">list,form</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">Crea el primer concurso</p>
+    </field>
+  </record>
+
+</odoo>

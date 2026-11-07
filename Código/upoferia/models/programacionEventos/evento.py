@@ -5,6 +5,7 @@ class Evento(models.Model):
 
     _name='upoferia.evento' 
     _description='Upoferia.evento'
+    _rec_name = 'sNombre_evento'
 
     sNombre_evento= fields.Char(string="Nombre del evento", size=100, required=True) #obligatorio para todas las clases de python, y simula la pk. odoo por dentro lo hace pk. Si la pk es dni, se cambia en string no en el sNombre_evento
     dFecha_hora_inicio = fields.Datetime(string='Fecha y hora de inicio')

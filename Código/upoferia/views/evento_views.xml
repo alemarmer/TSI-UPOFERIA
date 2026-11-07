@@ -1,0 +1,52 @@
+<odoo>
+
+  <record id="upoferia_evento_list_view" model="ir.ui.view">
+    <field name="name">upoferia.evento.list</field>
+    <field name="model">upoferia.evento</field>
+    <field name="arch" type="xml">
+      <list string="Eventos">
+        <field name="sNombre_evento"/>
+        <field name="tipo_evento_id"/>
+        <field name="dFecha_hora_inicio"/>
+        <field name="dFecha_hora_fin"/>
+        <field name="iAforo_reservado"/>
+        <field name="sEstado"/>
+      </list>
+    </field>
+  </record>
+
+  <record id="upoferia_evento_form_view" model="ir.ui.view">
+    <field name="name">upoferia.evento.form</field>
+    <field name="model">upoferia.evento</field>
+    <field name="arch" type="xml">
+      <form string="Evento">
+        <header>
+          <field name="sEstado" widget="statusbar" options="{'clickable': '1'}"/>
+        </header>
+        <sheet>
+          <group>
+            <group>
+              <field name="sNombre_evento"/>
+              <field name="tipo_evento_id"/>
+              <field name="iAforo_reservado"/>
+            </group>
+            <group>
+              <field name="dFecha_hora_inicio"/>
+              <field name="dFecha_hora_fin"/>
+            </group>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="upoferia_evento_action" model="ir.actions.act_window">
+    <field name="name">Eventos</field>
+    <field name="res_model">upoferia.evento</field>
+    <field name="view_mode">list,form</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">Crea el primer evento</p>
+    </field>
+  </record>
+
+</odoo>
