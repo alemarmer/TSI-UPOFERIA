@@ -3,7 +3,7 @@ from odoo.exceptions import ValidationError
 
 
 class LineaTransaccion(models.Model):
-    _name = 'feria.linea_transaccion'
+    _name = 'upoferia.linea_transaccion'
     _description = 'Línea de transacción'
     _rec_name = 'iNumeroLinea'
     _rec_names_search = ['transaccion_id', 'iNumeroLinea']
@@ -17,9 +17,9 @@ class LineaTransaccion(models.Model):
     iCantidadRecibida = fields.Integer(string='Cantidad recibida')
     fPrecioUnitario = fields.Float(string='Precio unitario')
 
-    transaccion_id = fields.Many2one('feria.transaccion', string='Transacción', required=True, ondelete='cascade')
-    linea_pedido_id = fields.Many2one('feria.linea_transaccion', string='Línea de pedido', ondelete='set null')
-    linea_factura_ids = fields.One2many('feria.linea_transaccion', 'linea_pedido_id', string='Líneas de factura')
+    transaccion_id = fields.Many2one('upoferia.transaccion', string='Transacción', required=True, ondelete='cascade')
+    linea_pedido_id = fields.Many2one('upoferia.linea_transaccion', string='Línea de pedido', ondelete='set null')
+    linea_factura_ids = fields.One2many('upoferia.linea_transaccion', 'linea_pedido_id', string='Líneas de factura')
     producto_id = fields.Many2one('upoferia.producto', string='Producto', ondelete='restrict')
 
     fSubtotal = fields.Float(string='Subtotal', compute='_compute_subtotal')

@@ -5,7 +5,7 @@ from odoo.exceptions import ValidationError
 
 
 class Proveedor(models.Model):
-    _name = 'feria.proveedor'
+    _name = 'upoferia.proveedor'
     _description = 'Proveedor'
     _sql_constraints = [
         ('cif_uniq', 'UNIQUE ("sCif")',
@@ -14,10 +14,10 @@ class Proveedor(models.Model):
 
     sCif = fields.Char(string='CIF')
 
-    transaccion_ids = fields.One2many('feria.transaccion', 'proveedor_id', string='Transacciones')
-    categoria_ids = fields.Many2many('feria.categoria_proveedor', 'feria_proveedor_categoria_rel', 'proveedor_id', 'categoria_proveedor_id', string='Categorías')
-    marca_ids = fields.One2many('feria.marca', 'proveedor_id', string='Marcas')
-    servicio_proveedor_ids = fields.One2many('feria.servicio_proveedor', 'proveedor_id', string='Servicios que ofrece')
+    transaccion_ids = fields.One2many('upoferia.transaccion', 'proveedor_id', string='Transacciones')
+    categoria_ids = fields.Many2many('upoferia.categoria_proveedor', 'upoferia_proveedor_categoria_rel', 'proveedor_id', 'categoria_proveedor_id', string='Categorías')
+    marca_ids = fields.One2many('upoferia.marca', 'proveedor_id', string='Marcas')
+    servicio_proveedor_ids = fields.One2many('upoferia.servicio_proveedor', 'proveedor_id', string='Servicios que ofrece')
 
     @api.constrains('sCif')
     def _check_cif(self):

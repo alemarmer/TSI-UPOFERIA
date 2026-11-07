@@ -3,7 +3,7 @@ from odoo.exceptions import ValidationError
 
 
 class ServicioProveedor(models.Model):
-    _name = 'feria.servicio_proveedor'
+    _name = 'upoferia.servicio_proveedor'
     _description = 'Servicio ofrecido por un proveedor'
     _rec_name = 'servicio_id'
     _sql_constraints = [
@@ -13,8 +13,8 @@ class ServicioProveedor(models.Model):
 
     fPrecioTarifa = fields.Float(string='Precio de tarifa', required=True)
 
-    servicio_id = fields.Many2one('feria.servicio', string='Servicio', required=True, ondelete='cascade')
-    proveedor_id = fields.Many2one('feria.proveedor', string='Proveedor', required=True, ondelete='cascade')
+    servicio_id = fields.Many2one('upoferia.servicio', string='Servicio', required=True, ondelete='cascade')
+    proveedor_id = fields.Many2one('upoferia.proveedor', string='Proveedor', required=True, ondelete='cascade')
 
     @api.constrains('fPrecioTarifa')
     def _check_precio_tarifa(self):

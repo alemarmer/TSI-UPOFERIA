@@ -3,7 +3,7 @@ from odoo.exceptions import ValidationError
 
 
 class CategoriaProveedor(models.Model):
-    _name = 'feria.categoria_proveedor'
+    _name = 'upoferia.categoria_proveedor'
     _description = 'Categoría de proveedor'
     _rec_name = 'sNombre'
     _sql_constraints = [
@@ -14,9 +14,9 @@ class CategoriaProveedor(models.Model):
     sNombre = fields.Char(string='Nombre', required=True)
     iColor = fields.Integer(string='Color', default=0)
 
-    padre_id = fields.Many2one('feria.categoria_proveedor', string='Categoría padre', ondelete='restrict')
-    hija_ids = fields.One2many('feria.categoria_proveedor', 'padre_id', string='Subcategorías')
-    proveedor_ids = fields.Many2many('feria.proveedor', 'feria_proveedor_categoria_rel', 'categoria_proveedor_id', 'proveedor_id', string='Proveedores')
+    padre_id = fields.Many2one('upoferia.categoria_proveedor', string='Categoría padre', ondelete='restrict')
+    hija_ids = fields.One2many('upoferia.categoria_proveedor', 'padre_id', string='Subcategorías')
+    proveedor_ids = fields.Many2many('upoferia.proveedor', 'upoferia_proveedor_categoria_rel', 'categoria_proveedor_id', 'proveedor_id', string='Proveedores')
 
     @api.constrains('sNombre')
     def _check_nombre(self):

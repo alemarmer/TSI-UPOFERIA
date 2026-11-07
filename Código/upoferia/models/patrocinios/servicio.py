@@ -5,7 +5,7 @@ from odoo.exceptions import ValidationError
 
 
 class Servicio(models.Model):
-    _name = 'feria.servicio'
+    _name = 'upoferia.servicio'
     _description = 'Servicio'
     _rec_name = 'sCodigo'
     _sql_constraints = [
@@ -26,7 +26,8 @@ class Servicio(models.Model):
     bRequiereTecnico = fields.Boolean(string='Requiere técnico')
     sNombre = fields.Char(string='Nombre', required=True)
 
-    servicio_proveedor_ids = fields.One2many('feria.servicio_proveedor', 'servicio_id', string='Proveedores que lo ofrecen')
+    servicio_proveedor_ids = fields.One2many('upoferia.servicio_proveedor', 'servicio_id', string='Proveedores que lo ofrecen')
+
     actuacion_ids = fields.Many2many('upoferia.actuacion', 'upoferia_actuacion_servicio', 'servicio_id', 'actuacion_id', string='Actuaciones')
     
     @api.constrains('sCodigo')

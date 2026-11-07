@@ -5,7 +5,7 @@ from odoo.exceptions import ValidationError
 
 
 class Transaccion(models.Model):
-    _name = 'feria.transaccion'
+    _name = 'upoferia.transaccion'
     _description = 'Transacción con proveedor'
     _rec_name = 'sIdTransaccion'
     _sql_constraints = [
@@ -39,11 +39,11 @@ class Transaccion(models.Model):
     sDocumento = fields.Char(string='Documento')
     sRefProveedor = fields.Char(string='Referencia del proveedor')
 
-    tipo_transaccion_id = fields.Many2one('feria.tipo_transaccion', string='Tipo de transacción', required=True, ondelete='restrict')
-    proveedor_id = fields.Many2one('feria.proveedor', string='Proveedor', required=True, ondelete='restrict')
-    transaccion_origen_id = fields.Many2one('feria.transaccion', string='Transacción de origen', ondelete='set null')
-    transaccion_derivada_ids = fields.One2many('feria.transaccion', 'transaccion_origen_id', string='Transacciones generadas')
-    linea_ids = fields.One2many('feria.linea_transaccion', 'transaccion_id', string='Líneas')
+    tipo_transaccion_id = fields.Many2one('upoferia.tipo_transaccion', string='Tipo de transacción', required=True, ondelete='restrict')
+    proveedor_id = fields.Many2one('upoferia.proveedor', string='Proveedor', required=True, ondelete='restrict')
+    transaccion_origen_id = fields.Many2one('upoferia.transaccion', string='Transacción de origen', ondelete='set null')
+    transaccion_derivada_ids = fields.One2many('upoferia.transaccion', 'transaccion_origen_id', string='Transacciones generadas')
+    linea_ids = fields.One2many('upoferia.linea_transaccion', 'transaccion_id', string='Líneas')
 
     linea_presupuesto_id = fields.Many2one('upoferia.linea_presupuesto', string='Línea de presupuesto', ondelete='set null')
     movimiento_ids = fields.One2many('upoferia.movimiento', 'transaccion_id', string='Movimientos')
@@ -216,7 +216,7 @@ class Transaccion(models.Model):
             ('bRenovacionAuto', 'Renovación automática', ('CON',)),
             ('sDocumento', 'Documento', ('CON',)),
             ('sRefProveedor', 'Referencia del proveedor', ('FAC', 'ABO')),
-            ('linea_presupuesto_id', 'Línea de presupuesto', ('CON',)),ç
+            ('linea_presupuesto_id', 'Línea de presupuesto', ('CON',)),
             ('movimiento_ids', 'Movimientos', ('FAC', 'ABO')),
             ('actuacion_ids', 'Actuaciones', ('CON',)),
             

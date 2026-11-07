@@ -1,4 +1,4 @@
-## Marca (`feria.marca`) — `marca.py`
+## Marca (`upoferia.marca`) — `marca.py`
 
 ### `sNombre` (Char) — clave
 - Obligatorio — `required`
@@ -21,7 +21,7 @@
 - `producto_ids` (One2many → Producto de tesorería) — productos de la marca (inverso de `marca_id` en Producto).
 
 
-## ExhibicionMarca (`feria.exhibicion_marca`) — `exhibicion_marca.py`
+## ExhibicionMarca (`upoferia.exhibicion_marca`) — `exhibicion_marca.py`
 
 ### `sIdExhibicion` (Char) — clave
 - Obligatorio y único — `required` / `_sql_constraints`
@@ -46,7 +46,7 @@
 - `tecnico_id` (Many2one → Tecnico) — opcional, relación «actualiza»; `ondelete='set null'`.
 - `espacio_publicitario_id` (Many2one → EspacioPublicitario) — obligatorio (`required`), relación «acoge»; no se puede borrar un espacio que tenga exhibiciones (`ondelete='restrict'`).
 
-## EspacioPublicitario (`feria.espacio_publicitario`) — `espacio_publicitario.py`
+## EspacioPublicitario (`upoferia.espacio_publicitario`) — `espacio_publicitario.py`
 
 ### `sCodigoLugar` (Char) — clave
 - Obligatorio y único — `required` / `_sql_constraints`
@@ -75,7 +75,7 @@
 ### Atributos derivados
 - `fSuperficieM2` (Float) — `fAltoM × fAnchoM`; solo lectura, no se guarda — `compute` + `@api.depends`
 
-## Servicio (`feria.servicio`) — `servicio.py`
+## Servicio (`upoferia.servicio`) — `servicio.py`
 
 ### `sCodigo` (Char) — clave
 - Obligatorio y único — `required` / `_sql_constraints`
@@ -98,7 +98,7 @@
 ### Relaciones
 - `servicio_proveedor_ids` (One2many → ServicioProveedor) — proveedores que lo ofrecen con su tarifa (inverso de `servicio_id`).
 
-## Tecnico (`feria.tecnico`) — `tecnico.py`
+## Tecnico (`upoferia.tecnico`) — `tecnico.py`
 
 ### `sEspecialidad` (Selection)
 - Lista cerrada: electricidad, sonido, iluminación, montaje y estructuras, fontanería, climatización, gas — `fields.Selection`
@@ -116,7 +116,7 @@
 ### Relaciones
 - `exhibicion_ids` (One2many → ExhibicionMarca) — exhibiciones que actualiza (inverso de `tecnico_id`).
 
-## ServicioProveedor (`feria.servicio_proveedor`) — `servicio_proveedor.py`
+## ServicioProveedor (`upoferia.servicio_proveedor`) — `servicio_proveedor.py`
 
 Clase de asociación de la relación N:M «ofrece» entre Servicio y Proveedor (tabla SERVICIO_PROVEEDOR del relacional).
 
@@ -150,6 +150,6 @@ Nota: en el código los campos de relación siguen la convención de Odoo que us
 - **Modelo nuevo `servicio_proveedor.py`.** Cuando se añadan los imports, hay que incluirlo también. Es la clase de asociación ServicioProveedor del UML.
 
 
-- **Técnico no tiene `_rec_name`.** En el desplegable de la exhibición aparecerá como «feria.tecnico,1». Se arreglará cuando herede de Persona.
+- **Técnico no tiene `_rec_name`.** En el desplegable de la exhibición aparecerá como «upoferia.tecnico,1». Se arreglará cuando herede de Persona.
 - **Herencia de Persona (pendiente).** Según el UML, Tecnico es subtipo de Persona (`_inherits`). `socios/persona.py` todavía está vacío.
 

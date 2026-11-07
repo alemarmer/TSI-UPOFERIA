@@ -1,4 +1,4 @@
-## CategoriaProveedor (`feria.categoria_proveedor`) — `categoria_proveedor.py`
+## CategoriaProveedor (`upoferia.categoria_proveedor`) — `categoria_proveedor.py`
 
 ### `sNombre` (Char) — clave
 - Obligatorio — `required`
@@ -13,9 +13,9 @@
 
 ### Relaciones
 - `padre_id` (Many2one → CategoriaProveedor) — opcional, relación reflexiva «es subcategoría de»; no se puede borrar una categoría que tenga subcategorías (`ondelete='restrict'`). Una categoría no puede ser su propia madre ni tener como madre a una de sus subcategorías (no forma ciclos) — `@api.constrains` con `_has_cycle`- `hija_ids` (One2many → CategoriaProveedor) — subcategorías (inverso de `padre_id`).
-- `proveedor_ids` (Many2many → Proveedor) — relación «clasifica»; tabla intermedia `feria_proveedor_categoria_rel` (la PROVEEDOR_CATEGORIA del relacional).
+- `proveedor_ids` (Many2many → Proveedor) — relación «clasifica»; tabla intermedia `upoferia_proveedor_categoria_rel` (la PROVEEDOR_CATEGORIA del relacional).
 
-## Proveedor (`feria.proveedor`) — `proveedor.py`
+## Proveedor (`upoferia.proveedor`) — `proveedor.py`
 
 ### `sCif` (Char)
 - Único — `_sql_constraints`
@@ -23,7 +23,7 @@
 - Carácter de control correcto según el algoritmo oficial del CIF — `@api.constrains`
 
 ### Relaciones
-- `categoria_ids` (Many2many → CategoriaProveedor) — relación «clasifica»; misma tabla intermedia `feria_proveedor_categoria_rel`.
+- `categoria_ids` (Many2many → CategoriaProveedor) — relación «clasifica»; misma tabla intermedia `upoferia_proveedor_categoria_rel`.
 - `transaccion_ids` (One2many → Transaccion) — transacciones en las que interviene (inverso de `proveedor_id` en `compras/transaccion.py`).
 - `marca_ids` (One2many → Marca) — marcas que comercializa (inverso de `proveedor_id` en `patrocinios/marca.py`).
 - `servicio_proveedor_ids` (One2many → ServicioProveedor) — servicios que ofrece con su tarifa (inverso de `proveedor_id` en `patrocinios/servicio_proveedor.py`).
@@ -44,4 +44,4 @@ Nota: `proveedor.py` tiene relaciones inversas con modelos de compras (Transacci
 
 
 - **Herencia de Persona (pendiente).** Según el UML, Proveedor es subtipo de Persona (en Odoo, `_inherits`). `socios/persona.py` todavía está vacío.
-- **Proveedor no tiene `_rec_name`.** En los desplegables (por ejemplo, al elegir el proveedor de una transacción o de una marca) aparecerá como «feria.proveedor,1». Se arreglará cuando herede de Persona y tenga nombre.
+- **Proveedor no tiene `_rec_name`.** En los desplegables (por ejemplo, al elegir el proveedor de una transacción o de una marca) aparecerá como «upoferia.proveedor,1». Se arreglará cuando herede de Persona y tenga nombre.

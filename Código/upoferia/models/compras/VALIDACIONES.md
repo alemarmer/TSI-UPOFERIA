@@ -1,4 +1,4 @@
-## TipoTransaccion (`feria.tipo_transaccion`) — `tipo_transaccion.py`
+## TipoTransaccion (`upoferia.tipo_transaccion`) — `tipo_transaccion.py`
 
 ### `sCodigo` (Char) — clave
 - Obligatorio y único — `required` / `_sql_constraints`
@@ -17,7 +17,7 @@
 ### Relaciones
 - `transaccion_ids` (One2many → Transaccion) — las transacciones de este tipo (inverso de `tipo_transaccion_id`).
 
-## Transaccion (`feria.transaccion`) — `transaccion.py`
+## Transaccion (`upoferia.transaccion`) — `transaccion.py`
 
 ### `sIdTransaccion` (Char) — clave
 - Obligatorio y único — `required` / `_sql_constraints`
@@ -83,7 +83,7 @@
 ### Campos auxiliares
 - `sCodigoTipo` (Char) — código del tipo de transacción (`related='tipo_transaccion_id.sCodigo'`); no se guarda. Solo sirve para que la vista sepa qué botones mostrar.
 
-## LineaTransaccion (`feria.linea_transaccion`) — `linea_transaccion.py`
+## LineaTransaccion (`upoferia.linea_transaccion`) — `linea_transaccion.py`
 
 ### `iNumeroLinea` (Integer) — clave (junto con la transacción)
 - Obligatorio — `required`

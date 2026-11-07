@@ -5,7 +5,7 @@ from odoo.exceptions import ValidationError
 
 
 class EspacioPublicitario(models.Model):
-    _name = 'feria.espacio_publicitario'
+    _name = 'upoferia.espacio_publicitario'
     _description = 'Espacio publicitario'
     _rec_name = 'sCodigoLugar'
     _sql_constraints = [
@@ -28,7 +28,7 @@ class EspacioPublicitario(models.Model):
     fAnchoM = fields.Float(string='Ancho (m)', required=True)
     bIluminado = fields.Boolean(string='Iluminado')
 
-    exhibicion_ids = fields.One2many('feria.exhibicion_marca', 'espacio_publicitario_id', string='Exhibiciones')
+    exhibicion_ids = fields.One2many('upoferia.exhibicion_marca', 'espacio_publicitario_id', string='Exhibiciones')
 
     fSuperficieM2 = fields.Float(string='Superficie (m²)', compute='_compute_superficie_m2')
 

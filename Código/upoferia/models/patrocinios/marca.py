@@ -5,7 +5,7 @@ from odoo.exceptions import ValidationError
 
 
 class Marca(models.Model):
-    _name = 'feria.marca'
+    _name = 'upoferia.marca'
     _description = 'Marca'
     _rec_name = 'sNombre'
     _sql_constraints = [
@@ -17,9 +17,9 @@ class Marca(models.Model):
     binLogotipo = fields.Image(string='Logotipo', max_width=512, max_height=512)
     sColorCorporativo = fields.Char(string='Color corporativo')
 
-    proveedor_id = fields.Many2one('feria.proveedor', string='Proveedor', ondelete='set null')
-    exhibicion_ids = fields.One2many('feria.exhibicion_marca', 'marca_id', string='Exhibiciones')
-    patrocinio_ids = fields.One2many('feria.patrocinio', 'marca_id', string='Patrocinios')
+    proveedor_id = fields.Many2one('upoferia.proveedor', string='Proveedor', ondelete='set null')
+    exhibicion_ids = fields.One2many('upoferia.exhibicion_marca', 'marca_id', string='Exhibiciones')
+    patrocinio_ids = fields.One2many('upoferia.patrocinio', 'marca_id', string='Patrocinios')
     producto_ids = fields.One2many('upoferia.producto', 'marca_id', string='Productos')
     
     @api.constrains('sNombre')

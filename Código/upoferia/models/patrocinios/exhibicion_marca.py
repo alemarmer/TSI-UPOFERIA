@@ -5,7 +5,7 @@ from odoo.exceptions import ValidationError
 
 
 class ExhibicionMarca(models.Model):
-    _name = 'feria.exhibicion_marca'
+    _name = 'upoferia.exhibicion_marca'
     _description = 'Exhibición de marca'
     _rec_name = 'sIdExhibicion'
     _sql_constraints = [
@@ -18,9 +18,9 @@ class ExhibicionMarca(models.Model):
     sArteFinal = fields.Char(string='Arte final')
     dFechaRetirada = fields.Date(string='Fecha de retirada')
 
-    marca_id = fields.Many2one('feria.marca', string='Marca', required=True, ondelete='restrict')
-    tecnico_id = fields.Many2one('feria.tecnico', string='Técnico', ondelete='set null')
-    espacio_publicitario_id = fields.Many2one('feria.espacio_publicitario', string='Espacio publicitario', required=True, ondelete='restrict')
+    marca_id = fields.Many2one('upoferia.marca', string='Marca', required=True, ondelete='restrict')
+    tecnico_id = fields.Many2one('upoferia.tecnico', string='Técnico', ondelete='set null')
+    espacio_publicitario_id = fields.Many2one('upoferia.espacio_publicitario', string='Espacio publicitario', required=True, ondelete='restrict')
 
     sEstadoExhibicion = fields.Selection([
         ('sin_programar', 'Sin programar'),

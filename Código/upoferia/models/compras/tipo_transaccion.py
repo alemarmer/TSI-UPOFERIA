@@ -3,7 +3,7 @@ from odoo.exceptions import ValidationError
 
 
 class TipoTransaccion(models.Model):
-    _name = 'feria.tipo_transaccion'
+    _name = 'upoferia.tipo_transaccion'
     _description = 'Tipo de transacción'
     _rec_name = 'sCodigo'
     _sql_constraints = [
@@ -15,7 +15,7 @@ class TipoTransaccion(models.Model):
     sDescripcion = fields.Char(string='Descripción')
     sNombre = fields.Char(string='Nombre', required=True)
 
-    transaccion_ids = fields.One2many('feria.transaccion', 'tipo_transaccion_id', string='Transacciones')
+    transaccion_ids = fields.One2many('upoferia.transaccion', 'tipo_transaccion_id', string='Transacciones')
 
     @api.constrains('sCodigo')
     def _check_codigo_valor(self):

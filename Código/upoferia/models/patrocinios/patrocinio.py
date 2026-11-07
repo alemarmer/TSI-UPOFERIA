@@ -3,7 +3,7 @@ from odoo.exceptions import ValidationError
 
 
 class Patrocinio(models.Model):
-    _name = 'feria.patrocinio'
+    _name = 'upoferia.patrocinio'
     _description = 'Patrocinio de una marca a un evento'
     _sql_constraints = [
         ('marca_evento_uniq', 'UNIQUE ("marca_id", "evento_id")',
@@ -16,7 +16,7 @@ class Patrocinio(models.Model):
         ('especie', 'En especie'),
     ], string='Tipo de aportación')
 
-    marca_id = fields.Many2one('feria.marca', string='Marca', required=True, ondelete='cascade')
+    marca_id = fields.Many2one('upoferia.marca', string='Marca', required=True, ondelete='cascade')
     evento_id = fields.Many2one('upoferia.evento', string='Evento', required=True, ondelete='cascade')
 
     @api.constrains('fImporteAportacion')
