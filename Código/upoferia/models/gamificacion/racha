@@ -1,0 +1,36 @@
+from odoo import models, fields, api
+from odoo.exceptions import ValidationError
+
+
+class Racha(models.Model):
+
+    _name = 'upoferia.racha'
+    _description = 'Racha de experiencia del socio'
+
+    MULTIPLICADOR_MAX = 5.0
+
+    multiplicador_exp = fields.Float(string="Multiplicador de experiencia", digits=(5, 2), default=1.25,
+                                     help="Factor por el que se multiplica la XP de las misiones completadas")
+    duracion = fields.Integer(string="Duración (días)", default=7, help="Días que dura la racha")
+
+    # Relaciones
+    registro_xp_id = fields.Many2one('upoferia.registro_xp', string="Registro de experiencia", required=True,
+                                     ondelete='cascade')
+
+    _sql_constraints = [
+        # Pendiente de TA-07: el E-R permite varias rachas por registro y el relacional solo una.
+        ('racha_clave', 'UNIQUE(registro_xp_id)', 'El registro ya tiene una racha.'),
+        ('multiplicador_minimo', 'CHECK(multiplicador_exp >= 1)', 'El multiplicador no puede ser menor que 1.'),
+        ('duracion_positiva', 'CHECK(duracion > 0)', 'La duración debe ser de al menos un día.'),
+    ]
+
+    @api.constrains('multiplicador_exp')
+    def _check_multiplicador_maximo(self):
+        for record in self:
+            if record.multiplicador_exp > self.MULTIPLICADOR_MAX:
+                raise ValidationError('El multiplicador no puede superar x%.2f.' % self.MULTIPLICADOR_MAX)
+
+    @api.depends('multiplicador_exp', 'duracion')
+    def _compute_display_name(self):
+        for record in self:
+            record.display_name = 'x%.2f durante %s días' % (record.multiplicador_exp, record.duracion)
