@@ -8,7 +8,7 @@ class Concurso(models.Model):
     _inherits = {'upoferia.evento': 'evento_id'}
     _rec_name = 'sNombre_evento'
     _sql_constraints = [
-        ('evento_uniq', 'UNIQUE (evento_id)', 'Ese evento ya está registrado como concurso.'),
+        ('evento_uniq', 'UNIQUE ("evento_id")', 'Ese evento ya está registrado como concurso.'),
     ]
 
     sBases = fields.Text(string='Bases')

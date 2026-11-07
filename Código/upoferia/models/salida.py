@@ -7,7 +7,7 @@ class Salida(models.Model):
     _description = 'Upoferia.salida_carruaje'
     _rec_name = 'dFecha_hora_salida'
     _sql_constraints = [
-        ('carruaje_fecha_uniq', 'UNIQUE (carruaje_id, dFecha_hora_salida)',
+        ('carruaje_fecha_uniq', 'UNIQUE ("carruaje_id", "dFecha_hora_salida")',
          'Ese carruaje ya tiene una salida a esa fecha y hora.'),
     ]
 

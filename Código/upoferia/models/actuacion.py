@@ -5,7 +5,7 @@ class Actuacion(models.Model):
     _name = 'upoferia.actuacion'
     _description = 'Upoferia.actuacion'
     sql_constraints = [
-        ('evento_uniq', 'UNIQUE (evento_id)', 'Ese evento ya está registrado como actuación.'),
+        ('evento_uniq', 'UNIQUE ("evento_id")', 'Ese evento ya está registrado como actuación.'),
         ]
 
     fCache_pactado = fields.Float(string='Caché pactado')

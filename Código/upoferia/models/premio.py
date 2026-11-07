@@ -8,7 +8,7 @@ class Premio(models.Model):
     _rec_name = 'iPuesto'
     _sql_constraints = [
         # PK compuesta (nombre_concurso, iPuesto)
-        ('concurso_iPuesto_uniq', 'UNIQUE (concurso_id, iPuesto)',
+        ('concurso_iPuesto_uniq', 'UNIQUE ("concurso_id", "iPuesto")',
          'Ese concurso ya tiene un premio para ese Puesto.'),
     ]
 
