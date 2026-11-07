@@ -6,6 +6,7 @@ class Caballo(models.Model):
 
     _name='upoferia.caballo' 
     _description='Upoferia.caballo'
+    _rec_name = 'sMicrochip'
     _sql_constraints = [
         ('sMicrochip_uniq', 'UNIQUE ("sMicrochip")',
          'Ya existe un caballo con ese Microchip.'),

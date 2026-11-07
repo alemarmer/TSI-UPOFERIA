@@ -1,0 +1,54 @@
+<odoo>
+
+  <!-- VISTA LISTA: la tabla con todos los caballos -->
+  <record id="upoferia_caballo_list_view" model="ir.ui.view">
+    <field name="name">upoferia.caballo.list</field>
+    <field name="model">upoferia.caballo</field>
+    <field name="arch" type="xml">
+      <list string="Caballos">
+        <field name="sMicrochip"/>
+        <field name="sNombre"/>
+        <field name="sRaza"/>
+        <field name="sSexo"/>
+      </list>
+    </field>
+  </record>
+
+  <!-- VISTA FORMULARIO: la ficha de un caballo -->
+  <record id="upoferia_caballo_form_view" model="ir.ui.view">
+    <field name="name">upoferia.caballo.form</field>
+    <field name="model">upoferia.caballo</field>
+    <field name="arch" type="xml">
+      <form string="Caballo">
+        <sheet>
+          <group>
+            <group>
+              <field name="sMicrochip"/>
+              <field name="sNombre"/>
+            </group>
+            <group>
+              <field name="sRaza"/>
+              <field name="sSexo"/>
+            </group>
+          </group>
+          <notebook>
+            <page name="salidas" string="Salidas">
+              <field name="salida_ids"/>
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <!-- ACCIÓN: "abre Caballos en modo lista y formulario" -->
+  <record id="upoferia_caballo_action" model="ir.actions.act_window">
+    <field name="name">Caballos</field>
+    <field name="res_model">upoferia.caballo</field>
+    <field name="view_mode">list,form</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">Registra el primer caballo</p>
+    </field>
+  </record>
+
+</odoo>

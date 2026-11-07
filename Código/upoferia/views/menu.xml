@@ -1,0 +1,11 @@
+<odoo>
+  <!-- Menú principal (el icono de la app) -->
+  <menuitem id="upoferia_menu_root" name="UPOFeria"/>
+
+  <!-- Categoría -->
+  <menuitem id="upoferia_menu_caballos" name="Caballos y enganches" parent="upoferia_menu_root"/>
+
+  <!-- Entrada que abre la acción -->
+  <menuitem id="upoferia_menu_caballo" name="Caballos" parent="upoferia_menu_caballos"
+            action="upoferia_caballo_action"/>
+</odoo>
