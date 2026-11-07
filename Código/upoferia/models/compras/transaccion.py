@@ -45,6 +45,11 @@ class Transaccion(models.Model):
     transaccion_derivada_ids = fields.One2many('feria.transaccion', 'transaccion_origen_id', string='Transacciones generadas')
     linea_ids = fields.One2many('feria.linea_transaccion', 'transaccion_id', string='Líneas')
 
+    linea_presupuesto_id = fields.Many2one('upoferia.linea_presupuesto', string='Línea de presupuesto', ondelete='set null')
+    movimiento_ids = fields.One2many('upoferia.movimiento', 'transaccion_id', string='Movimientos')
+    actuacion_ids = fields.One2many('upoferia.actuacion', 'transaccion_id', string='Actuaciones')
+    salida_ids = fields.One2many('upoferia.salida', 'transaccion_id', string='Salidas')
+
     fImporteFacturado = fields.Float(string='Importe facturado', compute='_compute_importe_facturado')
     sCodigoTipo = fields.Char(string='Código del tipo', related='tipo_transaccion_id.sCodigo')
 
@@ -195,7 +200,7 @@ class Transaccion(models.Model):
                 raise ValidationError('Una transacción PED, FAC o ABO tiene que tener como mínimo una línea.')
             oRegistro.linea_ids._check_tipo_linea()
     
-    @api.constrains('tipo_transaccion_id', 'sEstado', 'fImporte', 'dVencimiento', 'dFechaPrevistaFin', 'bRenovacionAuto', 'sDocumento', 'sRefProveedor')
+    @api.constrains('tipo_transaccion_id', 'sEstado', 'fImporte', 'dVencimiento', 'dFechaPrevistaFin', 'bRenovacionAuto', 'sDocumento', 'sRefProveedor', 'linea_presupuesto_id', 'movimiento_ids', 'actuacion_ids')
     def _check_segun_tipo(self):
         oRegistro = None
         sTipo = ''
@@ -211,6 +216,9 @@ class Transaccion(models.Model):
             ('bRenovacionAuto', 'Renovación automática', ('CON',)),
             ('sDocumento', 'Documento', ('CON',)),
             ('sRefProveedor', 'Referencia del proveedor', ('FAC', 'ABO')),
+            ('linea_presupuesto_id', 'Línea de presupuesto', ('CON',)),
+            ('movimiento_ids', 'Movimientos', ('FAC', 'ABO')),
+            ('actuacion_ids', 'Actuaciones', ('CON',)),
         ]
         lEstados = [
             ('PED', ('borrador', 'confirmado', 'recibido', 'cancelado')),

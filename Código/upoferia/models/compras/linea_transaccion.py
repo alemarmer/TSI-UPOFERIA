@@ -20,6 +20,7 @@ class LineaTransaccion(models.Model):
     transaccion_id = fields.Many2one('feria.transaccion', string='Transacción', required=True, ondelete='cascade')
     linea_pedido_id = fields.Many2one('feria.linea_transaccion', string='Línea de pedido', ondelete='set null')
     linea_factura_ids = fields.One2many('feria.linea_transaccion', 'linea_pedido_id', string='Líneas de factura')
+    producto_id = fields.Many2one('upoferia.producto', string='Producto', ondelete='restrict')
 
     fSubtotal = fields.Float(string='Subtotal', compute='_compute_subtotal')
     iCantidadFacturada = fields.Integer(string='Cantidad facturada', compute='_compute_cantidad_facturada')
@@ -93,7 +94,18 @@ class LineaTransaccion(models.Model):
                     raise ValidationError('Solo las líneas de una FAC o un ABO pueden facturar una línea de pedido.')
                 if oRegistro.linea_pedido_id.transaccion_id.tipo_transaccion_id.sCodigo != 'PED':
                     raise ValidationError('La «Línea de pedido» elegida (%s) tiene que ser de un PED.' % oRegistro.linea_pedido_id.display_name)
-                
+
+    @api.constrains('producto_id', 'linea_pedido_id')
+    def _check_mismo_producto(self):
+        oRegistro = None
+        oLinea = None
+        for oRegistro in self:
+            for oLinea in oRegistro | oRegistro.linea_factura_ids:
+                if oLinea.linea_pedido_id and oLinea.producto_id != oLinea.linea_pedido_id.producto_id:
+                    raise ValidationError('La línea %s factura la línea de pedido %s y las dos tienen que ser del mismo producto.' % (
+                        oLinea.display_name,
+                        oLinea.linea_pedido_id.display_name,
+                    ))
     @api.onchange('iCantidadRecibida', 'iCantidad')
     def _onchange_valores(self):
         sMensaje = False
