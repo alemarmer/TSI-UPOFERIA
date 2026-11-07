@@ -46,3 +46,13 @@ class Caballo(models.Model):
                 if record[campo] and not record[campo].strip():
                     raise ValidationError(
                         '«%s» no puede contener solo espacios.' % record._fields[campo].string)
+
+    @api.onchange('sMicrochip')
+    def _onchange_sMicrochip(self):
+        if self.sMicrochip and not re.fullmatch(r'[0-9]{15}', self.sMicrochip):
+            return {
+                'warning': {
+                    'title': 'Microchip incorrecto',
+                    'message': 'El microchip debe tener 15 dígitos (norma ISO 11784/11785).',
+                }
+            }

@@ -55,3 +55,15 @@ class Salida(models.Model):
                     'message': mensaje,
                 }
             }
+
+    @api.onchange('carruaje_id', 'iNum_pasajeros')
+    def _onchange_pasajeros_plazas(self):
+        plazas = self.carruaje_id.iPlazas
+        if plazas and self.iNum_pasajeros > plazas:
+            self.iNum_pasajeros = plazas
+            return {
+                'warning': {
+                    'title': 'Demasiados pasajeros',
+                    'message': 'El carruaje solo tiene %s plazas.' % plazas,
+                }
+            }

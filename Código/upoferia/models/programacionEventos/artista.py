@@ -46,3 +46,8 @@ class Artista(models.Model):
             for campo in ('sMontaje', 'sIluminacion', 'sSonido', 'sEspacio'):
                 if record[campo] and not record[campo].strip():
                     raise ValidationError('«%s» no puede contener solo espacios.' % record._fields[campo].string)
+
+       
+    @api.onchange('artista_ids')
+    def _onchange_artista_ids(self):
+        self.fCache_pactado = sum(self.artista_ids.mapped('fCache_base'))
