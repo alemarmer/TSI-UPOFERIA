@@ -22,6 +22,8 @@ class Caballo(models.Model):
     salida_ids = fields.Many2many('upoferia.salida', 'upoferia_salida_caballo',
                                   'caballo_id', 'salida_id', string='Salidas')
 
+    #conexion con inspeccion
+
     @api.constrains('sMicrochip')
     def _check_sMicrochip_formato(self):
         for record in self:

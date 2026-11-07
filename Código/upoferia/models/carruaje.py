@@ -12,6 +12,8 @@ class Carruaje(models.Model):
 
     salida_ids = fields.One2many('upoferia.salida', 'carruaje_id', string='Salidas')
 
+    #conexion con inspeccion 
+
     @api.constrains('sNum_registro')
     def _check_sNum_registro_obligatorio(self):
         for record in self:
