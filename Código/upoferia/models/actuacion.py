@@ -4,7 +4,7 @@ from odoo.exceptions import ValidationError
 class Actuacion(models.Model):
     _name = 'upoferia.actuacion'
     _description = 'Upoferia.actuacion'
-    sql_constraints = [
+    _sql_constraints = [
         ('evento_uniq', 'UNIQUE ("evento_id")', 'Ese evento ya está registrado como actuación.'),
         ]
 
@@ -13,6 +13,8 @@ class Actuacion(models.Model):
     evento_id = fields.Many2one('upoferia.evento', string='Evento', required=True, ondelete='cascade')
 
     #FK id_transaccion
+
+    transaccion_id = fields.Many2one('upoferia.transaccion', string='Contrato', ondelete='set null')
 
     #FALTA MANY2MANY CON SERVICIO
 
@@ -24,3 +26,9 @@ class Actuacion(models.Model):
         for record in self:
             if record.fCache_pactado < 0:
                 raise ValidationError('«Caché pactado» no puede ser menor que 0.')
+
+    @api.constrains('transaccion_id')
+    def _check_transaccion(self):
+        for record in self:
+            if record.transaccion_id and record.transaccion_id.tipo_transaccion_id.sCodigo != 'CON':
+                raise ValidationError('Una actuación solo se puede asociar a un contrato (CON).')
