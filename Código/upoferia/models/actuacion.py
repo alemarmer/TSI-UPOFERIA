@@ -12,11 +12,9 @@ class Actuacion(models.Model):
 
     evento_id = fields.Many2one('upoferia.evento', string='Evento', required=True, ondelete='cascade')
 
-    #FK id_transaccion
-
     transaccion_id = fields.Many2one('upoferia.transaccion', string='Contrato', ondelete='set null')
 
-    #FALTA MANY2MANY CON SERVICIO
+    servicio_ids = fields.Many2many('feria.servicio', 'upoferia_actuacion_servicio', 'actuacion_id', 'servicio_id', string='Servicios')
 
     artista_ids = fields.Many2many('upoferia.artista', 'upoferia_actuacion_artista',
                                    'actuacion_id', 'artista_id', string='Artistas')
