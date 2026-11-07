@@ -6,7 +6,7 @@ class Evento(models.Model):
     _name='upoferia.evento' 
     _description='Upoferia.evento'
 
-    sNombre_evento= fields.Char(string="Nombre del evento", size=60, required=True) #obligatorio para todas las clases de python, y simula la pk. odoo por dentro lo hace pk. Si la pk es dni, se cambia en string no en el sNombre_evento
+    sNombre_evento= fields.Char(string="Nombre del evento", size=100, required=True) #obligatorio para todas las clases de python, y simula la pk. odoo por dentro lo hace pk. Si la pk es dni, se cambia en string no en el sNombre_evento
     dFecha_hora_inicio = fields.Datetime(string='Fecha y hora de inicio')
     dFecha_hora_fin = fields.Datetime(string='Fecha y hora de finalizacion')
     iAforo_reservado = fields.Integer(string='Aforo reservado')
@@ -54,7 +54,7 @@ class Evento(models.Model):
     @api.constrains('sNombre_evento')
     def _check_longitud(self):
         for record in self:
-            for campo in ('sNombre_evento','sEstado'):
+            for campo in ('sNombre_evento'):
                 if record[campo] and len(record[campo]) > 100:
                     raise ValidationError(
                         '«%s» no puede superar los 100 caracteres.' % record._fields[campo].string)
