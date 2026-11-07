@@ -51,9 +51,11 @@
 - No anterior a la fecha inicial — `@api.constrains` + aviso `onchange`
 - Exige que haya fecha inicial — `@api.constrains`
 - Como mucho diez años después de la fecha inicial — `@api.constrains`
+- Solo en PED, ALB y CON — `@api.constrains`
 
 ### `bRenovacionAuto` (Boolean)
 - Solo en CON; en el resto tiene que estar desmarcado — `@api.constrains`
+
 ### `sDocumento` (Char)
 - Sin espacios, como mucho 255 caracteres — `@api.constrains`
 - URL `http(s)://` o archivo `.pdf/.doc/.docx/.odt` — `@api.constrains`
@@ -67,13 +69,20 @@
 ### Relaciones
 - `tipo_transaccion_id` (Many2one → TipoTransaccion) — obligatorio (`required`); no se puede borrar un tipo que tenga transacciones (`ondelete='restrict'`). Solo se elige al crear la transacción; después no se puede cambiar (`readonly="id"` en la vista).
 - `proveedor_id` (Many2one → Proveedor) — obligatorio (`required`), relación «interviene en»; no se puede borrar un proveedor que tenga transacciones (`ondelete='restrict'`).
-- `transaccion_origen_id` (Many2one → Transaccion) — opcional, relación reflexiva «genera»; si se borra la de origen, la generada se queda sin origen (`ondelete='set null'`). Solo se admiten las parejas origen → derivada CON → PED, CON → FAC, CON → ABO y PED → ALB, y las dos tienen que ser del mismo proveedor. Se comprueba al guardar la derivada y también al cambiar el tipo o el proveedor de la de origen. Como las parejas siempre bajan de nivel, no puede haber ciclos — `@api.constrains`- `transaccion_derivada_ids` (One2many → Transaccion) — transacciones generadas a partir de esta (inverso de `transaccion_origen_id`).
+- `transaccion_origen_id` (Many2one → Transaccion) — opcional, relación reflexiva «genera»; si se borra la de origen, la generada se queda sin origen (`ondelete='set null'`). Solo se admiten las parejas origen → derivada CON → PED, CON → FAC, CON → ABO y PED → ALB, y las dos tienen que ser del mismo proveedor. Se comprueba al guardar la derivada y también al cambiar el tipo o el proveedor de la de origen. Como las parejas siempre bajan de nivel, no puede haber ciclos — `@api.constrains`
+- `transaccion_derivada_ids` (One2many → Transaccion) — transacciones generadas a partir de esta (inverso de `transaccion_origen_id`).
 - `linea_ids` (One2many → LineaTransaccion) — líneas de la transacción (inverso de `transaccion_id`). PED, FAC y ABO tienen como mínimo una línea; ALB y CON no pueden tener ninguna. Al cambiar el tipo se vuelven a comprobar las reglas de sus líneas — `@api.constrains`
+- `linea_presupuesto_id` (Many2one → LineaPresupuesto de tesorería) — opcional, línea del presupuesto a la que se imputa el contrato; si se borra la línea de presupuesto, la transacción se queda sin ella (`ondelete='set null'`). Solo en CON — `@api.constrains`
 - `movimiento_ids` (One2many → Movimiento de tesorería) — movimientos de pago o cobro (inverso de `transaccion_id` en Movimiento). Solo en FAC y ABO — `@api.constrains`
 - `actuacion_ids` (One2many → Actuación de eventos) — actuaciones que cubre el contrato (inverso de `transaccion_id` en Actuación). Solo en CON — `@api.constrains`
 - `salida_ids` (One2many → Salida de eventos) — salidas de carruaje asociadas (inverso de `transaccion_id` en Salida).
+
 ### Atributos derivados
 - `fImporteFacturado` (Float) — suma del importe de las transacciones FAC que genera esta (por la relación «genera»); solo lectura, no se guarda — `compute` + `@api.depends`. Solo tiene valor en CON: como solo un CON puede generar facturas, en el resto de tipos siempre es 0.
+
+### Campos auxiliares
+- `sCodigoTipo` (Char) — código del tipo de transacción (`related='tipo_transaccion_id.sCodigo'`); no se guarda. Solo sirve para que la vista sepa qué botones mostrar.
+
 ## LineaTransaccion (`feria.linea_transaccion`) — `linea_transaccion.py`
 
 ### `iNumeroLinea` (Integer) — clave (junto con la transacción)
@@ -91,15 +100,15 @@
 
 ### `fPrecioUnitario` (Float)
 - No menor que 0 y como mucho 1.000.000 € — `@api.constrains`
--Solo admite dos decimales (céntimos). — `@api.constrains`
+- Como mucho dos decimales (céntimos) — `@api.constrains`
 
 ### Relaciones
 - `transaccion_id` (Many2one → Transaccion) — obligatorio (`required`), entidad débil: si se borra la transacción se borran sus líneas (`ondelete='cascade'`). Solo puede ser un PED, una FAC o un ABO — `@api.constrains`
 - La pareja transacción + `iNumeroLinea` no se repite (clave de la entidad débil) — `_sql_constraints` `UNIQUE ("transaccion_id", "iNumeroLinea")`.
 - `linea_pedido_id` (Many2one → LineaTransaccion) — opcional, relación reflexiva «se factura en»; `ondelete='set null'`. Solo lo pueden tener las líneas de una FAC o un ABO, y tiene que apuntar a una línea de un PED — `@api.constrains`
 - `linea_factura_ids` (One2many → LineaTransaccion) — líneas de factura que facturan esta línea de pedido (inverso de `linea_pedido_id`). Solo las líneas de un PED pueden tenerlas — `@api.constrains`
+- `producto_id` (Many2one → Producto de tesorería) — opcional, producto de la línea; no se puede borrar un producto que esté en alguna línea (`ondelete='restrict'`). Si la línea factura una línea de pedido («se factura en»), las dos tienen que ser del mismo producto. Se comprueba al guardar la línea de factura y también al cambiar el producto de la línea de pedido — `@api.constrains`
 - No se puede borrar la última línea de un PED, FAC o ABO (tiene que quedar como mínimo una). Sí se puede borrar la transacción entera, y con ella sus líneas — `@api.ondelete`
-
 
 ### Nombre que se muestra
 - En los desplegables una línea aparece con el identificador de su transacción y su número (ej. `PED-2026-001 / 1`) — `_compute_display_name` con `@api.depends`
@@ -109,8 +118,7 @@
 - `fSubtotal` (Float) — `iCantidad × fPrecioUnitario`; solo lectura, no se guarda — `compute` + `@api.depends`
 - `iCantidadFacturada` (Integer) — suma de la cantidad de las líneas de factura que facturan esta línea de pedido (`linea_factura_ids`); solo lectura, no se guarda — `compute` + `@api.depends`
   - No puede superar la cantidad de la línea de pedido. Se comprueba al guardar la línea de factura (su cantidad o su línea de pedido) y al cambiar la cantidad de la línea de pedido — `@api.constrains` sobre `iCantidad` y `linea_pedido_id`
-### Campos auxiliares
-- `sCodigoTipo` (Char) — código del tipo de transacción (`related='tipo_transaccion_id.sCodigo'`); no se guarda. Solo sirve para que la vista sepa qué botones mostrar.
+
 ---
 
 # Notas sobre la documentación
@@ -127,5 +135,7 @@ Nota: el recorrido de estados no está en los diagramas (el E-R solo dice qué e
 
 ---
 
+# Pendiente de revisar
 
-
+- **Relaciones con modelos de los compañeros (pendientes):** Transaccion → Caseta (`caseta_id`); y al revés, Mantenimiento y Prestamo apuntan a Transaccion (solo CON). Un PRESTAMO solo puede estar respaldado por un CON del mismo proveedor.
+- **Campos de los compañeros que necesitan mis relaciones inversas.** `movimiento_ids`, `actuacion_ids` y `salida_ids` necesitan el campo `transaccion_id` en Movimiento (Carlos), Actuacion y Salida (Adam). Hasta que lo añadan, el módulo no instala con esas líneas.
