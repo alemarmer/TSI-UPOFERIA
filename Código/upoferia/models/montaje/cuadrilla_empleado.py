@@ -1,0 +1,71 @@
+from odoo import models, fields, api
+from odoo.exceptions import ValidationError
+
+
+class CuadrillaEmpleado(models.Model):
+
+    _name = "upoferia.cuadrilla_empleado"
+    _description = "Miembro de cuadrilla"
+
+    es_jefe = fields.Boolean(
+        string="Es jefe", default=False, help="Una cuadrilla solo puede tener un jefe"
+    )
+
+    # Relaciones
+    cuadrilla_id = fields.Many2one(
+        "upoferia.cuadrilla", string="Cuadrilla", required=True, ondelete="cascade"
+    )
+    empleado_id = fields.Many2one(
+        "upoferia.empleado", string="Empleado", required=True, ondelete="cascade"
+    )
+
+    _sql_constraints = [
+        (
+            "miembro_unique",
+            "UNIQUE(cuadrilla_id, empleado_id)",
+            "Ese empleado ya pertenece a la cuadrilla.",
+        ),
+    ]
+
+    @api.depends("cuadrilla_id.nombre", "empleado_id.nombre")
+    def _compute_display_name(self):
+        for record in self:
+            record.display_name = "%s - %s" % (
+                record.cuadrilla_id.nombre or "",
+                record.empleado_id.nombre or "",
+            )
+
+    @api.constrains("es_jefe", "cuadrilla_id")
+    def _check_un_solo_jefe(self):
+        for record in self:
+            if record.es_jefe and self.search_count(
+                [
+                    ("cuadrilla_id", "=", record.cuadrilla_id.id),
+                    ("es_jefe", "=", True),
+                    ("id", "!=", record.id),
+                ]
+            ):
+                raise ValidationError(
+                    "La cuadrilla «%s» ya tiene un jefe." % record.cuadrilla_id.nombre
+                )
+
+    @api.onchange("es_jefe", "cuadrilla_id")
+    def onchange_es_jefe(self):
+        if (
+            self.es_jefe
+            and self.cuadrilla_id
+            and self.search_count(
+                [
+                    ("cuadrilla_id", "=", self.cuadrilla_id.id),
+                    ("es_jefe", "=", True),
+                    ("id", "!=", self._origin.id),
+                ]
+            )
+        ):
+            return {
+                "warning": {
+                    "title": "La cuadrilla ya tiene jefe",
+                    "message": "La cuadrilla «%s» ya tiene un jefe. Desmárcalo allí antes de nombrar otro."
+                    % self.cuadrilla_id.nombre,
+                }
+            }
