@@ -67,6 +67,47 @@ class EspacioPublicitario(models.Model):
             if round(oRegistro.fAnchoM, 2) != oRegistro.fAnchoM:
                 raise ValidationError('«Ancho (m)» solo admite dos decimales (centímetros).')
 
+    @api.onchange('fAnchoM')
+    def _onchange_ancho_m(self):
+        oRegistro=None
+        for oRegistro in self:
+            if oRegistro.fAnchoM <= 0:
+                oRegistro.fAnchoM=1
+                return {
+                    'warning':{
+                        'title':'Valores ajustados', 
+                        'message': '«Ancho (m)» no puede ser igual o inferior a los 0 metros; se ha ajustado a 1.',
+                    }
+                }
+            if oRegistro.fAnchoM > 30:
+                oRegistro.fAnchoM=30
+                return {
+                    'warning':{
+                        'title':'Valores ajustados', 
+                        'message': '«Ancho (m)» no puede superar 30 metros; se ha ajustado a 30.',
+                                    }
+                                }
+    @api.onchange('fAltoM')
+    def _onchange_alto_m(self):
+        oRegistro=None
+        for oRegistro in self:
+            if oRegistro.fAltoM <= 0:
+                oRegistro.fAltoM=1
+                return {
+                    'warning':{
+                        'title':'Valores ajustados', 
+                        'message': '«Alto (m)» no puede ser igual o inferior a los 0 metros; se ha ajustado a 1.',
+                    }
+                }
+            if oRegistro.fAltoM > 30:
+                oRegistro.fAltoM=30
+                return {
+                    'warning':{
+                        'title':'Valores ajustados', 
+                        'message': '«Alto (m)» no puede superar 30 metros; se ha ajustado a 30.',
+                                      }
+                                 }     
+            
     @api.constrains('sUbicacionExacta')
     def _check_ubicacion_exacta(self):
         oRegistro = None
