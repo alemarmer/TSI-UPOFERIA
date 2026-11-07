@@ -24,7 +24,7 @@ class Evento(models.Model):
     concurso_ids = fields.One2many('upoferia.concurso', 'evento_id', string='Concurso')
 
     #OJO CONEXION CON ACTUACION 
-    patrocinio_ids = fields.One2many('feria.patrocinio', 'evento_id', string='Patrocinios')
+    #patrocinio_ids = fields.One2many('upoferia.patrocinio', 'evento_id', string='Patrocinios')
 
     @api.constrains('sNombre_evento')
     def _check_sNombre_evento_obligatorio(self):
