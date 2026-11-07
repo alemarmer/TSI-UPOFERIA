@@ -4,6 +4,7 @@ from odoo.exceptions import ValidationError
 class Actuacion(models.Model):
     _name = 'upoferia.actuacion'
     _description = 'Upoferia.actuacion'
+    _inherits = {'upoferia.evento': 'evento_id'}
     _sql_constraints = [
         ('evento_uniq', 'UNIQUE ("evento_id")', 'Ese evento ya está registrado como actuación.'),
         ]
