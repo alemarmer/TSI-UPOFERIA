@@ -1,18 +1,65 @@
 <odoo>
     <data>
 
+        <record id="view_upoferia_tipo_transaccion_list" model="ir.ui.view">
+            <field name="name">upoferia.tipo_transaccion.list</field>
+            <field name="model">upoferia.tipo_transaccion</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="sCodigo"/>
+                    <field name="sNombre"/>
+                    <field name="sDescripcion"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_upoferia_tipo_transaccion_form" model="ir.ui.view">
+            <field name="name">upoferia.tipo_transaccion.form</field>
+            <field name="model">upoferia.tipo_transaccion</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="sCodigo"/>
+                            <field name="sNombre"/>
+                            <field name="sDescripcion"/>
+                        </group>
+                        <notebook>
+                            <page string="Transacciones">
+                                <field name="transaccion_ids" readonly="1">
+                                    <list>
+                                        <field name="sIdTransaccion"/>
+                                        <field name="proveedor_id"/>
+                                        <field name="dFechaInicial"/>
+                                        <field name="fImporte" sum="Total"/>
+                                        <field name="sEstado" widget="badge"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
 
         <record id="view_upoferia_transaccion_list" model="ir.ui.view">
             <field name="name">upoferia.transaccion.list</field>
             <field name="model">upoferia.transaccion</field>
             <field name="arch" type="xml">
-                <list>
+                <list decoration-info="sEstado == 'borrador'"
+                      decoration-success="sEstado in ('recibido', 'hecho', 'pagada', 'vigente')"
+                      decoration-danger="sEstado in ('vencida', 'vencido')"
+                      decoration-muted="sEstado in ('cancelado', 'rescindido')">
                     <field name="sIdTransaccion"/>
                     <field name="tipo_transaccion_id"/>
                     <field name="proveedor_id"/>
                     <field name="dFechaInicial"/>
                     <field name="fImporte"/>
-                    <field name="sEstado"/>
+                    <field name="sEstado" widget="badge"
+                           decoration-info="sEstado == 'borrador'"
+                           decoration-success="sEstado in ('recibido', 'hecho', 'pagada', 'vigente')"
+                           decoration-danger="sEstado in ('vencida', 'vencido')"/>
                 </list>
             </field>
         </record>
@@ -44,12 +91,18 @@
                     </header>
                     <sheet>
                         <field name="sCodigoTipo" invisible="1"/>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="sIdTransaccion" placeholder="PED-2026-001"/>
+                            </h1>
+                        </div>
                         <group>
                             <group>
-                                <field name="sIdTransaccion"/>
                                 <field name="tipo_transaccion_id" readonly="id"/>
                                 <field name="proveedor_id"/>
                                 <field name="sEstado" readonly="1" force_save="1"/>
+                                <field name="sRefProveedor" invisible="sCodigoTipo not in ('FAC', 'ABO')"/>
+                                <field name="linea_presupuesto_id" invisible="sCodigoTipo != 'CON'"/>
                             </group>
                             <group>
                                 <field name="dFechaInicial"/>
@@ -57,7 +110,6 @@
                                 <field name="dFechaPrevistaFin" invisible="sCodigoTipo not in ('PED', 'ALB', 'CON')"/>
                                 <field name="fImporte" invisible="sCodigoTipo == 'ALB'"/>
                                 <field name="fImporteFacturado" invisible="sCodigoTipo != 'CON'"/>
-                                <field name="sRefProveedor" invisible="sCodigoTipo not in ('FAC', 'ABO')"/>
                                 <field name="sDocumento" invisible="sCodigoTipo != 'CON'"/>
                                 <field name="bRenovacionAuto" invisible="sCodigoTipo != 'CON'"/>
                             </group>
@@ -67,9 +119,10 @@
                                 <field name="linea_ids">
                                     <list editable="bottom">
                                         <field name="iNumeroLinea"/>
+                                        <field name="producto_id"/>
                                         <field name="iCantidad"/>
                                         <field name="fPrecioUnitario"/>
-                                        <field name="fSubtotal"/>
+                                        <field name="fSubtotal" sum="Total"/>
                                         <field name="iCantidadRecibida" column_invisible="parent.sCodigoTipo != 'PED'"/>
                                         <field name="iCantidadFacturada" column_invisible="parent.sCodigoTipo != 'PED'"/>
                                         <field name="linea_pedido_id" column_invisible="parent.sCodigoTipo not in ('FAC', 'ABO')"
@@ -77,12 +130,12 @@
                                     </list>
                                 </field>
                             </page>
-                                                        <page string="Movimientos" invisible="sCodigoTipo not in ('FAC', 'ABO')">
+                            <page string="Movimientos" invisible="sCodigoTipo not in ('FAC', 'ABO')">
                                 <field name="movimiento_ids" readonly="1">
                                     <list>
                                         <field name="referencia"/>
                                         <field name="fecha"/>
-                                        <field name="importe"/>
+                                        <field name="importe" sum="Total"/>
                                         <field name="estado"/>
                                     </list>
                                 </field>
@@ -91,7 +144,7 @@
                                 <field name="actuacion_ids" readonly="1">
                                     <list>
                                         <field name="evento_id"/>
-                                        <field name="fCache_pactado"/>
+                                        <field name="fCache_pactado" sum="Total"/>
                                     </list>
                                 </field>
                             </page>
@@ -113,7 +166,7 @@
                                         <field name="sIdTransaccion"/>
                                         <field name="tipo_transaccion_id"/>
                                         <field name="fImporte"/>
-                                        <field name="sEstado"/>
+                                        <field name="sEstado" widget="badge"/>
                                     </list>
                                 </field>
                             </page>
@@ -123,7 +176,480 @@
             </field>
         </record>
 
-     
+
+        <record id="view_upoferia_linea_transaccion_list" model="ir.ui.view">
+            <field name="name">upoferia.linea_transaccion.list</field>
+            <field name="model">upoferia.linea_transaccion</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="transaccion_id"/>
+                    <field name="iNumeroLinea"/>
+                    <field name="producto_id"/>
+                    <field name="iCantidad"/>
+                    <field name="fPrecioUnitario"/>
+                    <field name="fSubtotal" sum="Total"/>
+                    <field name="iCantidadRecibida"/>
+                    <field name="iCantidadFacturada"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_upoferia_linea_transaccion_form" model="ir.ui.view">
+            <field name="name">upoferia.linea_transaccion.form</field>
+            <field name="model">upoferia.linea_transaccion</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="transaccion_id"/>
+                                <field name="iNumeroLinea"/>
+                                <field name="producto_id"/>
+                                <field name="linea_pedido_id"
+                                       domain="[('transaccion_id.tipo_transaccion_id.sCodigo', '=', 'PED')]"/>
+                            </group>
+                            <group>
+                                <field name="iCantidad"/>
+                                <field name="fPrecioUnitario"/>
+                                <field name="fSubtotal"/>
+                                <field name="iCantidadRecibida"/>
+                                <field name="iCantidadFacturada"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Líneas de factura">
+                                <field name="linea_factura_ids" readonly="1">
+                                    <list>
+                                        <field name="transaccion_id"/>
+                                        <field name="iNumeroLinea"/>
+                                        <field name="iCantidad" sum="Total"/>
+                                        <field name="fSubtotal" sum="Total"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+
+        <record id="view_upoferia_categoria_proveedor_list" model="ir.ui.view">
+            <field name="name">upoferia.categoria_proveedor.list</field>
+            <field name="model">upoferia.categoria_proveedor</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="sNombre"/>
+                    <field name="padre_id"/>
+                    <field name="iColor" widget="color_picker"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_upoferia_categoria_proveedor_form" model="ir.ui.view">
+            <field name="name">upoferia.categoria_proveedor.form</field>
+            <field name="model">upoferia.categoria_proveedor</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="sNombre"/>
+                            <field name="padre_id"/>
+                            <field name="iColor" widget="color_picker"/>
+                        </group>
+                        <notebook>
+                            <page string="Subcategorías">
+                                <field name="hija_ids" readonly="1">
+                                    <list>
+                                        <field name="sNombre"/>
+                                        <field name="iColor" widget="color_picker"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="Proveedores">
+                                <field name="proveedor_ids">
+                                    <list>
+                                        <field name="sCif"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="view_upoferia_proveedor_list" model="ir.ui.view">
+            <field name="name">upoferia.proveedor.list</field>
+            <field name="model">upoferia.proveedor</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="sCif"/>
+                    <field name="categoria_ids" widget="many2many_tags" options="{'color_field': 'iColor'}"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_upoferia_proveedor_form" model="ir.ui.view">
+            <field name="name">upoferia.proveedor.form</field>
+            <field name="model">upoferia.proveedor</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="sCif"/>
+                            <field name="categoria_ids" widget="many2many_tags" options="{'color_field': 'iColor'}"/>
+                        </group>
+                        <notebook>
+                            <page string="Servicios que ofrece">
+                                <field name="servicio_proveedor_ids">
+                                    <list editable="bottom">
+                                        <field name="servicio_id"/>
+                                        <field name="fPrecioTarifa"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="Marcas">
+                                <field name="marca_ids" readonly="1">
+                                    <list>
+                                        <field name="sNombre"/>
+                                        <field name="sColorCorporativo"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="Transacciones">
+                                <field name="transaccion_ids" readonly="1">
+                                    <list>
+                                        <field name="sIdTransaccion"/>
+                                        <field name="tipo_transaccion_id"/>
+                                        <field name="dFechaInicial"/>
+                                        <field name="fImporte"/>
+                                        <field name="sEstado" widget="badge"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="view_upoferia_marca_list" model="ir.ui.view">
+            <field name="name">upoferia.marca.list</field>
+            <field name="model">upoferia.marca</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="sNombre"/>
+                    <field name="sColorCorporativo" widget="color"/>
+                    <field name="proveedor_id"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_upoferia_marca_form" model="ir.ui.view">
+            <field name="name">upoferia.marca.form</field>
+            <field name="model">upoferia.marca</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <field name="binLogotipo" widget="image" class="oe_avatar"/>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="sNombre" placeholder="Nombre de la marca"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <field name="proveedor_id"/>
+                            <field name="sColorCorporativo" widget="color"/>
+                        </group>
+                        <notebook>
+                            <page string="Patrocinios">
+                                <field name="patrocinio_ids">
+                                    <list editable="bottom">
+                                        <field name="evento_id"/>
+                                        <field name="sTipoAportacion"/>
+                                        <field name="fImporteAportacion" sum="Total"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="Exhibiciones">
+                                <field name="exhibicion_ids" readonly="1">
+                                    <list>
+                                        <field name="sIdExhibicion"/>
+                                        <field name="espacio_publicitario_id"/>
+                                        <field name="dFechaMontaje"/>
+                                        <field name="dFechaRetirada"/>
+                                        <field name="sEstadoExhibicion" widget="badge"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="Productos">
+                                <field name="producto_ids" readonly="1"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="view_upoferia_patrocinio_list" model="ir.ui.view">
+            <field name="name">upoferia.patrocinio.list</field>
+            <field name="model">upoferia.patrocinio</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="marca_id"/>
+                    <field name="evento_id"/>
+                    <field name="sTipoAportacion"/>
+                    <field name="fImporteAportacion" sum="Total"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_upoferia_patrocinio_form" model="ir.ui.view">
+            <field name="name">upoferia.patrocinio.form</field>
+            <field name="model">upoferia.patrocinio</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="marca_id"/>
+                                <field name="evento_id"/>
+                            </group>
+                            <group>
+                                <field name="sTipoAportacion"/>
+                                <field name="fImporteAportacion"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="view_upoferia_exhibicion_marca_list" model="ir.ui.view">
+            <field name="name">upoferia.exhibicion_marca.list</field>
+            <field name="model">upoferia.exhibicion_marca</field>
+            <field name="arch" type="xml">
+                <list decoration-info="sEstadoExhibicion == 'programada'"
+                      decoration-success="sEstadoExhibicion == 'montada'"
+                      decoration-muted="sEstadoExhibicion == 'retirada'">
+                    <field name="sIdExhibicion"/>
+                    <field name="marca_id"/>
+                    <field name="espacio_publicitario_id"/>
+                    <field name="tecnico_id"/>
+                    <field name="dFechaMontaje"/>
+                    <field name="dFechaRetirada"/>
+                    <field name="sEstadoExhibicion" widget="badge"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_upoferia_exhibicion_marca_form" model="ir.ui.view">
+            <field name="name">upoferia.exhibicion_marca.form</field>
+            <field name="model">upoferia.exhibicion_marca</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <field name="sEstadoExhibicion" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="sIdExhibicion" placeholder="EXH-01"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="marca_id"/>
+                                <field name="espacio_publicitario_id"/>
+                                <field name="tecnico_id"/>
+                            </group>
+                            <group>
+                                <field name="dFechaMontaje"/>
+                                <field name="dFechaRetirada"/>
+                                <field name="sArteFinal"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="view_upoferia_espacio_publicitario_list" model="ir.ui.view">
+            <field name="name">upoferia.espacio_publicitario.list</field>
+            <field name="model">upoferia.espacio_publicitario</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="sCodigoLugar"/>
+                    <field name="sTipo"/>
+                    <field name="sUbicacionExacta"/>
+                    <field name="fAltoM"/>
+                    <field name="fAnchoM"/>
+                    <field name="fSuperficieM2" digits="[16, 4]"/>
+                    <field name="bIluminado"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_upoferia_espacio_publicitario_form" model="ir.ui.view">
+            <field name="name">upoferia.espacio_publicitario.form</field>
+            <field name="model">upoferia.espacio_publicitario</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="sCodigoLugar" placeholder="PORTADA-01"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group string="Ubicación">
+                                <field name="sTipo"/>
+                                <field name="sUbicacionExacta"/>
+                                <field name="bIluminado"/>
+                            </group>
+                            <group string="Medidas">
+                                <field name="fAltoM"/>
+                                <field name="fAnchoM"/>
+                                <field name="fSuperficieM2" digits="[16, 4]"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Exhibiciones">
+                                <field name="exhibicion_ids" readonly="1">
+                                    <list>
+                                        <field name="sIdExhibicion"/>
+                                        <field name="marca_id"/>
+                                        <field name="dFechaMontaje"/>
+                                        <field name="dFechaRetirada"/>
+                                        <field name="sEstadoExhibicion" widget="badge"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="view_upoferia_servicio_list" model="ir.ui.view">
+            <field name="name">upoferia.servicio.list</field>
+            <field name="model">upoferia.servicio</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="sCodigo"/>
+                    <field name="sNombre"/>
+                    <field name="sUnidadFacturacion"/>
+                    <field name="bRequiereTecnico"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_upoferia_servicio_form" model="ir.ui.view">
+            <field name="name">upoferia.servicio.form</field>
+            <field name="model">upoferia.servicio</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="sNombre" placeholder="Nombre del servicio"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="sCodigo"/>
+                                <field name="sUnidadFacturacion"/>
+                            </group>
+                            <group>
+                                <field name="bRequiereTecnico"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Proveedores que lo ofrecen">
+                                <field name="servicio_proveedor_ids">
+                                    <list editable="bottom">
+                                        <field name="proveedor_id"/>
+                                        <field name="fPrecioTarifa"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="Actuaciones">
+                                <field name="actuacion_ids"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="view_upoferia_servicio_proveedor_list" model="ir.ui.view">
+            <field name="name">upoferia.servicio_proveedor.list</field>
+            <field name="model">upoferia.servicio_proveedor</field>
+            <field name="arch" type="xml">
+                <list editable="bottom">
+                    <field name="servicio_id"/>
+                    <field name="proveedor_id"/>
+                    <field name="fPrecioTarifa"/>
+                </list>
+            </field>
+        </record>
+
+
+        <record id="view_upoferia_tecnico_list" model="ir.ui.view">
+            <field name="name">upoferia.tecnico.list</field>
+            <field name="model">upoferia.tecnico</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="sEspecialidad"/>
+                    <field name="sCodCarnetProfesional"/>
+                    <field name="dFechaCaducidadCarnet"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_upoferia_tecnico_form" model="ir.ui.view">
+            <field name="name">upoferia.tecnico.form</field>
+            <field name="model">upoferia.tecnico</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="sEspecialidad"/>
+                            </group>
+                            <group string="Carné profesional">
+                                <field name="sCodCarnetProfesional"/>
+                                <field name="dFechaCaducidadCarnet"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Exhibiciones">
+                                <field name="exhibicion_ids" readonly="1">
+                                    <list>
+                                        <field name="sIdExhibicion"/>
+                                        <field name="marca_id"/>
+                                        <field name="espacio_publicitario_id"/>
+                                        <field name="dFechaMontaje"/>
+                                        <field name="sEstadoExhibicion" widget="badge"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+      
 
         <record id="action_upoferia_transaccion" model="ir.actions.act_window">
             <field name="name">Transacciones</field>
@@ -161,6 +687,12 @@
             <field name="view_mode">list,form</field>
         </record>
 
+        <record id="action_upoferia_patrocinio" model="ir.actions.act_window">
+            <field name="name">Patrocinios</field>
+            <field name="res_model">upoferia.patrocinio</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
         <record id="action_upoferia_exhibicion_marca" model="ir.actions.act_window">
             <field name="name">Exhibiciones</field>
             <field name="res_model">upoferia.exhibicion_marca</field>
@@ -182,7 +714,7 @@
         <record id="action_upoferia_servicio_proveedor" model="ir.actions.act_window">
             <field name="name">Tarifas de proveedores</field>
             <field name="res_model">upoferia.servicio_proveedor</field>
-            <field name="view_mode">list,form</field>
+            <field name="view_mode">list</field>
         </record>
 
         <record id="action_upoferia_tecnico" model="ir.actions.act_window">
@@ -190,13 +722,8 @@
             <field name="res_model">upoferia.tecnico</field>
             <field name="view_mode">list,form</field>
         </record>
-        <record id="action_upoferia_patrocinio" model="ir.actions.act_window">
-            <field name="name">Patrocinios</field>
-            <field name="res_model">upoferia.patrocinio</field>
-            <field name="view_mode">list,form</field>
-        </record>
 
-       
+     
 
         <menuitem id="menu_upoferia_root" name="Feria" sequence="10"/>
 
@@ -211,11 +738,12 @@
 
         <menuitem id="menu_upoferia_patrocinios" name="Patrocinios" parent="menu_upoferia_root" sequence="30"/>
         <menuitem id="menu_upoferia_marca" name="Marcas" parent="menu_upoferia_patrocinios" action="action_upoferia_marca" sequence="10"/>
+        <menuitem id="menu_upoferia_patrocinio" name="Patrocinios" parent="menu_upoferia_patrocinios" action="action_upoferia_patrocinio" sequence="15"/>
         <menuitem id="menu_upoferia_exhibicion_marca" name="Exhibiciones" parent="menu_upoferia_patrocinios" action="action_upoferia_exhibicion_marca" sequence="20"/>
         <menuitem id="menu_upoferia_espacio_publicitario" name="Espacios publicitarios" parent="menu_upoferia_patrocinios" action="action_upoferia_espacio_publicitario" sequence="30"/>
         <menuitem id="menu_upoferia_servicio" name="Servicios" parent="menu_upoferia_patrocinios" action="action_upoferia_servicio" sequence="40"/>
         <menuitem id="menu_upoferia_servicio_proveedor" name="Tarifas" parent="menu_upoferia_patrocinios" action="action_upoferia_servicio_proveedor" sequence="50"/>
         <menuitem id="menu_upoferia_tecnico" name="Técnicos" parent="menu_upoferia_patrocinios" action="action_upoferia_tecnico" sequence="60"/>
-        <menuitem id="menu_upoferia_patrocinio" name="Patrocinios" parent="menu_upoferia_patrocinios" action="action_upoferia_patrocinio" sequence="15"/>
+
     </data>
 </odoo>
