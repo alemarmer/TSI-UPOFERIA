@@ -18,8 +18,7 @@ class Caballo(models.Model):
 
     salida_ids = fields.Many2many('upoferia.salida', 'upoferia_salida_caballo',
                                   'caballo_id', 'salida_id', string='Salidas')
-
-    #conexion con inspeccion
+    inspeccion_ids = fields.One2many('upoferia.inspeccion', 'caballo_id', string='Inspecciones')
 
     _sql_constraints = [('caballo_sMicrochip_unique', 'UNIQUE ("sMicrochip")', 'Ya existe un caballo con ese microchip.')]
 
