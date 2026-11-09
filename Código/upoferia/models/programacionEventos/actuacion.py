@@ -12,7 +12,7 @@ class Actuacion(models.Model):
 
     fCache_pactado = fields.Float(string='Caché pactado')
 
-    evento_id = fields.Many2one('upoferia.evento', string='Evento', required=True, ondelete='cascade')
+    evento_id = fields.Many2one('upoferia.evento', string='Evento', required=True)
 
     #transaccion_id = fields.Many2one('upoferia.transaccion', string='Contrato', ondelete='set null')
 
