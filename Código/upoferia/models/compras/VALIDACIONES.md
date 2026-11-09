@@ -24,7 +24,7 @@
 - Obligatorio — `required`
 - Según el tipo: PED → borrador, confirmado, recibido, cancelado; ALB → previsto, hecho; FAC y ABO → pendiente, pagada, vencida; CON → borrador, vigente, vencido, rescindido — `@api.constrains`
 - Al elegir el tipo se pone el estado inicial (PED y CON → borrador, ALB → previsto, FAC y ABO → pendiente) — `@api.onchange`
-- Se cambia con los botones del formulario (`btn_*`, cada uno hace un `write`, como en los ejemplos del profesor). La vista solo enseña cada botón en el tipo y el estado que le corresponden.
+- Se cambia con los botones del formulario (`btn_*`, cada uno hace un `write`, como en los ejemplos del profesor). Los botones se ven siempre; si se pulsa uno que no corresponde al tipo (por ejemplo «Confirmar» en una factura), la regla anterior da error y el estado no cambia.
 
 ### `dVencimiento` y `dFechaPrevistaFin` (Date)
 - No pueden ser anteriores a la fecha inicial — `@api.constrains`
@@ -36,16 +36,16 @@
 - `transaccion_derivada_ids` (One2many → Transaccion) — transacciones generadas a partir de esta.
 - `linea_ids` (One2many → LineaTransaccion) — líneas de la transacción.
 - `linea_presupuesto_id` (Many2one → LineaPresupuesto de tesorería) — opcional. Si se borra la línea de presupuesto, la transacción se queda sin ella.
+- `caseta_id` (Many2one → Caseta) — opcional, la caseta a la que se destina la transacción (`nombre_caseta` en el relacional). Si se borra la caseta, la transacción se queda sin ella.
 - `movimiento_ids` (One2many → Movimiento de tesorería) — inverso de `transaccion_id` en Movimiento.
 - `actuacion_ids` (One2many → Actuación de eventos) — inverso de `transaccion_id` en Actuación.
 - `salida_ids` (One2many → Salida de eventos) — inverso de `transaccion_id` en Salida.
+- `prestamo_ids` (One2many → Prestamo) — inverso de `transaccion_id` en Prestamo.
+- `mantenimiento_ids` (One2many → Mantenimiento) — inverso de `transaccion_id` en Mantenimiento.
 - Botón «Eliminar líneas» (`btn_eliminarLineas`): borra todas las líneas de la transacción con `write` y la tupla `(2, id)`. Hace falta para poder borrar una transacción, porque Odoo no deja borrar una transacción que tenga líneas.
 
 ### Atributos derivados
 - `fImporteFacturado` (Float) — suma del importe de las FAC que genera esta transacción; solo lectura, no se guarda — `compute` + `@api.depends`
-
-### Campos auxiliares
-- `sCodigoTipo` (Char) — código del tipo (`related`); solo sirve para que la vista sepa qué campos y botones mostrar.
 
 ## LineaTransaccion (`upoferia.linea_transaccion`) — `linea_transaccion.py`
 
@@ -91,5 +91,4 @@ Nota: las relaciones no llevan `ondelete`, así que Odoo aplica su comportamient
 
 # Pendiente de revisar
 
-- **Relaciones con modelos de los compañeros:** Transaccion → Caseta (`caseta_id`); Mantenimiento y Prestamo apuntan a Transaccion.
-- **Campos de los compañeros:** `movimiento_ids`, `actuacion_ids` y `salida_ids` necesitan el campo `transaccion_id` en Movimiento (Carlos), Actuacion y Salida (Adam).
+- **Nombres que deben usar los compañeros.** Las relaciones inversas suponen que existen estos modelos y campos: `upoferia.movimiento`, `upoferia.actuacion`, `upoferia.salida`, `upoferia.prestamo` y `upoferia.mantenimiento` con un Many2one `transaccion_id`; `upoferia.producto`, `upoferia.linea_presupuesto` y `upoferia.caseta`. Hasta que estén en la rama, el módulo no se instala.

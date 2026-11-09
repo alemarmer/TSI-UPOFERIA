@@ -35,6 +35,7 @@
 
 ### Relaciones
 - `exhibicion_ids` (One2many → ExhibicionMarca) — exhibiciones del espacio.
+- `zona_caseta_id` (Many2one → ZonaCaseta) — opcional, la zona de la caseta donde está el espacio (en el relacional son dos columnas, `nombre_caseta` y `nombre_zona_caseta`, porque la clave de ZONA_CASETA es compuesta; en Odoo es un solo Many2one).
 
 ### Atributos derivados
 - `fSuperficieM2` (Float) — `fAltoM × fAnchoM` — `compute` + `@api.depends`
@@ -58,6 +59,11 @@
 
 ## Tecnico (`upoferia.tecnico`) — `tecnico.py`
 
+### Herencia
+- Tecnico es subtipo de Persona (en el relacional su clave `dni` es clave ajena de PERSONA): hereda sus campos con `_inherits = {'upoferia.persona': 'persona_id'}`, como en el ejemplo del Tema 5.
+- En los desplegables aparece con el nombre de su persona (`_rec_name = 'sNombre'`, el campo heredado de Persona).
+- `persona_id` (Many2one → Persona) — obligatorio, con `ondelete='cascade'`, que Odoo exige para `_inherits`.
+
 ### `sCodCarnetProfesional` (Char)
 - Único — `_sql_constraints`
 
@@ -66,6 +72,7 @@
 
 ### Relaciones
 - `exhibicion_ids` (One2many → ExhibicionMarca) — exhibiciones que monta.
+- `mantenimiento_ids` (Many2many → Mantenimiento) — tabla `upoferia_mantenimiento_tecnico` (MANTENIMIENTO_TECNICO en el relacional), la misma que debe usar Mantenimiento.
 - Botón «Quitar exhibiciones» (`btn_quitarExhibiciones`): deja sus exhibiciones sin técnico con la tupla `(5,)`; las exhibiciones no se borran.
 
 ## Servicio (`upoferia.servicio`) — `servicio.py`
@@ -78,6 +85,7 @@
 
 ### Relaciones
 - `servicio_proveedor_ids` (One2many → ServicioProveedor) — proveedores que lo ofrecen.
+- `incidencia_ids` (One2many → Incidencia) — inverso de `servicio_id` en Incidencia.
 - `actuacion_ids` (Many2many → Actuación de eventos) — tabla `upoferia_actuacion_servicio`, la misma que usa `servicio_ids` en Actuación.
 - Botón «Eliminar tarifas» (`btn_eliminarTarifas`): borra las tarifas del servicio con la tupla `(2, id)`. Hace falta para poder borrar el servicio.
 
@@ -102,11 +110,11 @@ Nota: los campos de relación siguen la convención de Odoo (`_id` / `_ids`), po
 
 Nota: `tipo_aportacion` de Patrocinio no tiene valores en el E-R; se han puesto Económica y En especie.
 
-Nota: las relaciones no llevan `ondelete`, así que Odoo aplica su comportamiento por defecto: si el Many2one es obligatorio no deja borrar el registro al que apunta, y si es opcional lo borra y deja el campo vacío. Para poder borrar un registro que tiene otros que dependen de él, se usan los botones `btn_eliminar...`, que borran antes esos registros con `write` y la tupla `(2, id)`, como se vio en el Tema 6_2.
+Nota: las relaciones no llevan `ondelete` (salvo `persona_id` de Tecnico, que lo exige `_inherits`), así que Odoo aplica su comportamiento por defecto: si el Many2one es obligatorio no deja borrar el registro al que apunta, y si es opcional lo borra y deja el campo vacío. Para poder borrar un registro que tiene otros que dependen de él, se usan los botones `btn_eliminar...`, que borran antes esos registros con `write` y la tupla `(2, id)`, como se vio en el Tema 6_2.
 
 ---
 
 # Pendiente de revisar
 
-- **Herencia de Persona.** Según el UML, Tecnico es subtipo de Persona (`_inherits`). Hasta entonces no tiene nombre y en los desplegables aparece como «upoferia.tecnico,1».
 - **`estado` de EXHIBICION_MARCA en los diagramas.** En el código es `sEstadoExhibicion`; falta añadir `/estado` en el E-R y en el UML.
+- **Nombres que deben usar los compañeros.** Se supone que existen `upoferia.persona` (con su nombre en el campo `sNombre`), `upoferia.zona_caseta`, `upoferia.evento`, `upoferia.producto` (con un Many2one `marca_id`), `upoferia.actuacion` (con la tabla `upoferia_actuacion_servicio`), `upoferia.incidencia` (con un Many2one `servicio_id`) y `upoferia.mantenimiento` (con la tabla `upoferia_mantenimiento_tecnico`). Hasta que estén en la rama, el módulo no se instala.
