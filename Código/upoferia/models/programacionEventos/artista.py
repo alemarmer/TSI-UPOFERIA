@@ -6,10 +6,9 @@ from odoo import models, fields, api
 class Artista(models.Model):
     _name = 'upoferia.artista'
     _description = 'Artista'
+    _inherits = {'upoferia.persona': 'persona_id'}
     _rec_name = 'sDni'
 
-    #poner dni como FK
-    sDni = fields.Char(string="DNI del artista", size=9, required=True)
     fCache_base = fields.Float(string='Caché base')
     sMontaje = fields.Char(string='Montaje')
     bIluminacion = fields.Boolean(string='Iluminación')
@@ -17,11 +16,12 @@ class Artista(models.Model):
     sSonido = fields.Char(string='Sonido')
     sEspacio = fields.Char(string='Espacio')
 
+    persona_id = fields.Many2one('upoferia.persona', string='Persona', required=True)
     disciplina_ids = fields.One2many('upoferia.artista_disciplina', 'artista_id', string='Disciplinas')
     actuacion_ids = fields.Many2many('upoferia.actuacion', 'upoferia_actuacion_artista',
                                      'artista_id', 'actuacion_id', string='Actuaciones')
 
-    _sql_constraints = [('artista_sDni_unique', 'UNIQUE ("sDni")', 'Ya existe un artista con ese DNI.')]
+    _sql_constraints = [('artista_persona_unique', 'UNIQUE ("persona_id")', 'Esa persona ya está registrada como artista.')]
 
     @api.constrains('fCache_base', 'fPotencia_kw')
     def _check_valores(self):
