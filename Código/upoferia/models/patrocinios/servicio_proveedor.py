@@ -19,5 +19,5 @@ class ServicioProveedor(models.Model):
      @api.constrains('fPrecioTarifa')
      def _check_precio_tarifa(self):
           for record in self:
-               if record.fPrecioTarifa < 0:
-                    raise models.ValidationError('El precio de tarifa no puede ser menor que 0.')
+               if record.fPrecioTarifa <= 0:
+                    raise models.ValidationError('El precio de tarifa no puede ser menor o igual que 0.')

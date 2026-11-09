@@ -116,7 +116,7 @@ class Transaccion(models.Model):
                     raise models.ValidationError('Una transacción %s solo puede estar en estado %s.' % (tipo, ', '.join(estados)))
 
      @api.constrains('sIdTransaccion')
-     def _check_codigo(self):
+     def _check_IdTransaccion(self):
           for record in self:
                if ' ' in record.sIdTransaccion or record.sIdTransaccion != record.sIdTransaccion.upper():
                     raise models.ValidationError('El id debe ir en mayúsculas y sin espacios.')

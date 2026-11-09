@@ -30,3 +30,9 @@ class Marca(models.Model):
           for record in self:
                if len(record.sNombre.strip()) < 2 or len(record.sNombre.strip()) > 50:
                     raise models.ValidationError('El nombre debe tener entre 2 y 50 caracteres.')
+
+     @api.constrains('sColorCorporativo')
+     def _check_color_corporativo(self):
+          for record in self:
+               if record.sColorCorporativo and (record.sColorCorporativo[0] != '#' or len(record.sColorCorporativo) != 7):
+                    raise models.ValidationError('El color corporativo debe tener el formato #RRGGBB (por ejemplo #C8102E).')

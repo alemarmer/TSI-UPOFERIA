@@ -61,7 +61,7 @@ class ExhibicionMarca(models.Model):
                          raise models.ValidationError('El espacio %s ya está ocupado en esas fechas por la exhibición %s.' % (record.espacio_publicitario_id.sCodigoLugar, otra.sIdExhibicion))
 
      @api.constrains('sIdExhibicion')
-     def _check_codigo(self):
+     def _check_IdExhibicion(self):
           for record in self:
                if ' ' in record.sIdExhibicion or record.sIdExhibicion != record.sIdExhibicion.upper():
                     raise models.ValidationError('El id debe ir en mayúsculas y sin espacios .')

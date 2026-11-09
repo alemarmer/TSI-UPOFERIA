@@ -86,7 +86,7 @@ class EspacioPublicitario(models.Model):
           return resultado
 
      @api.constrains('sCodigoLugar')
-     def _check_codigo(self):
+     def _check_CodigoLugar(self):
           for record in self:
                if ' ' in record.sCodigoLugar or record.sCodigoLugar != record.sCodigoLugar.upper():
                     raise models.ValidationError('El código debe ir en mayúsculas y sin espacios.')
