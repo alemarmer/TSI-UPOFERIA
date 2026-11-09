@@ -21,6 +21,8 @@ class MobiliarioCaseta(models.Model):
     dFechaAsignacion = fields.Date(string='Fecha de asignación')
     fCoste = fields.Float(string='Coste')
 
+    caseta_id = fields.Many2one('feria.caseta', string='Caseta', ondelete='set null')
+
     @api.constrains('sNumeroSerie')
     def _check_numero_serie(self):
         oRegistro = None
