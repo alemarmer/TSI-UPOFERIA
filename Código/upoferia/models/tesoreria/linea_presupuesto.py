@@ -6,43 +6,48 @@ class LineaPresupuesto(models.Model):
 
     _name = 'upoferia.linea_presupuesto'
     _description = 'Línea de presupuesto'
-    _rec_name = 'concepto'
+    _rec_name = 'sConcepto'
 
-    concepto = fields.Char(string="Concepto", required=True, help="Identifica la línea dentro de su presupuesto")
-    tipo = fields.Selection([('ingreso', 'Ingreso'),
+    sConcepto = fields.Char(string="Concepto", required=True, help="Identifica la línea dentro de su presupuesto")
+    selTipo = fields.Selection([('ingreso', 'Ingreso'),
                              ('gasto', 'Gasto'),],
                             'Tipo', required=True)
-    importe_previsto = fields.Float(string="Importe previsto", required=True, digits=(10, 2))
+    fImportePrevisto = fields.Float(string="Importe previsto", required=True, digits=(10, 2))
     
     # Relaciones
-    presupuesto_id = fields.Many2one('upoferia.presupuesto', string="Presupuesto", required=True, ondelete='cascade')
-    categoria_economica_id = fields.Many2one('upoferia.categoria_economica', string="Categoría económica", required=True, ondelete='restrict')
+    presupuesto_id = fields.Many2one('upoferia.presupuesto', string="Presupuesto", required=True)
+    categoria_economica_id = fields.Many2one('upoferia.categoria_economica', string="Categoría económica", required=True)
     movimiento_ids = fields.One2many('upoferia.movimiento', 'linea_presupuesto_id', string="Movimientos")
 
     _sql_constraints = [
-        ('concepto_presupuesto_unique', 'UNIQUE(presupuesto_id, concepto)',
+        ('concepto_presupuesto_unique', 'UNIQUE("presupuesto_id", "sConcepto")',
          'Ya existe una línea con ese concepto en este presupuesto.'),
-        ('importe_previsto_positivo', 'CHECK(importe_previsto >= 0)',
-         'El importe previsto no puede ser negativo; indica si es ingreso o gasto con el campo «Tipo».'),
     ]
 
-    @api.constrains('concepto')
+    @api.constrains('sConcepto')
     def _check_concepto(self):
         for record in self:
-            if not record.concepto.strip():
+            if not record.sConcepto.strip():
                 raise ValidationError('El concepto de la línea de presupuesto no puede estar vacío.')
 
-    @api.onchange('importe_previsto')
+    @api.constrains('fImportePrevisto')
+    def _check_importe_previsto(self):
+        for record in self:
+            if record.fImportePrevisto < 0:
+                raise ValidationError('El importe previsto no puede ser negativo; indica si es ingreso o gasto '
+                                      'con el campo «Tipo».')
+
+    @api.onchange('fImportePrevisto')
     def onchange_importe_previsto(self):
-        if self.importe_previsto < 0:
+        if self.fImportePrevisto < 0:
             return {
-                'value': {'importe_previsto': abs(self.importe_previsto)},
+                'value': {'fImportePrevisto': abs(self.fImportePrevisto)},
                 'warning': {
                     'title': 'Importe negativo',
                     'message': 'El importe se guarda siempre en positivo. Para un gasto, elige «Gasto» en el campo «Tipo».'
                 }
             }
-        if self.importe_previsto == 0:
+        if self.fImportePrevisto == 0:
             return {
                 'warning': {
                     'title': 'Importe a cero',
