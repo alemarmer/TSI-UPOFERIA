@@ -1,16 +1,12 @@
-from odoo import models, fields, api
-from odoo.exceptions import ValidationError
+# -*- coding: utf-8 -*-
 
+from odoo import models, fields, api
 
 class Premio(models.Model):
     _name = 'upoferia.premio'
     _description = 'Upoferia.premio'
     _rec_name = 'iPuesto'
-    _sql_constraints = [
-        # PK compuesta (nombre_concurso, iPuesto)
-        ('concurso_iPuesto_uniq', 'UNIQUE ("concurso_id", "iPuesto")',
-         'Ese concurso ya tiene un premio para ese Puesto.'),
-    ]
+
 
     iPuesto = fields.Integer(string='Puesto', required=True)
     sDescripcion = fields.Char(string='Descripción')
@@ -21,6 +17,9 @@ class Premio(models.Model):
                                   required=True, ondelete='cascade')
 
     #ojo relacion con REGISTRO_XP
+
+    _sql_constraints = [('premio_concurso_puesto_unique', 'UNIQUE ("concurso_id", "iPuesto")', 'Ese concurso ya tiene un premio para ese puesto.')]
+
 
     @api.constrains('iPuesto')
     def _check_iPuesto(self):
