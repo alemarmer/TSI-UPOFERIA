@@ -15,8 +15,7 @@ class Premio(models.Model):
 
     concurso_id = fields.Many2one('upoferia.concurso', string='Concurso',
                                   required=True, ondelete='cascade')
-
-    #ojo relacion con REGISTRO_XP
+    registro_xp_ids = fields.One2many('upoferia.registro_xp', 'premio_id', string='Registros de XP')
 
     _sql_constraints = [('premio_concurso_puesto_unique', 'UNIQUE ("concurso_id", "iPuesto")', 'Ese concurso ya tiene un premio para ese puesto.')]
 

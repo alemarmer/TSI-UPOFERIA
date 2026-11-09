@@ -20,7 +20,6 @@ class Concurso(models.Model):
     jurado_ids = fields.One2many('upoferia.jurado', 'concurso_id', string='Jurado')
     participacion_ids = fields.One2many('upoferia.participacion_concurso', 'concurso_id', string='Participantes')
     premio_ids = fields.One2many('upoferia.premio', 'concurso_id', string='Premios')
-
     iNum_participantes = fields.Integer(compute='_numParticipantes', string='Número de participantes', store=True)
 
     _sql_constraints = [('concurso_evento_unique', 'UNIQUE ("evento_id")', 'Ese evento ya está registrado como concurso.')]

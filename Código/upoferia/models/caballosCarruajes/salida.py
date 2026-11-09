@@ -17,13 +17,10 @@ class Salida(models.Model):
                                 ('finalizada', 'Finalizada'),
                                 ('cancelada', 'Cancelada')],
                                'Estado', default='programada')
-
     carruaje_id = fields.Many2one('upoferia.carruaje', string='Carruaje', required=True)
     caballo_ids = fields.Many2many('upoferia.caballo', 'upoferia_salida_caballo',
                                    'salida_id', 'caballo_id', string='Caballos')
-
     iPlazas_libres = fields.Integer(compute='_plazasLibres', string='Plazas libres', store=True)
-
     transaccion_id = fields.Many2one('upoferia.transaccion', string='Transacción')
 
     _sql_constraints = [('salida_carruaje_fecha_unique', 'UNIQUE ("carruaje_id", "dFecha_hora_salida")', 'Ese carruaje ya tiene una salida a esa fecha y hora.')]
