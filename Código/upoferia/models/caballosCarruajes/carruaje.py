@@ -11,10 +11,8 @@ class Carruaje(models.Model):
     sNum_registro = fields.Char(string='Número de registro', required=True)
     sModelo = fields.Char(string='Modelo')
     iPlazas = fields.Integer(string='Plazas')
-
     salida_ids = fields.One2many('upoferia.salida', 'carruaje_id', string='Salidas')
-
-    #conexion con inspeccion 
+    licencia_ids = fields.One2many('upoferia.licencia', 'carruaje_id', string='Licencias')
 
     _sql_constraints = [('carruaje_sNum_registro_unique', 'UNIQUE ("sNum_registro")', 'Ya existe un carruaje con ese número de registro.')]
 
