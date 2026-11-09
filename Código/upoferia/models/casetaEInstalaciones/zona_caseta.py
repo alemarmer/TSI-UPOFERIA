@@ -5,7 +5,7 @@ from odoo.exceptions import ValidationError
 
 
 class ZonaCaseta(models.Model):
-    _name = 'feria.zona_caseta'
+    _name = 'upoferia.zona_caseta'
     _description = 'Zona de caseta'
     _rec_name = 'sNombre'
     _rec_names_search = ['sNombre', 'caseta_id.sNombre']
@@ -27,8 +27,8 @@ class ZonaCaseta(models.Model):
     ], string='Tipo')
     fSuperficieM2 = fields.Float(string='Superficie (m²)')
 
-    caseta_id = fields.Many2one('feria.caseta', string='Caseta', required=True, ondelete='cascade')
-    mesa_ids = fields.One2many('feria.mesa', 'zona_id', string='Mesas')
+    caseta_id = fields.Many2one('upoferia.caseta', string='Caseta', required=True, ondelete='cascade')
+    mesa_ids = fields.One2many('upoferia.mesa', 'zona_id', string='Mesas')
 
     @api.depends('sNombre', 'caseta_id.sNombre')
     def _compute_display_name(self):

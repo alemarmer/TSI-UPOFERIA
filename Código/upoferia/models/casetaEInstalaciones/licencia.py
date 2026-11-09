@@ -10,7 +10,7 @@ from odoo.exceptions import ValidationError
 
 
 class Licencia(models.Model):
-    _name = 'feria.licencia'
+    _name = 'upoferia.licencia'
     _description = 'Licencia'
     _rec_name = 'sNumeroExpediente'
     _sql_constraints = [
@@ -39,7 +39,7 @@ class Licencia(models.Model):
 
     sDocumento = fields.Char(string='Documento')
 
-    caseta_id = fields.Many2one('feria.caseta', string='Caseta', required=True, ondelete='restrict')
+    caseta_id = fields.Many2one('upoferia.caseta', string='Caseta', required=True, ondelete='restrict')
 
     bVigente = fields.Boolean(string='Vigente', compute='_compute_vigente')
 

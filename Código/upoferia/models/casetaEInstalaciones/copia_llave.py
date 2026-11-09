@@ -7,7 +7,7 @@ from odoo.exceptions import ValidationError
 
 
 class CopiaLlave(models.Model):
-    _name = 'feria.copia_llave'
+    _name = 'upoferia.copia_llave'
     _description = 'Copia de llave'
     _rec_name = 'iNumeroCopia'
 

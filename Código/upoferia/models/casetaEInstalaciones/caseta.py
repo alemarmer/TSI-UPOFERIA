@@ -8,15 +8,9 @@ from odoo.exceptions import ValidationError
 
 
 class Caseta(models.Model):
-    _name = 'feria.caseta'
+    _name = 'upoferia.caseta'
     _description = 'Caseta'
     _rec_name = 'sNombre'
-    _sql_constraints = [
-        ('nombre_uniq', 'UNIQUE ("sNombre")',
-         'Ya existe una caseta con ese nombre.'),
-        ('direccion_uniq', 'UNIQUE ("sCalle", "sNumero")',
-         'Ya existe una caseta en esa calle y número.'),
-    ]
 
     sNombre = fields.Char(string='Nombre', required=True)
     sCalle = fields.Char(string='Calle')
@@ -26,10 +20,17 @@ class Caseta(models.Model):
     fHoraApertura = fields.Float(string='Hora de apertura')
     fHoraCierre = fields.Float(string='Hora de cierre')
 
-    zona_ids = fields.One2many('feria.zona_caseta', 'caseta_id', string='Zonas')
-    mobiliario_ids = fields.One2many('feria.mobiliario_caseta', 'caseta_id', string='Mobiliario')
-    licencia_ids = fields.One2many('feria.licencia', 'caseta_id', string='Licencias')
-    inspeccion_ids = fields.One2many('feria.inspeccion', 'caseta_id', string='Inspecciones')
+    _sql_constraints = [
+            ('nombre_uniq', 'UNIQUE ("sNombre")',
+             'Ya existe una caseta con ese nombre.'),
+            ('direccion_uniq', 'UNIQUE ("sCalle", "sNumero")',
+             'Ya existe una caseta en esa calle y número.'),
+        ]
+
+    zona_ids = fields.One2many('upoferia.zona_caseta', 'caseta_id', string='Zonas')
+    mobiliario_ids = fields.One2many('upoferia.mobiliario_caseta', 'caseta_id', string='Mobiliario')
+    licencia_ids = fields.One2many('upoferia.licencia', 'caseta_id', string='Licencias')
+    inspeccion_ids = fields.One2many('upoferia.inspeccion', 'caseta_id', string='Inspecciones')
 
     @api.constrains('sNombre')
     def _check_nombre(self):

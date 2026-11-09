@@ -7,7 +7,7 @@ from odoo.exceptions import ValidationError
 
 
 class Llave(models.Model):
-    _name = 'feria.llave'
+    _name = 'upoferia.llave'
     _description = 'Llave'
     _rec_name = 'sCodigoLlave'
     _sql_constraints = [

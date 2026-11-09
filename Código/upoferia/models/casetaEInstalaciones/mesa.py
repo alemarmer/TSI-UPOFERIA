@@ -5,7 +5,7 @@ from odoo.exceptions import ValidationError
 
 
 class Mesa(models.Model):
-    _name = 'feria.mesa'
+    _name = 'upoferia.mesa'
     _description = 'Mesa'
     _rec_name = 'iNumero'
     _sql_constraints = [
@@ -16,7 +16,7 @@ class Mesa(models.Model):
     iNumero = fields.Integer(string='Número', required=True)
     iCapacidad = fields.Integer(string='Capacidad', required=True)
 
-    zona_id = fields.Many2one('feria.zona_caseta', string='Zona', ondelete='set null')
+    zona_id = fields.Many2one('upoferia.zona_caseta', string='Zona', ondelete='set null')
 
     @api.depends('iNumero', 'zona_id.display_name')
     def _compute_display_name(self):

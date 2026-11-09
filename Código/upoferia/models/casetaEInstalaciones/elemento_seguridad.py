@@ -9,14 +9,10 @@ from odoo.exceptions import ValidationError
 
 
 class ElementoSeguridad(models.Model):
-    _name = 'feria.elemento_seguridad'
+    _name = 'upoferia.elemento_seguridad'
     _description = 'Elemento de seguridad'
     _inherits = {'feria.mobiliario_caseta': 'mobiliario_id'}
     _rec_name = 'sNumeroSerie'
-    _sql_constraints = [
-        ('mobiliario_uniq', 'UNIQUE (mobiliario_id)',
-         'Ese mobiliario ya está registrado como elemento de seguridad.'),
-    ]
 
     sTipo = fields.Selection([
         ('extintor', 'Extintor'),
@@ -29,6 +25,11 @@ class ElementoSeguridad(models.Model):
     ], string='Tipo', required=True)
     dFechaUltimaRevision = fields.Date(string='Fecha de la última revisión')
     dFechaProximaRevision = fields.Date(string='Fecha de la próxima revisión')
+
+    _sql_constraints = [
+            ('mobiliario_uniq', 'UNIQUE (mobiliario_id)',
+             'Ese mobiliario ya está registrado como elemento de seguridad.'),
+        ]
 
     mobiliario_id = fields.Many2one('feria.mobiliario_caseta', string='Mobiliario', required=True, ondelete='cascade')
 

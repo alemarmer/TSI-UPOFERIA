@@ -8,7 +8,7 @@ from odoo.exceptions import ValidationError
 
 
 class MobiliarioCaseta(models.Model):
-    _name = 'feria.mobiliario_caseta'
+    _name = 'upoferia.mobiliario_caseta'
     _description = 'Mobiliario de caseta'
     _rec_name = 'sNumeroSerie'
     _sql_constraints = [
@@ -21,7 +21,7 @@ class MobiliarioCaseta(models.Model):
     dFechaAsignacion = fields.Date(string='Fecha de asignación')
     fCoste = fields.Float(string='Coste')
 
-    caseta_id = fields.Many2one('feria.caseta', string='Caseta', ondelete='set null')
+    caseta_id = fields.Many2one('upoferia.caseta', string='Caseta', ondelete='set null')
 
     @api.constrains('sNumeroSerie')
     def _check_numero_serie(self):
