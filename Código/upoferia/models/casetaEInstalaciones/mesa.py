@@ -16,6 +16,8 @@ class Mesa(models.Model):
     iNumero = fields.Integer(string='Número', required=True)
     iCapacidad = fields.Integer(string='Capacidad', required=True)
 
+    zona_id = fields.Many2one('feria.zona_caseta', string='Zona', ondelete='set null')
+
     @api.depends('iNumero', 'zona_id.display_name')
     def _compute_display_name(self):
         oRegistro = None
