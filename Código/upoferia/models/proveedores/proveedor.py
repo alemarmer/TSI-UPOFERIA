@@ -7,6 +7,7 @@ class Proveedor(models.Model):
      _name = 'upoferia.proveedor'
      _description = 'Proveedor'
      _inherits = {'upoferia.persona': 'persona_id'}
+     _rec_name = 'sNombre'
 
      persona_id = fields.Many2one("upoferia.persona", string="Persona", required=True, ondelete='cascade')
 

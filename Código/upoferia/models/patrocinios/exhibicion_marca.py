@@ -59,3 +59,9 @@ class ExhibicionMarca(models.Model):
                     acaba_despues = not otra.dFechaRetirada or otra.dFechaRetirada >= record.dFechaMontaje
                     if empieza_antes and acaba_despues:
                          raise models.ValidationError('El espacio %s ya está ocupado en esas fechas por la exhibición %s.' % (record.espacio_publicitario_id.sCodigoLugar, otra.sIdExhibicion))
+
+     @api.constrains('sIdExhibicion')
+     def _check_codigo(self):
+          for record in self:
+               if ' ' in record.sIdExhibicion or record.sIdExhibicion != record.sIdExhibicion.upper():
+                    raise models.ValidationError('El id debe ir en mayúsculas y sin espacios .')

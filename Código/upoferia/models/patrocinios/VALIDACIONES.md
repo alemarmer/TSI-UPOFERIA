@@ -28,8 +28,9 @@
 - Obligatorio y único — `required` / `_sql_constraints`
 
 ### `fAltoM` y `fAnchoM` (Float)
-- Obligatorios, mayores que 0 y como mucho 30 metros — `required` / `@api.constrains`
+- Obligatorios, mayores que 0, como mucho 30 metros y con dos decimales como máximo (centímetros) — `required` / `@api.constrains`
 - En el formulario, si se pasan de 30 se ajustan a 30, y si son 0 o menos se ajustan a 1, avisando al usuario — `@api.onchange` (uno para cada campo)
+
 ### Relaciones
 - `exhibicion_ids` (One2many → ExhibicionMarca) — exhibiciones del espacio.
 - `zona_caseta_id` (Many2one → ZonaCaseta) — opcional, la zona de la caseta donde está el espacio (en el relacional son dos columnas, `nombre_caseta` y `nombre_zona_caseta`, porque la clave de ZONA_CASETA es compuesta; en Odoo es un solo Many2one).

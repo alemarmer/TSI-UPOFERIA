@@ -37,3 +37,9 @@ class Servicio(models.Model):
           for record in self:
                if len(record.sNombre.strip()) < 2 or len(record.sNombre.strip()) > 50:
                     raise models.ValidationError('El nombre debe tener entre 2 y 50 caracteres.')
+
+     @api.constrains('sCodigo')
+     def _check_codigo(self):
+          for record in self:
+               if ' ' in record.sCodigo or record.sCodigo != record.sCodigo.upper():
+                    raise models.ValidationError('El codigo debe ir en mayúsculas y sin espacios.')

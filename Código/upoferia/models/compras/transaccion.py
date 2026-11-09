@@ -115,6 +115,12 @@ class Transaccion(models.Model):
                if record.sEstado not in estados:
                     raise models.ValidationError('Una transacción %s solo puede estar en estado %s.' % (tipo, ', '.join(estados)))
 
+     @api.constrains('sIdTransaccion')
+     def _check_codigo(self):
+          for record in self:
+               if ' ' in record.sIdTransaccion or record.sIdTransaccion != record.sIdTransaccion.upper():
+                    raise models.ValidationError('El id debe ir en mayúsculas y sin espacios.')
+
      @api.onchange('tipo_transaccion_id')
      def onchange_tipo_transaccion(self):
           tipo = self.tipo_transaccion_id.sCodigo

@@ -40,6 +40,8 @@ class EspacioPublicitario(models.Model):
                     raise models.ValidationError('El alto y el ancho deben ser mayores que 0.')
                if record.fAltoM > 30 or record.fAnchoM > 30:
                     raise models.ValidationError('El alto y el ancho no pueden superar los 30 metros.')
+               if round(record.fAltoM, 2) != record.fAltoM or round(record.fAnchoM, 2) != record.fAnchoM:
+                    raise models.ValidationError('El alto y el ancho solo admiten dos decimales (centímetros).')
 
      @api.onchange('fAltoM')
      def onchange_alto(self):
@@ -82,3 +84,9 @@ class EspacioPublicitario(models.Model):
                     }
                }
           return resultado
+
+     @api.constrains('sCodigoLugar')
+     def _check_codigo(self):
+          for record in self:
+               if ' ' in record.sCodigoLugar or record.sCodigoLugar != record.sCodigoLugar.upper():
+                    raise models.ValidationError('El código debe ir en mayúsculas y sin espacios.')

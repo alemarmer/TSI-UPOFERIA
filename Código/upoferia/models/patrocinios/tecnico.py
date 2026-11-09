@@ -7,6 +7,7 @@ class Tecnico(models.Model):
      _name = 'upoferia.tecnico'
      _description = 'Técnico'
      _inherits = {'upoferia.persona': 'persona_id'}
+     _rec_name = 'sNombre'
 
      persona_id = fields.Many2one("upoferia.persona", string="Persona", required=True, ondelete='cascade')
 
@@ -24,7 +25,7 @@ class Tecnico(models.Model):
      
      exhibicion_ids = fields.One2many("upoferia.exhibicion_marca", 'tecnico_id', string="Exhibiciones")
      mantenimiento_ids = fields.Many2many("upoferia.mantenimiento", 'upoferia_mantenimiento_tecnico', 'tecnico_id', 'mantenimiento_id', string="Mantenimientos")
-     
+
      _sql_constraints = [('tecnico_carnet_unique', 'UNIQUE ("sCodCarnetProfesional")', 'Ya existe un técnico con ese código de carné profesional')]
 
      def btn_quitarExhibiciones(self):
@@ -41,3 +42,9 @@ class Tecnico(models.Model):
                     }
                }
                return resultado
+
+     @api.constrains('sCodCarnetProfesional', 'dFechaCaducidadCarnet')
+     def _check_carnet(self):
+          for record in self:
+               if record.dFechaCaducidadCarnet and not record.sCodCarnetProfesional:
+                    raise models.ValidationError('No se puede indicar la caducidad del carné sin el código del carné.')

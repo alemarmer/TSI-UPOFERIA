@@ -31,3 +31,9 @@ class CategoriaProveedor(models.Model):
           for record in self:
                if len(record.sNombre.strip()) < 2 or len(record.sNombre.strip()) > 50:
                     raise models.ValidationError('El nombre debe tener entre 2 y 50 caracteres.')
+
+     @api.constrains('iColor')
+     def _check_color(self):
+          for record in self:
+               if record.iColor < 0 or record.iColor > 11:
+                    raise models.ValidationError('El color debe ser un número entre 0 y 11.')
