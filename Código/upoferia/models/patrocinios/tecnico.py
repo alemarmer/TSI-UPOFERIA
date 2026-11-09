@@ -6,6 +6,9 @@ from odoo import models, fields, api
 class Tecnico(models.Model):
      _name = 'upoferia.tecnico'
      _description = 'Técnico'
+     _inherits = {'upoferia.persona': 'persona_id'}
+
+     persona_id = fields.Many2one("upoferia.persona", string="Persona", required=True, ondelete='cascade')
 
      sEspecialidad = fields.Selection([('electricidad', 'Electricidad'),
                                        ('sonido', 'Sonido'),
@@ -20,7 +23,8 @@ class Tecnico(models.Model):
 
      
      exhibicion_ids = fields.One2many("upoferia.exhibicion_marca", 'tecnico_id', string="Exhibiciones")
-
+     mantenimiento_ids = fields.Many2many("upoferia.mantenimiento", 'upoferia_mantenimiento_tecnico', 'tecnico_id', 'mantenimiento_id', string="Mantenimientos")
+     
      _sql_constraints = [('tecnico_carnet_unique', 'UNIQUE ("sCodCarnetProfesional")', 'Ya existe un técnico con ese código de carné profesional')]
 
      def btn_quitarExhibiciones(self):

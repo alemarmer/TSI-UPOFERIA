@@ -24,6 +24,7 @@ class EspacioPublicitario(models.Model):
 
      
      exhibicion_ids = fields.One2many("upoferia.exhibicion_marca", 'espacio_publicitario_id', string="Exhibiciones")
+     zona_caseta_id = fields.Many2one("upoferia.zona_caseta", string="Zona de la caseta")
      fSuperficieM2 = fields.Float(compute='_superficie', string="Superficie (m²)")
 
      _sql_constraints = [('espacio_publicitario_codigo_unique', 'UNIQUE ("sCodigoLugar")', 'Ya existe un espacio publicitario con ese código')]

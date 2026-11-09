@@ -6,6 +6,9 @@ from odoo import models, fields, api
 class Proveedor(models.Model):
      _name = 'upoferia.proveedor'
      _description = 'Proveedor'
+     _inherits = {'upoferia.persona': 'persona_id'}
+
+     persona_id = fields.Many2one("upoferia.persona", string="Persona", required=True, ondelete='cascade')
 
      sCif = fields.Char(string="CIF", size=9)
 
@@ -14,6 +17,7 @@ class Proveedor(models.Model):
      categoria_ids = fields.Many2many("upoferia.categoria_proveedor", 'upoferia_proveedor_categoria_rel', 'proveedor_id', 'categoria_proveedor_id', string="Categorías")
      marca_ids = fields.One2many("upoferia.marca", 'proveedor_id', string="Marcas")
      servicio_proveedor_ids = fields.One2many("upoferia.servicio_proveedor", 'proveedor_id', string="Servicios que ofrece")
+     prestamo_ids = fields.One2many("upoferia.prestamo", 'proveedor_id', string="Préstamos")
 
      _sql_constraints = [('proveedor_cif_unique', 'UNIQUE ("sCif")', 'Ya existe un proveedor con ese CIF')]
 

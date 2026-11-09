@@ -41,7 +41,11 @@ class Transaccion(models.Model):
      actuacion_ids = fields.One2many("upoferia.actuacion", 'transaccion_id', string="Actuaciones")
      salida_ids = fields.One2many("upoferia.salida", 'transaccion_id', string="Salidas")
      sCodigoTipo = fields.Char(related='tipo_transaccion_id.sCodigo', string="Código del tipo")
+     caseta_id = fields.Many2one("upoferia.caseta", string="Caseta")
+     prestamo_ids = fields.One2many("upoferia.prestamo", 'transaccion_id', string="Préstamos")
+     mantenimiento_ids = fields.One2many("upoferia.mantenimiento", 'transaccion_id', string="Mantenimientos")
      fImporteFacturado = fields.Float(compute='_importeFacturado', string="Importe facturado")
+
 
      _sql_constraints = [('transaccion_id_unique', 'UNIQUE ("sIdTransaccion")', 'Ya existe una transacción con ese identificador')]
 
