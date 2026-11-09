@@ -35,6 +35,7 @@
 - `zona_ids` (One2many → ZonaCaseta) — zonas de la caseta (inverso de `caseta_id`).
 - `mobiliario_ids` (One2many → MobiliarioCaseta) — mobiliario asignado a la caseta (inverso de `caseta_id`).
 - `licencia_ids` (One2many → Licencia) — licencias de la caseta (inverso de `caseta_id`).
+- `inspeccion_ids` (One2many → Inspeccion) — inspecciones de la caseta (inverso de `caseta_id`, bloque Inspecciones e Incidencias).
 
 ## ZonaCaseta (`feria.zona_caseta`) — `zona_caseta.py`
 
@@ -209,7 +210,7 @@
 - **Licencia**: `carruaje_id` (Many2one → Carruaje), opcional, `ondelete='set null'`. Cuando esté, una licencia de tipo `carruaje` tendrá que tenerlo obligatoriamente.
 - **Llave**: `taquilla_id` (Many2one → Taquilla), opcional y único (`UNIQUE (taquilla_id)`). Cuando esté: la maestra no puede tener taquilla y una llave original tiene que tenerla.
 - **CopiaLlave**: `asignacion_id` (Many2one → AsignacionTaquilla), obligatorio, `ondelete='cascade'`. Cuando esté: `UNIQUE (asignacion_id, "iNumeroCopia")`, solo una copia activa por asignación, y el nombre que se muestra pasará a ser `Taquilla X – copia N`.
-- **Caseta**: los One2many inversos de las tablas del bloque Inspecciones e Incidencias (`inspeccion_ids`) y de otros bloques (eventos, transacciones…), cuando existan esos modelos.
+- **Caseta**: los One2many inversos de las tablas de otros bloques (eventos, transacciones…), cuando existan esos modelos.
 
 ---
 
