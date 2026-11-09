@@ -3,7 +3,10 @@
 ## Marca (`upoferia.marca`) — `marca.py`
 
 ### `sNombre` (Char) — clave
-- Obligatorio y con entre 2 y 50 caracteres sin contar los espacios del principio y del final — `required` / `@api.constrains`### Relaciones
+- Obligatorio y único — `required` / `_sql_constraints`
+- Entre 2 y 50 caracteres sin contar los espacios del principio y del final — `@api.constrains`
+
+### Relaciones
 - `proveedor_id` (Many2one → Proveedor) — opcional, relación «comercializa». Si se borra el proveedor, la marca se queda sin él.
 - `exhibicion_ids` (One2many → ExhibicionMarca) — exhibiciones de la marca.
 - `patrocinio_ids` (One2many → Patrocinio) — eventos que patrocina.
@@ -28,8 +31,8 @@
 - Obligatorio y único — `required` / `_sql_constraints`
 
 ### `fAltoM` y `fAnchoM` (Float)
-- Obligatorios, mayores que 0, como mucho 30 metros y con dos decimales como máximo (centímetros) — `required` / `@api.constrains`
-- En el formulario, si se pasan de 30 se ajustan a 30, y si son 0 o menos se ajustan a 1, avisando al usuario — `@api.onchange` (uno para cada campo)
+- Obligatorios, mayores que 0 y como mucho 30 metros — `required` / `@api.constrains`
+- En el formulario, si se pasan de 30 se ajustan a 30, y si son 0 o menos se ajustan a 1, avisando al usuario — `@api.onchange` (uno para cada campo). Si no se tocan, el onchange no actúa y la regla anterior da error al guardar.
 
 ### Relaciones
 - `exhibicion_ids` (One2many → ExhibicionMarca) — exhibiciones del espacio.
@@ -42,6 +45,7 @@
 
 ### `sIdExhibicion` (Char) — clave
 - Obligatorio y único — `required` / `_sql_constraints`
+- En mayúsculas y sin espacios (por ejemplo EXH-01) — `@api.constrains`
 
 ### `dFechaMontaje` y `dFechaRetirada` (Date)
 - No hay fecha de retirada sin fecha de montaje, y la retirada no es anterior al montaje — `@api.constrains`
@@ -80,6 +84,7 @@
 
 ### `sNombre` (Char)
 - Obligatorio — `required`
+- Entre 2 y 50 caracteres sin contar los espacios del principio y del final — `@api.constrains`
 
 ### Relaciones
 - `servicio_proveedor_ids` (One2many → ServicioProveedor) — proveedores que lo ofrecen.

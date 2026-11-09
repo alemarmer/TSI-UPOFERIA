@@ -7,7 +7,9 @@
 - Solo admite PED, ALB, FAC, ABO o CON — `@api.constrains`
 
 ### `sNombre` (Char)
-- Obligatorio y con entre 2 y 50 caracteres sin contar los espacios del principio y del final — `required` / `@api.constrains`
+- Obligatorio — `required`
+- Entre 2 y 50 caracteres sin contar los espacios del principio y del final — `@api.constrains`
+
 ### Relaciones
 - `transaccion_ids` (One2many → Transaccion) — las transacciones de este tipo (inverso de `tipo_transaccion_id`).
 

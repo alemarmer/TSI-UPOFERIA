@@ -3,7 +3,9 @@
 ## CategoriaProveedor (`upoferia.categoria_proveedor`) — `categoria_proveedor.py`
 
 ### `sNombre` (Char) — clave
-- Obligatorio y con entre 2 y 50 caracteres sin contar los espacios del principio y del final — `required` / `@api.constrains`
+- Obligatorio y único — `required` / `_sql_constraints`
+- Entre 2 y 50 caracteres sin contar los espacios del principio y del final — `@api.constrains`
+
 ### `iColor` (Integer)
 - Color de la etiqueta (0 a 11, los colores de Odoo); en la vista se elige con `widget="color_picker"`.
 
