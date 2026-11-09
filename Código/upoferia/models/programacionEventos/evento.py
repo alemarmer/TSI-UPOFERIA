@@ -18,6 +18,7 @@ class Evento(models.Model):
                                 ('finalizado', 'Finalizado'),
                                 ('cancelado', 'Cancelado')],
                                'Estado', default='programado')
+    iPlazas_libres = fields.Integer(compute='_plazasLibres', string='Plazas libres', store=True)
 
     tipo_evento_id = fields.Many2one('upoferia.tipo_evento', string='Tipo de evento', required=True)
     concurso_ids = fields.One2many('upoferia.concurso', 'evento_id', string='Concurso')
@@ -48,6 +49,11 @@ class Evento(models.Model):
             else:
                 record.fDuracion = 0
 
+    @api.depends('caseta_id.iAforo_autorizado', 'iAforo_reservado')
+    def _plazasLibres(self):
+        for record in self:
+            record.iPlazas_libres = record.caseta_id.iAforo_autorizado - record.iAforo_reservado
+
     @api.constrains('sNombre_evento')
     def _check_sNombre_evento(self):
         for record in self:
@@ -68,11 +74,13 @@ class Evento(models.Model):
             if record.dFecha_hora_fin and record.dFecha_hora_fin <= record.dFecha_hora_inicio:
                 raise models.ValidationError('El fin debe ser posterior al inicio.')
 
-    @api.constrains('iAforo_reservado')
+    @api.constrains('iAforo_reservado', 'caseta_id')
     def _check_iAforo_reservado(self):
         for record in self:
             if record.iAforo_reservado < 0:
                 raise models.ValidationError('El aforo reservado no puede ser negativo.')
+            if record.iAforo_reservado > record.caseta_id.iAforo_autorizado:
+                raise models.ValidationError('El aforo reservado no puede superar el aforo autorizado de la caseta.')
 
     @api.onchange('dFecha_hora_inicio', 'dFecha_hora_fin')
     def onchange_fechas(self):

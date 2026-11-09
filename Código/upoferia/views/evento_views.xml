@@ -10,6 +10,7 @@
         <field name="dFecha_hora_inicio"/>
         <field name="dFecha_hora_fin"/>
         <field name="iAforo_reservado"/>
+        <field name="iPlazas_libres"/>
         <field name="sEstado"/>
       </list>
     </field>
