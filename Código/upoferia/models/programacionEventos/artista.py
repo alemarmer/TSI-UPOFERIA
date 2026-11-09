@@ -23,12 +23,6 @@ class Artista(models.Model):
 
     _sql_constraints = [('artista_sDni_unique', 'UNIQUE ("sDni")', 'Ya existe un artista con ese DNI.')]
 
-    def unlink(self):
-        for record in self:
-            if record.disciplina_ids:
-                raise models.ValidationError('No se puede borrar un artista que tiene disciplinas. Borra primero sus disciplinas.')
-        return super(Artista, self).unlink()
-
     @api.constrains('fCache_base', 'fPotencia_kw')
     def _check_valores(self):
         for record in self:

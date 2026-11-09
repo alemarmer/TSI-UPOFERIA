@@ -34,12 +34,6 @@ class Concurso(models.Model):
     def btn_submit_to_resuelto(self):
         self.write({'sEstado': 'resuelto'})
 
-    def unlink(self):
-        for record in self:
-            if record.premio_ids or record.jurado_ids or record.participacion_ids:
-                raise models.ValidationError('No se puede borrar un concurso que tiene premios, jurado o participantes.')
-        return super(Concurso, self).unlink()
-
     @api.depends('participacion_ids')
     def _numParticipantes(self):
         for record in self:

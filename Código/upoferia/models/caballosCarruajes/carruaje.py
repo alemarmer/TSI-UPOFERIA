@@ -19,12 +19,6 @@ class Carruaje(models.Model):
     _sql_constraints = [('carruaje_sNum_registro_unique', 'UNIQUE ("sNum_registro")', 'Ya existe un carruaje con ese número de registro.')]
 
 
-    def unlink(self):
-        for record in self:
-            if record.salida_ids:
-                raise models.ValidationError('No se puede borrar un carruaje que tiene salidas.')
-        return super(Carruaje, self).unlink()
-
     @api.constrains('iPlazas')
     def _check_iPlazas(self):
         for record in self:
