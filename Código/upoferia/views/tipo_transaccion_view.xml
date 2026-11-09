@@ -3,7 +3,7 @@
     <field name="name">upoferia.tipo_transaccion.form</field>
     <field name="model">upoferia.tipo_transaccion</field>
     <field name="arch" type="xml">
-      <form string="Tipo de transacción">
+      <form string="Tipos de transacción">
         <sheet layout="auto">
           <group>
             <field name="sCodigo" />
@@ -12,15 +12,7 @@
           </group>
           <notebook>
             <page name="transacciones" string="Transacciones">
-              <field name="transaccion_ids" readonly="1">
-                <list>
-                  <field name="sIdTransaccion" />
-                  <field name="proveedor_id" />
-                  <field name="dFechaInicial" />
-                  <field name="fImporte" sum="Total" />
-                  <field name="sEstado" widget="badge" />
-                </list>
-              </field>
+              <field name="transaccion_ids" readonly="1" />
             </page>
           </notebook>
         </sheet>

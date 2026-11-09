@@ -3,36 +3,25 @@
     <field name="name">upoferia.espacio_publicitario.form</field>
     <field name="model">upoferia.espacio_publicitario</field>
     <field name="arch" type="xml">
-      <form string="Espacio publicitario">
+      <form string="Espacios publicitarios">
         <sheet layout="auto">
-          <div class="oe_title">
-            <h1>
-              <field name="sCodigoLugar" placeholder="PORTADA-01" />
-            </h1>
-          </div>
           <group>
-            <group string="Ubicación">
+            <group>
+              <field name="sCodigoLugar" placeholder="PORTADA-01" />
               <field name="sTipo" />
               <field name="sUbicacionExacta" />
               <field name="bIluminado" />
+              <field name="zona_caseta_id" />
             </group>
-            <group string="Medidas">
+            <group>
               <field name="fAltoM" />
               <field name="fAnchoM" />
-              <field name="fSuperficieM2" digits="[16, 4]" />
+              <field name="fSuperficieM2" />
             </group>
           </group>
           <notebook>
             <page name="exhibiciones" string="Exhibiciones">
-              <field name="exhibicion_ids" readonly="1">
-                <list>
-                  <field name="sIdExhibicion" />
-                  <field name="marca_id" />
-                  <field name="dFechaMontaje" />
-                  <field name="dFechaRetirada" />
-                  <field name="sEstadoExhibicion" widget="badge" />
-                </list>
-              </field>
+              <field name="exhibicion_ids" readonly="1" />
             </page>
           </notebook>
         </sheet>
@@ -47,11 +36,9 @@
       <list string="Espacios publicitarios">
         <field name="sCodigoLugar" />
         <field name="sTipo" />
-        <field name="sUbicacionExacta" />
         <field name="fAltoM" />
         <field name="fAnchoM" />
-        <field name="fSuperficieM2" digits="[16, 4]" />
-        <field name="bIluminado" />
+        <field name="fSuperficieM2" />
       </list>
     </field>
   </record>

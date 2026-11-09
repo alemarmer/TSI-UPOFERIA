@@ -3,42 +3,30 @@
     <field name="name">upoferia.proveedor.form</field>
     <field name="model">upoferia.proveedor</field>
     <field name="arch" type="xml">
-      <form string="Proveedor">
+      <form string="Proveedores">
         <header>
-          <button name="btn_eliminarTarifas" string="Eliminar tarifas" type="object" invisible="not servicio_proveedor_ids" />
+          <button name="btn_eliminarTarifas" string="Eliminar tarifas" type="object" />
         </header>
         <sheet layout="auto">
           <group>
+            <field name="persona_id" />
             <field name="sCif" />
-            <field name="categoria_ids" widget="many2many_tags" options="{'color_field': 'iColor'}" />
           </group>
           <notebook>
+            <page name="categorias" string="Categorías">
+              <field name="categoria_ids" />
+            </page>
             <page name="servicios" string="Servicios que ofrece">
-              <field name="servicio_proveedor_ids">
-                <list editable="bottom">
-                  <field name="servicio_id" />
-                  <field name="fPrecioTarifa" />
-                </list>
-              </field>
+              <field name="servicio_proveedor_ids" />
             </page>
             <page name="marcas" string="Marcas">
-              <field name="marca_ids" readonly="1">
-                <list>
-                  <field name="sNombre" />
-                  <field name="sColorCorporativo" widget="color" />
-                </list>
-              </field>
+              <field name="marca_ids" readonly="1" />
             </page>
             <page name="transacciones" string="Transacciones">
-              <field name="transaccion_ids" readonly="1">
-                <list>
-                  <field name="sIdTransaccion" />
-                  <field name="tipo_transaccion_id" />
-                  <field name="dFechaInicial" />
-                  <field name="fImporte" />
-                  <field name="sEstado" widget="badge" />
-                </list>
-              </field>
+              <field name="transaccion_ids" readonly="1" />
+            </page>
+            <page name="prestamos" string="Préstamos">
+              <field name="prestamo_ids" readonly="1" />
             </page>
           </notebook>
         </sheet>
@@ -51,8 +39,8 @@
     <field name="model">upoferia.proveedor</field>
     <field name="arch" type="xml">
       <list string="Proveedores">
+        <field name="persona_id" />
         <field name="sCif" />
-        <field name="categoria_ids" widget="many2many_tags" options="{'color_field': 'iColor'}" />
       </list>
     </field>
   </record>

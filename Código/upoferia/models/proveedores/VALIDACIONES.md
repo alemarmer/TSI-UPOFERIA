@@ -9,7 +9,7 @@
 - Color de la etiqueta (0 a 11, los colores de Odoo); en la vista se elige con `widget="color_picker"`.
 
 ### Relaciones
-- `padre_id` (Many2one → CategoriaProveedor) — opcional, relación reflexiva «es subcategoría de». Si se borra una categoría, sus subcategorías se quedan sin madre. Una categoría no puede ser su propia madre ni tener como madre a una de sus subcategorías (no forma ciclos) — `@api.constrains` con `_has_cycle`
+- `padre_id` (Many2one → CategoriaProveedor) — opcional, relación reflexiva «es subcategoría de». Si se borra una categoría, sus subcategorías se quedan sin madre. — `@api.constrains` (se sube de padre en padre y, si se vuelve a la misma categoría, da error)
 - `hija_ids` (One2many → CategoriaProveedor) — subcategorías (inverso de `padre_id`).
 - `proveedor_ids` (Many2many → Proveedor) — tabla `upoferia_proveedor_categoria_rel`.
 

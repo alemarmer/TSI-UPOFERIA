@@ -3,31 +3,23 @@
     <field name="name">upoferia.tecnico.form</field>
     <field name="model">upoferia.tecnico</field>
     <field name="arch" type="xml">
-      <form string="Técnico">
+      <form string="Técnicos">
         <header>
-          <button name="btn_quitarExhibiciones" string="Quitar exhibiciones" type="object" invisible="not exhibicion_ids" />
+          <button name="btn_quitarExhibiciones" string="Quitar exhibiciones" type="object" />
         </header>
         <sheet layout="auto">
           <group>
-            <group>
-              <field name="sEspecialidad" />
-            </group>
-            <group string="Carné profesional">
-              <field name="sCodCarnetProfesional" />
-              <field name="dFechaCaducidadCarnet" />
-            </group>
+            <field name="persona_id" />
+            <field name="sEspecialidad" />
+            <field name="sCodCarnetProfesional" />
+            <field name="dFechaCaducidadCarnet" />
           </group>
           <notebook>
             <page name="exhibiciones" string="Exhibiciones">
-              <field name="exhibicion_ids" readonly="1">
-                <list>
-                  <field name="sIdExhibicion" />
-                  <field name="marca_id" />
-                  <field name="espacio_publicitario_id" />
-                  <field name="dFechaMontaje" />
-                  <field name="sEstadoExhibicion" widget="badge" />
-                </list>
-              </field>
+              <field name="exhibicion_ids" readonly="1" />
+            </page>
+            <page name="mantenimientos" string="Mantenimientos">
+              <field name="mantenimiento_ids" />
             </page>
           </notebook>
         </sheet>
@@ -40,6 +32,7 @@
     <field name="model">upoferia.tecnico</field>
     <field name="arch" type="xml">
       <list string="Técnicos">
+        <field name="persona_id" />
         <field name="sEspecialidad" />
         <field name="sCodCarnetProfesional" />
         <field name="dFechaCaducidadCarnet" />

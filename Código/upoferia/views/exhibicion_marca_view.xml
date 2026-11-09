@@ -3,18 +3,14 @@
     <field name="name">upoferia.exhibicion_marca.form</field>
     <field name="model">upoferia.exhibicion_marca</field>
     <field name="arch" type="xml">
-      <form string="Exhibición">
+      <form string="Exhibiciones">
         <header>
           <field name="sEstadoExhibicion" widget="statusbar" />
         </header>
         <sheet layout="auto">
-          <div class="oe_title">
-            <h1>
-              <field name="sIdExhibicion" placeholder="EXH-01" />
-            </h1>
-          </div>
           <group>
             <group>
+              <field name="sIdExhibicion" placeholder="EXH-01" />
               <field name="marca_id" />
               <field name="espacio_publicitario_id" />
               <field name="tecnico_id" />
@@ -34,14 +30,13 @@
     <field name="name">upoferia.exhibicion_marca.list</field>
     <field name="model">upoferia.exhibicion_marca</field>
     <field name="arch" type="xml">
-      <list string="Exhibiciones" decoration-info="sEstadoExhibicion == 'programada'" decoration-success="sEstadoExhibicion == 'montada'" decoration-muted="sEstadoExhibicion == 'retirada'">
+      <list string="Exhibiciones">
         <field name="sIdExhibicion" />
         <field name="marca_id" />
         <field name="espacio_publicitario_id" />
-        <field name="tecnico_id" />
         <field name="dFechaMontaje" />
         <field name="dFechaRetirada" />
-        <field name="sEstadoExhibicion" widget="badge" />
+        <field name="sEstadoExhibicion" />
       </list>
     </field>
   </record>

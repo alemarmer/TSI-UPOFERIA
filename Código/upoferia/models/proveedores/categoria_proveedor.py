@@ -18,5 +18,9 @@ class CategoriaProveedor(models.Model):
 
      @api.constrains('padre_id')
      def _check_padre(self):
-          if self._has_cycle('padre_id'):
-               raise models.ValidationError('Una categoría no puede ser su propia madre ni tener como madre a una de sus subcategorías.')
+          for record in self:
+               padre = record.padre_id
+               while padre:
+                    if padre == record:
+                         raise models.ValidationError('Una categoría no puede ser su propia madre ni tener como madre a una de sus subcategorías.')
+                    padre = padre.padre_id

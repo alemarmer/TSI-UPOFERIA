@@ -3,14 +3,14 @@
     <field name="name">upoferia.linea_transaccion.form</field>
     <field name="model">upoferia.linea_transaccion</field>
     <field name="arch" type="xml">
-      <form string="Línea de transacción">
+      <form string="Líneas de transacción">
         <sheet layout="auto">
           <group>
             <group>
               <field name="transaccion_id" />
               <field name="iNumeroLinea" />
               <field name="producto_id" />
-              <field name="linea_pedido_id" domain="[('transaccion_id.tipo_transaccion_id.sCodigo', '=', 'PED')]" />
+              <field name="linea_pedido_id" />
             </group>
             <group>
               <field name="iCantidad" />
@@ -22,14 +22,7 @@
           </group>
           <notebook>
             <page name="lineas_factura" string="Líneas de factura">
-              <field name="linea_factura_ids" readonly="1">
-                <list>
-                  <field name="transaccion_id" />
-                  <field name="iNumeroLinea" />
-                  <field name="iCantidad" sum="Total" />
-                  <field name="fSubtotal" sum="Total" />
-                </list>
-              </field>
+              <field name="linea_factura_ids" readonly="1" />
             </page>
           </notebook>
         </sheet>
@@ -47,9 +40,7 @@
         <field name="producto_id" />
         <field name="iCantidad" />
         <field name="fPrecioUnitario" />
-        <field name="fSubtotal" sum="Total" />
-        <field name="iCantidadRecibida" />
-        <field name="iCantidadFacturada" />
+        <field name="fSubtotal" />
       </list>
     </field>
   </record>
@@ -59,7 +50,7 @@
     <field name="res_model">upoferia.linea_transaccion</field>
     <field name="view_mode">list,form</field>
     <field name="help" type="html">
-      <p class="o_view_nocontent_smiling_face">Las líneas se crean desde el formulario de cada transacción</p>
+      <p class="o_view_nocontent_smiling_face">Crea la primera línea de transacción</p>
     </field>
   </record>
 </odoo>

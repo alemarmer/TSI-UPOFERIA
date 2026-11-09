@@ -3,98 +3,64 @@
     <field name="name">upoferia.transaccion.form</field>
     <field name="model">upoferia.transaccion</field>
     <field name="arch" type="xml">
-      <form string="Transacción">
+      <form string="Transacciones">
         <header>
-          <button name="btn_confirmar" string="Confirmar" type="object" class="oe_highlight" invisible="sCodigoTipo != 'PED' or sEstado != 'borrador'" />
-          <button name="btn_recibir" string="Recibido" type="object" class="oe_highlight" invisible="sCodigoTipo != 'PED' or sEstado != 'confirmado'" />
-          <button name="btn_cancelar" string="Cancelar" type="object" invisible="sCodigoTipo != 'PED' or sEstado not in ('borrador', 'confirmado')" />
-          <button name="btn_hacer" string="Hecho" type="object" class="oe_highlight" invisible="sCodigoTipo != 'ALB' or sEstado != 'previsto'" />
-          <button name="btn_pagar" string="Pagada" type="object" class="oe_highlight" invisible="sCodigoTipo not in ('FAC', 'ABO') or sEstado not in ('pendiente', 'vencida')" />
-          <button name="btn_marcar_vencida" string="Vencida" type="object" invisible="sCodigoTipo not in ('FAC', 'ABO') or sEstado != 'pendiente'" />
-          <button name="btn_activar" string="Activar" type="object" class="oe_highlight" invisible="sCodigoTipo != 'CON' or sEstado != 'borrador'" />
-          <button name="btn_marcar_vencido" string="Vencido" type="object" invisible="sCodigoTipo != 'CON' or sEstado != 'vigente'" />
-          <button name="btn_rescindir" string="Rescindir" type="object" invisible="sCodigoTipo != 'CON' or sEstado != 'vigente'" />
-          <button name="btn_eliminarLineas" string="Eliminar líneas" type="object" invisible="not linea_ids" />
+          <button name="btn_confirmar" string="Confirmar" type="object" class="oe_highlight" />
+          <button name="btn_recibir" string="Recibido" type="object" class="oe_highlight" />
+          <button name="btn_cancelar" string="Cancelar" type="object" />
+          <button name="btn_hacer" string="Hecho" type="object" class="oe_highlight" />
+          <button name="btn_pagar" string="Pagada" type="object" class="oe_highlight" />
+          <button name="btn_marcar_vencida" string="Vencida" type="object" />
+          <button name="btn_activar" string="Activar" type="object" class="oe_highlight" />
+          <button name="btn_marcar_vencido" string="Vencido" type="object" />
+          <button name="btn_rescindir" string="Rescindir" type="object" />
+          <button name="btn_eliminarLineas" string="Eliminar líneas" type="object" />
         </header>
         <sheet layout="auto">
-          <field name="sCodigoTipo" invisible="1" />
-          <div class="oe_title">
-            <h1>
-              <field name="sIdTransaccion" placeholder="PED-2026-001" />
-            </h1>
-          </div>
           <group>
             <group>
-              <field name="tipo_transaccion_id" readonly="id" />
+              <field name="sIdTransaccion" placeholder="PED-2026-001" />
+              <field name="tipo_transaccion_id" />
               <field name="proveedor_id" />
-              <field name="sEstado" readonly="1" force_save="1" />
-              <field name="sRefProveedor" invisible="sCodigoTipo not in ('FAC', 'ABO')" />
-              <field name="linea_presupuesto_id" invisible="sCodigoTipo != 'CON'" />
+              <field name="sEstado" />
+              <field name="fImporte" />
+              <field name="sRefProveedor" />
             </group>
             <group>
               <field name="dFechaInicial" />
-              <field name="dVencimiento" invisible="sCodigoTipo not in ('FAC', 'ABO')" />
-              <field name="dFechaPrevistaFin" invisible="sCodigoTipo not in ('PED', 'ALB', 'CON')" />
-              <field name="fImporte" invisible="sCodigoTipo == 'ALB'" />
-              <field name="fImporteFacturado" invisible="sCodigoTipo != 'CON'" />
-              <field name="sDocumento" invisible="sCodigoTipo != 'CON'" />
-              <field name="bRenovacionAuto" invisible="sCodigoTipo != 'CON'" />
+              <field name="dVencimiento" />
+              <field name="dFechaPrevistaFin" />
+              <field name="sDocumento" />
+              <field name="bRenovacionAuto" />
+              <field name="fImporteFacturado" />
             </group>
           </group>
+          <group>
+            <field name="transaccion_origen_id" />
+            <field name="linea_presupuesto_id" />
+            <field name="caseta_id" />
+          </group>
           <notebook>
-            <page name="lineas" string="Líneas" invisible="sCodigoTipo not in ('PED', 'FAC', 'ABO')">
-              <field name="linea_ids">
-                <list editable="bottom">
-                  <field name="iNumeroLinea" />
-                  <field name="producto_id" />
-                  <field name="iCantidad" />
-                  <field name="fPrecioUnitario" />
-                  <field name="fSubtotal" sum="Total" />
-                  <field name="iCantidadRecibida" column_invisible="parent.sCodigoTipo != 'PED'" />
-                  <field name="iCantidadFacturada" column_invisible="parent.sCodigoTipo != 'PED'" />
-                  <field name="linea_pedido_id" column_invisible="parent.sCodigoTipo not in ('FAC', 'ABO')" domain="[('transaccion_id.tipo_transaccion_id.sCodigo', '=', 'PED')]" />
-                </list>
-              </field>
+            <page name="lineas" string="Líneas">
+              <field name="linea_ids" />
             </page>
-            <page name="movimientos" string="Movimientos" invisible="sCodigoTipo not in ('FAC', 'ABO')">
-              <field name="movimiento_ids" readonly="1">
-                <list>
-                  <field name="referencia" />
-                  <field name="fecha" />
-                  <field name="importe" sum="Total" />
-                  <field name="estado" />
-                </list>
-              </field>
+            <page name="derivadas" string="Transacciones generadas">
+              <field name="transaccion_derivada_ids" readonly="1" />
             </page>
-            <page name="actuaciones" string="Actuaciones" invisible="sCodigoTipo != 'CON'">
-              <field name="actuacion_ids" readonly="1">
-                <list>
-                  <field name="evento_id" />
-                  <field name="fCache_pactado" sum="Total" />
-                </list>
-              </field>
+            <page name="movimientos" string="Movimientos">
+              <field name="movimiento_ids" readonly="1" />
+            </page>
+            <page name="actuaciones" string="Actuaciones">
+              <field name="actuacion_ids" readonly="1" />
             </page>
             <page name="salidas" string="Salidas">
-              <field name="salida_ids" readonly="1">
-                <list>
-                  <field name="dFecha_hora_salida" />
-                  <field name="carruaje_id" />
-                  <field name="sEstado" />
-                </list>
-              </field>
+              <field name="salida_ids" readonly="1" />
             </page>
-            <page name="origen_derivadas" string="Origen y derivadas">
-              <group>
-                <field name="transaccion_origen_id" />
-              </group>
-              <field name="transaccion_derivada_ids" readonly="1">
-                <list>
-                  <field name="sIdTransaccion" />
-                  <field name="tipo_transaccion_id" />
-                  <field name="fImporte" />
-                  <field name="sEstado" widget="badge" />
-                </list>
-              </field>
+            <page name="prestamos" string="Préstamos">
+              <field name="prestamo_ids" readonly="1" />
+            </page>
+            <page name="mantenimientos" string="Mantenimientos">
+              <field name="mantenimiento_ids" readonly="1" />
             </page>
           </notebook>
         </sheet>
@@ -106,13 +72,13 @@
     <field name="name">upoferia.transaccion.list</field>
     <field name="model">upoferia.transaccion</field>
     <field name="arch" type="xml">
-      <list string="Transacciones" decoration-info="sEstado == 'borrador'" decoration-success="sEstado in ('recibido', 'hecho', 'pagada', 'vigente')" decoration-danger="sEstado in ('vencida', 'vencido')" decoration-muted="sEstado in ('cancelado', 'rescindido')">
+      <list string="Transacciones">
         <field name="sIdTransaccion" />
         <field name="tipo_transaccion_id" />
         <field name="proveedor_id" />
         <field name="dFechaInicial" />
         <field name="fImporte" />
-        <field name="sEstado" widget="badge" decoration-info="sEstado == 'borrador'" decoration-success="sEstado in ('recibido', 'hecho', 'pagada', 'vigente')" decoration-danger="sEstado in ('vencida', 'vencido')" />
+        <field name="sEstado" />
       </list>
     </field>
   </record>

@@ -1,13 +1,11 @@
 <odoo>
-  <!-- Top menu item -->
   <menuitem name="Feria" id="main_upoferia_menu" groups="group_upoferia_manager" />
 
-  <!-- menu categories -->
   <menuitem name="Compras" id="compras_menu" groups="group_upoferia_manager" parent="main_upoferia_menu" sequence="10" />
   <menuitem name="Proveedores" id="proveedores_menu" groups="group_upoferia_manager" parent="main_upoferia_menu" sequence="20" />
   <menuitem name="Patrocinios" id="patrocinios_menu" groups="group_upoferia_manager" parent="main_upoferia_menu" sequence="30" />
 
-  <!-- actions -->
+
   <menuitem name="Transacciones" id="transaccion_menu" parent="compras_menu" groups="group_upoferia_manager" action="transaccion_list_action" sequence="10" />
   <menuitem name="Líneas" id="linea_transaccion_menu" parent="compras_menu" groups="group_upoferia_manager" action="linea_transaccion_list_action" sequence="20" />
   <menuitem name="Tipos de transacción" id="tipo_transaccion_menu" parent="compras_menu" groups="group_upoferia_manager" action="tipo_transaccion_list_action" sequence="30" />

@@ -55,7 +55,6 @@ class ExhibicionMarca(models.Model):
                for otra in otras:
                     if not otra.dFechaMontaje:
                          continue
-                    # Sin fecha de retirada, la exhibición ocupa el espacio desde el montaje en adelante
                     empieza_antes = not record.dFechaRetirada or otra.dFechaMontaje <= record.dFechaRetirada
                     acaba_despues = not otra.dFechaRetirada or otra.dFechaRetirada >= record.dFechaMontaje
                     if empieza_antes and acaba_despues:

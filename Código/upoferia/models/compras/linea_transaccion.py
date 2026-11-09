@@ -19,6 +19,7 @@ class LineaTransaccion(models.Model):
      linea_pedido_id = fields.Many2one("upoferia.linea_transaccion", string="Línea de pedido")
      linea_factura_ids = fields.One2many("upoferia.linea_transaccion", 'linea_pedido_id', string="Líneas de factura")
      producto_id = fields.Many2one("upoferia.producto", string="Producto")
+     
      fSubtotal = fields.Float(compute='_subtotal', string="Subtotal")
      iCantidadFacturada = fields.Integer(compute='_cantidadFacturada', string="Cantidad facturada")
 

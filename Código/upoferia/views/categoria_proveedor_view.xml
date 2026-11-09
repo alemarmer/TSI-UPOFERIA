@@ -3,28 +3,19 @@
     <field name="name">upoferia.categoria_proveedor.form</field>
     <field name="model">upoferia.categoria_proveedor</field>
     <field name="arch" type="xml">
-      <form string="Categoría de proveedor">
+      <form string="Categorías de proveedor">
         <sheet layout="auto">
           <group>
             <field name="sNombre" />
             <field name="padre_id" />
-            <field name="iColor" widget="color_picker" />
+            <field name="iColor" />
           </group>
           <notebook>
             <page name="subcategorias" string="Subcategorías">
-              <field name="hija_ids" readonly="1">
-                <list>
-                  <field name="sNombre" />
-                  <field name="iColor" widget="color_picker" />
-                </list>
-              </field>
+              <field name="hija_ids" readonly="1" />
             </page>
             <page name="proveedores" string="Proveedores">
-              <field name="proveedor_ids">
-                <list>
-                  <field name="sCif" />
-                </list>
-              </field>
+              <field name="proveedor_ids" />
             </page>
           </notebook>
         </sheet>
@@ -39,7 +30,6 @@
       <list string="Categorías de proveedor">
         <field name="sNombre" />
         <field name="padre_id" />
-        <field name="iColor" widget="color_picker" />
       </list>
     </field>
   </record>

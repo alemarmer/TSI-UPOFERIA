@@ -3,17 +3,13 @@
     <field name="name">upoferia.patrocinio.form</field>
     <field name="model">upoferia.patrocinio</field>
     <field name="arch" type="xml">
-      <form string="Patrocinio">
+      <form string="Patrocinios">
         <sheet layout="auto">
           <group>
-            <group>
-              <field name="marca_id" />
-              <field name="evento_id" />
-            </group>
-            <group>
-              <field name="sTipoAportacion" />
-              <field name="fImporteAportacion" />
-            </group>
+            <field name="marca_id" />
+            <field name="evento_id" />
+            <field name="sTipoAportacion" />
+            <field name="fImporteAportacion" />
           </group>
         </sheet>
       </form>
@@ -28,7 +24,7 @@
         <field name="marca_id" />
         <field name="evento_id" />
         <field name="sTipoAportacion" />
-        <field name="fImporteAportacion" sum="Total" />
+        <field name="fImporteAportacion" />
       </list>
     </field>
   </record>

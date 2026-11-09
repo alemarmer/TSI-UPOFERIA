@@ -3,36 +3,26 @@
     <field name="name">upoferia.servicio.form</field>
     <field name="model">upoferia.servicio</field>
     <field name="arch" type="xml">
-      <form string="Servicio">
+      <form string="Servicios">
         <header>
-          <button name="btn_eliminarTarifas" string="Eliminar tarifas" type="object" invisible="not servicio_proveedor_ids" />
+          <button name="btn_eliminarTarifas" string="Eliminar tarifas" type="object" />
         </header>
         <sheet layout="auto">
-          <div class="oe_title">
-            <h1>
-              <field name="sNombre" placeholder="Nombre del servicio" />
-            </h1>
-          </div>
           <group>
-            <group>
-              <field name="sCodigo" />
-              <field name="sUnidadFacturacion" />
-            </group>
-            <group>
-              <field name="bRequiereTecnico" />
-            </group>
+            <field name="sCodigo" />
+            <field name="sNombre" />
+            <field name="sUnidadFacturacion" />
+            <field name="bRequiereTecnico" />
           </group>
           <notebook>
             <page name="proveedores" string="Proveedores que lo ofrecen">
-              <field name="servicio_proveedor_ids">
-                <list editable="bottom">
-                  <field name="proveedor_id" />
-                  <field name="fPrecioTarifa" />
-                </list>
-              </field>
+              <field name="servicio_proveedor_ids" />
             </page>
             <page name="actuaciones" string="Actuaciones">
               <field name="actuacion_ids" />
+            </page>
+            <page name="incidencias" string="Incidencias">
+              <field name="incidencia_ids" readonly="1" />
             </page>
           </notebook>
         </sheet>
@@ -48,7 +38,6 @@
         <field name="sCodigo" />
         <field name="sNombre" />
         <field name="sUnidadFacturacion" />
-        <field name="bRequiereTecnico" />
       </list>
     </field>
   </record>
