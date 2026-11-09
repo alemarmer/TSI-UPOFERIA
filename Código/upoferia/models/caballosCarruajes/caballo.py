@@ -1,58 +1,56 @@
-from odoo import models,fields,api
-from odoo.exceptions import ValidationError
-import re
+from odoo import models, fields, api
+
 
 class Caballo(models.Model):
-
-    _name='upoferia.caballo' 
-    _description='Upoferia.caballo'
+    _name = 'upoferia.caballo'
+    _description = 'Caballo'
     _rec_name = 'sMicrochip'
-    _sql_constraints = [
-        ('sMicrochip_uniq', 'UNIQUE ("sMicrochip")',
-         'Ya existe un caballo con ese Microchip.'),
-    ]
 
-    sMicrochip= fields.Char(string="Microchip del caballo", size=60, required=True) 
-    sNombre = fields.Char(string="Nombre del caballo", size=100)
-    sRaza = fields.Char(string="Raza del caballo", size=100)
+    sMicrochip = fields.Char(string="Microchip del caballo", required=True)
+    sNombre = fields.Char(string="Nombre del caballo")
+    sRaza = fields.Char(string="Raza del caballo")
     sSexo = fields.Selection([('macho', 'Macho'),
-                             ('hembra', 'Hembra'),
-                             ('castrado', 'Castrado')],
-                            string='Sexo')
+                              ('hembra', 'Hembra'),
+                              ('castrado', 'Castrado')],
+                             'Sexo')
 
     salida_ids = fields.Many2many('upoferia.salida', 'upoferia_salida_caballo',
                                   'caballo_id', 'salida_id', string='Salidas')
 
     #conexion con inspeccion
 
+    _sql_constraints = [('caballo_sMicrochip_unique', 'UNIQUE ("sMicrochip")', 'Ya existe un caballo con ese microchip.')]
+
     @api.constrains('sMicrochip')
-    def _check_sMicrochip_formato(self):
+    def _check_sMicrochip(self):
         for record in self:
-            if not re.fullmatch(r'[0-9]{15}', record.sMicrochip or ''):
-                raise ValidationError('El sMicrochip debe tener 15 dígitos (norma ISO 11784/11785).')
+            if len(record.sMicrochip) != 15 or not record.sMicrochip.isdigit():
+                raise models.ValidationError('El microchip debe tener 15 dígitos.')
+
+    @api.constrains('sNombre', 'sRaza')
+    def _check_textos(self):
+        for record in self:
+            if record.sNombre and not record.sNombre.strip():
+                raise models.ValidationError('El nombre no puede contener solo espacios.')
+            if record.sRaza and not record.sRaza.strip():
+                raise models.ValidationError('La raza no puede contener solo espacios.')
 
     @api.constrains('sNombre', 'sRaza')
     def _check_longitud(self):
         for record in self:
-            for campo in ('sNombre', 'sRaza'):
-                if record[campo] and len(record[campo]) > 100:
-                    raise ValidationError(
-                        '«%s» no puede superar los 100 caracteres.' % record._fields[campo].string)
-
-    @api.constrains('sNombre', 'sRaza')
-    def _check_textos_opcionales(self):
-        for record in self:
-            for campo in ('sNombre', 'sRaza'):
-                if record[campo] and not record[campo].strip():
-                    raise ValidationError(
-                        '«%s» no puede contener solo espacios.' % record._fields[campo].string)
+            if record.sNombre and len(record.sNombre) > 100:
+                raise models.ValidationError('El nombre no puede superar los 100 caracteres.')
+            if record.sRaza and len(record.sRaza) > 100:
+                raise models.ValidationError('La raza no puede superar los 100 caracteres.')
 
     @api.onchange('sMicrochip')
-    def _onchange_sMicrochip(self):
-        if self.sMicrochip and not re.fullmatch(r'[0-9]{15}', self.sMicrochip):
-            return {
+    def onchange_sMicrochip(self):
+        resultado = {}
+        if self.sMicrochip and (len(self.sMicrochip) != 15 or not self.sMicrochip.isdigit()):
+            resultado = {
                 'warning': {
-                    'title': 'Microchip incorrecto',
-                    'message': 'El microchip debe tener 15 dígitos (norma ISO 11784/11785).',
+                    'title': 'Valores incorrectos',
+                    'message': 'El microchip debe tener 15 dígitos.'
                 }
             }
+        return resultado
