@@ -21,3 +21,9 @@ class TipoTransaccion(models.Model):
           for record in self:
                if record.sCodigo not in ('PED', 'ALB', 'FAC', 'ABO', 'CON'):
                     raise models.ValidationError('El código debe ser PED, ALB, FAC, ABO o CON.')
+     
+     @api.constrains('sNombre')
+     def _check_nombre(self):
+          for record in self:
+               if len(record.sNombre.strip()) < 2 or len(record.sNombre.strip()) > 50:
+                    raise models.ValidationError('El nombre debe tener entre 2 y 50 caracteres.')

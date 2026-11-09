@@ -24,10 +24,16 @@ class Servicio(models.Model):
      servicio_proveedor_ids = fields.One2many("upoferia.servicio_proveedor", 'servicio_id', string="Proveedores que lo ofrecen")
      actuacion_ids = fields.Many2many("upoferia.actuacion", 'upoferia_actuacion_servicio', 'servicio_id', 'actuacion_id', string="Actuaciones")
      incidencia_ids = fields.One2many("upoferia.incidencia", 'servicio_id', string="Incidencias")
-     
+
      _sql_constraints = [('servicio_codigo_unique', 'UNIQUE ("sCodigo")', 'Ya existe un servicio con ese código')]
 
 
      def btn_eliminarTarifas(self):
           for tarifa in self.servicio_proveedor_ids:
                self.write({'servicio_proveedor_ids':[(2,tarifa.id)]})
+
+     @api.constrains('sNombre')
+     def _check_nombre(self):
+          for record in self:
+               if len(record.sNombre.strip()) < 2 or len(record.sNombre.strip()) > 50:
+                    raise models.ValidationError('El nombre debe tener entre 2 y 50 caracteres.')

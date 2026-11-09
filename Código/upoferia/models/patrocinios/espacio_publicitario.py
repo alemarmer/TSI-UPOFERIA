@@ -14,7 +14,6 @@ class EspacioPublicitario(models.Model):
                                ('banderola', 'Banderola'),
                                ('pantalla', 'Pantalla digital'),
                                ('photocall', 'Photocall'),
-                               ('mupi', 'Mupi'),
                                ('suelo', 'Vinilo de suelo'),],
                                'Tipo')
      sUbicacionExacta = fields.Char(string="Ubicación exacta")
@@ -42,15 +41,44 @@ class EspacioPublicitario(models.Model):
                if record.fAltoM > 30 or record.fAnchoM > 30:
                     raise models.ValidationError('El alto y el ancho no pueden superar los 30 metros.')
 
-     @api.onchange('fAltoM', 'fAnchoM')
-     def onchange_medidas(self):
+     @api.onchange('fAltoM')
+     def onchange_alto(self):
           resultado = {}
-          if self.fAltoM > 30 or self.fAnchoM > 30:
+          if self.fAltoM > 30:
                resultado = {
-                    'value': {'fAltoM': min(self.fAltoM, 30), 'fAnchoM': min(self.fAnchoM, 30)},
+                    'value': {'fAltoM': 30},
                     'warning': {
                          'title': 'Valores incorrectos',
-                         'message': 'El alto y el ancho no pueden superar los 30 metros; se han ajustado a 30.'
+                         'message': 'El alto no puede superar los 30 metros; se ha ajustado a 30.'
                     }
                }
-               return resultado
+          elif self.fAltoM <= 0:
+               resultado = {
+                    'value': {'fAltoM': 1},
+                    'warning': {
+                         'title': 'Valores incorrectos',
+                         'message': 'El alto debe ser mayor que 0; se ha ajustado a 1.'
+                    }
+               }
+          return resultado
+
+     @api.onchange('fAnchoM')
+     def onchange_ancho(self):
+          resultado = {}
+          if self.fAnchoM > 30:
+               resultado = {
+                    'value': {'fAnchoM': 30},
+                    'warning': {
+                         'title': 'Valores incorrectos',
+                         'message': 'El ancho no puede superar los 30 metros; se ha ajustado a 30.'
+                    }
+               }
+          elif self.fAnchoM <= 0:
+               resultado = {
+                    'value': {'fAnchoM': 1},
+                    'warning': {
+                         'title': 'Valores incorrectos',
+                         'message': 'El ancho debe ser mayor que 0; se ha ajustado a 1.'
+                    }
+               }
+          return resultado

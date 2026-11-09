@@ -3,9 +3,7 @@
 ## Marca (`upoferia.marca`) — `marca.py`
 
 ### `sNombre` (Char) — clave
-- Obligatorio y único — `required` / `_sql_constraints`
-
-### Relaciones
+- Obligatorio y con entre 2 y 50 caracteres sin contar los espacios del principio y del final — `required` / `@api.constrains`### Relaciones
 - `proveedor_id` (Many2one → Proveedor) — opcional, relación «comercializa». Si se borra el proveedor, la marca se queda sin él.
 - `exhibicion_ids` (One2many → ExhibicionMarca) — exhibiciones de la marca.
 - `patrocinio_ids` (One2many → Patrocinio) — eventos que patrocina.
@@ -31,8 +29,7 @@
 
 ### `fAltoM` y `fAnchoM` (Float)
 - Obligatorios, mayores que 0 y como mucho 30 metros — `required` / `@api.constrains`
-- En el formulario, si se pasan de 30 se ajustan a 30 y se avisa al usuario — `@api.onchange`
-
+- En el formulario, si se pasan de 30 se ajustan a 30, y si son 0 o menos se ajustan a 1, avisando al usuario — `@api.onchange` (uno para cada campo)
 ### Relaciones
 - `exhibicion_ids` (One2many → ExhibicionMarca) — exhibiciones del espacio.
 - `zona_caseta_id` (Many2one → ZonaCaseta) — opcional, la zona de la caseta donde está el espacio (en el relacional son dos columnas, `nombre_caseta` y `nombre_zona_caseta`, porque la clave de ZONA_CASETA es compuesta; en Odoo es un solo Many2one).

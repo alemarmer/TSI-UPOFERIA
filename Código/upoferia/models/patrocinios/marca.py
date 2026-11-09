@@ -24,3 +24,9 @@ class Marca(models.Model):
      def btn_eliminarPatrocinios(self):
           for patrocinio in self.patrocinio_ids:
                self.write({'patrocinio_ids':[(2,patrocinio.id)]})
+
+     @api.constrains('sNombre')
+     def _check_nombre(self):
+          for record in self:
+               if len(record.sNombre.strip()) < 2 or len(record.sNombre.strip()) > 50:
+                    raise models.ValidationError('El nombre debe tener entre 2 y 50 caracteres.')
