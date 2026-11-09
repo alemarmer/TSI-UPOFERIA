@@ -13,8 +13,8 @@ class Patrocinio(models.Model):
                                          'Tipo de aportación')
 
      
-     marca_id = fields.Many2one("upoferia.marca", string="Marca", required=True, ondelete='cascade')
-     evento_id = fields.Many2one("upoferia.evento", string="Evento", required=True, ondelete='cascade')
+     marca_id = fields.Many2one("upoferia.marca", string="Marca", required=True)
+     evento_id = fields.Many2one("upoferia.evento", string="Evento", required=True)
 
      _sql_constraints = [('patrocinio_marca_evento_unique', 'UNIQUE ("marca_id", "evento_id")', 'Esa marca ya patrocina ese evento')]
 

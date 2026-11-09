@@ -4,6 +4,9 @@
     <field name="model">upoferia.marca</field>
     <field name="arch" type="xml">
       <form string="Marca">
+        <header>
+          <button name="btn_eliminarPatrocinios" string="Eliminar patrocinios" type="object" invisible="not patrocinio_ids" />
+        </header>
         <sheet layout="auto">
           <field name="binLogotipo" nolabel="1" widget="image" class="oe_avatar" />
           <div class="oe_title">

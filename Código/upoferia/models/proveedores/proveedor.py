@@ -17,6 +17,10 @@ class Proveedor(models.Model):
 
      _sql_constraints = [('proveedor_cif_unique', 'UNIQUE ("sCif")', 'Ya existe un proveedor con ese CIF')]
 
+     def btn_eliminarTarifas(self):
+          for tarifa in self.servicio_proveedor_ids:
+               self.write({'servicio_proveedor_ids':[(2,tarifa.id)]})
+               
      @api.constrains('sCif')
      def _check_cif(self):
           for record in self:

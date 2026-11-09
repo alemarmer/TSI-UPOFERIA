@@ -14,6 +14,7 @@
           <button name="btn_activar" string="Activar" type="object" class="oe_highlight" invisible="sCodigoTipo != 'CON' or sEstado != 'borrador'" />
           <button name="btn_marcar_vencido" string="Vencido" type="object" invisible="sCodigoTipo != 'CON' or sEstado != 'vigente'" />
           <button name="btn_rescindir" string="Rescindir" type="object" invisible="sCodigoTipo != 'CON' or sEstado != 'vigente'" />
+          <button name="btn_eliminarLineas" string="Eliminar líneas" type="object" invisible="not linea_ids" />
         </header>
         <sheet layout="auto">
           <field name="sCodigoTipo" invisible="1" />

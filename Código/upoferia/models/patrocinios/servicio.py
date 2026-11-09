@@ -25,3 +25,8 @@ class Servicio(models.Model):
      actuacion_ids = fields.Many2many("upoferia.actuacion", 'upoferia_actuacion_servicio', 'servicio_id', 'actuacion_id', string="Actuaciones")
 
      _sql_constraints = [('servicio_codigo_unique', 'UNIQUE ("sCodigo")', 'Ya existe un servicio con ese código')]
+
+
+     def btn_eliminarTarifas(self):
+          for tarifa in self.servicio_proveedor_ids:
+               self.write({'servicio_proveedor_ids':[(2,tarifa.id)]})

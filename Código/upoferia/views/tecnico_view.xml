@@ -4,6 +4,9 @@
     <field name="model">upoferia.tecnico</field>
     <field name="arch" type="xml">
       <form string="Técnico">
+        <header>
+          <button name="btn_quitarExhibiciones" string="Quitar exhibiciones" type="object" invisible="not exhibicion_ids" />
+        </header>
         <sheet layout="auto">
           <group>
             <group>

@@ -15,10 +15,10 @@ class LineaTransaccion(models.Model):
      fPrecioUnitario = fields.Float(string="Precio unitario")
 
      
-     transaccion_id = fields.Many2one("upoferia.transaccion", string="Transacción", required=True, ondelete='cascade')
-     linea_pedido_id = fields.Many2one("upoferia.linea_transaccion", string="Línea de pedido", ondelete='set null')
+     transaccion_id = fields.Many2one("upoferia.transaccion", string="Transacción", required=True)
+     linea_pedido_id = fields.Many2one("upoferia.linea_transaccion", string="Línea de pedido")
      linea_factura_ids = fields.One2many("upoferia.linea_transaccion", 'linea_pedido_id', string="Líneas de factura")
-     producto_id = fields.Many2one("upoferia.producto", string="Producto", ondelete='restrict')
+     producto_id = fields.Many2one("upoferia.producto", string="Producto")
      fSubtotal = fields.Float(compute='_subtotal', string="Subtotal")
      iCantidadFacturada = fields.Integer(compute='_cantidadFacturada', string="Cantidad facturada")
 

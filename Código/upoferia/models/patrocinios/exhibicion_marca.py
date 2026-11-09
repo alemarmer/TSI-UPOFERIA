@@ -14,9 +14,9 @@ class ExhibicionMarca(models.Model):
      sArteFinal = fields.Char(string="Arte final")
 
      
-     marca_id = fields.Many2one("upoferia.marca", string="Marca", required=True, ondelete='restrict')
-     espacio_publicitario_id = fields.Many2one("upoferia.espacio_publicitario", string="Espacio publicitario", required=True, ondelete='restrict')
-     tecnico_id = fields.Many2one("upoferia.tecnico", string="Técnico", ondelete='set null')
+     marca_id = fields.Many2one("upoferia.marca", string="Marca", required=True)
+     espacio_publicitario_id = fields.Many2one("upoferia.espacio_publicitario", string="Espacio publicitario", required=True)
+     tecnico_id = fields.Many2one("upoferia.tecnico", string="Técnico")
      sEstadoExhibicion = fields.Selection([('sin_programar', 'Sin programar'),
                                            ('programada', 'Programada'),
                                            ('montada', 'Montada'),

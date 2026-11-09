@@ -23,6 +23,9 @@ class Tecnico(models.Model):
 
      _sql_constraints = [('tecnico_carnet_unique', 'UNIQUE ("sCodCarnetProfesional")', 'Ya existe un técnico con ese código de carné profesional')]
 
+     def btn_quitarExhibiciones(self):
+          self.write({'exhibicion_ids':[(5,)]})     
+
      @api.onchange('dFechaCaducidadCarnet')
      def onchange_caducidad_carnet(self):
           resultado = {}

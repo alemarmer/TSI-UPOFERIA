@@ -13,9 +13,14 @@ class Marca(models.Model):
      sColorCorporativo = fields.Char(string="Color corporativo")
 
      
-     proveedor_id = fields.Many2one("upoferia.proveedor", string="Proveedor", ondelete='set null')
+     proveedor_id = fields.Many2one("upoferia.proveedor", string="Proveedor")
      exhibicion_ids = fields.One2many("upoferia.exhibicion_marca", 'marca_id', string="Exhibiciones")
      patrocinio_ids = fields.One2many("upoferia.patrocinio", 'marca_id', string="Patrocinios")
      producto_ids = fields.One2many("upoferia.producto", 'marca_id', string="Productos")
 
      _sql_constraints = [('marca_nombre_unique', 'UNIQUE ("sNombre")', 'Ya existe una marca con ese nombre')]
+
+
+     def btn_eliminarPatrocinios(self):
+          for patrocinio in self.patrocinio_ids:
+               self.write({'patrocinio_ids':[(2,patrocinio.id)]})

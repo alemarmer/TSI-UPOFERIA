@@ -4,6 +4,9 @@
     <field name="model">upoferia.proveedor</field>
     <field name="arch" type="xml">
       <form string="Proveedor">
+        <header>
+          <button name="btn_eliminarTarifas" string="Eliminar tarifas" type="object" invisible="not servicio_proveedor_ids" />
+        </header>
         <sheet layout="auto">
           <group>
             <field name="sCif" />

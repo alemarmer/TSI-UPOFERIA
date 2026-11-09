@@ -11,8 +11,8 @@ class ServicioProveedor(models.Model):
      fPrecioTarifa = fields.Float(string="Precio de tarifa", required=True)
 
      
-     servicio_id = fields.Many2one("upoferia.servicio", string="Servicio", required=True, ondelete='cascade')
-     proveedor_id = fields.Many2one("upoferia.proveedor", string="Proveedor", required=True, ondelete='cascade')
+     servicio_id = fields.Many2one("upoferia.servicio", string="Servicio", required=True)
+     proveedor_id = fields.Many2one("upoferia.proveedor", string="Proveedor", required=True)
 
      _sql_constraints = [('servicio_proveedor_unique', 'UNIQUE ("servicio_id", "proveedor_id")', 'Este proveedor ya tiene una tarifa para ese servicio')]
 

@@ -6,10 +6,11 @@
 - Obligatorio y único — `required` / `_sql_constraints`
 
 ### Relaciones
-- `proveedor_id` (Many2one → Proveedor) — opcional, relación «comercializa» (`ondelete='set null'`).
+- `proveedor_id` (Many2one → Proveedor) — opcional, relación «comercializa». Si se borra el proveedor, la marca se queda sin él.
 - `exhibicion_ids` (One2many → ExhibicionMarca) — exhibiciones de la marca.
 - `patrocinio_ids` (One2many → Patrocinio) — eventos que patrocina.
 - `producto_ids` (One2many → Producto de tesorería) — inverso de `marca_id` en Producto.
+- Botón «Eliminar patrocinios» (`btn_eliminarPatrocinios`): borra los patrocinios de la marca con la tupla `(2, id)`. Hace falta para poder borrar la marca.
 
 ## Patrocinio (`upoferia.patrocinio`) — `patrocinio.py`
 
@@ -17,7 +18,7 @@
 - No menor que 0 — `@api.constrains`
 
 ### Relaciones
-- `marca_id` (Many2one → Marca) y `evento_id` (Many2one → Evento de eventos) — obligatorios; si se borra uno, se borra el patrocinio (`ondelete='cascade'`).
+- `marca_id` (Many2one → Marca) y `evento_id` (Many2one → Evento de eventos) — obligatorios. No se puede borrar una marca ni un evento que tengan patrocinios: antes hay que borrar esos patrocinios (en la marca, con el botón «Eliminar patrocinios»).
 - La pareja marca + evento no se repite (clave doble del relacional) — `_sql_constraints`
 
 ### Nombre que se muestra
@@ -48,9 +49,9 @@
 - Una exhibición no se solapa con otra del mismo espacio publicitario. Sin fecha de retirada ocupa el espacio desde el montaje en adelante; sin fecha de montaje todavía no ocupa nada — `@api.constrains` con `search`
 
 ### Relaciones
-- `marca_id` (Many2one → Marca) — obligatorio (`ondelete='restrict'`).
-- `espacio_publicitario_id` (Many2one → EspacioPublicitario) — obligatorio (`ondelete='restrict'`).
-- `tecnico_id` (Many2one → Tecnico) — opcional (`ondelete='set null'`).
+- `marca_id` (Many2one → Marca) — obligatorio. No se puede borrar una marca que tenga exhibiciones.
+- `espacio_publicitario_id` (Many2one → EspacioPublicitario) — obligatorio. No se puede borrar un espacio que tenga exhibiciones.
+- `tecnico_id` (Many2one → Tecnico) — opcional. Si se borra el técnico, la exhibición se queda sin él.
 
 ### Atributos derivados
 - `sEstadoExhibicion` (Selection) — se calcula con las fechas y la fecha de hoy: sin programar, programada, montada o retirada — `compute` + `@api.depends`
@@ -65,6 +66,7 @@
 
 ### Relaciones
 - `exhibicion_ids` (One2many → ExhibicionMarca) — exhibiciones que monta.
+- Botón «Quitar exhibiciones» (`btn_quitarExhibiciones`): deja sus exhibiciones sin técnico con la tupla `(5,)`; las exhibiciones no se borran.
 
 ## Servicio (`upoferia.servicio`) — `servicio.py`
 
@@ -77,6 +79,7 @@
 ### Relaciones
 - `servicio_proveedor_ids` (One2many → ServicioProveedor) — proveedores que lo ofrecen.
 - `actuacion_ids` (Many2many → Actuación de eventos) — tabla `upoferia_actuacion_servicio`, la misma que usa `servicio_ids` en Actuación.
+- Botón «Eliminar tarifas» (`btn_eliminarTarifas`): borra las tarifas del servicio con la tupla `(2, id)`. Hace falta para poder borrar el servicio.
 
 ## ServicioProveedor (`upoferia.servicio_proveedor`) — `servicio_proveedor.py`
 
@@ -84,7 +87,7 @@
 - Obligatorio y no menor que 0 — `required` / `@api.constrains`
 
 ### Relaciones
-- `servicio_id` y `proveedor_id` (Many2one) — obligatorios (`ondelete='cascade'`).
+- `servicio_id` y `proveedor_id` (Many2one) — obligatorios. No se puede borrar un servicio ni un proveedor que tengan tarifas: antes hay que borrarlas con el botón «Eliminar tarifas».
 - La pareja servicio + proveedor no se repite — `_sql_constraints`
 
 ---
@@ -98,6 +101,8 @@ Nota: los atributos `Decimal` del UML se guardan como `Float`, y `logotipo` (`Bi
 Nota: los campos de relación siguen la convención de Odoo (`_id` / `_ids`), porque Odoo enlaza por su `id` interno.
 
 Nota: `tipo_aportacion` de Patrocinio no tiene valores en el E-R; se han puesto Económica y En especie.
+
+Nota: las relaciones no llevan `ondelete`, así que Odoo aplica su comportamiento por defecto: si el Many2one es obligatorio no deja borrar el registro al que apunta, y si es opcional lo borra y deja el campo vacío. Para poder borrar un registro que tiene otros que dependen de él, se usan los botones `btn_eliminar...`, que borran antes esos registros con `write` y la tupla `(2, id)`, como se vio en el Tema 6_2.
 
 ---
 

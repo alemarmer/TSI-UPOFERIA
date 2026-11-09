@@ -31,12 +31,12 @@ class Transaccion(models.Model):
      sRefProveedor = fields.Char(string="Referencia del proveedor")
 
      
-     tipo_transaccion_id = fields.Many2one("upoferia.tipo_transaccion", string="Tipo de transacción", required=True, ondelete='restrict')
-     proveedor_id = fields.Many2one("upoferia.proveedor", string="Proveedor", required=True, ondelete='restrict')
-     transaccion_origen_id = fields.Many2one("upoferia.transaccion", string="Transacción de origen", ondelete='set null')
+     tipo_transaccion_id = fields.Many2one("upoferia.tipo_transaccion", string="Tipo de transacción", required=True)
+     proveedor_id = fields.Many2one("upoferia.proveedor", string="Proveedor", required=True)
+     transaccion_origen_id = fields.Many2one("upoferia.transaccion", string="Transacción de origen")
      transaccion_derivada_ids = fields.One2many("upoferia.transaccion", 'transaccion_origen_id', string="Transacciones generadas")
      linea_ids = fields.One2many("upoferia.linea_transaccion", 'transaccion_id', string="Líneas")
-     linea_presupuesto_id = fields.Many2one("upoferia.linea_presupuesto", string="Línea de presupuesto", ondelete='set null')
+     linea_presupuesto_id = fields.Many2one("upoferia.linea_presupuesto", string="Línea de presupuesto")
      movimiento_ids = fields.One2many("upoferia.movimiento", 'transaccion_id', string="Movimientos")
      actuacion_ids = fields.One2many("upoferia.actuacion", 'transaccion_id', string="Actuaciones")
      salida_ids = fields.One2many("upoferia.salida", 'transaccion_id', string="Salidas")
@@ -45,6 +45,10 @@ class Transaccion(models.Model):
 
      _sql_constraints = [('transaccion_id_unique', 'UNIQUE ("sIdTransaccion")', 'Ya existe una transacción con ese identificador')]
 
+     def btn_eliminarLineas(self):
+          for linea in self.linea_ids:
+               self.write({'linea_ids':[(2,linea.id)]})   
+                
      def btn_confirmar(self):
           self.write({'sEstado': 'confirmado'})
 
