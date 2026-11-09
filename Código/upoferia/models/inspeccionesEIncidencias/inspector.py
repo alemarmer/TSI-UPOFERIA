@@ -7,7 +7,7 @@ from odoo.exceptions import ValidationError
 
 
 class Inspector(models.Model):
-    _name = 'feria.inspector'
+    _name = 'upoferia.inspector'
     _description = 'Inspector'
     _rec_name = 'sNumeroAcreditacion'
     _sql_constraints = [
@@ -19,7 +19,7 @@ class Inspector(models.Model):
     sOrganismo = fields.Char(string='Organismo')
     sCargo = fields.Char(string='Cargo')
 
-    inspeccion_inspector_ids = fields.One2many('feria.inspeccion_inspector', 'inspector_id', string='Inspecciones')
+    inspeccion_inspector_ids = fields.One2many('upoferia.inspeccion_inspector', 'inspector_id', string='Inspecciones')
 
     @api.constrains('sNumeroAcreditacion')
     def _check_numero_acreditacion(self):

@@ -8,7 +8,7 @@ from odoo.exceptions import ValidationError
 
 
 class Incidencia(models.Model):
-    _name = 'feria.incidencia'
+    _name = 'upoferia.incidencia'
     _description = 'Incidencia'
     _rec_name = 'sReferencia'
     _sql_constraints = [
@@ -31,10 +31,10 @@ class Incidencia(models.Model):
         ('cancelada', 'Cancelada'),
     ], string='Estado', required=True, default='abierta')
 
-    mobiliario_id = fields.Many2one('feria.mobiliario_caseta', string='Mobiliario afectado', ondelete='set null')
+    mobiliario_id = fields.Many2one('upoferia.mobiliario_caseta', string='Mobiliario afectado', ondelete='set null')
 
-    punto_control_id = fields.Many2one('feria.punto_control', string='Punto de control que la detecta', ondelete='set null')
-    mantenimiento_ids = fields.One2many('feria.mantenimiento', 'incidencia_id', string='Mantenimientos')
+    punto_control_id = fields.Many2one('upoferia.punto_control', string='Punto de control que la detecta', ondelete='set null')
+    mantenimiento_ids = fields.One2many('upoferia.mantenimiento', 'incidencia_id', string='Mantenimientos')
 
     @api.constrains('sReferencia')
     def _check_referencia(self):

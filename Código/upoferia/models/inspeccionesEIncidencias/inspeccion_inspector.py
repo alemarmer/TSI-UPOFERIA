@@ -5,7 +5,7 @@ from odoo.exceptions import ValidationError
 
 
 class InspeccionInspector(models.Model):
-    _name = 'feria.inspeccion_inspector'
+    _name = 'upoferia.inspeccion_inspector'
     _description = 'Inspector de una inspección'
     _rec_name = 'inspector_id'
     _sql_constraints = [
@@ -15,8 +15,8 @@ class InspeccionInspector(models.Model):
 
     sRol = fields.Char(string='Rol')
 
-    inspeccion_id = fields.Many2one('feria.inspeccion', string='Inspección', required=True, ondelete='cascade')
-    inspector_id = fields.Many2one('feria.inspector', string='Inspector', required=True, ondelete='cascade')
+    inspeccion_id = fields.Many2one('upoferia.inspeccion', string='Inspección', required=True, ondelete='cascade')
+    inspector_id = fields.Many2one('upoferia.inspector', string='Inspector', required=True, ondelete='cascade')
 
     @api.constrains('sRol')
     def _check_rol(self):

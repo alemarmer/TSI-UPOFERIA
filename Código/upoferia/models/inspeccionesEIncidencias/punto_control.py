@@ -5,7 +5,7 @@ from odoo.exceptions import ValidationError
 
 
 class PuntoControl(models.Model):
-    _name = 'feria.punto_control'
+    _name = 'upoferia.punto_control'
     _description = 'Punto de control'
     _rec_name = 'iNumeroPunto'
     _rec_names_search = ['inspeccion_id.sReferencia', 'iNumeroPunto']
@@ -24,9 +24,9 @@ class PuntoControl(models.Model):
     ], string='Resultado')
     sObservaciones = fields.Text(string='Observaciones')
 
-    inspeccion_id = fields.Many2one('feria.inspeccion', string='Inspección', required=True, ondelete='cascade')
-    elemento_seguridad_id = fields.Many2one('feria.elemento_seguridad', string='Elemento de seguridad', ondelete='set null')
-    incidencia_ids = fields.One2many('feria.incidencia', 'punto_control_id', string='Incidencias detectadas')
+    inspeccion_id = fields.Many2one('upoferia.inspeccion', string='Inspección', required=True, ondelete='cascade')
+    elemento_seguridad_id = fields.Many2one('upoferia.elemento_seguridad', string='Elemento de seguridad', ondelete='set null')
+    incidencia_ids = fields.One2many('upoferia.incidencia', 'punto_control_id', string='Incidencias detectadas')
 
     @api.depends('iNumeroPunto', 'inspeccion_id.sReferencia')
     def _compute_display_name(self):

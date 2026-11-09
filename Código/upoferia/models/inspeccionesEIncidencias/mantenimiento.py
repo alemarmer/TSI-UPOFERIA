@@ -10,7 +10,7 @@ from odoo.exceptions import ValidationError
 
 
 class Mantenimiento(models.Model):
-    _name = 'feria.mantenimiento'
+    _name = 'upoferia.mantenimiento'
     _description = 'Mantenimiento'
     _rec_name = 'sIdMantenimiento'
     _sql_constraints = [
@@ -35,7 +35,7 @@ class Mantenimiento(models.Model):
         ('cancelado', 'Cancelado'),
     ], string='Estado', required=True, default='solicitado')
 
-    incidencia_id = fields.Many2one('feria.incidencia', string='Incidencia', ondelete='set null')
+    incidencia_id = fields.Many2one('upoferia.incidencia', string='Incidencia', ondelete='set null')
 
     @api.constrains('sIdMantenimiento')
     def _check_id_mantenimiento(self):

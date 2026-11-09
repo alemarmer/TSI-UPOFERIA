@@ -10,7 +10,7 @@ from odoo.exceptions import ValidationError
 
 
 class Inspeccion(models.Model):
-    _name = 'feria.inspeccion'
+    _name = 'upoferia.inspeccion'
     _description = 'Inspección'
     _rec_name = 'sReferencia'
     _sql_constraints = [
@@ -42,9 +42,9 @@ class Inspeccion(models.Model):
         ('cancelada', 'Cancelada'),
     ], string='Estado', required=True, default='programada')
 
-    caseta_id = fields.Many2one('feria.caseta', string='Caseta', required=True, ondelete='restrict')
-    punto_control_ids = fields.One2many('feria.punto_control', 'inspeccion_id', string='Puntos de control')
-    inspeccion_inspector_ids = fields.One2many('feria.inspeccion_inspector', 'inspeccion_id', string='Inspectores')
+    caseta_id = fields.Many2one('upoferia.caseta', string='Caseta', required=True, ondelete='restrict')
+    punto_control_ids = fields.One2many('upoferia.punto_control', 'inspeccion_id', string='Puntos de control')
+    inspeccion_inspector_ids = fields.One2many('upoferia.inspeccion_inspector', 'inspeccion_id', string='Inspectores')
 
     fPorcentajeSuperado = fields.Float(string='Porcentaje superado (%)', compute='_compute_porcentaje_superado', store=True)
 
