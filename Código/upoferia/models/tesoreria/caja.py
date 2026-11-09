@@ -6,28 +6,28 @@ class Caja(models.Model):
 
     _name = 'upoferia.caja'
     _description = 'Caja o punto de cobro'
-    _rec_name = 'nombre'
+    _rec_name = 'sNombre'
 
-    nombre = fields.Char(string="Nombre", required=True, help="Identificador único de la caja")
-    ubicacion = fields.Char(string="Ubicación")
-    activa = fields.Boolean(string="Activa", default=True)
+    sNombre = fields.Char(string="Nombre", required=True, help="Identificador único de la caja")
+    sUbicacion = fields.Char(string="Ubicación")
+    bActiva = fields.Boolean(string="Activa", default=True)
         
     # Relaciones
     movimiento_ids = fields.One2many('upoferia.movimiento', 'caja_id', string="Movimientos")
 
     _sql_constraints = [
-        ('nombre_unique', 'UNIQUE(nombre)', 'Ya existe una caja con ese nombre.'),
+        ('nombre_unique', 'UNIQUE("sNombre")', 'Ya existe una caja con ese nombre.'),
     ]
 
-    @api.constrains('nombre')
+    @api.constrains('sNombre')
     def _check_nombre(self):
         for record in self:
-            if not record.nombre.strip():
+            if not record.sNombre.strip():
                 raise ValidationError('El nombre de la caja no puede estar vacío.')
 
-    @api.onchange('activa')
+    @api.onchange('bActiva')
     def onchange_activa(self):
-        if not self.activa:
+        if not self.bActiva:
             return {
                 'warning': {
                     'title': 'Caja desactivada',
