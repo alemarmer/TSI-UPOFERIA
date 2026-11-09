@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="caja_view_list" model="ir.ui.view">
+        <field name="name">upoferia.caja.list</field>
+        <field name="model">upoferia.caja</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sNombre"/>
+                <field name="sUbicacion"/>
+                <field name="bActiva"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="caja_view_form" model="ir.ui.view">
+        <field name="name">upoferia.caja.form</field>
+        <field name="model">upoferia.caja</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="sNombre" placeholder="Nombre"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="sUbicacion"/>
+                        </group>
+                        <group>
+                            <field name="bActiva"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="caja_view_kanban" model="ir.ui.view">
+        <field name="name">upoferia.caja.kanban</field>
+        <field name="model">upoferia.caja</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <templates>
+                    <t t-name="card">
+                        <field name="sNombre" class="fw-bold fs-5"/>
+                        <field name="sUbicacion"/>
+                        <field name="bActiva"/>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="caja_list_action" model="ir.actions.act_window">
+        <field name="name">Cajas</field>
+        <field name="res_model">upoferia.caja</field>
+        <field name="view_mode">list,form,kanban</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Crea la primera caja</p>
+        </field>
+    </record>
+
+    <menuitem name="Cajas" id="caja_menu" parent="catalogos_menu" action="caja_list_action" sequence="40"/>
+
+</odoo>
