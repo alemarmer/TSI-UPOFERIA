@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="categoria_economica_view_list" model="ir.ui.view">
+        <field name="name">upoferia.categoria_economica.list</field>
+        <field name="model">upoferia.categoria_economica</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sNombre"/>
+                <field name="selTipo"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="categoria_economica_view_form" model="ir.ui.view">
+        <field name="name">upoferia.categoria_economica.form</field>
+        <field name="model">upoferia.categoria_economica</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="sNombre" placeholder="Nombre"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="selTipo"/>
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="categoria_economica_view_kanban" model="ir.ui.view">
+        <field name="name">upoferia.categoria_economica.kanban</field>
+        <field name="model">upoferia.categoria_economica</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="selTipo">
+                <templates>
+                    <t t-name="card">
+                        <field name="sNombre" class="fw-bold fs-5"/>
+                        <field name="selTipo"/>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="categoria_economica_list_action" model="ir.actions.act_window">
+        <field name="name">Categorías económicas</field>
+        <field name="res_model">upoferia.categoria_economica</field>
+        <field name="view_mode">list,form,kanban</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Crea la primera categoría económica</p>
+        </field>
+    </record>
+
+    <menuitem name="Categorías económicas" id="categoria_economica_menu" parent="catalogos_menu" action="categoria_economica_list_action" sequence="60"/>
+
+</odoo>
