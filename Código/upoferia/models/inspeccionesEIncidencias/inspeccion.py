@@ -6,7 +6,7 @@ from datetime import date
 from dateutil.relativedelta import relativedelta
 
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError, UserError
 
 
 class Inspeccion(models.Model):
