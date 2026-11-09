@@ -19,13 +19,12 @@ class Evento(models.Model):
                                 ('cancelado', 'Cancelado')],
                                'Estado', default='programado')
 
-    #FK CON CASETA
-
     tipo_evento_id = fields.Many2one('upoferia.tipo_evento', string='Tipo de evento', required=True)
     concurso_ids = fields.One2many('upoferia.concurso', 'evento_id', string='Concurso')
     actuacion_ids = fields.One2many('upoferia.actuacion', 'evento_id', string='Actuación')
     patrocinio_ids = fields.One2many('upoferia.patrocinio', 'evento_id', string='Patrocinios')
     fDuracion = fields.Float(compute='_duracionTotal', string='Duración (horas)', store=True)
+    caseta_id = fields.Many2one('upoferia.caseta', string='Caseta', required=True)
 
     _sql_constraints = [('evento_sNombre_evento_unique', 'UNIQUE ("sNombre_evento")', 'Ya existe un evento con ese nombre.')]
 
@@ -40,12 +39,6 @@ class Evento(models.Model):
 
     def btn_submit_to_cancelado(self):
         self.write({'sEstado': 'cancelado'})
-
-    def unlink(self):
-        for record in self:
-            if record.concurso_ids or record.actuacion_ids:
-                raise models.ValidationError('No se puede borrar un evento que es un concurso o una actuación. Borra primero el concurso o la actuación.')
-        return super(Evento, self).unlink()
 
     @api.depends('dFecha_hora_inicio', 'dFecha_hora_fin')
     def _duracionTotal(self):
