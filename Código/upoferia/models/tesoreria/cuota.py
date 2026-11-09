@@ -7,55 +7,60 @@ class Cuota(models.Model):
 
     _name = 'upoferia.cuota'
     _description = 'Cuota de socio'
-    _rec_name = 'referencia'
+    _rec_name = 'sReferencia'
 
-    referencia = fields.Char(string="Referencia", required=True, help="Identificador único de la cuota")
-    ejercicio = fields.Integer(string="Ejercicio", required=True)
-    fecha_emision = fields.Date(string="Fecha de emisión", required=True)
-    fecha_vencimiento = fields.Date(string="Fecha de vencimiento", required=True)
-    periodicidad = fields.Selection([('anual', 'Anual'),
+    sReferencia = fields.Char(string="Referencia", required=True, help="Identificador único de la cuota")
+    iEjercicio = fields.Integer(string="Ejercicio", required=True)
+    dFechaEmision = fields.Date(string="Fecha de emisión", required=True)
+    dFechaVencimiento = fields.Date(string="Fecha de vencimiento", required=True)
+    selPeriodicidad = fields.Selection([('anual', 'Anual'),
                                      ('mensual', 'Mensual'),
                                      ('unica', 'Única'),],
                                     'Periodicidad', default='anual')
     
     # Relaciones
-    tipo_cuota_id = fields.Many2one('upoferia.tipo_cuota', string="Tipo de cuota", required=True, ondelete='restrict')
-    bonificacion_id = fields.Many2one('upoferia.bonificacion', string="Bonificación", ondelete='set null')
+    tipo_cuota_id = fields.Many2one('upoferia.tipo_cuota', string="Tipo de cuota", required=True)
+    bonificacion_id = fields.Many2one('upoferia.bonificacion', string="Bonificación")
     movimiento_ids = fields.One2many('upoferia.movimiento', 'cuota_id', string="Movimientos")
 
     _sql_constraints = [
-        ('referencia_unique', 'UNIQUE(referencia)', 'Ya existe una cuota con esa referencia.'),
-        ('ejercicio_rango', 'CHECK(ejercicio BETWEEN 2000 AND 2100)', 'El ejercicio debe ser un año válido (2000-2100).'),
-        ('fechas_orden', 'CHECK(fecha_vencimiento >= fecha_emision)',
-         'La fecha de vencimiento no puede ser anterior a la de emisión.'),
+        ('referencia_unique', 'UNIQUE("sReferencia")', 'Ya existe una cuota con esa referencia.'),
     ]
 
-    @api.constrains('referencia')
+    @api.constrains('sReferencia')
     def _check_referencia(self):
         for record in self:
-            if not record.referencia.strip():
+            if not record.sReferencia.strip():
                 raise ValidationError('La referencia de la cuota no puede estar vacía.')
 
-    @api.constrains('ejercicio', 'fecha_emision')
+    @api.constrains('iEjercicio', 'dFechaEmision')
     def _check_ejercicio(self):
         for record in self:
-            if abs(record.fecha_emision.year - record.ejercicio) > 1:
+            if not (2000 <= record.iEjercicio <= 2100):
+                raise ValidationError('El ejercicio debe ser un año válido (2000-2100).')
+            if abs(record.dFechaEmision.year - record.iEjercicio) > 1:
                 raise ValidationError('La fecha de emisión (%s) no corresponde al ejercicio %s.'
-                                      % (record.fecha_emision, record.ejercicio))
+                                      % (record.dFechaEmision, record.iEjercicio))
 
-    @api.onchange('fecha_emision')
+    @api.constrains('dFechaEmision', 'dFechaVencimiento')
+    def _check_fechas(self):
+        for record in self:
+            if record.dFechaVencimiento < record.dFechaEmision:
+                raise ValidationError('La fecha de vencimiento no puede ser anterior a la de emisión.')
+
+    @api.onchange('dFechaEmision')
     def onchange_fecha_emision(self):
-        if self.fecha_emision:
-            if not self.ejercicio:
-                self.ejercicio = self.fecha_emision.year
-            if not self.fecha_vencimiento:
-                self.fecha_vencimiento = self.fecha_emision + timedelta(days=30)
+        if self.dFechaEmision:
+            if not self.iEjercicio:
+                self.iEjercicio = self.dFechaEmision.year
+            if not self.dFechaVencimiento:
+                self.dFechaVencimiento = self.dFechaEmision + timedelta(days=30)
 
-    @api.onchange('fecha_emision', 'fecha_vencimiento')
+    @api.onchange('dFechaEmision', 'dFechaVencimiento')
     def onchange_fechas(self):
-        if self.fecha_emision and self.fecha_vencimiento and self.fecha_vencimiento < self.fecha_emision:
+        if self.dFechaEmision and self.dFechaVencimiento and self.dFechaVencimiento < self.dFechaEmision:
             return {
-                'value': {'fecha_vencimiento': self.fecha_emision + timedelta(days=30)},
+                'value': {'dFechaVencimiento': self.dFechaEmision + timedelta(days=30)},
                 'warning': {
                     'title': 'Fechas incorrectas',
                     'message': 'El vencimiento era anterior a la emisión; se ha puesto a 30 días desde la emisión.'
