@@ -102,3 +102,15 @@ class Caseta(models.Model):
         for oRegistro in self:
             if not 0 <= oRegistro.fHoraCierre < 24:
                 raise ValidationError('La «Hora de cierre» debe estar entre las 00:00 y las 23:59.')
+
+
+    def unlink(self):
+        oRegistro = None
+        for oRegistro in self:
+            if oRegistro.licencia_ids:
+                raise UserError(f'No se puede borrar la caseta «{oRegistro.sNombre}» porque tiene licencias.')
+            if oRegistro.inspeccion_ids:
+                raise UserError(f'No se puede borrar la caseta «{oRegistro.sNombre}» porque tiene inspecciones.')
+        self.zona_ids.unlink()
+        self.mobiliario_ids.write({'caseta_id': False, 'dFechaAsignacion': False})
+        return super().unlink()

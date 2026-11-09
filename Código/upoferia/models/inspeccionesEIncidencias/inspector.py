@@ -63,3 +63,8 @@ class Inspector(models.Model):
                 raise ValidationError('El «Cargo» no puede empezar ni terminar con espacios.')
             if not 2 <= len(sCargo) <= 100:
                 raise ValidationError('El «Cargo» debe tener entre 2 y 100 caracteres.')
+
+
+    def unlink(self):
+        self.inspeccion_inspector_ids.unlink()
+        return super().unlink()

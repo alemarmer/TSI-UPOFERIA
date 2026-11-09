@@ -64,3 +64,10 @@ class ElementoSeguridad(models.Model):
                 raise ValidationError('La «Fecha de la próxima revisión» tiene que ser posterior a la de la última revisión.')
             if oRegistro.dFechaProximaRevision > oRegistro.dFechaUltimaRevision + relativedelta(years=5):
                 raise ValidationError('La «Fecha de la próxima revisión» puede ser como mucho cinco años después de la última revisión.')
+
+
+    def unlink(self):
+        oMobiliarios = self.mobiliario_id
+        bResultado = super().unlink()
+        oMobiliarios.unlink()
+        return bResultado

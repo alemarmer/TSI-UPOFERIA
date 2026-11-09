@@ -72,3 +72,11 @@ class Incidencia(models.Model):
                 raise ValidationError('Una incidencia solo la puede detectar un punto de control no superado.')
             if oRegistro.mobiliario_id and oRegistro.mobiliario_id.caseta_id != oPunto.inspeccion_id.caseta_id:
                 raise ValidationError('Si la incidencia la detecta un punto de control, el mobiliario afectado tiene que ser de la caseta inspeccionada.')
+
+
+    def unlink(self):
+        oRegistro = None
+        for oRegistro in self:
+            if oRegistro.mantenimiento_ids:
+                raise UserError(f'No se puede borrar la incidencia «{oRegistro.sReferencia}» porque tiene mantenimientos.')
+        return super().unlink()

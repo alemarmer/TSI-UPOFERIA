@@ -122,3 +122,9 @@ class Inspeccion(models.Model):
                 raise ValidationError('El «Documento» puede tener como mucho 255 caracteres.')
             if not re.fullmatch(r'(https?://\S+|\S+\.(pdf|doc|docx|odt))', sDocumento, re.IGNORECASE):
                 raise ValidationError('El «Documento» tiene que ser una URL que empiece por http:// o https://, o un archivo .pdf, .doc, .docx u .odt.')
+
+
+    def unlink(self):
+        self.punto_control_ids.unlink()
+        self.inspeccion_inspector_ids.unlink()
+        return super().unlink()
