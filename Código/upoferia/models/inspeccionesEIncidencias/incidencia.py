@@ -31,9 +31,9 @@ class Incidencia(models.Model):
         ('cancelada', 'Cancelada'),
     ], string='Estado', required=True, default='abierta')
 
-    mobiliario_id = fields.Many2one('upoferia.mobiliario_caseta', string='Mobiliario afectado', ondelete='set null')
+    mobiliario_id = fields.Many2one('upoferia.mobiliario_caseta', string='Mobiliario afectado')
 
-    punto_control_id = fields.Many2one('upoferia.punto_control', string='Punto de control que la detecta', ondelete='set null')
+    punto_control_id = fields.Many2one('upoferia.punto_control', string='Punto de control que la detecta')
     mantenimiento_ids = fields.One2many('upoferia.mantenimiento', 'incidencia_id', string='Mantenimientos')
 
     @api.constrains('sReferencia')

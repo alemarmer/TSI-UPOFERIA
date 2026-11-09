@@ -24,8 +24,8 @@ class PuntoControl(models.Model):
     ], string='Resultado')
     sObservaciones = fields.Text(string='Observaciones')
 
-    inspeccion_id = fields.Many2one('upoferia.inspeccion', string='Inspección', required=True, ondelete='cascade')
-    elemento_seguridad_id = fields.Many2one('upoferia.elemento_seguridad', string='Elemento de seguridad', ondelete='set null')
+    inspeccion_id = fields.Many2one('upoferia.inspeccion', string='Inspección', required=True)
+    elemento_seguridad_id = fields.Many2one('upoferia.elemento_seguridad', string='Elemento de seguridad')
     incidencia_ids = fields.One2many('upoferia.incidencia', 'punto_control_id', string='Incidencias detectadas')
 
     @api.depends('iNumeroPunto', 'inspeccion_id.sReferencia')

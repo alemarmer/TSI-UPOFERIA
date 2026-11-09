@@ -42,7 +42,7 @@ class Inspeccion(models.Model):
         ('cancelada', 'Cancelada'),
     ], string='Estado', required=True, default='programada')
 
-    caseta_id = fields.Many2one('upoferia.caseta', string='Caseta', required=True, ondelete='restrict')
+    caseta_id = fields.Many2one('upoferia.caseta', string='Caseta', required=True)
     punto_control_ids = fields.One2many('upoferia.punto_control', 'inspeccion_id', string='Puntos de control')
     inspeccion_inspector_ids = fields.One2many('upoferia.inspeccion_inspector', 'inspeccion_id', string='Inspectores')
 

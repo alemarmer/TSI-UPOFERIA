@@ -35,7 +35,7 @@ class Mantenimiento(models.Model):
         ('cancelado', 'Cancelado'),
     ], string='Estado', required=True, default='solicitado')
 
-    incidencia_id = fields.Many2one('upoferia.incidencia', string='Incidencia', ondelete='set null')
+    incidencia_id = fields.Many2one('upoferia.incidencia', string='Incidencia')
 
     @api.constrains('sIdMantenimiento')
     def _check_id_mantenimiento(self):

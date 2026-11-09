@@ -27,7 +27,7 @@ class ZonaCaseta(models.Model):
     ], string='Tipo')
     fSuperficieM2 = fields.Float(string='Superficie (m²)')
 
-    caseta_id = fields.Many2one('upoferia.caseta', string='Caseta', required=True, ondelete='cascade')
+    caseta_id = fields.Many2one('upoferia.caseta', string='Caseta', required=True)
     mesa_ids = fields.One2many('upoferia.mesa', 'zona_id', string='Mesas')
 
     @api.depends('sNombre', 'caseta_id.sNombre')

@@ -15,8 +15,8 @@ class InspeccionInspector(models.Model):
 
     sRol = fields.Char(string='Rol')
 
-    inspeccion_id = fields.Many2one('upoferia.inspeccion', string='Inspección', required=True, ondelete='cascade')
-    inspector_id = fields.Many2one('upoferia.inspector', string='Inspector', required=True, ondelete='cascade')
+    inspeccion_id = fields.Many2one('upoferia.inspeccion', string='Inspección', required=True)
+    inspector_id = fields.Many2one('upoferia.inspector', string='Inspector', required=True)
 
     @api.constrains('sRol')
     def _check_rol(self):

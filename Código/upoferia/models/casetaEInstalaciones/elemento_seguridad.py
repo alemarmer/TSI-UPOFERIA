@@ -11,7 +11,7 @@ from odoo.exceptions import ValidationError
 class ElementoSeguridad(models.Model):
     _name = 'upoferia.elemento_seguridad'
     _description = 'Elemento de seguridad'
-    _inherits = {'feria.mobiliario_caseta': 'mobiliario_id'}
+    _inherits = {'upoferia.mobiliario_caseta': 'mobiliario_id'}
     _rec_name = 'sNumeroSerie'
 
     sTipo = fields.Selection([
@@ -31,7 +31,7 @@ class ElementoSeguridad(models.Model):
              'Ese mobiliario ya está registrado como elemento de seguridad.'),
         ]
 
-    mobiliario_id = fields.Many2one('feria.mobiliario_caseta', string='Mobiliario', required=True, ondelete='cascade')
+    mobiliario_id = fields.Many2one('upoferia.mobiliario_caseta', string='Mobiliario', required=True)
 
     bRevisionVencida = fields.Boolean(string='Revisión vencida', compute='_compute_revision_vencida')
 

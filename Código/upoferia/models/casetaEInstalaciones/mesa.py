@@ -16,7 +16,7 @@ class Mesa(models.Model):
     iNumero = fields.Integer(string='Número', required=True)
     iCapacidad = fields.Integer(string='Capacidad', required=True)
 
-    zona_id = fields.Many2one('upoferia.zona_caseta', string='Zona', ondelete='set null')
+    zona_id = fields.Many2one('upoferia.zona_caseta', string='Zona')
 
     @api.depends('iNumero', 'zona_id.display_name')
     def _compute_display_name(self):
