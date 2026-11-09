@@ -39,6 +39,8 @@ class Licencia(models.Model):
 
     sDocumento = fields.Char(string='Documento')
 
+    caseta_id = fields.Many2one('feria.caseta', string='Caseta', required=True, ondelete='restrict')
+
     bVigente = fields.Boolean(string='Vigente', compute='_compute_vigente')
 
     @api.depends('sEstado', 'dFechaConcesion', 'dFechaCaducidad')
