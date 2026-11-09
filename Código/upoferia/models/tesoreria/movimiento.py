@@ -8,16 +8,16 @@ class Movimiento(models.Model):
 
     _name = 'upoferia.movimiento'
     _description = 'Movimiento de tesorería'
-    _rec_name = 'referencia'
+    _rec_name = 'sReferencia'
 
-    referencia = fields.Char(string="Referencia", required=True, help="Identificador único del movimiento")
-    fecha = fields.Date(string="Fecha", required=True)
-    importe = fields.Float(string="Importe", required=True, digits=(10, 2))
-    estado = fields.Selection([('borrador', 'Borrador'),
+    sReferencia = fields.Char(string="Referencia", required=True, help="Identificador único del movimiento")
+    dFecha = fields.Date(string="Fecha", required=True)
+    fImporte = fields.Float(string="Importe", required=True, digits=(10, 2))
+    selEstado = fields.Selection([('borrador', 'Borrador'),
                                ('confirmado', 'Confirmado'),
                                ('anulado', 'Anulado'),],
                               'Estado', default='borrador')
-    tipo = fields.Selection([('cuota_socio', 'Cuota de socio'),
+    selTipo = fields.Selection([('cuota_socio', 'Cuota de socio'),
                              ('consumo_barra', 'Consumo en barra'),
                              ('liquidacion_cuenta', 'Liquidación de cuenta'),
                              ('nomina', 'Nómina'),
@@ -25,78 +25,88 @@ class Movimiento(models.Model):
                              ('pago_proveedor', 'Pago a proveedor'),
                              ('cobro_cliente', 'Cobro a cliente'),],
                             'Tipo', required=True)
-    periodo = fields.Char(string="Periodo")
-    concepto = fields.Char(string="Concepto")
+    sPeriodo = fields.Char(string="Periodo")
+    sConcepto = fields.Char(string="Concepto")
 
     # Relaciones
-    cuota_id = fields.Many2one('upoferia.cuota', string="Cuota", ondelete='restrict')
-    ticket_id = fields.Many2one('upoferia.ticket', string="Ticket", ondelete='restrict')
-    linea_presupuesto_id = fields.Many2one('upoferia.linea_presupuesto', string="Línea de presupuesto", ondelete='set null')
-    metodo_pago_id = fields.Many2one('upoferia.metodo_pago', string="Método de pago", required=True, ondelete='restrict')
-    cuenta_bancaria_id = fields.Many2one('upoferia.cuenta_bancaria', string="Cuenta bancaria", ondelete='restrict')
-    caja_id = fields.Many2one('upoferia.caja', string="Caja", ondelete='restrict')
-    categoria_economica_id = fields.Many2one('upoferia.categoria_economica', string="Categoría económica", ondelete='restrict')
+    cuota_id = fields.Many2one('upoferia.cuota', string="Cuota")
+    ticket_id = fields.Many2one('upoferia.ticket', string="Ticket")
+    linea_presupuesto_id = fields.Many2one('upoferia.linea_presupuesto', string="Línea de presupuesto")
+    metodo_pago_id = fields.Many2one('upoferia.metodo_pago', string="Método de pago", required=True)
+    cuenta_bancaria_id = fields.Many2one('upoferia.cuenta_bancaria', string="Cuenta bancaria")
+    caja_id = fields.Many2one('upoferia.caja', string="Caja")
+    categoria_economica_id = fields.Many2one('upoferia.categoria_economica', string="Categoría económica")
 
     _sql_constraints = [
-        ('ticket_unique', 'UNIQUE(ticket_id)', 'Ese ticket ya está asociado a otro movimiento.'),
-        ('referencia_unique', 'UNIQUE(referencia)', 'Ya existe un movimiento con esa referencia.'),
-        ('importe_positivo', 'CHECK(importe > 0)',
-         'El importe debe ser mayor que 0; si es ingreso o gasto lo indica el tipo de movimiento.'),
+        ('referencia_unique', 'UNIQUE("sReferencia")', 'Ya existe un movimiento con esa referencia.'),
     ]
 
-    @api.constrains('referencia')
+    @api.constrains('sReferencia')
     def _check_referencia(self):
         for record in self:
-            if not record.referencia.strip():
+            if not record.sReferencia.strip():
                 raise ValidationError('La referencia del movimiento no puede estar vacía.')
 
-    @api.constrains('tipo', 'periodo')
+    @api.constrains('fImporte')
+    def _check_importe(self):
+        for record in self:
+            if record.fImporte <= 0:
+                raise ValidationError('El importe debe ser mayor que 0; si es ingreso o gasto lo indica el tipo '
+                                      'de movimiento.')
+
+    @api.constrains('ticket_id')
+    def _check_ticket(self):
+        for record in self.filtered('ticket_id'):
+            if self.search_count([('ticket_id', '=', record.ticket_id.id), ('id', '!=', record.id)]):
+                raise ValidationError('Ese ticket ya está asociado a otro movimiento.')
+
+    @api.constrains('selTipo', 'sPeriodo')
     def _check_periodo(self):
         for record in self:
-            if record.tipo in TIPOS_CON_PERIODO and not (record.periodo or '').strip():
+            if record.selTipo in TIPOS_CON_PERIODO and not (record.sPeriodo or '').strip():
                 raise ValidationError('Los movimientos de tipo «%s» deben indicar el periodo que cubren.'
-                                      % dict(self._fields['tipo'].selection).get(record.tipo))
+                                      % dict(self._fields['selTipo'].selection).get(record.selTipo))
 
-    @api.constrains('tipo', 'concepto')
+    @api.constrains('selTipo', 'sConcepto')
     def _check_concepto(self):
         for record in self:
-            if record.tipo == 'gasto_adelantado' and not (record.concepto or '').strip():
+            if record.selTipo == 'gasto_adelantado' and not (record.sConcepto or '').strip():
                 raise ValidationError('Un gasto adelantado debe indicar en el concepto en qué se ha gastado el dinero.')
 
-    @api.constrains('estado', 'fecha')
+    @api.constrains('selEstado', 'dFecha')
     def _check_fecha_confirmado(self):
         for record in self:
-            if record.estado == 'confirmado' and record.fecha > fields.Date.context_today(record):
-                raise ValidationError('No se puede confirmar un movimiento con fecha futura (%s).' % record.fecha)
+            if record.selEstado == 'confirmado' and record.dFecha > fields.Date.context_today(record):
+                raise ValidationError('No se puede confirmar un movimiento con fecha futura (%s).' % record.dFecha)
 
-    @api.onchange('importe')
+    @api.onchange('fImporte')
     def onchange_importe(self):
-        if self.importe < 0:
+        if self.fImporte < 0:
             return {
-                'value': {'importe': abs(self.importe)},
+                'value': {'fImporte': abs(self.fImporte)},
                 'warning': {
                     'title': 'Importe negativo',
                     'message': 'El importe se guarda siempre en positivo; si es ingreso o gasto lo indica el tipo.'
                 }
             }
 
-    @api.onchange('tipo')
+    @api.onchange('selTipo')
     def onchange_tipo(self):
-        if self.tipo in TIPOS_CON_PERIODO and not self.periodo:
+        if self.selTipo in TIPOS_CON_PERIODO and not self.sPeriodo:
             return {
                 'warning': {
                     'title': 'Falta el periodo',
                     'message': 'Este tipo de movimiento necesita el periodo que cubre (por ejemplo, «Abril 2026»).'
                 }
             }
-        if self.tipo not in TIPOS_CON_PERIODO and self.periodo:
-            self.periodo = False
+        if self.selTipo not in TIPOS_CON_PERIODO and self.sPeriodo:
+            self.sPeriodo = False
 
-    @api.onchange('estado')
+    @api.onchange('selEstado')
     def onchange_estado(self):
-        if self._origin.id and self._origin.estado == 'anulado' and self.estado != 'anulado':
+        if self._origin.id and self._origin.selEstado == 'anulado' and self.selEstado != 'anulado':
             return {
-                'value': {'estado': 'anulado'},
+                'value': {'selEstado': 'anulado'},
                 'warning': {
                     'title': 'Movimiento anulado',
                     'message': 'Un movimiento anulado no puede reactivarse. Crea un movimiento nuevo.'
