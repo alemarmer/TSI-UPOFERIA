@@ -7,18 +7,18 @@ class CuentaBancaria(models.Model):
 
     _name = 'upoferia.cuenta_bancaria'
     _description = 'Cuenta bancaria de la caseta'
-    _rec_name = 'iban'
+    _rec_name = 'sIban'
 
-    iban = fields.Char(string="IBAN", required=True, size=34, help="Identificador único de la cuenta bancaria")
-    banco = fields.Char(string="Banco", required=True)
-    titular = fields.Char(string="Titular", required=True)
-    activa = fields.Boolean(string="Activa", default=True)
+    sIban = fields.Char(string="IBAN", required=True, size=34, help="Identificador único de la cuenta bancaria")
+    sBanco = fields.Char(string="Banco", required=True)
+    sTitular = fields.Char(string="Titular", required=True)
+    bActiva = fields.Boolean(string="Activa", default=True)
     
     # Relaciones
     movimiento_ids = fields.One2many('upoferia.movimiento', 'cuenta_bancaria_id', string="Movimientos")
 
     _sql_constraints = [
-        ('iban_unique', 'UNIQUE(iban)', 'Ya existe una cuenta bancaria con ese IBAN.'),
+        ('iban_unique', 'UNIQUE("sIban")', 'Ya existe una cuenta bancaria con ese IBAN.'),
     ]
 
     @staticmethod
@@ -32,26 +32,26 @@ class CuentaBancaria(models.Model):
         numerico = ''.join(str(int(c, 36)) for c in reordenado)
         return int(numerico) % 97 == 1
 
-    @api.constrains('iban')
+    @api.constrains('sIban')
     def _check_iban(self):
         for record in self:
-            iban = record.iban.replace(' ', '').upper()
+            iban = record.sIban.replace(' ', '').upper()
             if not self._iban_valido(iban):
-                raise ValidationError('El IBAN «%s» no es válido. Revisa que esté completo y bien escrito.' % record.iban)
+                raise ValidationError('El IBAN «%s» no es válido. Revisa que esté completo y bien escrito.' % record.sIban)
 
-    @api.constrains('banco', 'titular')
+    @api.constrains('sBanco', 'sTitular')
     def _check_textos(self):
         for record in self:
-            if not record.banco.strip():
+            if not record.sBanco.strip():
                 raise ValidationError('El nombre del banco no puede estar vacío.')
-            if not record.titular.strip():
+            if not record.sTitular.strip():
                 raise ValidationError('El titular de la cuenta no puede estar vacío.')
 
-    @api.onchange('iban')
+    @api.onchange('sIban')
     def onchange_iban(self):
-        if self.iban:
-            self.iban = self.iban.replace(' ', '').upper()
-            if not self._iban_valido(self.iban):
+        if self.sIban:
+            self.sIban = self.sIban.replace(' ', '').upper()
+            if not self._iban_valido(self.sIban):
                 return {
                     'warning': {
                         'title': 'IBAN incorrecto',
@@ -59,9 +59,9 @@ class CuentaBancaria(models.Model):
                     }
                 }
 
-    @api.onchange('activa')
+    @api.onchange('bActiva')
     def onchange_activa(self):
-        if not self.activa:
+        if not self.bActiva:
             return {
                 'warning': {
                     'title': 'Cuenta desactivada',
