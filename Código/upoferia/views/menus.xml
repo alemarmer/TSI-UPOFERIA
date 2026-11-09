@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Top menu item -->
+    <menuitem name="UPO Feria" id="main_upoferia_menu"/>
+
+    <!-- menu categories -->
+    <menuitem name="Tesorería" id="tesoreria_menu" parent="main_upoferia_menu" sequence="10"/>
+    <menuitem name="Catálogos" id="catalogos_menu" parent="main_upoferia_menu" sequence="20"/>
+    <menuitem name="Barra" id="barra_menu" parent="main_upoferia_menu" sequence="30"/>
+
+</odoo>
