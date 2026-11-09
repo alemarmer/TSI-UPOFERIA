@@ -12,14 +12,10 @@ class Actuacion(models.Model):
     fCache_pactado = fields.Float(string='Caché pactado')
 
     evento_id = fields.Many2one('upoferia.evento', string='Evento', required=True)
-
     transaccion_id = fields.Many2one('upoferia.transaccion', string='Contrato')
-
     servicio_ids = fields.Many2many('upoferia.servicio', 'upoferia_actuacion_servicio', 'actuacion_id', 'servicio_id', string='Servicios')
-
     artista_ids = fields.Many2many('upoferia.artista', 'upoferia_actuacion_artista',
                                    'actuacion_id', 'artista_id', string='Artistas')
-
     iNum_artistas = fields.Integer(compute='_numArtistas', string='Número de artistas', store=True)
 
     _sql_constraints = [('actuacion_evento_unique', 'UNIQUE ("evento_id")', 'Ese evento ya está registrado como actuación.')]

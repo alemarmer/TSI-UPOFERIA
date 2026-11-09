@@ -16,8 +16,10 @@ class Reserva(models.Model):
                                 ('no_presentado', 'No presentado')],
                                'Estado', default='pendiente')
 
-    #MANY2ONE CON MESA (OJO ES TAMBIEN PK)
-    #MANY2ONE CON SOCIO
+    mesa_id = fields.Many2one('upoferia.mesa', string='Mesa', required=True)
+    socio_id = fields.Many2one('upoferia.socio', string='Socio', required=True)
+
+    _sql_constraints = [('reserva_mesa_hora_unique', 'UNIQUE ("mesa_id", "dHora_llegada")', 'Esa mesa ya tiene una reserva a esa hora.')]
 
     def btn_submit_to_pendiente(self):
         self.write({'sEstado': 'pendiente'})
