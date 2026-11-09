@@ -1,0 +1,68 @@
+<odoo>
+  <record id="upoferia_marca_form_view" model="ir.ui.view">
+    <field name="name">upoferia.marca.form</field>
+    <field name="model">upoferia.marca</field>
+    <field name="arch" type="xml">
+      <form string="Marca">
+        <sheet layout="auto">
+          <field name="binLogotipo" nolabel="1" widget="image" class="oe_avatar" />
+          <div class="oe_title">
+            <h1>
+              <field name="sNombre" placeholder="Nombre de la marca" />
+            </h1>
+          </div>
+          <group>
+            <field name="proveedor_id" />
+            <field name="sColorCorporativo" widget="color" />
+          </group>
+          <notebook>
+            <page name="patrocinios" string="Patrocinios">
+              <field name="patrocinio_ids">
+                <list editable="bottom">
+                  <field name="evento_id" />
+                  <field name="sTipoAportacion" />
+                  <field name="fImporteAportacion" sum="Total" />
+                </list>
+              </field>
+            </page>
+            <page name="exhibiciones" string="Exhibiciones">
+              <field name="exhibicion_ids" readonly="1">
+                <list>
+                  <field name="sIdExhibicion" />
+                  <field name="espacio_publicitario_id" />
+                  <field name="dFechaMontaje" />
+                  <field name="dFechaRetirada" />
+                  <field name="sEstadoExhibicion" widget="badge" />
+                </list>
+              </field>
+            </page>
+            <page name="productos" string="Productos">
+              <field name="producto_ids" readonly="1" />
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="upoferia_marca_list_view" model="ir.ui.view">
+    <field name="name">upoferia.marca.list</field>
+    <field name="model">upoferia.marca</field>
+    <field name="arch" type="xml">
+      <list string="Marcas">
+        <field name="sNombre" />
+        <field name="sColorCorporativo" widget="color" />
+        <field name="proveedor_id" />
+      </list>
+    </field>
+  </record>
+
+  <record id="marca_list_action" model="ir.actions.act_window">
+    <field name="name">Marcas</field>
+    <field name="res_model">upoferia.marca</field>
+    <field name="view_mode">list,form</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">Crea la primera marca</p>
+    </field>
+  </record>
+</odoo>

@@ -1,0 +1,148 @@
+<odoo>
+  <record id="upoferia_transaccion_form_view" model="ir.ui.view">
+    <field name="name">upoferia.transaccion.form</field>
+    <field name="model">upoferia.transaccion</field>
+    <field name="arch" type="xml">
+      <form string="Transacción">
+        <header>
+          <button name="btn_confirmar" string="Confirmar" type="object" class="oe_highlight" invisible="sCodigoTipo != 'PED' or sEstado != 'borrador'" />
+          <button name="btn_recibir" string="Recibido" type="object" class="oe_highlight" invisible="sCodigoTipo != 'PED' or sEstado != 'confirmado'" />
+          <button name="btn_cancelar" string="Cancelar" type="object" invisible="sCodigoTipo != 'PED' or sEstado not in ('borrador', 'confirmado')" />
+          <button name="btn_hacer" string="Hecho" type="object" class="oe_highlight" invisible="sCodigoTipo != 'ALB' or sEstado != 'previsto'" />
+          <button name="btn_pagar" string="Pagada" type="object" class="oe_highlight" invisible="sCodigoTipo not in ('FAC', 'ABO') or sEstado not in ('pendiente', 'vencida')" />
+          <button name="btn_marcar_vencida" string="Vencida" type="object" invisible="sCodigoTipo not in ('FAC', 'ABO') or sEstado != 'pendiente'" />
+          <button name="btn_activar" string="Activar" type="object" class="oe_highlight" invisible="sCodigoTipo != 'CON' or sEstado != 'borrador'" />
+          <button name="btn_marcar_vencido" string="Vencido" type="object" invisible="sCodigoTipo != 'CON' or sEstado != 'vigente'" />
+          <button name="btn_rescindir" string="Rescindir" type="object" invisible="sCodigoTipo != 'CON' or sEstado != 'vigente'" />
+        </header>
+        <sheet layout="auto">
+          <field name="sCodigoTipo" invisible="1" />
+          <div class="oe_title">
+            <h1>
+              <field name="sIdTransaccion" placeholder="PED-2026-001" />
+            </h1>
+          </div>
+          <group>
+            <group>
+              <field name="tipo_transaccion_id" readonly="id" />
+              <field name="proveedor_id" />
+              <field name="sEstado" readonly="1" force_save="1" />
+              <field name="sRefProveedor" invisible="sCodigoTipo not in ('FAC', 'ABO')" />
+              <field name="linea_presupuesto_id" invisible="sCodigoTipo != 'CON'" />
+            </group>
+            <group>
+              <field name="dFechaInicial" />
+              <field name="dVencimiento" invisible="sCodigoTipo not in ('FAC', 'ABO')" />
+              <field name="dFechaPrevistaFin" invisible="sCodigoTipo not in ('PED', 'ALB', 'CON')" />
+              <field name="fImporte" invisible="sCodigoTipo == 'ALB'" />
+              <field name="fImporteFacturado" invisible="sCodigoTipo != 'CON'" />
+              <field name="sDocumento" invisible="sCodigoTipo != 'CON'" />
+              <field name="bRenovacionAuto" invisible="sCodigoTipo != 'CON'" />
+            </group>
+          </group>
+          <notebook>
+            <page name="lineas" string="Líneas" invisible="sCodigoTipo not in ('PED', 'FAC', 'ABO')">
+              <field name="linea_ids">
+                <list editable="bottom">
+                  <field name="iNumeroLinea" />
+                  <field name="producto_id" />
+                  <field name="iCantidad" />
+                  <field name="fPrecioUnitario" />
+                  <field name="fSubtotal" sum="Total" />
+                  <field name="iCantidadRecibida" column_invisible="parent.sCodigoTipo != 'PED'" />
+                  <field name="iCantidadFacturada" column_invisible="parent.sCodigoTipo != 'PED'" />
+                  <field name="linea_pedido_id" column_invisible="parent.sCodigoTipo not in ('FAC', 'ABO')" domain="[('transaccion_id.tipo_transaccion_id.sCodigo', '=', 'PED')]" />
+                </list>
+              </field>
+            </page>
+            <page name="movimientos" string="Movimientos" invisible="sCodigoTipo not in ('FAC', 'ABO')">
+              <field name="movimiento_ids" readonly="1">
+                <list>
+                  <field name="referencia" />
+                  <field name="fecha" />
+                  <field name="importe" sum="Total" />
+                  <field name="estado" />
+                </list>
+              </field>
+            </page>
+            <page name="actuaciones" string="Actuaciones" invisible="sCodigoTipo != 'CON'">
+              <field name="actuacion_ids" readonly="1">
+                <list>
+                  <field name="evento_id" />
+                  <field name="fCache_pactado" sum="Total" />
+                </list>
+              </field>
+            </page>
+            <page name="salidas" string="Salidas">
+              <field name="salida_ids" readonly="1">
+                <list>
+                  <field name="dFecha_hora_salida" />
+                  <field name="carruaje_id" />
+                  <field name="sEstado" />
+                </list>
+              </field>
+            </page>
+            <page name="origen_derivadas" string="Origen y derivadas">
+              <group>
+                <field name="transaccion_origen_id" />
+              </group>
+              <field name="transaccion_derivada_ids" readonly="1">
+                <list>
+                  <field name="sIdTransaccion" />
+                  <field name="tipo_transaccion_id" />
+                  <field name="fImporte" />
+                  <field name="sEstado" widget="badge" />
+                </list>
+              </field>
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="upoferia_transaccion_list_view" model="ir.ui.view">
+    <field name="name">upoferia.transaccion.list</field>
+    <field name="model">upoferia.transaccion</field>
+    <field name="arch" type="xml">
+      <list string="Transacciones" decoration-info="sEstado == 'borrador'" decoration-success="sEstado in ('recibido', 'hecho', 'pagada', 'vigente')" decoration-danger="sEstado in ('vencida', 'vencido')" decoration-muted="sEstado in ('cancelado', 'rescindido')">
+        <field name="sIdTransaccion" />
+        <field name="tipo_transaccion_id" />
+        <field name="proveedor_id" />
+        <field name="dFechaInicial" />
+        <field name="fImporte" />
+        <field name="sEstado" widget="badge" decoration-info="sEstado == 'borrador'" decoration-success="sEstado in ('recibido', 'hecho', 'pagada', 'vigente')" decoration-danger="sEstado in ('vencida', 'vencido')" />
+      </list>
+    </field>
+  </record>
+
+  <record id="upoferia_transaccion_search_view" model="ir.ui.view">
+    <field name="name">upoferia.transaccion.search</field>
+    <field name="model">upoferia.transaccion</field>
+    <field name="arch" type="xml">
+      <search>
+        <field name="sIdTransaccion" />
+        <field name="proveedor_id" />
+        <filter name="search_pedidos" string="Pedidos" domain="[('tipo_transaccion_id.sCodigo','=','PED')]" />
+        <filter name="search_facturas" string="Facturas y abonos" domain="[('tipo_transaccion_id.sCodigo','in',('FAC','ABO'))]" />
+        <filter name="search_contratos" string="Contratos" domain="[('tipo_transaccion_id.sCodigo','=','CON')]" />
+        <separator orientation="vertical" />
+        <group expand="0" string="Agrupar por...">
+          <filter name="group_by_tipo" string="Tipo" context="{'group_by':'tipo_transaccion_id'}" />
+          <filter name="group_by_proveedor" string="Proveedor" context="{'group_by':'proveedor_id'}" />
+          <filter name="group_by_estado" string="Estado" context="{'group_by':'sEstado'}" />
+        </group>
+      </search>
+    </field>
+  </record>
+
+  <record id="transaccion_list_action" model="ir.actions.act_window">
+    <field name="name">Transacciones</field>
+    <field name="res_model">upoferia.transaccion</field>
+    <field name="search_view_id" ref="upoferia_transaccion_search_view" />
+    <field name="view_mode">list,form</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">Crea la primera transacción</p>
+    </field>
+  </record>
+</odoo>

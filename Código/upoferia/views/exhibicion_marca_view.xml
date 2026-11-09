@@ -1,0 +1,86 @@
+<odoo>
+  <record id="upoferia_exhibicion_marca_form_view" model="ir.ui.view">
+    <field name="name">upoferia.exhibicion_marca.form</field>
+    <field name="model">upoferia.exhibicion_marca</field>
+    <field name="arch" type="xml">
+      <form string="Exhibición">
+        <header>
+          <field name="sEstadoExhibicion" widget="statusbar" />
+        </header>
+        <sheet layout="auto">
+          <div class="oe_title">
+            <h1>
+              <field name="sIdExhibicion" placeholder="EXH-01" />
+            </h1>
+          </div>
+          <group>
+            <group>
+              <field name="marca_id" />
+              <field name="espacio_publicitario_id" />
+              <field name="tecnico_id" />
+            </group>
+            <group>
+              <field name="dFechaMontaje" />
+              <field name="dFechaRetirada" />
+              <field name="sArteFinal" />
+            </group>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="upoferia_exhibicion_marca_list_view" model="ir.ui.view">
+    <field name="name">upoferia.exhibicion_marca.list</field>
+    <field name="model">upoferia.exhibicion_marca</field>
+    <field name="arch" type="xml">
+      <list string="Exhibiciones" decoration-info="sEstadoExhibicion == 'programada'" decoration-success="sEstadoExhibicion == 'montada'" decoration-muted="sEstadoExhibicion == 'retirada'">
+        <field name="sIdExhibicion" />
+        <field name="marca_id" />
+        <field name="espacio_publicitario_id" />
+        <field name="tecnico_id" />
+        <field name="dFechaMontaje" />
+        <field name="dFechaRetirada" />
+        <field name="sEstadoExhibicion" widget="badge" />
+      </list>
+    </field>
+  </record>
+
+  <record id="upoferia_exhibicion_marca_calendar_view" model="ir.ui.view">
+    <field name="name">upoferia.exhibicion_marca.calendar</field>
+    <field name="model">upoferia.exhibicion_marca</field>
+    <field name="arch" type="xml">
+      <calendar string="Exhibiciones" color="espacio_publicitario_id" date_start="dFechaMontaje" date_stop="dFechaRetirada" mode="month">
+        <field name="sIdExhibicion" />
+        <field name="marca_id" />
+      </calendar>
+    </field>
+  </record>
+
+  <record id="upoferia_exhibicion_marca_search_view" model="ir.ui.view">
+    <field name="name">upoferia.exhibicion_marca.search</field>
+    <field name="model">upoferia.exhibicion_marca</field>
+    <field name="arch" type="xml">
+      <search>
+        <field name="sIdExhibicion" />
+        <field name="marca_id" />
+        <field name="espacio_publicitario_id" />
+        <separator orientation="vertical" />
+        <group expand="0" string="Agrupar por...">
+          <filter name="group_by_marca" string="Marca" context="{'group_by':'marca_id'}" />
+          <filter name="group_by_espacio" string="Espacio publicitario" context="{'group_by':'espacio_publicitario_id'}" />
+        </group>
+      </search>
+    </field>
+  </record>
+
+  <record id="exhibicion_marca_list_action" model="ir.actions.act_window">
+    <field name="name">Exhibiciones</field>
+    <field name="res_model">upoferia.exhibicion_marca</field>
+    <field name="search_view_id" ref="upoferia_exhibicion_marca_search_view" />
+    <field name="view_mode">list,form,calendar</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">Crea la primera exhibición</p>
+    </field>
+  </record>
+</odoo>

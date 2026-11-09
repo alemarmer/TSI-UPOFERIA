@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-
 from . import marca
 from . import espacio_publicitario
 from . import tecnico

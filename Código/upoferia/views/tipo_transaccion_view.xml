@@ -1,0 +1,51 @@
+<odoo>
+  <record id="upoferia_tipo_transaccion_form_view" model="ir.ui.view">
+    <field name="name">upoferia.tipo_transaccion.form</field>
+    <field name="model">upoferia.tipo_transaccion</field>
+    <field name="arch" type="xml">
+      <form string="Tipo de transacción">
+        <sheet layout="auto">
+          <group>
+            <field name="sCodigo" />
+            <field name="sNombre" />
+            <field name="sDescripcion" />
+          </group>
+          <notebook>
+            <page name="transacciones" string="Transacciones">
+              <field name="transaccion_ids" readonly="1">
+                <list>
+                  <field name="sIdTransaccion" />
+                  <field name="proveedor_id" />
+                  <field name="dFechaInicial" />
+                  <field name="fImporte" sum="Total" />
+                  <field name="sEstado" widget="badge" />
+                </list>
+              </field>
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="upoferia_tipo_transaccion_list_view" model="ir.ui.view">
+    <field name="name">upoferia.tipo_transaccion.list</field>
+    <field name="model">upoferia.tipo_transaccion</field>
+    <field name="arch" type="xml">
+      <list string="Tipos de transacción">
+        <field name="sCodigo" />
+        <field name="sNombre" />
+        <field name="sDescripcion" />
+      </list>
+    </field>
+  </record>
+
+  <record id="tipo_transaccion_list_action" model="ir.actions.act_window">
+    <field name="name">Tipos de transacción</field>
+    <field name="res_model">upoferia.tipo_transaccion</field>
+    <field name="view_mode">list,form</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">Crea el primer tipo de transacción</p>
+    </field>
+  </record>
+</odoo>

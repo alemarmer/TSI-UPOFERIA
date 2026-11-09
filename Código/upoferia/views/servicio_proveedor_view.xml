@@ -1,0 +1,22 @@
+<odoo>
+  <record id="upoferia_servicio_proveedor_list_view" model="ir.ui.view">
+    <field name="name">upoferia.servicio_proveedor.list</field>
+    <field name="model">upoferia.servicio_proveedor</field>
+    <field name="arch" type="xml">
+      <list string="Tarifas de proveedores" editable="bottom">
+        <field name="servicio_id" />
+        <field name="proveedor_id" />
+        <field name="fPrecioTarifa" />
+      </list>
+    </field>
+  </record>
+
+  <record id="servicio_proveedor_list_action" model="ir.actions.act_window">
+    <field name="name">Tarifas de proveedores</field>
+    <field name="res_model">upoferia.servicio_proveedor</field>
+    <field name="view_mode">list</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">Crea la primera tarifa</p>
+    </field>
+  </record>
+</odoo>

@@ -1,0 +1,61 @@
+<odoo>
+  <record id="upoferia_servicio_form_view" model="ir.ui.view">
+    <field name="name">upoferia.servicio.form</field>
+    <field name="model">upoferia.servicio</field>
+    <field name="arch" type="xml">
+      <form string="Servicio">
+        <sheet layout="auto">
+          <div class="oe_title">
+            <h1>
+              <field name="sNombre" placeholder="Nombre del servicio" />
+            </h1>
+          </div>
+          <group>
+            <group>
+              <field name="sCodigo" />
+              <field name="sUnidadFacturacion" />
+            </group>
+            <group>
+              <field name="bRequiereTecnico" />
+            </group>
+          </group>
+          <notebook>
+            <page name="proveedores" string="Proveedores que lo ofrecen">
+              <field name="servicio_proveedor_ids">
+                <list editable="bottom">
+                  <field name="proveedor_id" />
+                  <field name="fPrecioTarifa" />
+                </list>
+              </field>
+            </page>
+            <page name="actuaciones" string="Actuaciones">
+              <field name="actuacion_ids" />
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="upoferia_servicio_list_view" model="ir.ui.view">
+    <field name="name">upoferia.servicio.list</field>
+    <field name="model">upoferia.servicio</field>
+    <field name="arch" type="xml">
+      <list string="Servicios">
+        <field name="sCodigo" />
+        <field name="sNombre" />
+        <field name="sUnidadFacturacion" />
+        <field name="bRequiereTecnico" />
+      </list>
+    </field>
+  </record>
+
+  <record id="servicio_list_action" model="ir.actions.act_window">
+    <field name="name">Servicios</field>
+    <field name="res_model">upoferia.servicio</field>
+    <field name="view_mode">list,form</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">Crea el primer servicio</p>
+    </field>
+  </record>
+</odoo>

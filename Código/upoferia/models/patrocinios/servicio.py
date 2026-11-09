@@ -1,57 +1,27 @@
-import re
+# -*- coding: utf-8 -*-
 
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError
 
 
 class Servicio(models.Model):
-    _name = 'upoferia.servicio'
-    _description = 'Servicio'
-    _rec_name = 'sCodigo'
-    _sql_constraints = [
-        ('codigo_uniq', 'UNIQUE ("sCodigo")',
-         'Ya existe un servicio con ese código.'),
-    ]
+     _name = 'upoferia.servicio'
+     _description = 'Servicio'
+     _rec_name = 'sCodigo'
 
-    sCodigo = fields.Char(string='Código', required=True)
-    sUnidadFacturacion = fields.Selection([
-        ('hora', 'Por hora'),
-        ('dia', 'Por día'),
-        ('evento', 'Por evento'),
-        ('unidad', 'Por unidad'),
-        ('persona', 'Por persona'),
-        ('metro_cuadrado', 'Por metro cuadrado'),
-        ('precio_cerrado', 'Precio cerrado'),
-    ], string='Unidad de facturación')
-    bRequiereTecnico = fields.Boolean(string='Requiere técnico')
-    sNombre = fields.Char(string='Nombre', required=True)
+     sCodigo = fields.Char(string="Código", required=True)
+     sNombre = fields.Char(string="Nombre", required=True)
+     sUnidadFacturacion = fields.Selection([('hora', 'Por hora'),
+                                            ('dia', 'Por día'),
+                                            ('evento', 'Por evento'),
+                                            ('unidad', 'Por unidad'),
+                                            ('persona', 'Por persona'),
+                                            ('metro_cuadrado', 'Por metro cuadrado'),
+                                            ('precio_cerrado', 'Precio cerrado'),],
+                                            'Unidad de facturación')
+     bRequiereTecnico = fields.Boolean(string="Requiere técnico")
 
-    servicio_proveedor_ids = fields.One2many('upoferia.servicio_proveedor', 'servicio_id', string='Proveedores que lo ofrecen')
+     
+     servicio_proveedor_ids = fields.One2many("upoferia.servicio_proveedor", 'servicio_id', string="Proveedores que lo ofrecen")
+     actuacion_ids = fields.Many2many("upoferia.actuacion", 'upoferia_actuacion_servicio', 'servicio_id', 'actuacion_id', string="Actuaciones")
 
-    actuacion_ids = fields.Many2many('upoferia.actuacion', 'upoferia_actuacion_servicio', 'servicio_id', 'actuacion_id', string='Actuaciones')
-    
-    @api.constrains('sCodigo')
-    def _check_codigo(self):
-        oRegistro = None
-        sCodigo = ''
-        for oRegistro in self:
-            sCodigo = oRegistro.sCodigo or ''
-            if not sCodigo.strip():
-                raise ValidationError('El campo «Código» es obligatorio.')
-            if not 2 <= len(sCodigo) <= 20:
-                raise ValidationError('El «Código» del servicio debe tener entre 2 y 20 caracteres.')
-            if not re.fullmatch(r'[A-Z0-9]+([-/._][A-Z0-9]+)*', sCodigo):
-                raise ValidationError('El «Código» del servicio solo puede tener letras mayúsculas y números, separados por - / . _ y sin espacios (por ejemplo SRV-SONIDO).')
-
-    @api.constrains('sNombre')
-    def _check_nombre(self):
-        oRegistro = None
-        sNombre = ''
-        for oRegistro in self:
-            sNombre = oRegistro.sNombre or ''
-            if not sNombre.strip():
-                raise ValidationError('El campo «Nombre» del servicio es obligatorio.')
-            if sNombre != sNombre.strip():
-                raise ValidationError('El nombre del servicio no puede empezar ni terminar con espacios.')
-            if not 2 <= len(sNombre) <= 100:
-                raise ValidationError('El nombre del servicio debe tener entre 2 y 100 caracteres.')
+     _sql_constraints = [('servicio_codigo_unique', 'UNIQUE ("sCodigo")', 'Ya existe un servicio con ese código')]

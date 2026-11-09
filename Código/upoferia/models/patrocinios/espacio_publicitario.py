@@ -1,120 +1,55 @@
-import re
+# -*- coding: utf-8 -*-
 
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError
 
 
 class EspacioPublicitario(models.Model):
-    _name = 'upoferia.espacio_publicitario'
-    _description = 'Espacio publicitario'
-    _rec_name = 'sCodigoLugar'
-    _sql_constraints = [
-        ('codigo_lugar_uniq', 'UNIQUE ("sCodigoLugar")',
-         'Ya existe un espacio publicitario con ese código.'),
-    ]
+     _name = 'upoferia.espacio_publicitario'
+     _description = 'Espacio publicitario'
+     _rec_name = 'sCodigoLugar'
 
-    sCodigoLugar = fields.Char(string='Código del lugar', required=True)
-    fAltoM = fields.Float(string='Alto (m)', required=True)
-    sTipo = fields.Selection([
-        ('lona', 'Lona'),
-        ('valla', 'Valla'),
-        ('banderola', 'Banderola'),
-        ('pantalla', 'Pantalla digital'),
-        ('photocall', 'Photocall'),
-        ('mupi', 'Mupi'),
-        ('suelo', 'Vinilo de suelo'),
-    ], string='Tipo')
-    sUbicacionExacta = fields.Char(string='Ubicación exacta')
-    fAnchoM = fields.Float(string='Ancho (m)', required=True)
-    bIluminado = fields.Boolean(string='Iluminado')
+     sCodigoLugar = fields.Char(string="Código del lugar", required=True)
+     sTipo = fields.Selection([('lona', 'Lona'),
+                               ('valla', 'Valla'),
+                               ('banderola', 'Banderola'),
+                               ('pantalla', 'Pantalla digital'),
+                               ('photocall', 'Photocall'),
+                               ('mupi', 'Mupi'),
+                               ('suelo', 'Vinilo de suelo'),],
+                               'Tipo')
+     sUbicacionExacta = fields.Char(string="Ubicación exacta")
+     fAltoM = fields.Float(string="Alto (m)", required=True)
+     fAnchoM = fields.Float(string="Ancho (m)", required=True)
+     bIluminado = fields.Boolean(string="Iluminado")
 
-    exhibicion_ids = fields.One2many('upoferia.exhibicion_marca', 'espacio_publicitario_id', string='Exhibiciones')
+     
+     exhibicion_ids = fields.One2many("upoferia.exhibicion_marca", 'espacio_publicitario_id', string="Exhibiciones")
+     fSuperficieM2 = fields.Float(compute='_superficie', string="Superficie (m²)")
 
-    fSuperficieM2 = fields.Float(string='Superficie (m²)', compute='_compute_superficie_m2')
+     _sql_constraints = [('espacio_publicitario_codigo_unique', 'UNIQUE ("sCodigoLugar")', 'Ya existe un espacio publicitario con ese código')]
 
-    @api.constrains('sCodigoLugar')
-    def _check_codigo_lugar(self):
-        oRegistro = None
-        sCodigo = ''
-        for oRegistro in self:
-            sCodigo = oRegistro.sCodigoLugar or ''
-            if not sCodigo.strip():
-                raise ValidationError('El campo «Código del lugar» es obligatorio.')
-            if not 2 <= len(sCodigo) <= 20:
-                raise ValidationError('El «Código del lugar» debe tener entre 2 y 20 caracteres.')
-            if not re.fullmatch(r'[A-Z0-9]+([-/._][A-Z0-9]+)*', sCodigo):
-                raise ValidationError('El «Código del lugar» solo puede tener letras mayúsculas y números, separados por - / . _ y sin espacios (por ejemplo PORTADA-01).')
+     @api.depends('fAltoM', 'fAnchoM')
+     def _superficie(self):
+          for record in self:
+               record.fSuperficieM2 = record.fAltoM * record.fAnchoM
 
-    @api.constrains('fAltoM')
-    def _check_alto_m(self):
-        oRegistro = None
-        for oRegistro in self:
-            if round(oRegistro.fAltoM, 2) != oRegistro.fAltoM:
-                raise ValidationError('«Alto (m)» solo admite dos decimales (centímetros).')
+     @api.constrains('fAltoM', 'fAnchoM')
+     def _check_medidas(self):
+          for record in self:
+               if record.fAltoM <= 0 or record.fAnchoM <= 0:
+                    raise models.ValidationError('El alto y el ancho deben ser mayores que 0.')
+               if record.fAltoM > 30 or record.fAnchoM > 30:
+                    raise models.ValidationError('El alto y el ancho no pueden superar los 30 metros.')
 
-    @api.constrains('fAnchoM')
-    def _check_ancho_m(self):
-        oRegistro = None
-        for oRegistro in self:
-            if round(oRegistro.fAnchoM, 2) != oRegistro.fAnchoM:
-                raise ValidationError('«Ancho (m)» solo admite dos decimales (centímetros).')
-
-    @api.onchange('fAnchoM')
-    def _onchange_ancho_m(self):
-        oRegistro=None
-        for oRegistro in self:
-            if oRegistro.fAnchoM <= 0:
-                oRegistro.fAnchoM=1
-                return {
-                    'warning':{
-                        'title':'Valores ajustados', 
-                        'message': '«Ancho (m)» no puede ser igual o inferior a los 0 metros; se ha ajustado a 1.',
+     @api.onchange('fAltoM', 'fAnchoM')
+     def onchange_medidas(self):
+          resultado = {}
+          if self.fAltoM > 30 or self.fAnchoM > 30:
+               resultado = {
+                    'value': {'fAltoM': min(self.fAltoM, 30), 'fAnchoM': min(self.fAnchoM, 30)},
+                    'warning': {
+                         'title': 'Valores incorrectos',
+                         'message': 'El alto y el ancho no pueden superar los 30 metros; se han ajustado a 30.'
                     }
-                }
-            if oRegistro.fAnchoM > 30:
-                oRegistro.fAnchoM=30
-                return {
-                    'warning':{
-                        'title':'Valores ajustados', 
-                        'message': '«Ancho (m)» no puede superar 30 metros; se ha ajustado a 30.',
-                                    }
-                                }
-    @api.onchange('fAltoM')
-    def _onchange_alto_m(self):
-        oRegistro=None
-        for oRegistro in self:
-            if oRegistro.fAltoM <= 0:
-                oRegistro.fAltoM=1
-                return {
-                    'warning':{
-                        'title':'Valores ajustados', 
-                        'message': '«Alto (m)» no puede ser igual o inferior a los 0 metros; se ha ajustado a 1.',
-                    }
-                }
-            if oRegistro.fAltoM > 30:
-                oRegistro.fAltoM=30
-                return {
-                    'warning':{
-                        'title':'Valores ajustados', 
-                        'message': '«Alto (m)» no puede superar 30 metros; se ha ajustado a 30.',
-                                      }
-                                 }     
-            
-    @api.constrains('sUbicacionExacta')
-    def _check_ubicacion_exacta(self):
-        oRegistro = None
-        sUbicacion = ''
-        for oRegistro in self:
-            sUbicacion = oRegistro.sUbicacionExacta or ''
-            if not sUbicacion:
-                continue
-            if sUbicacion != sUbicacion.strip() or '  ' in sUbicacion:
-                raise ValidationError('La «Ubicación exacta» no puede empezar ni terminar con espacios ni tener dos espacios seguidos.')
-            if not 3 <= len(sUbicacion) <= 200:
-                raise ValidationError('La «Ubicación exacta» debe tener entre 3 y 200 caracteres.')
-
-    @api.depends('fAltoM', 'fAnchoM')
-    def _compute_superficie_m2(self):
-        oRegistro = None
-        for oRegistro in self:
-            oRegistro.fSuperficieM2 = oRegistro.fAltoM * oRegistro.fAnchoM
+               }
+               return resultado

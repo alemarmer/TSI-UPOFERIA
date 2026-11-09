@@ -1,0 +1,6 @@
+id,sCodigo,sNombre,sDescripcion
+tipo_transaccion_ped,PED,"Pedido","Pedido de material o servicios a un proveedor"
+tipo_transaccion_alb,ALB,"Albarán","Entrega de lo pedido"
+tipo_transaccion_fac,FAC,"Factura","Factura del proveedor"
+tipo_transaccion_abo,ABO,"Abono","Devolución o rectificación de una factura"
+tipo_transaccion_con,CON,"Contrato","Contrato con un proveedor"

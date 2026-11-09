@@ -1,155 +1,107 @@
+# Validaciones — Patrocinios y servicios
+
 ## Marca (`upoferia.marca`) — `marca.py`
 
 ### `sNombre` (Char) — clave
-- Obligatorio — `required`
-- Único — `_sql_constraints`
-- No vacío ni solo espacios — `@api.constrains`
-- Sin espacios al principio ni al final — `@api.constrains`
-- Entre 2 y 100 caracteres — `@api.constrains`
-- Único sin distinguir mayúsculas («Cruzcampo» = «CRUZCAMPO») — `@api.constrains`
-
-### `binLogotipo` (Image)
-- Solo admite imágenes (lo comprueba Odoo) — `fields.Image`
-- Se reduce automáticamente a como mucho 512 × 512 píxeles — `max_width` / `max_height`
-
-### `sColorCorporativo` (Char)
-- Formato `#RRGGBB` o `#RGB` — `@api.constrains`
-
-### Relaciones
-- `proveedor_id` (Many2one → Proveedor) — opcional, relación «comercializa»; `ondelete='set null'`.
-- `exhibicion_ids` (One2many → ExhibicionMarca) — exhibiciones de la marca (inverso de `marca_id`).
-- `producto_ids` (One2many → Producto de tesorería) — productos de la marca (inverso de `marca_id` en Producto).
-
-
-## ExhibicionMarca (`upoferia.exhibicion_marca`) — `exhibicion_marca.py`
-
-### `sIdExhibicion` (Char) — clave
 - Obligatorio y único — `required` / `_sql_constraints`
-- No vacío ni solo espacios — `@api.constrains`
-- Entre 2 y 20 caracteres — `@api.constrains`
-- Código en mayúsculas, sin espacios (ej. `EXH-2026-01`) — `@api.constrains`
-
-### `dFechaMontaje` (Date)
-- Entre el 01/01/1970 y dos años después de hoy — `@api.constrains`
-
-### `dFechaRetirada` (Date)
-- No anterior a la fecha de montaje — `@api.constrains` + aviso `onchange`
-- Exige que haya fecha de montaje — `@api.constrains`
-- Como mucho un año después del montaje — `@api.constrains`
-
-### `sArteFinal` (Char)
-- No solo espacios, sin espacios, como mucho 255 caracteres — `@api.constrains`
-- URL `http(s)://` o archivo `.pdf/.png/.jpg/.jpeg/.svg/.ai/.eps/.tif/.tiff` — `@api.constrains`
 
 ### Relaciones
-- `marca_id` (Many2one → Marca) — obligatorio (`required`), relación «aparece en»; no se puede borrar una marca que tenga exhibiciones (`ondelete='restrict'`).
-- `tecnico_id` (Many2one → Tecnico) — opcional, relación «actualiza»; `ondelete='set null'`.
-- `espacio_publicitario_id` (Many2one → EspacioPublicitario) — obligatorio (`required`), relación «acoge»; no se puede borrar un espacio que tenga exhibiciones (`ondelete='restrict'`).
+- `proveedor_id` (Many2one → Proveedor) — opcional, relación «comercializa» (`ondelete='set null'`).
+- `exhibicion_ids` (One2many → ExhibicionMarca) — exhibiciones de la marca.
+- `patrocinio_ids` (One2many → Patrocinio) — eventos que patrocina.
+- `producto_ids` (One2many → Producto de tesorería) — inverso de `marca_id` en Producto.
+
+## Patrocinio (`upoferia.patrocinio`) — `patrocinio.py`
+
+### `fImporteAportacion` (Float)
+- No menor que 0 — `@api.constrains`
+
+### Relaciones
+- `marca_id` (Many2one → Marca) y `evento_id` (Many2one → Evento de eventos) — obligatorios; si se borra uno, se borra el patrocinio (`ondelete='cascade'`).
+- La pareja marca + evento no se repite (clave doble del relacional) — `_sql_constraints`
+
+### Nombre que se muestra
+- Aparece como `Cruzcampo → Concierto inaugural` — `_compute_display_name`
 
 ## EspacioPublicitario (`upoferia.espacio_publicitario`) — `espacio_publicitario.py`
 
 ### `sCodigoLugar` (Char) — clave
 - Obligatorio y único — `required` / `_sql_constraints`
-- No vacío ni solo espacios — `@api.constrains`
-- Entre 2 y 20 caracteres — `@api.constrains`
-- Código en mayúsculas, sin espacios (ej. `PORTADA-01`) — `@api.constrains`
 
 ### `fAltoM` y `fAnchoM` (Float)
-- Obligatorios — `required`
-- Mayor que 0 — `@api.constrains`
-- Como mucho 30 m — `@api.constrains`
-- Como mucho dos decimales — `@api.constrains`
-
-### `sTipo` (Selection)
-- Lista cerrada: lona, valla, banderola, pantalla digital, photocall, mupi, vinilo de suelo — `fields.Selection`
-
-### `sUbicacionExacta` (Char)
-- Sin espacios sobrantes, entre 3 y 200 caracteres — `@api.constrains`
-
-### `bIluminado` (Boolean)
-- Sin validaciones.
+- Obligatorios, mayores que 0 y como mucho 30 metros — `required` / `@api.constrains`
+- En el formulario, si se pasan de 30 se ajustan a 30 y se avisa al usuario — `@api.onchange`
 
 ### Relaciones
-- `exhibicion_ids` (One2many → ExhibicionMarca) — exhibiciones que acoge (inverso de `espacio_publicitario_id`).
+- `exhibicion_ids` (One2many → ExhibicionMarca) — exhibiciones del espacio.
 
 ### Atributos derivados
-- `fSuperficieM2` (Float) — `fAltoM × fAnchoM`; solo lectura, no se guarda — `compute` + `@api.depends`
+- `fSuperficieM2` (Float) — `fAltoM × fAnchoM` — `compute` + `@api.depends`
+
+## ExhibicionMarca (`upoferia.exhibicion_marca`) — `exhibicion_marca.py`
+
+### `sIdExhibicion` (Char) — clave
+- Obligatorio y único — `required` / `_sql_constraints`
+
+### `dFechaMontaje` y `dFechaRetirada` (Date)
+- No hay fecha de retirada sin fecha de montaje, y la retirada no es anterior al montaje — `@api.constrains`
+- Una exhibición no se solapa con otra del mismo espacio publicitario. Sin fecha de retirada ocupa el espacio desde el montaje en adelante; sin fecha de montaje todavía no ocupa nada — `@api.constrains` con `search`
+
+### Relaciones
+- `marca_id` (Many2one → Marca) — obligatorio (`ondelete='restrict'`).
+- `espacio_publicitario_id` (Many2one → EspacioPublicitario) — obligatorio (`ondelete='restrict'`).
+- `tecnico_id` (Many2one → Tecnico) — opcional (`ondelete='set null'`).
+
+### Atributos derivados
+- `sEstadoExhibicion` (Selection) — se calcula con las fechas y la fecha de hoy: sin programar, programada, montada o retirada — `compute` + `@api.depends`
+
+## Tecnico (`upoferia.tecnico`) — `tecnico.py`
+
+### `sCodCarnetProfesional` (Char)
+- Único — `_sql_constraints`
+
+### `dFechaCaducidadCarnet` (Date)
+- Si ya ha caducado, se avisa en el formulario (no impide guardar) — `@api.onchange`
+
+### Relaciones
+- `exhibicion_ids` (One2many → ExhibicionMarca) — exhibiciones que monta.
 
 ## Servicio (`upoferia.servicio`) — `servicio.py`
 
 ### `sCodigo` (Char) — clave
 - Obligatorio y único — `required` / `_sql_constraints`
-- No vacío ni solo espacios — `@api.constrains`
-- Entre 2 y 20 caracteres — `@api.constrains`
-- Código en mayúsculas, sin espacios (ej. `SRV-SONIDO`) — `@api.constrains`
 
 ### `sNombre` (Char)
 - Obligatorio — `required`
-- No vacío ni solo espacios — `@api.constrains`
-- Sin espacios al principio ni al final — `@api.constrains`
-- Entre 2 y 100 caracteres — `@api.constrains`
-
-### `sUnidadFacturacion` (Selection)
-- Lista cerrada: por hora, por día, por evento, por unidad, por persona, por metro cuadrado, precio cerrado — `fields.Selection`
-
-### `bRequiereTecnico` (Boolean)
-- Sin validaciones.
 
 ### Relaciones
-- `servicio_proveedor_ids` (One2many → ServicioProveedor) — proveedores que lo ofrecen con su tarifa (inverso de `servicio_id`).
-
-## Tecnico (`upoferia.tecnico`) — `tecnico.py`
-
-### `sEspecialidad` (Selection)
-- Lista cerrada: electricidad, sonido, iluminación, montaje y estructuras, fontanería, climatización, gas — `fields.Selection`
-
-### `sCodCarnetProfesional` (Char)
-- Único entre técnicos — `_sql_constraints`
-- Entre 4 y 20 caracteres — `@api.constrains`
-- Código en mayúsculas, sin espacios (ej. `ELEC-12345`) — `@api.constrains`
-
-### `dFechaCaducidadCarnet` (Date)
-- Exige que haya código de carné — `@api.constrains`
-- Entre el 01/01/1970 y 15 años después de hoy — `@api.constrains`
-- Aviso en el formulario si el carné ya está caducado (no impide guardar) — `@api.onchange`
-
-### Relaciones
-- `exhibicion_ids` (One2many → ExhibicionMarca) — exhibiciones que actualiza (inverso de `tecnico_id`).
+- `servicio_proveedor_ids` (One2many → ServicioProveedor) — proveedores que lo ofrecen.
+- `actuacion_ids` (Many2many → Actuación de eventos) — tabla `upoferia_actuacion_servicio`, la misma que usa `servicio_ids` en Actuación.
 
 ## ServicioProveedor (`upoferia.servicio_proveedor`) — `servicio_proveedor.py`
 
-Clase de asociación de la relación N:M «ofrece» entre Servicio y Proveedor (tabla SERVICIO_PROVEEDOR del relacional).
-
 ### `fPrecioTarifa` (Float)
-- Obligatorio — `required`
-- No menor que 0 y como mucho 1.000.000 € — `@api.constrains`
-- Como mucho dos decimales (céntimos) — `@api.constrains`
+- Obligatorio y no menor que 0 — `required` / `@api.constrains`
 
 ### Relaciones
-- `servicio_id` (Many2one → Servicio) — obligatorio (`required`); si se borra el servicio se borran sus tarifas (`ondelete='cascade'`).
-- `proveedor_id` (Many2one → Proveedor) — obligatorio (`required`); si se borra el proveedor se borran sus tarifas (`ondelete='cascade'`).
-- Un proveedor solo tiene una tarifa por servicio — `_sql_constraints` `UNIQUE ("servicio_id", "proveedor_id")`.
+- `servicio_id` y `proveedor_id` (Many2one) — obligatorios (`ondelete='cascade'`).
+- La pareja servicio + proveedor no se repite — `_sql_constraints`
 
 ---
 
 # Notas sobre la documentación
 
-Los diagramas (E-R, relacional y UML) mantienen los nombres originales de los atributos (`nombre`, `codigo_lugar`…). En el código llevan la notación húngara (`sNombre`, `sCodigoLugar`…), pero de momento los diagramas no se cambian.
+Los diagramas mantienen los nombres originales de los atributos (`nombre`, `codigo_lugar`…). En el código llevan la notación húngara (`sNombre`, `sCodigoLugar`…).
 
-Nota: los atributos `Decimal` del UML (`alto_m`, `ancho_m`) se guardan como `Float` en Odoo. No hace falta cambiar el diagrama.
+Nota: los atributos `Decimal` del UML se guardan como `Float`, y `logotipo` (`Binary` en el UML) es `fields.Image`, un `Binary` de Odoo especializado en imágenes.
 
-Nota: `logotipo` de Marca es `Binary` en el UML y `fields.Image` en el código. `Image` es un `Binary` de Odoo especializado en imágenes (comprueba que el archivo sea una imagen y la reduce de tamaño), así que los dos tipos coinciden.
+Nota: los campos de relación siguen la convención de Odoo (`_id` / `_ids`), porque Odoo enlaza por su `id` interno.
 
-Nota: en el código los campos de relación siguen la convención de Odoo que usa el profesor (`_id` / `_ids`), mientras que el relacional usa los nombres de las claves ajenas (`dni_proveedor`, `codigo_tipo_transaccion`…). Las claves ajenas compuestas del relacional se convierten en un único Many2one, porque Odoo enlaza por su `id` interno. Igual que con la notación húngara, los diagramas no se cambian.
+Nota: `tipo_aportacion` de Patrocinio no tiene valores en el E-R; se han puesto Económica y En especie.
 
 ---
 
 # Pendiente de revisar
 
-
-- **Modelo nuevo `servicio_proveedor.py`.** Cuando se añadan los imports, hay que incluirlo también. Es la clase de asociación ServicioProveedor del UML.
-
-
-- **Técnico no tiene `_rec_name`.** En el desplegable de la exhibición aparecerá como «upoferia.tecnico,1». Se arreglará cuando herede de Persona.
-- **Herencia de Persona (pendiente).** Según el UML, Tecnico es subtipo de Persona (`_inherits`). `socios/persona.py` todavía está vacío.
-
+- **Herencia de Persona.** Según el UML, Tecnico es subtipo de Persona (`_inherits`). Hasta entonces no tiene nombre y en los desplegables aparece como «upoferia.tecnico,1».
+- **`estado` de EXHIBICION_MARCA en los diagramas.** En el código es `sEstadoExhibicion`; falta añadir `/estado` en el E-R y en el UML.

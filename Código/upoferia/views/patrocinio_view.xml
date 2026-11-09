@@ -1,0 +1,55 @@
+<odoo>
+  <record id="upoferia_patrocinio_form_view" model="ir.ui.view">
+    <field name="name">upoferia.patrocinio.form</field>
+    <field name="model">upoferia.patrocinio</field>
+    <field name="arch" type="xml">
+      <form string="Patrocinio">
+        <sheet layout="auto">
+          <group>
+            <group>
+              <field name="marca_id" />
+              <field name="evento_id" />
+            </group>
+            <group>
+              <field name="sTipoAportacion" />
+              <field name="fImporteAportacion" />
+            </group>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="upoferia_patrocinio_list_view" model="ir.ui.view">
+    <field name="name">upoferia.patrocinio.list</field>
+    <field name="model">upoferia.patrocinio</field>
+    <field name="arch" type="xml">
+      <list string="Patrocinios">
+        <field name="marca_id" />
+        <field name="evento_id" />
+        <field name="sTipoAportacion" />
+        <field name="fImporteAportacion" sum="Total" />
+      </list>
+    </field>
+  </record>
+
+  <record id="upoferia_patrocinio_graph_view" model="ir.ui.view">
+    <field name="name">upoferia.patrocinio.graph</field>
+    <field name="model">upoferia.patrocinio</field>
+    <field name="arch" type="xml">
+      <graph string="Aportación por marca" type="bar">
+        <field name="marca_id" />
+        <field name="fImporteAportacion" type="measure" />
+      </graph>
+    </field>
+  </record>
+
+  <record id="patrocinio_list_action" model="ir.actions.act_window">
+    <field name="name">Patrocinios</field>
+    <field name="res_model">upoferia.patrocinio</field>
+    <field name="view_mode">list,form,graph</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">Crea el primer patrocinio</p>
+    </field>
+  </record>
+</odoo>

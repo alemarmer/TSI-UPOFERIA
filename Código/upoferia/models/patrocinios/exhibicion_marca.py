@@ -1,142 +1,62 @@
-import re
+# -*- coding: utf-8 -*-
 
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError
 
 
 class ExhibicionMarca(models.Model):
-    _name = 'upoferia.exhibicion_marca'
-    _description = 'Exhibición de marca'
-    _rec_name = 'sIdExhibicion'
-    _sql_constraints = [
-        ('id_exhibicion_uniq', 'UNIQUE ("sIdExhibicion")',
-         'Ya existe una exhibición con ese identificador.'),
-    ]
+     _name = 'upoferia.exhibicion_marca'
+     _description = 'Exhibición de marca'
+     _rec_name = 'sIdExhibicion'
 
-    sIdExhibicion = fields.Char(string='Id. exhibición', required=True)
-    dFechaMontaje = fields.Date(string='Fecha de montaje')
-    sArteFinal = fields.Char(string='Arte final')
-    dFechaRetirada = fields.Date(string='Fecha de retirada')
+     sIdExhibicion = fields.Char(string="Id. exhibición", required=True)
+     dFechaMontaje = fields.Date(string="Fecha de montaje")
+     dFechaRetirada = fields.Date(string="Fecha de retirada")
+     sArteFinal = fields.Char(string="Arte final")
 
-    marca_id = fields.Many2one('upoferia.marca', string='Marca', required=True, ondelete='restrict')
-    tecnico_id = fields.Many2one('upoferia.tecnico', string='Técnico', ondelete='set null')
-    espacio_publicitario_id = fields.Many2one('upoferia.espacio_publicitario', string='Espacio publicitario', required=True, ondelete='restrict')
+     
+     marca_id = fields.Many2one("upoferia.marca", string="Marca", required=True, ondelete='restrict')
+     espacio_publicitario_id = fields.Many2one("upoferia.espacio_publicitario", string="Espacio publicitario", required=True, ondelete='restrict')
+     tecnico_id = fields.Many2one("upoferia.tecnico", string="Técnico", ondelete='set null')
+     sEstadoExhibicion = fields.Selection([('sin_programar', 'Sin programar'),
+                                           ('programada', 'Programada'),
+                                           ('montada', 'Montada'),
+                                           ('retirada', 'Retirada'),],
+                                           'Estado', compute='_estadoExhibicion')
 
-    sEstadoExhibicion = fields.Selection([
-        ('sin_programar', 'Sin programar'),
-        ('programada', 'Programada'),
-        ('montada', 'Montada'),
-        ('retirada', 'Retirada'),
-    ], string='Estado', compute='_compute_estadoExhibicion')
+     _sql_constraints = [('exhibicion_marca_id_unique', 'UNIQUE ("sIdExhibicion")', 'Ya existe una exhibición con ese identificador')]
 
-    @api.constrains('sIdExhibicion')
-    def _check_id_exhibicion(self):
-        oRegistro = None
-        sId = ''
-        for oRegistro in self:
-            sId = oRegistro.sIdExhibicion or ''
-            if not sId.strip():
-                raise ValidationError('El campo «Id. exhibición» es obligatorio.')
-            if not 2 <= len(sId) <= 20:
-                raise ValidationError('El «Id. exhibición» debe tener entre 2 y 20 caracteres.')
-            if not re.fullmatch(r'[A-Z0-9]+([-/._][A-Z0-9]+)*', sId):
-                raise ValidationError('El «Id. exhibición» solo puede tener letras mayúsculas y números, separados por - / . _ y sin espacios (por ejemplo EXH-2026-01).')
+     @api.depends('dFechaMontaje', 'dFechaRetirada')
+     def _estadoExhibicion(self):
+          hoy = fields.Date.context_today(self)
+          for record in self:
+               if not record.dFechaMontaje:
+                    record.sEstadoExhibicion = 'sin_programar'
+               elif hoy < record.dFechaMontaje:
+                    record.sEstadoExhibicion = 'programada'
+               elif not record.dFechaRetirada or hoy <= record.dFechaRetirada:
+                    record.sEstadoExhibicion = 'montada'
+               else:
+                    record.sEstadoExhibicion = 'retirada'
 
-    @api.constrains('dFechaMontaje')
-    def _check_fecha_montaje(self):
-        oRegistro = None
-        dHoy = fields.Date.context_today(self)
-        dFechaMinima = fields.Date.to_date('1970-01-01')
-        for oRegistro in self:
-            if not oRegistro.dFechaMontaje:
-                continue
-            if oRegistro.dFechaMontaje < dFechaMinima:
-                raise ValidationError('La «Fecha de montaje» no puede ser anterior al 01/01/1970.')
-            if (oRegistro.dFechaMontaje - dHoy).days > 730:
-                raise ValidationError('La «Fecha de montaje» no puede ser más de dos años posterior a hoy.')
+     @api.constrains('dFechaMontaje', 'dFechaRetirada')
+     def _check_fechas(self):
+          for record in self:
+               if record.dFechaRetirada and not record.dFechaMontaje:
+                    raise models.ValidationError('No se puede indicar la fecha de retirada sin la fecha de montaje.')
+               if record.dFechaRetirada and record.dFechaRetirada < record.dFechaMontaje:
+                    raise models.ValidationError('La fecha de retirada no puede ser anterior a la fecha de montaje.')
 
-    @api.constrains('dFechaMontaje', 'dFechaRetirada')
-    def _check_fecha_retirada(self):
-        oRegistro = None
-        for oRegistro in self:
-            if not oRegistro.dFechaRetirada:
-                continue
-            if not oRegistro.dFechaMontaje:
-                raise ValidationError('No se puede indicar la «Fecha de retirada» sin la «Fecha de montaje».')
-            if oRegistro.dFechaRetirada < oRegistro.dFechaMontaje:
-                raise ValidationError('«Fecha de retirada» no puede ser anterior a «Fecha de montaje».')
-            if (oRegistro.dFechaRetirada - oRegistro.dFechaMontaje).days > 365:
-                raise ValidationError('Una exhibición no puede durar más de un año entre el montaje y la retirada.')
-
-    @api.constrains('dFechaMontaje', 'dFechaRetirada', 'espacio_publicitario_id')
-    def _check_solapamiento(self):
-        oRegistro = None
-        lDominio = []
-        oOtra = None
-        sRetiradaOtra = ''
-        for oRegistro in self:
-            if not oRegistro.dFechaMontaje:
-                continue
-            lDominio = [
-                ('id', '!=', oRegistro.id),
-                ('espacio_publicitario_id', '=', oRegistro.espacio_publicitario_id.id),
-                ('dFechaMontaje', '!=', False),
-                '|', ('dFechaRetirada', '=', False), ('dFechaRetirada', '>=', oRegistro.dFechaMontaje),
-            ]
-            if oRegistro.dFechaRetirada:
-                lDominio.append(('dFechaMontaje', '<=', oRegistro.dFechaRetirada))
-            oOtra = self.search(lDominio, limit=1)
-            if oOtra:
-                sRetiradaOtra = oOtra.dFechaRetirada.strftime('%d/%m/%Y') if oOtra.dFechaRetirada else 'sin fecha de retirada'
-                raise ValidationError('El espacio publicitario «%s» ya está ocupado por la exhibición «%s» (del %s al %s).' % (
-                    oRegistro.espacio_publicitario_id.sCodigoLugar,
-                    oOtra.sIdExhibicion,
-                    oOtra.dFechaMontaje.strftime('%d/%m/%Y'),
-                    sRetiradaOtra,
-                ))
-
-    @api.constrains('sArteFinal')
-    def _check_arte_final(self):
-        oRegistro = None
-        sArte = ''
-        for oRegistro in self:
-            sArte = oRegistro.sArteFinal or ''
-            if not sArte:
-                continue
-            if not sArte.strip():
-                raise ValidationError('El «Arte final» no puede estar formado solo por espacios.')
-            if len(sArte) > 255:
-                raise ValidationError('El «Arte final» no puede tener más de 255 caracteres.')
-            if ' ' in sArte:
-                raise ValidationError('El «Arte final» es una URL o una ruta de archivo y no puede tener espacios.')
-            if not re.fullmatch(
-                    r'(?i)https?://\S+|\S+\.(pdf|png|jpe?g|svg|ai|eps|tiff?)',
-                    sArte):
-                raise ValidationError('El «Arte final» debe ser una URL que empiece por http:// o https://, o un archivo .pdf, .png, .jpg, .jpeg, .svg, .ai, .eps, .tif o .tiff.')
-
-    @api.onchange('dFechaMontaje', 'dFechaRetirada')
-    def _onchange_valores(self):
-        sMensaje = False
-        if self.dFechaMontaje and self.dFechaRetirada and self.dFechaRetirada < self.dFechaMontaje:
-            sMensaje = '«Fecha de retirada» no puede ser anterior a «Fecha de montaje».'
-        if sMensaje:
-            return {
-                'warning': {
-                    'title': 'Valores incorrectos',
-                    'message': sMensaje,
-                }
-            }
-
-    @api.depends('dFechaMontaje', 'dFechaRetirada')
-    def _compute_estadoExhibicion(self):
-        oRegistro = None
-        dHoy = fields.Date.context_today(self)
-        for oRegistro in self:
-            if not oRegistro.dFechaMontaje:
-                oRegistro.sEstadoExhibicion = 'sin_programar'
-            elif dHoy < oRegistro.dFechaMontaje:
-                oRegistro.sEstadoExhibicion = 'programada'
-            elif not oRegistro.dFechaRetirada or dHoy <= oRegistro.dFechaRetirada:
-                oRegistro.sEstadoExhibicion = 'montada'
-            else:
-                oRegistro.sEstadoExhibicion = 'retirada'
+     @api.constrains('dFechaMontaje', 'dFechaRetirada', 'espacio_publicitario_id')
+     def _check_solapamiento(self):
+          for record in self:
+               if not record.dFechaMontaje:
+                    continue
+               otras = self.search([('espacio_publicitario_id', '=', record.espacio_publicitario_id.id), ('id', '!=', record.id)])
+               for otra in otras:
+                    if not otra.dFechaMontaje:
+                         continue
+                    # Sin fecha de retirada, la exhibición ocupa el espacio desde el montaje en adelante
+                    empieza_antes = not record.dFechaRetirada or otra.dFechaMontaje <= record.dFechaRetirada
+                    acaba_despues = not otra.dFechaRetirada or otra.dFechaRetirada >= record.dFechaMontaje
+                    if empieza_antes and acaba_despues:
+                         raise models.ValidationError('El espacio %s ya está ocupado en esas fechas por la exhibición %s.' % (record.espacio_publicitario_id.sCodigoLugar, otra.sIdExhibicion))
