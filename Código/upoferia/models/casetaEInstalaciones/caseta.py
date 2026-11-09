@@ -29,6 +29,7 @@ class Caseta(models.Model):
     zona_ids = fields.One2many('feria.zona_caseta', 'caseta_id', string='Zonas')
     mobiliario_ids = fields.One2many('feria.mobiliario_caseta', 'caseta_id', string='Mobiliario')
     licencia_ids = fields.One2many('feria.licencia', 'caseta_id', string='Licencias')
+    inspeccion_ids = fields.One2many('feria.inspeccion', 'caseta_id', string='Inspecciones')
 
     @api.constrains('sNombre')
     def _check_nombre(self):
