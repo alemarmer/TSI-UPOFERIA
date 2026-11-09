@@ -31,7 +31,7 @@ class Concurso(models.Model):
         self.write({'sEstado': 'cerrado'})
 
     def btn_submit_to_resuelto(self):
-        self.write({'sEstado': 'resuelto'})
+        self.write({'sEstado': 'resuelto', 'dFecha_resultado': fields.Date.today()})
 
     @api.depends('participacion_ids')
     def _numParticipantes(self):

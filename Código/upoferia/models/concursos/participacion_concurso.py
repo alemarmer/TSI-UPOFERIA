@@ -7,8 +7,8 @@ class ParticipacionConcurso(models.Model):
     _name = 'upoferia.participacion_concurso'
     _description = 'Participación en concurso'
 
-    fecha = fields.Date(string='Fecha de inscripción')
-
+    fecha = fields.Date(string='Fecha de inscripción', default=fields.Date.today)
+    
     concurso_id = fields.Many2one('upoferia.concurso', string='Concurso', required=True)
     socio_id = fields.Many2one('upoferia.socio', string='Socio', required=True)
 
