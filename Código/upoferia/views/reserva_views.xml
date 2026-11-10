@@ -57,7 +57,7 @@
         <filter name="canceladas" string="Canceladas" domain="[('sEstado', 'in', ['cancelada', 'no_presentado'])]"/>
         <group>
           <filter name="group_estado" string="Estado" context="{'group_by': 'sEstado'}"/>
-          <filter name="group_dia" string="Día" context="{'group_by': 'dHora_llegada:day'}"/>
+          <filter name="group_dia" string="Día" context="{'group_by': 'dHora_llegada'}"/>
         </group>
       </search>
     </field>
