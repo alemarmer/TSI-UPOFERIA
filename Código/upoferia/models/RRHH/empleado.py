@@ -1,6 +1,5 @@
 # Autor: Juanjo (Personal - RRHH y Turnos)
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError, UserError
 
 
 class Empleado(models.Model):
@@ -69,26 +68,26 @@ class Empleado(models.Model):
     def _check_puesto(self):
         for record in self:
             if record.puesto is not False and record.puesto and not record.puesto.strip():
-                raise ValidationError('El puesto del empleado no puede contener solo espacios.')
+                raise models.ValidationError('El puesto del empleado no puede contener solo espacios.')
 
     @api.constrains('disponibilidad_ids')
     def _check_disponibilidades(self):
         for record in self:
             if not record.disponibilidad_ids:
-                raise ValidationError('El empleado %s debe tener al menos una franja de disponibilidad (RN-66).' % record.nombre)
+                raise models.ValidationError('El empleado %s debe tener al menos una franja de disponibilidad (RN-66).' % record.nombre)
 
     @api.constrains('tipo_personal', 'rol')
     def _check_rol_personal_fijo(self):
         for record in self:
             if record.tipo_personal == 'fijo' and not record.rol:
-                raise ValidationError('El personal fijo debe tener un rol asignado.')
+                raise models.ValidationError('El personal fijo debe tener un rol asignado.')
 
     @api.constrains('activo', 'turno_ids')
     def _check_archivar_con_turnos(self):
         hoy = fields.Date.context_today(self)
         for record in self:
             if not record.activo and record.turno_ids.filtered(lambda t: t.fecha >= hoy):
-                raise ValidationError('No se puede dar de baja a %s: tiene turnos futuros asignados.' % record.nombre)
+                raise models.ValidationError('No se puede dar de baja a %s: tiene turnos futuros asignados.' % record.nombre)
 
     @api.constrains('activo', 'contrato_laboral_ids')
     def _check_baja_con_contrato_vigente(self):
@@ -96,7 +95,7 @@ class Empleado(models.Model):
         for record in self:
             vigentes = record.contrato_laboral_ids.filtered(lambda c: not c.fecha_fin or c.fecha_fin > hoy)
             if not record.activo and vigentes:
-                raise ValidationError('No se puede dar de baja a %s: tiene un contrato vigente. Registra antes el despido.'
+                raise models.ValidationError('No se puede dar de baja a %s: tiene un contrato vigente. Registra antes el despido.'
                                       % record.nombre)
 
     @api.onchange('rol')
@@ -133,7 +132,7 @@ class Empleado(models.Model):
 
     def write(self, vals):
         if 'persona_id' in vals:
-            raise UserError('No se puede cambiar la persona de un empleado: crea un empleado nuevo.')
+            raise models.UserError('No se puede cambiar la persona de un empleado: crea un empleado nuevo.')
         if vals.get('puesto'):
             vals['puesto'] = vals['puesto'].strip()
         if vals.get('activo') is False:
@@ -145,12 +144,12 @@ class Empleado(models.Model):
     def unlink(self):
         for record in self:
             if record.contrato_laboral_ids or record.ausencia_ids:
-                raise UserError('No se puede eliminar a %s: tiene contratos o ausencias registrados. '
+                raise models.UserError('No se puede eliminar a %s: tiene contratos o ausencias registrados. '
                                 'Dalo de baja en su lugar.' % record.nombre)
         return super().unlink()
 
     def copy(self, default=None):
-        raise UserError('No se puede duplicar un empleado: es único por su DNI.')
+        raise models.UserError('No se puede duplicar un empleado: es único por su DNI.')
 
     def action_ver_turnos(self):
         self.ensure_one()
