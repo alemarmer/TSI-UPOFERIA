@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Autor: Juanjo (Personal - RRHH y Turnos) -->
+<odoo>
+
+    <record id="upoferia_empleado_view_tree" model="ir.ui.view">
+        <field name="name">upoferia.empleado.list</field>
+        <field name="model">upoferia.empleado</field>
+        <field name="arch" type="xml">
+            <list decoration-muted="not activo">
+                <field name="nombre"/>
+                <field name="dni"/>
+                <field name="rol"/>
+                <field name="puesto"/>
+                <field name="tipo_personal"/>
+                <field name="activo" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="upoferia_empleado_view_form" model="ir.ui.view">
+        <field name="name">upoferia.empleado.form</field>
+        <field name="model">upoferia.empleado</field>
+        <field name="arch" type="xml">
+            <form string="Empleado">
+                <header>
+                    <button name="action_ver_turnos" type="object" string="Ver turnos" class="btn-primary"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="De baja" bg_color="text-bg-danger" invisible="activo"/>
+                    <div class="oe_title">
+                        <h1><field name="nombre" placeholder="Nombre del empleado"/></h1>
+                    </div>
+                    <group>
+                        <group string="Datos personales">
+                            <field name="dni"/>
+                            <field name="activo"/>
+                        </group>
+                        <group string="Puesto">
+                            <field name="rol"/>
+                            <field name="puesto"/>
+                            <field name="tipo_personal"/>
+                        </group>
+                        <group string="Resumen">
+                            <field name="taquilla_actual_id"/>
+                            <field name="num_turnos"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Disponibilidad" name="disponibilidad">
+                            <field name="disponibilidad_ids">
+                                <list editable="bottom">
+                                    <field name="dia_semana"/>
+                                    <field name="hora_inicio" widget="float_time"/>
+                                    <field name="fecha_fin"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Contratos" name="contratos">
+                            <field name="contrato_laboral_ids">
+                                <list>
+                                    <field name="tipo_contrato"/>
+                                    <field name="fecha_inicio"/>
+                                    <field name="fecha_fin"/>
+                                    <field name="precio_hora"/>
+                                    <field name="tiene_despido"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Ausencias" name="ausencias">
+                            <field name="ausencia_ids">
+                                <list decoration-success="estado == 'aprobada'" decoration-danger="estado == 'rechazada'">
+                                    <field name="fecha_desde"/>
+                                    <field name="fecha_hasta"/>
+                                    <field name="dias"/>
+                                    <field name="estado"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Turnos" name="turnos">
+                            <field name="turno_ids">
+                                <list>
+                                    <field name="fecha"/>
+                                    <field name="hora_inicio" widget="float_time"/>
+                                    <field name="hora_fin" widget="float_time"/>
+                                    <field name="duracion" widget="float_time"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Certificaciones" name="certificaciones">
+                            <field name="certificacion_ids">
+                                <list editable="bottom">
+                                    <field name="titulo"/>
+                                    <field name="fecha_expedicion"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Formación" name="formacion">
+                            <field name="formacion_ids">
+                                <list editable="bottom">
+                                    <field name="curso_formacion_id"/>
+                                    <field name="nota"/>
+                                    <field name="aprobado"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Uniformes" name="uniformes">
+                            <field name="entrega_uniforme_ids">
+                                <list>
+                                    <field name="fecha_entrega"/>
+                                    <field name="prenda"/>
+                                    <field name="talla"/>
+                                    <field name="cantidad"/>
+                                    <field name="estado"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Taquillas" name="taquillas">
+                            <field name="asignacion_taquilla_ids">
+                                <list>
+                                    <field name="taquilla_id"/>
+                                    <field name="fecha_inicio"/>
+                                    <field name="fecha_fin"/>
+                                    <field name="vigente"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="upoferia_empleado_view_search" model="ir.ui.view">
+        <field name="name">upoferia.empleado.search</field>
+        <field name="model">upoferia.empleado</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="nombre"/>
+                <field name="dni"/>
+                <field name="puesto"/>
+                <filter string="Activos" name="activos" domain="[('activo', '=', True)]"/>
+                <filter string="De baja" name="de_baja" domain="[('activo', '=', False)]"/>
+                <separator/>
+                <filter string="Fijos" name="fijos" domain="[('tipo_personal', '=', 'fijo')]"/>
+                <filter string="Temporales" name="temporales" domain="[('tipo_personal', '=', 'temporal')]"/>
+                <filter string="Voluntarios" name="voluntarios" domain="[('tipo_personal', '=', 'voluntario')]"/>
+                <group expand="0" string="Agrupar por">
+                    <filter string="Rol" name="group_rol" context="{'group_by': 'rol'}"/>
+                    <filter string="Tipo de personal" name="group_tipo_personal" context="{'group_by': 'tipo_personal'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="upoferia_empleado_view_graph" model="ir.ui.view">
+        <field name="name">upoferia.empleado.graph</field>
+        <field name="model">upoferia.empleado</field>
+        <field name="arch" type="xml">
+            <graph string="Empleados por rol" type="bar">
+                <field name="rol"/>
+                <field name="tipo_personal"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="upoferia_empleado_action" model="ir.actions.act_window">
+        <field name="name">Empleados</field>
+        <field name="res_model">upoferia.empleado</field>
+        <field name="view_mode">list,form,graph</field>
+        <field name="context">{'search_default_activos': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Crea el primer empleado</p>
+            <p>Recuerda añadirle al menos una franja de disponibilidad (RN-66).</p>
+        </field>
+    </record>
+
+</odoo>
