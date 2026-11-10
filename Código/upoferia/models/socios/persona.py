@@ -34,8 +34,9 @@ class Persona(models.Model):
         if not self.telefono.isdigit():
             raise models.ValidationError('El teléfono solo debe contener números.')
             
-    
-    
-
-        
+    @api.constrains('email')
+    def _check_email(self):
+        if self.email and not re.match(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", self.email):
+            raise models.ValidationError('El correo no es válido.')
+            
     _sql_constraints = [('dni_unique', 'UNIQUE(dni)', 'Ya existe un registro con este DNI.')]
