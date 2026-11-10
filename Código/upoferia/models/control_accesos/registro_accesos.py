@@ -12,3 +12,7 @@ class RegistroAccesos(models.Model):
     persona_id = fields.Many2one('upoferia.socios.persona', string='Persona', required=True, ondelete='cascade')
     evento_puerta_id = fields.Many2one('upoferia.control_accesos.evento_puerta', string='Evento de puerta', required=True, ondelete='cascade')
     
+    @api.constrains('fecha_hora')
+    def _check_fecha_hora(self):
+        if self.fecha_hora and self.fecha_hora < fields.Datetime.now():
+            raise models.ValidationError('La fecha y hora de acceso no puede ser anterior a la fecha y hora actual.')
