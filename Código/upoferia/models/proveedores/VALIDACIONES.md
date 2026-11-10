@@ -7,7 +7,7 @@
 - Entre 2 y 50 caracteres sin contar los espacios del principio y del final — `@api.constrains`
 
 ### `iColor` (Integer)
-- Color de la etiqueta (0 a 11, los colores de Odoo); en la vista se elige con `widget="color_picker"`.
+- Color de la etiqueta: un número entre 0 y 11 (los colores de Odoo) — `@api.constrains`
 
 ### Relaciones
 - `padre_id` (Many2one → CategoriaProveedor) — opcional, relación reflexiva «es subcategoría de». Si se borra una categoría, sus subcategorías se quedan sin madre. Una categoría no puede ser su propia madre ni tener como madre a una de sus subcategorías (no forma ciclos) — `@api.constrains` (se sube de padre en padre y, si se vuelve a la misma categoría, da error)

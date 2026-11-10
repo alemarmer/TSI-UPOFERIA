@@ -17,6 +17,7 @@
 
 ### `sIdTransaccion` (Char) — clave
 - Obligatorio y único — `required` / `_sql_constraints`
+- En mayúsculas y sin espacios (por ejemplo PED-001) — `@api.constrains`
 
 ### `fImporte` (Float)
 - No menor que 0 — `@api.constrains`
@@ -52,6 +53,7 @@
 
 ### `iNumeroLinea` (Integer) — clave (junto con la transacción)
 - Obligatorio — `required`
+- Mayor que 0 — `@api.constrains`
 - La pareja transacción + número de línea no se repite (clave de la entidad débil) — `_sql_constraints`
 
 ### `iCantidad` e `iCantidadRecibida` (Integer)

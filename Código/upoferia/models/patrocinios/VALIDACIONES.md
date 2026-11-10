@@ -6,6 +6,9 @@
 - Obligatorio y único — `required` / `_sql_constraints`
 - Entre 2 y 50 caracteres sin contar los espacios del principio y del final — `@api.constrains`
 
+### `sColorCorporativo` (Char)
+- Si se rellena, tiene el formato #RRGGBB: empieza por `#` y tiene 7 caracteres (por ejemplo #C8102E) — `@api.constrains`
+
 ### Relaciones
 - `proveedor_id` (Many2one → Proveedor) — opcional, relación «comercializa». Si se borra el proveedor, la marca se queda sin él.
 - `exhibicion_ids` (One2many → ExhibicionMarca) — exhibiciones de la marca.
@@ -29,9 +32,11 @@
 
 ### `sCodigoLugar` (Char) — clave
 - Obligatorio y único — `required` / `_sql_constraints`
+- En mayúsculas y sin espacios — `@api.constrains`
 
 ### `fAltoM` y `fAnchoM` (Float)
 - Obligatorios, mayores que 0 y como mucho 30 metros — `required` / `@api.constrains`
+- Solo admiten dos decimales (centímetros) — `@api.constrains`
 - En el formulario, si se pasan de 30 se ajustan a 30, y si son 0 o menos se ajustan a 1, avisando al usuario — `@api.onchange` (uno para cada campo). Si no se tocan, el onchange no actúa y la regla anterior da error al guardar.
 
 ### Relaciones
@@ -70,6 +75,7 @@
 - Único — `_sql_constraints`
 
 ### `dFechaCaducidadCarnet` (Date)
+- No se puede indicar la caducidad sin el código del carné (`sCodCarnetProfesional`) — `@api.constrains`
 - Si ya ha caducado, se avisa en el formulario (no impide guardar) — `@api.onchange`
 
 ### Relaciones
@@ -81,6 +87,7 @@
 
 ### `sCodigo` (Char) — clave
 - Obligatorio y único — `required` / `_sql_constraints`
+- En mayúsculas y sin espacios — `@api.constrains`
 
 ### `sNombre` (Char)
 - Obligatorio — `required`
@@ -95,7 +102,7 @@
 ## ServicioProveedor (`upoferia.servicio_proveedor`) — `servicio_proveedor.py`
 
 ### `fPrecioTarifa` (Float)
-- Obligatorio y no menor que 0 — `required` / `@api.constrains`
+- Obligatorio y mayor que 0 — `required` / `@api.constrains`
 
 ### Relaciones
 - `servicio_id` y `proveedor_id` (Many2one) — obligatorios. No se puede borrar un servicio ni un proveedor que tengan tarifas: antes hay que borrarlas con el botón «Eliminar tarifas».
@@ -107,7 +114,7 @@
 
 Los diagramas mantienen los nombres originales de los atributos (`nombre`, `codigo_lugar`…). En el código llevan la notación húngara (`sNombre`, `sCodigoLugar`…).
 
-Nota: los atributos `Decimal` del UML se guardan como `Float`, y `logotipo` (`Binary` en el UML) es `fields.Image`, un `Binary` de Odoo especializado en imágenes.
+Nota: los atributos `Decimal` del UML se guardan como `Float` (el alto y el ancho se limitan a dos decimales con una validación), y `logotipo` (`Binary` en el UML) es `fields.Image`, un `Binary` de Odoo especializado en imágenes.
 
 Nota: los campos de relación siguen la convención de Odoo (`_id` / `_ids`), porque Odoo enlaza por su `id` interno.
 
