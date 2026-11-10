@@ -8,6 +8,8 @@
             action="upoferia_actuacion_action" sequence="20"/>
   <menuitem id="upoferia_menu_concurso" name="Concursos" parent="upoferia_menu_eventos"
             action="upoferia_concurso_action" sequence="30"/>
+  <menuitem id="upoferia_menu_concurso_abiertos" name="Concursos abiertos" parent="upoferia_menu_eventos"
+            action="upoferia_concurso_abiertos_action" sequence="35"/>
   <menuitem id="upoferia_menu_reserva" name="Reservas" parent="upoferia_menu_eventos"
             action="upoferia_reserva_action" sequence="40"/>
 

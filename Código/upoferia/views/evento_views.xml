@@ -24,19 +24,31 @@
         <header>
           <field name="sEstado" widget="statusbar"/>
         </header>
-        <sheet>
-          <group>
-            <group>
-              <field name="sNombre_evento"/>
-              <field name="tipo_evento_id"/>
-              <field name="iAforo_reservado"/>
-            </group>
-            <group>
-              <field name="dFecha_hora_inicio"/>
-              <field name="dFecha_hora_fin"/>
-            </group>
-          </group>
-        </sheet>
+          <sheet>
+            <label for="sNombre_evento"/>
+              <h1><field name="sNombre_evento" placeholder="Nombre del evento"/></h1>
+              <group col="4">
+                <group string="Cuándo">
+                  <field name="dFecha_hora_inicio"/>
+                  <field name="dFecha_hora_fin"/>
+                  <field name="fDuracion"/>
+                </group>
+                <group string="Dónde y cuánto">
+                  <field name="tipo_evento_id"/>
+                  <field name="caseta_id"/>
+                  <field name="iAforo_reservado" help="Plazas reservadas para este evento"/>
+                  <field name="iPlazas_libres"/>
+                </group>
+              </group>
+              <notebook>
+                <page string="Concursos">
+                  <field name="concurso_ids" nolabel="1"/>
+                </page>
+                <page string="Actuaciones">
+                  <field name="actuacion_ids" nolabel="1"/>
+                </page>
+              </notebook>
+          </sheet>
       </form>
     </field>
   </record>

@@ -89,7 +89,6 @@
   </field>
   </record>
 
-  <!-- SEARCH -->
   <record id="upoferia_concurso_search_view" model="ir.ui.view">
     <field name="name">upoferia.concurso.search</field>
     <field name="model">upoferia.concurso</field>
@@ -117,6 +116,13 @@
     <field name="help" type="html">
       <p class="o_view_nocontent_smiling_face">Crea el primer concurso</p>
     </field>
+  </record>
+
+  <record id="upoferia_concurso_abiertos_action" model="ir.actions.act_window">
+    <field name="name">Concursos abiertos</field>
+    <field name="res_model">upoferia.concurso</field>
+    <field name="view_mode">list,form,calendar</field>
+    <field name="domain">[('sEstado', '=', 'abierto')]</field>
   </record>
 
 </odoo>
