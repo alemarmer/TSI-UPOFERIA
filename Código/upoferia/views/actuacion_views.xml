@@ -21,7 +21,7 @@
     <field name="arch" type="xml">
       <form string="Actuación">
         <header>
-          <field name="sEstado" widget="statusbar" options="{'clickable': '1'}"/>
+          <field name="sEstado" widget="statusbar"/>
         </header>
         <sheet>
           <group>

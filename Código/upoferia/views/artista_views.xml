@@ -7,7 +7,6 @@
       <list string="Artistas">
         <field name="sDni"/>
         <field name="fCache_base"/>
-        <field name="disciplina_ids" widget="many2many_tags"/>
       </list>
     </field>
   </record>

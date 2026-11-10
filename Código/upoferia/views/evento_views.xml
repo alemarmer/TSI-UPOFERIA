@@ -22,7 +22,7 @@
     <field name="arch" type="xml">
       <form string="Evento">
         <header>
-          <field name="sEstado" widget="statusbar" options="{'clickable': '1'}"/>
+          <field name="sEstado" widget="statusbar"/>
         </header>
         <sheet>
           <group>
@@ -41,34 +41,19 @@
     </field>
   </record>
 
-  <!-- CALENDAR: la programación de la feria, coloreada por tipo de evento -->
   <record id="upoferia_evento_calendar_view" model="ir.ui.view">
     <field name="name">upoferia.evento.calendar</field>
     <field name="model">upoferia.evento</field>
     <field name="arch" type="xml">
       <calendar string="Programación" date_start="dFecha_hora_inicio" date_stop="dFecha_hora_fin"
-                color="tipo_evento_id" mode="week" event_open_popup="1" quick_create="0">
-        <field name="tipo_evento_id" filters="1"/>
+                color="tipo_evento_id" mode="week">
+        <field name="tipo_evento_id"/>
         <field name="iAforo_reservado"/>
         <field name="sEstado"/>
       </calendar>
     </field>
   </record>
 
-  <!-- PIVOT: aforo reservado por tipo de evento y día -->
-  <record id="upoferia_evento_pivot_view" model="ir.ui.view">
-    <field name="name">upoferia.evento.pivot</field>
-    <field name="model">upoferia.evento</field>
-    <field name="arch" type="xml">
-      <pivot string="Aforo reservado">
-        <field name="tipo_evento_id" type="row"/>
-        <field name="dFecha_hora_inicio" interval="day" type="col"/>
-        <field name="iAforo_reservado" type="measure"/>
-      </pivot>
-    </field>
-  </record>
-
-  <!-- SEARCH: búsqueda, filtros y agrupaciones -->
   <record id="upoferia_evento_search_view" model="ir.ui.view">
     <field name="name">upoferia.evento.search</field>
     <field name="model">upoferia.evento</field>
@@ -95,7 +80,7 @@
   <record id="upoferia_evento_action" model="ir.actions.act_window">
     <field name="name">Eventos</field>
     <field name="res_model">upoferia.evento</field>
-    <field name="view_mode">list,form,calendar,pivot</field>
+    <field name="view_mode">list,form,calendar</field>
     <field name="help" type="html">
       <p class="o_view_nocontent_smiling_face">Crea el primer evento</p>
     </field>

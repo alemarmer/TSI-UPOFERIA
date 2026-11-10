@@ -1,7 +1,5 @@
 <odoo>
 
-  <!-- Gracias a _inherits, un concurso puede mostrar los campos de su evento.
-       Ojo: concurso tiene su propio sEstado, que tapa el sEstado del evento. -->
   <record id="upoferia_concurso_list_view" model="ir.ui.view">
     <field name="name">upoferia.concurso.list</field>
     <field name="model">upoferia.concurso</field>
@@ -21,7 +19,7 @@
     <field name="arch" type="xml">
       <form string="Concurso">
         <header>
-          <field name="sEstado" widget="statusbar" options="{'clickable': '1'}"/>
+          <field name="sEstado" widget="statusbar"/>
         </header>
         <sheet>
           <group>
@@ -40,7 +38,6 @@
             <page name="bases" string="Bases">
               <field name="sBases"/>
             </page>
-            <!-- Los hijos se editan aquí dentro, como tabla -->
             <page name="premios" string="Premios">
               <field name="premio_ids">
                 <list editable="bottom">
@@ -71,24 +68,6 @@
     </field>
   </record>
 
-  <!-- KANBAN: una columna por estado del concurso -->
-  <record id="upoferia_concurso_kanban_view" model="ir.ui.view">
-    <field name="name">upoferia.concurso.kanban</field>
-    <field name="model">upoferia.concurso</field>
-    <field name="arch" type="xml">
-      <kanban default_group_by="sEstado" quick_create="0">
-        <templates>
-          <t t-name="card">
-            <field name="sNombre_evento" class="fw-bold fs-5"/>
-            <field name="dFecha_hora_inicio"/>
-            <div>Resultado: <field name="dFecha_resultado"/></div>
-            <field name="tipo_evento_id" class="text-muted"/>
-          </t>
-        </templates>
-      </kanban>
-    </field>
-  </record>
-
   <!-- SEARCH -->
   <record id="upoferia_concurso_search_view" model="ir.ui.view">
     <field name="name">upoferia.concurso.search</field>
@@ -113,7 +92,7 @@
   <record id="upoferia_concurso_action" model="ir.actions.act_window">
     <field name="name">Concursos</field>
     <field name="res_model">upoferia.concurso</field>
-    <field name="view_mode">list,form,kanban</field>
+    <field name="view_mode">list,form</field>
     <field name="help" type="html">
       <p class="o_view_nocontent_smiling_face">Crea el primer concurso</p>
     </field>

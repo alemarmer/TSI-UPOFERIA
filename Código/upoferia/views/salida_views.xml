@@ -20,7 +20,7 @@
     <field name="arch" type="xml">
       <form string="Salida">
         <header>
-          <field name="sEstado" widget="statusbar" options="{'clickable': '1'}"/>
+          <field name="sEstado" widget="statusbar"/>
         </header>
         <sheet>
           <group>
@@ -49,33 +49,14 @@
     <field name="model">upoferia.salida</field>
     <field name="arch" type="xml">
       <calendar string="Salidas" date_start="dFecha_hora_salida" date_stop="dFecha_hora_vuelta"
-                color="carruaje_id" mode="week" event_open_popup="1" quick_create="0">
-        <field name="carruaje_id" filters="1"/>
+                color="carruaje_id" mode="week">
+        <field name="carruaje_id"/>
         <field name="iNum_pasajeros"/>
         <field name="sEstado"/>
       </calendar>
     </field>
   </record>
 
-  <!-- KANBAN: una columna por estado; se arrastran las tarjetas para cambiarlo -->
-  <record id="upoferia_salida_kanban_view" model="ir.ui.view">
-    <field name="name">upoferia.salida.kanban</field>
-    <field name="model">upoferia.salida</field>
-    <field name="arch" type="xml">
-      <kanban default_group_by="sEstado" quick_create="0">
-        <templates>
-          <t t-name="card">
-            <field name="carruaje_id" class="fw-bold fs-5"/>
-            <field name="dFecha_hora_salida"/>
-            <div>Pasajeros: <field name="iNum_pasajeros"/></div>
-            <field name="caballo_ids" widget="many2many_tags"/>
-          </t>
-        </templates>
-      </kanban>
-    </field>
-  </record>
-
-  <!-- SEARCH -->
   <record id="upoferia_salida_search_view" model="ir.ui.view">
     <field name="name">upoferia.salida.search</field>
     <field name="model">upoferia.salida</field>
@@ -102,7 +83,7 @@
   <record id="upoferia_salida_action" model="ir.actions.act_window">
     <field name="name">Salidas</field>
     <field name="res_model">upoferia.salida</field>
-    <field name="view_mode">list,form,kanban,calendar</field>
+    <field name="view_mode">list,form,calendar</field>
     <field name="help" type="html">
       <p class="o_view_nocontent_smiling_face">Programa la primera salida</p>
     </field>
