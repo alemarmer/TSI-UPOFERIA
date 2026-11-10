@@ -7,17 +7,17 @@ class PlanMontaje(models.Model):
 
     _name = "upoferia.plan_montaje"
     _description = "Plan de montaje"
-    _rec_name = "nombre"
+    _rec_name = "sNombre"
 
-    nombre = fields.Char(
+    sNombre = fields.Char(
         string="Nombre", required=True, help="Identificador único del plan de montaje"
     )
-    edicion = fields.Char(
+    sEdicion = fields.Char(
         string="Edición", help="Edición de la feria, por ejemplo 2026"
     )
-    fecha_inicio = fields.Date(string="Fecha de inicio")
-    fecha_fin = fields.Date(string="Fecha de fin")
-    estado = fields.Selection(
+    dFechaInicio = fields.Date(string="Fecha de inicio")
+    dFechaFin = fields.Date(string="Fecha de fin")
+    selEstado = fields.Selection(
         [
             ("planificado", "Planificado"),
             ("en_curso", "En curso"),
@@ -26,7 +26,7 @@ class PlanMontaje(models.Model):
         "Estado",
         default="planificado",
     )
-    responsable = fields.Char(string="Responsable")
+    sResponsable = fields.Char(string="Responsable")
 
     # Relaciones
     # PENDIENTE DE INTEGRAR CON INFRAESTRUCTURA (necesita upoferia.zona_caseta):
@@ -38,25 +38,25 @@ class PlanMontaje(models.Model):
     _sql_constraints = [
         (
             "nombre_unique",
-            "UNIQUE(nombre)",
+            'UNIQUE("sNombre")',
             "Ya existe un plan de montaje con ese nombre.",
         ),
         (
             "fechas_orden",
-            "CHECK(fecha_fin >= fecha_inicio)",
+            'CHECK("dFechaFin" >= "dFechaInicio")',
             "La fecha de fin no puede ser anterior a la de inicio.",
         ),
     ]
 
-    @api.constrains("nombre")
+    @api.constrains("sNombre")
     def _check_nombre(self):
         for record in self:
-            if not record.nombre.strip():
+            if not record.sNombre.strip():
                 raise ValidationError(
                     "El nombre del plan de montaje no puede estar vacío."
                 )
 
-    @api.onchange("fecha_inicio")
+    @api.onchange("dFechaInicio")
     def onchange_fecha_inicio(self):
-        if self.fecha_inicio and not self.fecha_fin:
-            self.fecha_fin = self.fecha_inicio + timedelta(days=7)
+        if self.dFechaInicio and not self.dFechaFin:
+            self.dFechaFin = self.dFechaInicio + timedelta(days=7)

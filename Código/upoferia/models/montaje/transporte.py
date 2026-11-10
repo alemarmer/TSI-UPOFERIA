@@ -6,14 +6,14 @@ class Transporte(models.Model):
 
     _name = "upoferia.transporte"
     _description = "Transporte"
-    _rec_name = "numero"
+    _rec_name = "sNumero"
 
-    numero = fields.Char(
+    sNumero = fields.Char(
         string="Número", required=True, help="Identificador único del transporte"
     )
-    fecha_prevista = fields.Datetime(string="Fecha prevista")
-    fecha_realizada = fields.Datetime(string="Fecha realizada")
-    estado = fields.Selection(
+    dtFechaPrevista = fields.Datetime(string="Fecha prevista")
+    dtFechaRealizada = fields.Datetime(string="Fecha realizada")
+    selEstado = fields.Selection(
         [
             ("pendiente", "Pendiente"),
             ("en_ruta", "En ruta"),
@@ -22,11 +22,11 @@ class Transporte(models.Model):
         "Estado",
         default="pendiente",
     )
-    tipo_operacion = fields.Char(
+    sTipoOperacion = fields.Char(
         string="Tipo de operación", default="Transferencia interna"
     )
-    ubicacion_origen = fields.Char(string="Ubicación de origen")
-    ubicacion_destino = fields.Char(string="Ubicación de destino")
+    sUbicacionOrigen = fields.Char(string="Ubicación de origen")
+    sUbicacionDestino = fields.Char(string="Ubicación de destino")
 
     # Relaciones
     tarea_montaje_id = fields.Many2one(
@@ -34,16 +34,16 @@ class Transporte(models.Model):
     )
 
     _sql_constraints = [
-        ("numero_unique", "UNIQUE(numero)", "Ya existe un transporte con ese número."),
+        ("numero_unique", 'UNIQUE("sNumero")', "Ya existe un transporte con ese número."),
     ]
 
-    @api.constrains("numero")
+    @api.constrains("sNumero")
     def _check_numero(self):
         for record in self:
-            if not record.numero.strip():
+            if not record.sNumero.strip():
                 raise ValidationError("El número del transporte no puede estar vacío.")
 
-    @api.onchange("estado")
+    @api.onchange("selEstado")
     def onchange_estado(self):
-        if self.estado == "entregado" and not self.fecha_realizada:
-            self.fecha_realizada = fields.Datetime.now()
+        if self.selEstado == "entregado" and not self.dtFechaRealizada:
+            self.dtFechaRealizada = fields.Datetime.now()

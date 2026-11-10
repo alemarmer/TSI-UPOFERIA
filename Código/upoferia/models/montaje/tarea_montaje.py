@@ -7,15 +7,15 @@ class TareaMontaje(models.Model):
 
     _name = "upoferia.tarea_montaje"
     _description = "Tarea de montaje"
-    _rec_name = "nombre"
+    _rec_name = "sNombre"
 
-    nombre = fields.Char(
+    sNombre = fields.Char(
         string="Nombre", required=True, help="Identifica la tarea dentro de su fase"
     )
-    fecha_inicio = fields.Date(string="Fecha de inicio")
-    fecha_limite = fields.Date(string="Fecha límite")
-    horas_previstas = fields.Float(string="Horas previstas")
-    prioridad = fields.Selection(
+    dFechaInicio = fields.Date(string="Fecha de inicio")
+    dFechaLimite = fields.Date(string="Fecha límite")
+    fHorasPrevistas = fields.Float(string="Horas previstas")
+    selPrioridad = fields.Selection(
         [
             ("baja", "Baja"),
             ("media", "Media"),
@@ -24,7 +24,7 @@ class TareaMontaje(models.Model):
         "Prioridad",
         default="media",
     )
-    estado = fields.Selection(
+    selEstado = fields.Selection(
         [
             ("pendiente", "Pendiente"),
             ("en_curso", "En curso"),
@@ -55,36 +55,36 @@ class TareaMontaje(models.Model):
     _sql_constraints = [
         (
             "nombre_fase_unique",
-            "UNIQUE(fase_montaje_id, nombre)",
+            'UNIQUE(fase_montaje_id, "sNombre")',
             "Ya existe una tarea con ese nombre en esta fase.",
         ),
         (
             "horas_no_negativas",
-            "CHECK(horas_previstas >= 0)",
+            'CHECK("fHorasPrevistas" >= 0)',
             "Las horas previstas no pueden ser negativas.",
         ),
         (
             "fechas_orden",
-            "CHECK(fecha_limite >= fecha_inicio)",
+            'CHECK("dFechaLimite" >= "dFechaInicio")',
             "La fecha límite no puede ser anterior a la de inicio.",
         ),
     ]
 
-    @api.depends("fase_montaje_id.nombre", "nombre")
+    @api.depends("fase_montaje_id.sNombre", "sNombre")
     def _compute_display_name(self):
         for record in self:
             record.display_name = "%s / %s" % (
-                record.fase_montaje_id.nombre or "",
-                record.nombre or "",
+                record.fase_montaje_id.sNombre or "",
+                record.sNombre or "",
             )
 
-    @api.constrains("nombre")
+    @api.constrains("sNombre")
     def _check_nombre(self):
         for record in self:
-            if not record.nombre.strip():
+            if not record.sNombre.strip():
                 raise ValidationError("El nombre de la tarea no puede estar vacío.")
 
-    @api.onchange("fecha_inicio")
+    @api.onchange("dFechaInicio")
     def onchange_fecha_inicio(self):
-        if self.fecha_inicio and not self.fecha_limite:
-            self.fecha_limite = self.fecha_inicio + timedelta(days=1)
+        if self.dFechaInicio and not self.dFechaLimite:
+            self.dFechaLimite = self.dFechaInicio + timedelta(days=1)

@@ -10,7 +10,7 @@ class CuadrillaEmpleado(models.Model):
     _name = "upoferia.cuadrilla_empleado"
     _description = "Miembro de cuadrilla"
 
-    es_jefe = fields.Boolean(
+    bEsJefe = fields.Boolean(
         string="Es jefe", default=False, help="Una cuadrilla solo puede tener un jefe"
     )
 
@@ -25,42 +25,42 @@ class CuadrillaEmpleado(models.Model):
     _sql_constraints = [
         (
             "miembro_unique",
-            "UNIQUE(cuadrilla_id, empleado_id)",
+            'UNIQUE(cuadrilla_id, empleado_id)',
             "Ese empleado ya pertenece a la cuadrilla.",
         ),
     ]
 
-    @api.depends("cuadrilla_id.nombre", "empleado_id.nombre")
+    @api.depends("cuadrilla_id.sNombre", "empleado_id.sNombre")
     def _compute_display_name(self):
         for record in self:
             record.display_name = "%s - %s" % (
-                record.cuadrilla_id.nombre or "",
-                record.empleado_id.nombre or "",
+                record.cuadrilla_id.sNombre or "",
+                record.empleado_id.sNombre or "",
             )
 
-    @api.constrains("es_jefe", "cuadrilla_id")
+    @api.constrains("bEsJefe", "cuadrilla_id")
     def _check_un_solo_jefe(self):
         for record in self:
-            if record.es_jefe and self.search_count(
+            if record.bEsJefe and self.search_count(
                 [
                     ("cuadrilla_id", "=", record.cuadrilla_id.id),
-                    ("es_jefe", "=", True),
+                    ("bEsJefe", "=", True),
                     ("id", "!=", record.id),
                 ]
             ):
                 raise ValidationError(
-                    "La cuadrilla «%s» ya tiene un jefe." % record.cuadrilla_id.nombre
+                    "La cuadrilla «%s» ya tiene un jefe." % record.cuadrilla_id.sNombre
                 )
 
-    @api.onchange("es_jefe", "cuadrilla_id")
+    @api.onchange("bEsJefe", "cuadrilla_id")
     def onchange_es_jefe(self):
         if (
-            self.es_jefe
+            self.bEsJefe
             and self.cuadrilla_id
             and self.search_count(
                 [
                     ("cuadrilla_id", "=", self.cuadrilla_id.id),
-                    ("es_jefe", "=", True),
+                    ("bEsJefe", "=", True),
                     ("id", "!=", self._origin.id),
                 ]
             )
@@ -69,6 +69,6 @@ class CuadrillaEmpleado(models.Model):
                 "warning": {
                     "title": "La cuadrilla ya tiene jefe",
                     "message": "La cuadrilla «%s» ya tiene un jefe. Desmárcalo allí antes de nombrar otro."
-                    % self.cuadrilla_id.nombre,
+                    % self.cuadrilla_id.sNombre,
                 }
             }

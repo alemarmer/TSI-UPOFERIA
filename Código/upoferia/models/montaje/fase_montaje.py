@@ -6,16 +6,16 @@ class FaseMontaje(models.Model):
 
     _name = "upoferia.fase_montaje"
     _description = "Fase de montaje"
-    _rec_name = "nombre"
-    _order = "plan_montaje_id, secuencia, id"
+    _rec_name = "sNombre"
+    _order = "plan_montaje_id, iSecuencia, id"
 
-    nombre = fields.Char(
+    sNombre = fields.Char(
         string="Nombre",
         required=True,
         help="Identifica la fase dentro de su plan de montaje",
     )
-    secuencia = fields.Integer(string="Secuencia", default=10)
-    descripcion = fields.Text(string="Descripción")
+    iSecuencia = fields.Integer(string="Secuencia", default=10)
+    sDescripcion = fields.Text(string="Descripción")
 
     # Relaciones
     plan_montaje_id = fields.Many2one(
@@ -31,21 +31,21 @@ class FaseMontaje(models.Model):
     _sql_constraints = [
         (
             "nombre_plan_unique",
-            "UNIQUE(plan_montaje_id, nombre)",
+            'UNIQUE(plan_montaje_id, "sNombre")',
             "Ya existe una fase con ese nombre en este plan.",
         ),
     ]
 
-    @api.depends("plan_montaje_id.nombre", "nombre")
+    @api.depends("plan_montaje_id.sNombre", "sNombre")
     def _compute_display_name(self):
         for record in self:
             record.display_name = "%s / %s" % (
-                record.plan_montaje_id.nombre or "",
-                record.nombre or "",
+                record.plan_montaje_id.sNombre or "",
+                record.sNombre or "",
             )
 
-    @api.constrains("nombre")
+    @api.constrains("sNombre")
     def _check_nombre(self):
         for record in self:
-            if not record.nombre.strip():
+            if not record.sNombre.strip():
                 raise ValidationError("El nombre de la fase no puede estar vacío.")
