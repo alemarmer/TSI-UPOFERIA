@@ -1,8 +1,6 @@
 <odoo>
-  <!-- Menú principal (el icono de la app) -->
   <menuitem id="upoferia_menu_root" name="UPOFeria"/>
 
-  <!-- Programación de eventos y concursos -->
   <menuitem id="upoferia_menu_eventos" name="Eventos" parent="upoferia_menu_root" sequence="10"/>
   <menuitem id="upoferia_menu_evento" name="Eventos" parent="upoferia_menu_eventos"
             action="upoferia_evento_action" sequence="10"/>
@@ -13,11 +11,9 @@
   <menuitem id="upoferia_menu_reserva" name="Reservas" parent="upoferia_menu_eventos"
             action="upoferia_reserva_action" sequence="40"/>
 
-  <!-- Artistas -->
   <menuitem id="upoferia_menu_artista" name="Artistas" parent="upoferia_menu_root"
             action="upoferia_artista_action" sequence="20"/>
 
-  <!-- Caballos y enganches -->
   <menuitem id="upoferia_menu_caballos" name="Caballos y enganches" parent="upoferia_menu_root" sequence="30"/>
   <menuitem id="upoferia_menu_caballo" name="Caballos" parent="upoferia_menu_caballos"
             action="upoferia_caballo_action" sequence="10"/>
@@ -26,7 +22,6 @@
   <menuitem id="upoferia_menu_salida" name="Salidas" parent="upoferia_menu_caballos"
             action="upoferia_salida_action" sequence="30"/>
 
-  <!-- Configuración -->
   <menuitem id="upoferia_menu_config" name="Configuración" parent="upoferia_menu_root" sequence="90"/>
   <menuitem id="upoferia_menu_tipo_evento" name="Tipos de evento" parent="upoferia_menu_config"
             action="upoferia_tipo_evento_action" sequence="10"/>

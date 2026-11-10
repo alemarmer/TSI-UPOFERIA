@@ -43,7 +43,6 @@
     </field>
   </record>
 
-  <!-- CALENDAR: cuándo sale cada carruaje, coloreado por carruaje -->
   <record id="upoferia_salida_calendar_view" model="ir.ui.view">
     <field name="name">upoferia.salida.calendar</field>
     <field name="model">upoferia.salida</field>

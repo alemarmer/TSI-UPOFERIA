@@ -79,6 +79,16 @@
   </field>
   </record>
 
+  <record id="upoferia_concurso_calendar_view" model="ir.ui.view">
+  <field name="name">upoferia.concurso.calendar</field>
+  <field name="model">upoferia.concurso</field>
+  <field name="arch" type="xml">
+    <calendar string="Concursos" date_start="dFecha_hora_inicio" date_stop="dFecha_hora_fin" color="sEstado">
+      <field name="sEstado"/>
+    </calendar>
+  </field>
+  </record>
+
   <!-- SEARCH -->
   <record id="upoferia_concurso_search_view" model="ir.ui.view">
     <field name="name">upoferia.concurso.search</field>
@@ -103,7 +113,7 @@
   <record id="upoferia_concurso_action" model="ir.actions.act_window">
     <field name="name">Concursos</field>
     <field name="res_model">upoferia.concurso</field>
-    <field name="view_mode">list,form,graph</field>
+    <field name="view_mode">list,form,graph,calendar</field>
     <field name="help" type="html">
       <p class="o_view_nocontent_smiling_face">Crea el primer concurso</p>
     </field>

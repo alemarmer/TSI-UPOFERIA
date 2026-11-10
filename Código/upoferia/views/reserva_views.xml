@@ -30,7 +30,6 @@
     </field>
   </record>
 
-  <!-- CALENDAR: las reservas de cada día, coloreadas por estado -->
   <record id="upoferia_reserva_calendar_view" model="ir.ui.view">
     <field name="name">upoferia.reserva.calendar</field>
     <field name="model">upoferia.reserva</field>
