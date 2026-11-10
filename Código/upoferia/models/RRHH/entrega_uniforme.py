@@ -90,8 +90,8 @@ class EntregaUniforme(models.Model):
     @api.onchange('cantidad')
     def onchange_cantidad(self):
         if self.cantidad is not False and self.cantidad < 1:
+            self.cantidad = 1
             return {
-                'value': {'cantidad': 1},
                 'warning': {'title': 'Cantidad incorrecta', 'message': 'La cantidad mínima es 1.'}
             }
 

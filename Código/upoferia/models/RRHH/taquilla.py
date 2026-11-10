@@ -81,8 +81,8 @@ class Taquilla(models.Model):
     @api.onchange('numero')
     def onchange_numero(self):
         if self.numero and self.numero < 0:
+            self.numero = abs(self.numero)
             return {
-                'value': {'numero': abs(self.numero)},
                 'warning': {'title': 'Número negativo', 'message': 'El número de taquilla debe ser positivo; se ha corregido.'}
             }
 
@@ -120,11 +120,16 @@ class Taquilla(models.Model):
                                 'Ponla en mantenimiento en su lugar.' % record.numero)
         return super().unlink()
 
-    def copy(self, default=None):
+    def copy_data(self, default=None):
         default = dict(default or {})
-        default['numero'] = (self.search([], order='numero desc', limit=1).numero or 0) + 1
-        default['estado'] = 'disponible'
-        return super().copy(default)
+        default.setdefault('estado', 'disponible')
+        vals_list = super().copy_data(default=default)
+        if 'numero' not in default:
+            # Números consecutivos para que no se repitan al duplicar varias a la vez
+            siguiente = (self.search([], order='numero desc', limit=1).numero or 0) + 1
+            for i, vals in enumerate(vals_list):
+                vals['numero'] = siguiente + i
+        return vals_list
 
     def action_ver_asignaciones(self):
         self.ensure_one()

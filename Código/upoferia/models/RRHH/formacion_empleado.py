@@ -50,8 +50,8 @@ class FormacionEmpleado(models.Model):
     @api.onchange('nota')
     def onchange_nota(self):
         if self.nota and (self.nota < 0 or self.nota > 10):
+            self.nota = max(0.0, min(10.0, self.nota))
             return {
-                'value': {'nota': max(0.0, min(10.0, self.nota))},
                 'warning': {'title': 'Nota fuera de rango', 'message': 'La nota debe estar entre 0 y 10; se ha ajustado.'}
             }
 

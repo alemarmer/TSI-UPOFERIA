@@ -104,8 +104,8 @@ class Despido(models.Model):
     def onchange_fecha(self):
         inicio = self.contrato_laboral_id.fecha_inicio
         if self.fecha_despido and inicio and self.fecha_despido < inicio:
+            self.fecha_despido = fields.Date.context_today(self)
             return {
-                'value': {'fecha_despido': fields.Date.context_today(self)},
                 'warning': {'title': 'Fecha incorrecta', 'message': 'El despido no puede ser anterior al inicio del contrato.'}
             }
 

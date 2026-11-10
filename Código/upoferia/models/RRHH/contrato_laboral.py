@@ -95,8 +95,8 @@ class ContratoLaboral(models.Model):
     @api.onchange('precio_hora')
     def onchange_precio_hora(self):
         if self.precio_hora and self.precio_hora < 0:
+            self.precio_hora = abs(self.precio_hora)
             return {
-                'value': {'precio_hora': abs(self.precio_hora)},
                 'warning': {'title': 'Precio negativo', 'message': 'El precio por hora se guarda siempre en positivo.'}
             }
 
@@ -135,11 +135,18 @@ class ContratoLaboral(models.Model):
                 raise models.UserError('No se puede eliminar el contrato de %s: tiene un despido registrado.' % record.empleado_id.nombre)
         return super().unlink()
 
-    def copy(self, default=None):
+    def copy_data(self, default=None):
+        # La copia es la renovación: empieza al día siguiente del fin y dura lo mismo que el original
         default = dict(default or {})
-        inicio = (self.fecha_fin or fields.Date.context_today(self)) + timedelta(days=1)
-        default.update({'fecha_inicio': inicio, 'fecha_fin': False})
-        return super().copy(default)
+        vals_list = super().copy_data(default=default)
+        hoy = fields.Date.context_today(self)
+        for record, vals in zip(self, vals_list):
+            if 'fecha_inicio' not in default:
+                vals['fecha_inicio'] = (record.fecha_fin or hoy) + timedelta(days=1)
+            if 'fecha_fin' not in default:
+                duracion = record.fecha_fin - record.fecha_inicio if record.fecha_fin else None
+                vals['fecha_fin'] = vals['fecha_inicio'] + duracion if duracion is not None else False
+        return vals_list
 
     def action_registrar_despido(self):
         self.ensure_one()

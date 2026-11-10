@@ -57,8 +57,8 @@ class Disponibilidad(models.Model):
     @api.onchange('hora_inicio')
     def onchange_hora_inicio(self):
         if self.hora_inicio and (self.hora_inicio < 0 or self.hora_inicio >= 24):
+            self.hora_inicio = 8.0
             return {
-                'value': {'hora_inicio': 8.0},
                 'warning': {'title': 'Hora incorrecta', 'message': 'La hora debe estar entre 00:00 y 23:59; se ha puesto 08:00.'}
             }
 
@@ -92,7 +92,9 @@ class Disponibilidad(models.Model):
                     raise models.ValidationError('%s debe conservar al menos una franja de disponibilidad (RN-66).' % empleado.nombre)
         return super().unlink()
 
-    def copy(self, default=None):
-        default = dict(default or {})
-        default['dia_semana'] = str((int(self.dia_semana) + 1) % 7)
-        return super().copy(default)
+    def copy_data(self, default=None):
+        vals_list = super().copy_data(default=default)
+        if 'dia_semana' not in (default or {}):
+            for record, vals in zip(self, vals_list):
+                vals['dia_semana'] = str((int(record.dia_semana) + 1) % 7)
+        return vals_list

@@ -48,8 +48,8 @@ class Certificacion(models.Model):
     @api.onchange('fecha_expedicion')
     def onchange_fecha_expedicion(self):
         if self.fecha_expedicion and self.fecha_expedicion > fields.Date.context_today(self):
+            self.fecha_expedicion = fields.Date.context_today(self)
             return {
-                'value': {'fecha_expedicion': fields.Date.context_today(self)},
                 'warning': {'title': 'Fecha futura', 'message': 'La fecha de expedición no puede ser futura; se ha puesto la de hoy.'}
             }
 
@@ -90,7 +90,9 @@ class Certificacion(models.Model):
                                 % empleado.nombre)
         return super().unlink()
 
-    def copy(self, default=None):
-        default = dict(default or {})
-        default['titulo'] = '%s (copia)' % self.titulo
-        return super().copy(default)
+    def copy_data(self, default=None):
+        vals_list = super().copy_data(default=default)
+        if 'titulo' not in (default or {}):
+            for record, vals in zip(self, vals_list):
+                vals['titulo'] = '%s (copia)' % record.titulo
+        return vals_list

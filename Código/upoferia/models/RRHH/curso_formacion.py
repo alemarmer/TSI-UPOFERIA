@@ -17,7 +17,7 @@ class CursoFormacion(models.Model):
     formacion_ids = fields.One2many('upoferia.rrhh.formacion_empleado', 'curso_formacion_id', string="Participantes")
 
     # Calculados
-    num_participantes = fields.Integer(string="Participantes", compute='_compute_estadisticas', store=True)
+    num_participantes = fields.Integer(string="Nº de participantes", compute='_compute_estadisticas', store=True)
     nota_media = fields.Float(string="Nota media", compute='_compute_estadisticas', store=True, digits=(10, 2))
 
     _sql_constraints = [
@@ -60,8 +60,8 @@ class CursoFormacion(models.Model):
     @api.onchange('duracion')
     def onchange_duracion(self):
         if self.duracion and self.duracion < 0:
+            self.duracion = abs(self.duracion)
             return {
-                'value': {'duracion': abs(self.duracion)},
                 'warning': {'title': 'Duración negativa', 'message': 'La duración se guarda siempre en positivo.'}
             }
 
@@ -105,7 +105,9 @@ class CursoFormacion(models.Model):
                 raise models.UserError('No se puede eliminar el curso «%s»: hay empleados con nota registrada.' % record.nombre_curso)
         return super().unlink()
 
-    def copy(self, default=None):
-        default = dict(default or {})
-        default['nombre_curso'] = '%s (copia)' % self.nombre_curso
-        return super().copy(default)
+    def copy_data(self, default=None):
+        vals_list = super().copy_data(default=default)
+        if 'nombre_curso' not in (default or {}):
+            for record, vals in zip(self, vals_list):
+                vals['nombre_curso'] = '%s (copia)' % record.nombre_curso
+        return vals_list

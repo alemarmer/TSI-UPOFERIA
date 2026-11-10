@@ -1,5 +1,5 @@
 # Autor: Juanjo (Personal - RRHH y Turnos)
-from odoo import models, fields, api
+from odoo import models, fields, api, Command
 from datetime import datetime, timedelta
 import pytz
 
@@ -192,16 +192,20 @@ class Turno(models.Model):
                                 % record.display_name)
         return super().unlink()
 
-    def copy(self, default=None):
+    def copy_data(self, default=None):
         default = dict(default or {})
-        default['fecha'] = self.fecha + timedelta(days=1)
-        default['empleado_ids'] = [(5, 0, 0)]
-        return super().copy(default)
+        default.setdefault('empleado_ids', [Command.clear()])
+        vals_list = super().copy_data(default=default)
+        if 'fecha' not in default:
+            for record, vals in zip(self, vals_list):
+                vals['fecha'] = record.fecha + timedelta(days=1)
+        return vals_list
 
     def action_copiar_semana_siguiente(self):
         nuevos = self.env['upoferia.rrhh.turno']
         for record in self:
-            nuevos |= record.copy({'fecha': record.fecha + timedelta(days=7), 'empleado_ids': [(6, 0, record.empleado_ids.ids)]})
+            nuevos |= record.copy({'fecha': record.fecha + timedelta(days=7),
+                                   'empleado_ids': [Command.set(record.empleado_ids.ids)]})
         return {
             'type': 'ir.actions.act_window',
             'name': 'Turnos copiados',
