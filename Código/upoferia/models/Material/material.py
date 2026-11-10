@@ -43,7 +43,6 @@ class Material(models.Model):
         "upoferia.categoria_material",
         string="Categoría",
         required=True,
-        ondelete="restrict",
     )
     uso_material_ids = fields.One2many(
         "upoferia.uso_material", "material_id", string="Usos en tareas"
@@ -57,11 +56,6 @@ class Material(models.Model):
             "codigo_interno_unique",
             'UNIQUE("sCodigoInterno")',
             "Ya existe un material con ese código interno.",
-        ),
-        (
-            "cantidad_total_no_negativa",
-            'CHECK("iCantidadTotal" >= 0)',
-            "La cantidad total no puede ser negativa.",
         ),
     ]
 
@@ -82,6 +76,12 @@ class Material(models.Model):
                 )
             if not record.sNombre.strip():
                 raise ValidationError("El nombre del material no puede estar vacío.")
+
+    @api.constrains("iCantidadTotal")
+    def _check_cantidad_total(self):
+        for record in self:
+            if record.iCantidadTotal < 0:
+                raise ValidationError("La cantidad total no puede ser negativa.")
 
     @api.onchange("iCantidadTotal")
     def onchange_cantidad_total(self):

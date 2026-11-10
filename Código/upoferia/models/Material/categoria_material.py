@@ -16,7 +16,7 @@ class CategoriaMaterial(models.Model):
     )
     # Relaciones
     padre_id = fields.Many2one(
-        "upoferia.categoria_material", string="Categoría padre", ondelete="restrict"
+        "upoferia.categoria_material", string="Categoría padre"
     )
     hijo_ids = fields.One2many(
         "upoferia.categoria_material", "padre_id", string="Subcategorías"

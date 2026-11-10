@@ -22,7 +22,6 @@ class FaseMontaje(models.Model):
         "upoferia.plan_montaje",
         string="Plan de montaje",
         required=True,
-        ondelete="cascade",
     )
     tarea_montaje_ids = fields.One2many(
         "upoferia.tarea_montaje", "fase_montaje_id", string="Tareas"

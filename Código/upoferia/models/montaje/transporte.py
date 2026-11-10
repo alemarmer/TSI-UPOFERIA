@@ -30,7 +30,7 @@ class Transporte(models.Model):
 
     # Relaciones
     tarea_montaje_id = fields.Many2one(
-        "upoferia.tarea_montaje", string="Tarea de montaje", ondelete="set null"
+        "upoferia.tarea_montaje", string="Tarea de montaje"
     )
 
     _sql_constraints = [

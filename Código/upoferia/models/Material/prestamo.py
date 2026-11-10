@@ -30,8 +30,8 @@ class Prestamo(models.Model):
 
     # Relaciones
     # PENDIENTE DE INTEGRAR CON COMPRAS (necesitan upoferia.proveedor y upoferia.transaccion):
-    # proveedor_id = fields.Many2one('upoferia.proveedor', string="Proveedor", ondelete='set null')
-    # transaccion_id = fields.Many2one('upoferia.transaccion', string="Transacción (contrato)", ondelete='set null')
+    # proveedor_id = fields.Many2one('upoferia.proveedor', string="Proveedor")
+    # transaccion_id = fields.Many2one('upoferia.transaccion', string="Transacción (contrato)")
     prestamo_linea_ids = fields.One2many(
         "upoferia.prestamo_linea", "prestamo_id", string="Líneas"
     )
@@ -42,21 +42,6 @@ class Prestamo(models.Model):
             'UNIQUE("sReferencia")',
             "Ya existe un préstamo con esa referencia.",
         ),
-        (
-            "importe_no_negativo",
-            'CHECK("fImporte" >= 0)',
-            "El importe no puede ser negativo.",
-        ),
-        (
-            "fin_prevista_orden",
-            'CHECK("dFechaFinPrevista" >= "dFechaInicio")',
-            "La fecha fin prevista no puede ser anterior a la de inicio.",
-        ),
-        (
-            "devolucion_orden",
-            'CHECK("dFechaDevolucion" >= "dFechaInicio")',
-            "La fecha de devolución no puede ser anterior a la de inicio.",
-        ),
     ]
 
     @api.constrains("sReferencia")
@@ -65,6 +50,20 @@ class Prestamo(models.Model):
             if not record.sReferencia.strip():
                 raise ValidationError(
                     "La referencia del préstamo no puede estar vacía."
+                )
+
+    @api.constrains("fImporte", "dFechaInicio", "dFechaFinPrevista", "dFechaDevolucion")
+    def _check_importe_fechas(self):
+        for record in self:
+            if record.fImporte < 0:
+                raise ValidationError("El importe no puede ser negativo.")
+            if record.dFechaFinPrevista and record.dFechaFinPrevista < record.dFechaInicio:
+                raise ValidationError(
+                    "La fecha fin prevista no puede ser anterior a la de inicio."
+                )
+            if record.dFechaDevolucion and record.dFechaDevolucion < record.dFechaInicio:
+                raise ValidationError(
+                    "La fecha de devolución no puede ser anterior a la de inicio."
                 )
 
     @api.onchange("dFechaInicio")

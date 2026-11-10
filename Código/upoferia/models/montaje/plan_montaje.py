@@ -30,7 +30,7 @@ class PlanMontaje(models.Model):
 
     # Relaciones
     # PENDIENTE DE INTEGRAR CON INFRAESTRUCTURA (necesita upoferia.zona_caseta):
-    # zona_caseta_id = fields.Many2one('upoferia.zona_caseta', string="Zona de caseta", ondelete='set null')
+    # zona_caseta_id = fields.Many2one('upoferia.zona_caseta', string="Zona de caseta")
     fase_montaje_ids = fields.One2many(
         "upoferia.fase_montaje", "plan_montaje_id", string="Fases"
     )
@@ -41,11 +41,6 @@ class PlanMontaje(models.Model):
             'UNIQUE("sNombre")',
             "Ya existe un plan de montaje con ese nombre.",
         ),
-        (
-            "fechas_orden",
-            'CHECK("dFechaFin" >= "dFechaInicio")',
-            "La fecha de fin no puede ser anterior a la de inicio.",
-        ),
     ]
 
     @api.constrains("sNombre")
@@ -54,6 +49,14 @@ class PlanMontaje(models.Model):
             if not record.sNombre.strip():
                 raise ValidationError(
                     "El nombre del plan de montaje no puede estar vacío."
+                )
+
+    @api.constrains("dFechaInicio", "dFechaFin")
+    def _check_fechas(self):
+        for record in self:
+            if record.dFechaInicio and record.dFechaFin and record.dFechaFin < record.dFechaInicio:
+                raise ValidationError(
+                    "La fecha de fin no puede ser anterior a la de inicio."
                 )
 
     @api.onchange("dFechaInicio")

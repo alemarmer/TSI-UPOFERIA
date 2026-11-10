@@ -25,10 +25,10 @@ class PrestamoLinea(models.Model):
 
     # Relaciones
     prestamo_id = fields.Many2one(
-        "upoferia.prestamo", string="Préstamo", required=True, ondelete="cascade"
+        "upoferia.prestamo", string="Préstamo", required=True
     )
     material_id = fields.Many2one(
-        "upoferia.material", string="Material", required=True, ondelete="restrict"
+        "upoferia.material", string="Material", required=True
     )
 
     _sql_constraints = [
@@ -36,21 +36,6 @@ class PrestamoLinea(models.Model):
             "prestamo_material_unique",
             'UNIQUE(prestamo_id, material_id)',
             "Ese material ya está en el préstamo.",
-        ),
-        (
-            "cantidad_positiva",
-            'CHECK("iCantidad" > 0)',
-            "La cantidad debe ser mayor que cero.",
-        ),
-        (
-            "devuelta_no_negativa",
-            'CHECK("iCantidadDevuelta" >= 0)',
-            "La cantidad devuelta no puede ser negativa.",
-        ),
-        (
-            "devuelta_no_supera",
-            'CHECK("iCantidadDevuelta" <= "iCantidad")',
-            "No se pueden devolver más unidades de las prestadas.",
         ),
     ]
 
@@ -71,6 +56,18 @@ class PrestamoLinea(models.Model):
                 record.selEstadoDevolucion = "parcial"
             else:
                 record.selEstadoDevolucion = "completa"
+
+    @api.constrains("iCantidad", "iCantidadDevuelta")
+    def _check_cantidades(self):
+        for record in self:
+            if record.iCantidad <= 0:
+                raise ValidationError("La cantidad debe ser mayor que cero.")
+            if record.iCantidadDevuelta < 0:
+                raise ValidationError("La cantidad devuelta no puede ser negativa.")
+            if record.iCantidadDevuelta > record.iCantidad:
+                raise ValidationError(
+                    "No se pueden devolver más unidades de las prestadas."
+                )
 
     @api.onchange("iCantidadDevuelta", "iCantidad")
     def onchange_cantidad_devuelta(self):

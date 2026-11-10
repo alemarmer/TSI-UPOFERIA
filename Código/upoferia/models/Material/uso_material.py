@@ -14,13 +14,12 @@ class UsoMaterial(models.Model):
 
     # Relaciones
     material_id = fields.Many2one(
-        "upoferia.material", string="Material", required=True, ondelete="cascade"
+        "upoferia.material", string="Material", required=True
     )
     tarea_montaje_id = fields.Many2one(
         "upoferia.tarea_montaje",
         string="Tarea de montaje",
         required=True,
-        ondelete="cascade",
     )
     plan_montaje_id = fields.Many2one(
         related="tarea_montaje_id.plan_montaje_id", string="Plan de montaje", store=True
@@ -32,11 +31,6 @@ class UsoMaterial(models.Model):
             'UNIQUE(material_id, tarea_montaje_id)',
             "Ese material ya está asignado a la tarea.",
         ),
-        (
-            "cantidad_positiva",
-            'CHECK("iCantidad" > 0)',
-            "La cantidad debe ser mayor que cero.",
-        ),
     ]
 
     @api.depends("material_id.sNombre", "tarea_montaje_id.sNombre")
@@ -46,6 +40,12 @@ class UsoMaterial(models.Model):
                 record.material_id.sNombre or "",
                 record.tarea_montaje_id.sNombre or "",
             )
+
+    @api.constrains("iCantidad")
+    def _check_cantidad(self):
+        for record in self:
+            if record.iCantidad <= 0:
+                raise ValidationError("La cantidad debe ser mayor que cero.")
 
     @api.onchange("iCantidad", "material_id")
     def onchange_cantidad(self):

@@ -16,10 +16,10 @@ class CuadrillaEmpleado(models.Model):
 
     # Relaciones
     cuadrilla_id = fields.Many2one(
-        "upoferia.cuadrilla", string="Cuadrilla", required=True, ondelete="cascade"
+        "upoferia.cuadrilla", string="Cuadrilla", required=True
     )
     empleado_id = fields.Many2one(
-        "upoferia.empleado", string="Empleado", required=True, ondelete="cascade"
+        "upoferia.empleado", string="Empleado", required=True
     )
 
     _sql_constraints = [
