@@ -1,7 +1,7 @@
 <odoo>
 
   <!-- Menú raíz de la aplicación (común a todo el grupo) -->
-  <menuitem name="UPOFERIA" id="upoferia_menu_root" sequence="10"/>
+  <menuitem name="Upoferia" id="upoferia_menu_root" sequence="10"/>
 
   <!-- Submenú de Montaje y Material -->
   <menuitem name="Montaje y Material" id="upoferia_montaje_material_menu_root" parent="upoferia_menu_root" sequence="10"/>
