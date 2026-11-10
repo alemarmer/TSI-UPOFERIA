@@ -1,4 +1,4 @@
-## Inspeccion (`feria.inspeccion`) — `inspeccion.py`
+## Inspeccion (`upoferia.inspeccion`) — `inspeccion.py`
 
 ### `sReferencia` (Char) — clave
 - Obligatorio y único — `required` / `_sql_constraints`
@@ -33,14 +33,14 @@
 - No puede dejar de estar realizada si sus puntos de control ya tienen resultado — `@api.constrains`
 
 ### Relaciones
-- `caseta_id` (Many2one → Caseta) — obligatorio (`required`); no se puede borrar una caseta que tenga inspecciones (`ondelete='restrict'`).
-- `punto_control_ids` (One2many → PuntoControl) — puntos de control de la inspección (inverso de `inspeccion_id`).
+- `caseta_id` (Many2one → Caseta) — obligatorio (`required`); no se puede borrar una caseta que tenga inspecciones — unlink de Caseta con UserError.
+- `punto_control_ids` (One2many → PuntoControl) — puntos de control de la inspección (inverso de `inspeccion_id`) - Al borrar la inspección se borran sus puntos de control y sus asignaciones de inspectores — unlink.
 - `inspeccion_inspector_ids` (One2many → InspeccionInspector) — inspectores que participan y su rol (inverso de `inspeccion_id`).
 
 ### Atributos derivados
 - `fPorcentajeSuperado` (Float) — puntos de control con resultado `superado` / total de puntos × 100, con dos decimales; 0 si no tiene puntos. Solo lectura; se guarda (`store=True`) porque solo depende de los puntos de control — `compute` + `@api.depends`
 
-## PuntoControl (`feria.punto_control`) — `punto_control.py`
+## PuntoControl (`upoferia.punto_control`) — `punto_control.py`
 
 ### `iNumeroPunto` (Integer) — clave (junto con la inspección)
 - Obligatorio — `required`
@@ -62,16 +62,16 @@
 - Obligatorias si el punto no está superado (hay que explicar el motivo) — `@api.constrains`
 
 ### Relaciones
-- `inspeccion_id` (Many2one → Inspeccion) — obligatorio (`required`), entidad débil: si se borra la inspección se borran sus puntos (`ondelete='cascade'`).
+- `inspeccion_id` (Many2one → Inspeccion) — obligatorio (`required`), entidad débil: si se borra la inspección se borran sus puntos — unlink de Inspeccion.
 - La pareja inspección + `iNumeroPunto` no se repite (clave de la entidad débil) — `_sql_constraints` `UNIQUE (inspeccion_id, "iNumeroPunto")`.
-- `elemento_seguridad_id` (Many2one → ElementoSeguridad) — opcional; si se borra el elemento, el punto se queda sin él (`ondelete='set null'`). Solo puede revisar elementos de seguridad de la caseta inspeccionada — `@api.constrains`
+- `elemento_seguridad_id` (Many2one → ElementoSeguridad) — opcional; si se borra el elemento, el punto se queda sin él (comportamiento por defecto de Odoo en un Many2one opcional). Solo puede revisar elementos de seguridad de la caseta inspeccionada — `@api.constrains`
 - `incidencia_ids` (One2many → Incidencia) — incidencias que ha detectado este punto (inverso de `punto_control_id`).
 
 ### Nombre que se muestra
 - La referencia de su inspección y su número (ej. `INS-2026-001 / 3`) — `_compute_display_name` con `@api.depends`
 - Se puede buscar por la inspección o por el número de punto — `_rec_names_search`
 
-## Incidencia (`feria.incidencia`) — `incidencia.py`
+## Incidencia (`upoferia.incidencia`) — `incidencia.py`
 
 ### `sReferencia` (Char) — clave
 - Obligatorio y único — `required` / `_sql_constraints`
@@ -93,13 +93,13 @@
 - Lista cerrada: abierta, en_curso, resuelta, cancelada — `fields.Selection`
 
 ### Relaciones
-- `mobiliario_id` (Many2one → MobiliarioCaseta) — opcional; si se borra el mobiliario, la incidencia se queda sin él (`ondelete='set null'`).
-- `punto_control_id` (Many2one → PuntoControl) — opcional, `ondelete='set null'`. La FK compuesta `referencia_inspeccion, numero_punto` del relacional se convierte en este único Many2one.
+- `mobiliario_id` (Many2one → MobiliarioCaseta) — opcional; si se borra el mobiliario, la incidencia se queda sin él (comportamiento por defecto de Odoo en un Many2one opcional).
+- `punto_control_id` (Many2one → PuntoControl) — opcional (comportamiento por defecto de Odoo en un Many2one opcional). La FK compuesta `referencia_inspeccion, numero_punto` del relacional se convierte en este único Many2one.
   - Solo la puede detectar un punto de control no superado — `@api.constrains`
   - Si la detecta un punto de control, el mobiliario afectado es de la caseta inspeccionada — `@api.constrains`
-- `mantenimiento_ids` (One2many → Mantenimiento) — mantenimientos que resuelven la incidencia (inverso de `incidencia_id`).
+- `mantenimiento_ids` (One2many → Mantenimiento) — mantenimientos que resuelven la incidencia (inverso de `incidencia_id`) - No se puede borrar una incidencia que tenga mantenimientos, porque un correctivo se quedaría sin incidencia — unlink con UserError.
 
-## Mantenimiento (`feria.mantenimiento`) — `mantenimiento.py`
+## Mantenimiento (`upoferia.mantenimiento`) — `mantenimiento.py`
 
 ### `sIdMantenimiento` (Char) — clave
 - Obligatorio y único — `required` / `_sql_constraints`
@@ -139,9 +139,9 @@
 - En curso y finalizado no pueden tener la fecha programada posterior a hoy — `@api.constrains`
 
 ### Relaciones
-- `incidencia_id` (Many2one → Incidencia) — opcional; si se borra la incidencia, el mantenimiento se queda sin ella (`ondelete='set null'`).
+- `incidencia_id` (Many2one → Incidencia) — opcional; no se puede borrar una incidencia que tenga mantenimientos — unlink de Incidencia.
 
-## Inspector (`feria.inspector`) — `inspector.py`
+## Inspector (`upoferia.inspector`) — `inspector.py`
 
 ### `sNumeroAcreditacion` (Char)
 - Obligatorio y único (mientras no esté la herencia de PERSONA, es lo que identifica al inspector) — `required` / `_sql_constraints`
@@ -160,7 +160,7 @@
 ### Relaciones
 - `inspeccion_inspector_ids` (One2many → InspeccionInspector) — inspecciones en las que participa y su rol (inverso de `inspector_id`).
 
-## InspeccionInspector (`feria.inspeccion_inspector`) — `inspeccion_inspector.py`
+## InspeccionInspector (`upoferia.inspeccion_inspector`) — `inspeccion_inspector.py`
 
 Tabla de relación N:M entre Inspeccion e Inspector. Es un modelo propio (y no un `Many2many`) porque tiene el atributo `rol`.
 
@@ -169,8 +169,8 @@ Tabla de relación N:M entre Inspeccion e Inspector. Es un modelo propio (y no u
 - Entre 2 y 100 caracteres — `@api.constrains`
 
 ### Relaciones
-- `inspeccion_id` (Many2one → Inspeccion) — obligatorio (`required`); si se borra la inspección se borra la asignación (`ondelete='cascade'`).
-- `inspector_id` (Many2one → Inspector) — obligatorio (`required`); si se borra el inspector se borra la asignación (`ondelete='cascade'`).
+- `inspeccion_id` (Many2one → Inspeccion) — obligatorio (`required`); si se borra la inspección se borra la asignación — unlink de Inspeccion.
+- `inspector_id` (Many2one → Inspector) — obligatorio (`required`); si se borra el inspector se borra la asignación — unlink de Inspector.
 - Un inspector no puede estar dos veces en la misma inspección (clave de la tabla) — `_sql_constraints` `UNIQUE (inspeccion_id, inspector_id)`.
 
 ### Nombre que se muestra
@@ -180,11 +180,11 @@ Tabla de relación N:M entre Inspeccion e Inspector. Es un modelo propio (y no u
 
 # Pendiente (relaciones con tablas de otros bloques)
 
-- **Inspector**: herencia de Persona con `_inherits` (`persona_id`, obligatorio, `ondelete='cascade'`). Cuando esté, el nombre que se muestra pasará a ser el de la persona.
-- **Inspeccion**: `caballo_id` (Many2one → Caballo), opcional, `ondelete='set null'`. Cuando esté, una inspección veterinaria tendrá que tener caballo.
-- **Incidencia**: `servicio_id` (Many2one → `feria.servicio`), opcional, `ondelete='set null'`.
+- **Inspector**: herencia de Persona con `_inherits` (`persona_id`, obligatorio). Cuando esté, el nombre que se muestra pasará a ser el de la persona.
+- **Inspeccion**: `caballo_id` (Many2one → Caballo), opcional. Cuando esté, una inspección veterinaria tendrá que tener caballo.
+- **Incidencia**: `servicio_id` (Many2one → `upoferia.servicio`), opcional.
 - **Mantenimiento**:
-  - `transaccion_id` (Many2one → `feria.transaccion`), opcional, `ondelete='set null'` (contrato que cubre el mantenimiento).
+  - `transaccion_id` (Many2one → `upoferia.transaccion`), opcional (contrato que cubre el mantenimiento).
   - `tecnico_ids` (Many2many → Tecnico): es la tabla MANTENIMIENTO_TECNICO. No necesita modelo propio porque no tiene atributos.
   - El contrato que lo cubre es de la misma caseta que el mobiliario de la incidencia — `@api.constrains`
   - Si la incidencia la origina un servicio, el contrato es con un proveedor que lo ofrece (`servicio_id.servicio_proveedor_ids`) — `@api.constrains`
