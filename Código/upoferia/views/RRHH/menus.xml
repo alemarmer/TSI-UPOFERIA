@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Autor: Juanjo (Personal - RRHH y Turnos) -->
-<!-- Cuelga del menú raíz común main_upoferia_menu (definido en las ramas de Ale, Carlos y Pablo) -->
+<!-- Menú raíz común main_upoferia_menu: mismo id que en las ramas de Ale, Carlos y Pablo, para que la entrega instale sola -->
 <odoo>
+
+    <menuitem id="main_upoferia_menu" name="UPO Feria" groups="group_upoferia_manager"/>
 
     <menuitem id="menu_personal" name="Personal" parent="main_upoferia_menu"
               groups="group_upoferia_manager" sequence="40"/>
