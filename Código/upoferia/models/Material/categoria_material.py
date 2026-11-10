@@ -6,19 +6,14 @@ class CategoriaMaterial(models.Model):
 
     _name = "upoferia.categoria_material"
     _description = "Categoría de material"
-    _rec_name = "nombre"
-    _order = "nombre"
+    _rec_name = "sNombre"
+    _order = "sNombre"
 
-    nombre = fields.Char(
+    sNombre = fields.Char(
         string="Nombre",
         required=True,
         help="Identificador único de la categoría de material",
     )
-    # atributo derivado del E-R
-    ruta_completa = fields.Char(
-        string="Ruta completa", compute="_compute_ruta_completa"
-    )
-
     # Relaciones
     padre_id = fields.Many2one(
         "upoferia.categoria_material", string="Categoría padre", ondelete="restrict"
@@ -33,26 +28,15 @@ class CategoriaMaterial(models.Model):
     _sql_constraints = [
         (
             "nombre_unique",
-            "UNIQUE(nombre)",
+            'UNIQUE("sNombre")',
             "Ya existe una categoría de material con ese nombre.",
         ),
     ]
 
-    @api.depends("nombre", "padre_id.ruta_completa")
-    def _compute_ruta_completa(self):
-        for record in self:
-            if record.padre_id:
-                record.ruta_completa = "%s / %s" % (
-                    record.padre_id.ruta_completa,
-                    record.nombre or "",
-                )
-            else:
-                record.ruta_completa = record.nombre or ""
-
-    @api.constrains("nombre")
+    @api.constrains("sNombre")
     def _check_nombre(self):
         for record in self:
-            if not record.nombre.strip():
+            if not record.sNombre.strip():
                 raise ValidationError(
                     "El nombre de la categoría de material no puede estar vacío."
                 )

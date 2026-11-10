@@ -7,12 +7,12 @@ class PrestamoLinea(models.Model):
     _name = "upoferia.prestamo_linea"
     _description = "Línea de préstamo"
 
-    cantidad = fields.Integer(
+    iCantidad = fields.Integer(
         string="Cantidad", default=1, help="Unidades prestadas del material"
     )
-    cantidad_devuelta = fields.Integer(string="Cantidad devuelta", default=0)
+    iCantidadDevuelta = fields.Integer(string="Cantidad devuelta", default=0)
     # atributo derivado: se calcula comparando la cantidad prestada con la devuelta
-    estado_devolucion = fields.Selection(
+    selEstadoDevolucion = fields.Selection(
         [
             ("pendiente", "Pendiente"),
             ("parcial", "Parcial"),
@@ -34,49 +34,49 @@ class PrestamoLinea(models.Model):
     _sql_constraints = [
         (
             "prestamo_material_unique",
-            "UNIQUE(prestamo_id, material_id)",
+            'UNIQUE(prestamo_id, material_id)',
             "Ese material ya está en el préstamo.",
         ),
         (
             "cantidad_positiva",
-            "CHECK(cantidad > 0)",
+            'CHECK("iCantidad" > 0)',
             "La cantidad debe ser mayor que cero.",
         ),
         (
             "devuelta_no_negativa",
-            "CHECK(cantidad_devuelta >= 0)",
+            'CHECK("iCantidadDevuelta" >= 0)',
             "La cantidad devuelta no puede ser negativa.",
         ),
         (
             "devuelta_no_supera",
-            "CHECK(cantidad_devuelta <= cantidad)",
+            'CHECK("iCantidadDevuelta" <= "iCantidad")',
             "No se pueden devolver más unidades de las prestadas.",
         ),
     ]
 
-    @api.depends("prestamo_id.referencia", "material_id.nombre")
+    @api.depends("prestamo_id.sReferencia", "material_id.sNombre")
     def _compute_display_name(self):
         for record in self:
             record.display_name = "%s - %s" % (
-                record.prestamo_id.referencia or "",
-                record.material_id.nombre or "",
+                record.prestamo_id.sReferencia or "",
+                record.material_id.sNombre or "",
             )
 
-    @api.depends("cantidad", "cantidad_devuelta")
+    @api.depends("iCantidad", "iCantidadDevuelta")
     def _compute_estado_devolucion(self):
         for record in self:
-            if record.cantidad_devuelta <= 0:
-                record.estado_devolucion = "pendiente"
-            elif record.cantidad_devuelta < record.cantidad:
-                record.estado_devolucion = "parcial"
+            if record.iCantidadDevuelta <= 0:
+                record.selEstadoDevolucion = "pendiente"
+            elif record.iCantidadDevuelta < record.iCantidad:
+                record.selEstadoDevolucion = "parcial"
             else:
-                record.estado_devolucion = "completa"
+                record.selEstadoDevolucion = "completa"
 
-    @api.onchange("cantidad_devuelta", "cantidad")
+    @api.onchange("iCantidadDevuelta", "iCantidad")
     def onchange_cantidad_devuelta(self):
-        if self.cantidad_devuelta > self.cantidad:
+        if self.iCantidadDevuelta > self.iCantidad:
             return {
-                "value": {"cantidad_devuelta": self.cantidad},
+                "value": {"iCantidadDevuelta": self.iCantidad},
                 "warning": {
                     "title": "Cantidad devuelta excesiva",
                     "message": "No se pueden devolver más unidades de las prestadas; se ha ajustado al máximo.",

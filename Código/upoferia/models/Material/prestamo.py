@@ -7,17 +7,17 @@ class Prestamo(models.Model):
 
     _name = "upoferia.prestamo"
     _description = "Préstamo de material"
-    _rec_name = "referencia"
-    _order = "fecha_inicio desc, id desc"
+    _rec_name = "sReferencia"
+    _order = "dFechaInicio desc, id desc"
 
-    referencia = fields.Char(
+    sReferencia = fields.Char(
         string="Referencia", required=True, help="Identificador único del préstamo"
     )
-    fecha_inicio = fields.Date(string="Fecha de inicio", required=True)
-    fecha_fin_prevista = fields.Date(string="Fecha fin prevista")
-    fecha_devolucion = fields.Date(string="Fecha de devolución")
-    importe = fields.Float(string="Importe", digits=(10, 2))
-    estado = fields.Selection(
+    dFechaInicio = fields.Date(string="Fecha de inicio", required=True)
+    dFechaFinPrevista = fields.Date(string="Fecha fin prevista")
+    dFechaDevolucion = fields.Date(string="Fecha de devolución")
+    fImporte = fields.Float(string="Importe", digits=(10, 2))
+    selEstado = fields.Selection(
         [
             ("solicitado", "Solicitado"),
             ("en_curso", "En curso"),
@@ -26,7 +26,7 @@ class Prestamo(models.Model):
         "Estado",
         default="solicitado",
     )
-    responsable = fields.Char(string="Responsable")
+    sResponsable = fields.Char(string="Responsable")
 
     # Relaciones
     # PENDIENTE DE INTEGRAR CON COMPRAS (necesitan upoferia.proveedor y upoferia.transaccion):
@@ -39,40 +39,40 @@ class Prestamo(models.Model):
     _sql_constraints = [
         (
             "referencia_unique",
-            "UNIQUE(referencia)",
+            'UNIQUE("sReferencia")',
             "Ya existe un préstamo con esa referencia.",
         ),
         (
             "importe_no_negativo",
-            "CHECK(importe >= 0)",
+            'CHECK("fImporte" >= 0)',
             "El importe no puede ser negativo.",
         ),
         (
             "fin_prevista_orden",
-            "CHECK(fecha_fin_prevista >= fecha_inicio)",
+            'CHECK("dFechaFinPrevista" >= "dFechaInicio")',
             "La fecha fin prevista no puede ser anterior a la de inicio.",
         ),
         (
             "devolucion_orden",
-            "CHECK(fecha_devolucion >= fecha_inicio)",
+            'CHECK("dFechaDevolucion" >= "dFechaInicio")',
             "La fecha de devolución no puede ser anterior a la de inicio.",
         ),
     ]
 
-    @api.constrains("referencia")
+    @api.constrains("sReferencia")
     def _check_referencia(self):
         for record in self:
-            if not record.referencia.strip():
+            if not record.sReferencia.strip():
                 raise ValidationError(
                     "La referencia del préstamo no puede estar vacía."
                 )
 
-    @api.onchange("fecha_inicio")
+    @api.onchange("dFechaInicio")
     def onchange_fecha_inicio(self):
-        if self.fecha_inicio and not self.fecha_fin_prevista:
-            self.fecha_fin_prevista = self.fecha_inicio + timedelta(days=14)
+        if self.dFechaInicio and not self.dFechaFinPrevista:
+            self.dFechaFinPrevista = self.dFechaInicio + timedelta(days=14)
 
-    @api.onchange("fecha_devolucion")
+    @api.onchange("dFechaDevolucion")
     def onchange_fecha_devolucion(self):
-        if self.fecha_devolucion:
-            self.estado = "devuelto"
+        if self.dFechaDevolucion:
+            self.selEstado = "devuelto"

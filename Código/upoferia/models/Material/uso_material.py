@@ -7,10 +7,10 @@ class UsoMaterial(models.Model):
     _name = "upoferia.uso_material"
     _description = "Uso de material en una tarea"
 
-    cantidad = fields.Integer(
+    iCantidad = fields.Integer(
         string="Cantidad", default=1, help="Unidades del material que usa la tarea"
     )
-    observaciones = fields.Text(string="Observaciones")
+    sObservaciones = fields.Text(string="Observaciones")
 
     # Relaciones
     material_id = fields.Many2one(
@@ -29,35 +29,35 @@ class UsoMaterial(models.Model):
     _sql_constraints = [
         (
             "material_tarea_unique",
-            "UNIQUE(material_id, tarea_montaje_id)",
+            'UNIQUE(material_id, tarea_montaje_id)',
             "Ese material ya está asignado a la tarea.",
         ),
         (
             "cantidad_positiva",
-            "CHECK(cantidad > 0)",
+            'CHECK("iCantidad" > 0)',
             "La cantidad debe ser mayor que cero.",
         ),
     ]
 
-    @api.depends("material_id.nombre", "tarea_montaje_id.nombre")
+    @api.depends("material_id.sNombre", "tarea_montaje_id.sNombre")
     def _compute_display_name(self):
         for record in self:
             record.display_name = "%s - %s" % (
-                record.material_id.nombre or "",
-                record.tarea_montaje_id.nombre or "",
+                record.material_id.sNombre or "",
+                record.tarea_montaje_id.sNombre or "",
             )
 
-    @api.onchange("cantidad", "material_id")
+    @api.onchange("iCantidad", "material_id")
     def onchange_cantidad(self):
-        if self.material_id and self.cantidad > self.material_id.cantidad_total:
+        if self.material_id and self.iCantidad > self.material_id.iCantidadTotal:
             return {
                 "warning": {
                     "title": "Cantidad superior al total",
                     "message": "Pides %s unidades y de «%s» solo hay %s."
                     % (
-                        self.cantidad,
-                        self.material_id.nombre,
-                        self.material_id.cantidad_total,
+                        self.iCantidad,
+                        self.material_id.sNombre,
+                        self.material_id.iCantidadTotal,
                     ),
                 }
             }

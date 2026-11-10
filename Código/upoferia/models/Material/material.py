@@ -6,15 +6,15 @@ class Material(models.Model):
 
     _name = "upoferia.material"
     _description = "Material"
-    _rec_name = "nombre"
-    _rec_names_search = ["codigo_interno", "nombre"]
-    _order = "codigo_interno"
+    _rec_name = "sNombre"
+    _rec_names_search = ["sCodigoInterno", "sNombre"]
+    _order = "sCodigoInterno"
 
-    codigo_interno = fields.Char(
+    sCodigoInterno = fields.Char(
         string="Código interno", required=True, help="Identificador único del material"
     )
-    nombre = fields.Char(string="Nombre", required=True)
-    tipo_propiedad = fields.Selection(
+    sNombre = fields.Char(string="Nombre", required=True)
+    selTipoPropiedad = fields.Selection(
         [
             ("fijo", "Fijo"),
             ("propio", "Propio"),
@@ -24,8 +24,8 @@ class Material(models.Model):
         required=True,
         default="propio",
     )
-    cantidad_total = fields.Integer(string="Cantidad total", default=1)
-    estado_conservacion = fields.Selection(
+    iCantidadTotal = fields.Integer(string="Cantidad total", default=1)
+    selEstadoConservacion = fields.Selection(
         [
             ("nuevo", "Nuevo"),
             ("bueno", "Bueno"),
@@ -35,8 +35,8 @@ class Material(models.Model):
         "Estado de conservación",
         default="bueno",
     )
-    fecha_adquisicion = fields.Date(string="Fecha de adquisición")
-    observaciones = fields.Text(string="Observaciones")
+    dFechaAdquisicion = fields.Date(string="Fecha de adquisición")
+    sObservaciones = fields.Text(string="Observaciones")
 
     # Relaciones
     categoria_material_id = fields.Many2one(
@@ -55,37 +55,37 @@ class Material(models.Model):
     _sql_constraints = [
         (
             "codigo_interno_unique",
-            "UNIQUE(codigo_interno)",
+            'UNIQUE("sCodigoInterno")',
             "Ya existe un material con ese código interno.",
         ),
         (
             "cantidad_total_no_negativa",
-            "CHECK(cantidad_total >= 0)",
+            'CHECK("iCantidadTotal" >= 0)',
             "La cantidad total no puede ser negativa.",
         ),
     ]
 
-    @api.depends("codigo_interno", "nombre")
+    @api.depends("sCodigoInterno", "sNombre")
     def _compute_display_name(self):
         for record in self:
             record.display_name = "[%s] %s" % (
-                record.codigo_interno or "",
-                record.nombre or "",
+                record.sCodigoInterno or "",
+                record.sNombre or "",
             )
 
-    @api.constrains("codigo_interno", "nombre")
+    @api.constrains("sCodigoInterno", "sNombre")
     def _check_codigo_nombre(self):
         for record in self:
-            if not record.codigo_interno.strip():
+            if not record.sCodigoInterno.strip():
                 raise ValidationError(
                     "El código interno del material no puede estar vacío."
                 )
-            if not record.nombre.strip():
+            if not record.sNombre.strip():
                 raise ValidationError("El nombre del material no puede estar vacío.")
 
-    @api.onchange("cantidad_total")
+    @api.onchange("iCantidadTotal")
     def onchange_cantidad_total(self):
-        if self.cantidad_total == 0:
+        if self.iCantidadTotal == 0:
             return {
                 "warning": {
                     "title": "Cantidad a cero",
