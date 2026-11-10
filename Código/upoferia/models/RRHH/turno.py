@@ -1,6 +1,5 @@
 # Autor: Juanjo (Personal - RRHH y Turnos)
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError, UserError
 from datetime import datetime, timedelta
 import pytz
 
@@ -95,7 +94,7 @@ class Turno(models.Model):
     def _check_horas(self):
         for record in self:
             if record.hora_fin and record.hora_fin <= record.hora_inicio:
-                raise ValidationError('La hora de fin (%s) debe ser posterior a la de inicio (%s). '
+                raise models.ValidationError('La hora de fin (%s) debe ser posterior a la de inicio (%s). '
                                       'Para turnos de noche, crea dos turnos (uno por día).'
                                       % (self._formatea_hora(record.hora_fin), self._formatea_hora(record.hora_inicio)))
 
@@ -108,7 +107,7 @@ class Turno(models.Model):
             for otro in otros:
                 if inicio < (otro.hora_fin or otro.hora_inicio + 1.0) and otro.hora_inicio < fin:
                     comunes = (record.empleado_ids & otro.empleado_ids).mapped('nombre')
-                    raise ValidationError('%s ya está asignado al turno %s, que se solapa con este.'
+                    raise models.ValidationError('%s ya está asignado al turno %s, que se solapa con este.'
                                           % (', '.join(comunes), otro.display_name))
 
     @api.constrains('empleado_ids', 'fecha')
@@ -121,7 +120,7 @@ class Turno(models.Model):
                                                              '&', ('fecha_hasta', '=', False),
                                                              ('fecha_desde', '=', record.fecha)])
             if ausentes:
-                raise ValidationError('Tienen una ausencia aprobada el %s: %s.'
+                raise models.ValidationError('Tienen una ausencia aprobada el %s: %s.'
                                       % (record.fecha, ', '.join(ausentes.mapped('empleado_id.nombre'))))
 
     @api.constrains('empleado_ids', 'fecha', 'hora_inicio', 'hora_fin')
@@ -130,7 +129,7 @@ class Turno(models.Model):
             for empleado in record.empleado_ids:
                 turnos = self.search([('fecha', '=', record.fecha), ('empleado_ids', 'in', empleado.id)])
                 if sum(turnos.mapped('duracion')) > MAX_HORAS_DIA:
-                    raise ValidationError('%s superaría las %d horas de trabajo el %s.'
+                    raise models.ValidationError('%s superaría las %d horas de trabajo el %s.'
                                           % (empleado.nombre, MAX_HORAS_DIA, record.fecha))
 
     @api.constrains('empleado_ids')
@@ -138,7 +137,7 @@ class Turno(models.Model):
         for record in self:
             de_baja = record.empleado_ids.filtered(lambda e: not e.activo)
             if de_baja:
-                raise ValidationError('No se puede asignar a empleados de baja: %s.' % ', '.join(de_baja.mapped('nombre')))
+                raise models.ValidationError('No se puede asignar a empleados de baja: %s.' % ', '.join(de_baja.mapped('nombre')))
 
     @api.onchange('hora_inicio')
     def onchange_hora_inicio(self):
@@ -182,14 +181,14 @@ class Turno(models.Model):
         if {'fecha', 'hora_inicio', 'hora_fin'} & set(vals):
             for record in self:
                 if record.fecha < hoy:
-                    raise UserError('No se puede modificar el horario de un turno ya pasado (%s).' % record.display_name)
+                    raise models.UserError('No se puede modificar el horario de un turno ya pasado (%s).' % record.display_name)
         return super().write(vals)
 
     def unlink(self):
         hoy = fields.Date.context_today(self)
         for record in self:
             if record.fecha < hoy and record.empleado_ids:
-                raise UserError('No se puede eliminar el turno %s: ya ha tenido lugar y tiene empleados asignados.'
+                raise models.UserError('No se puede eliminar el turno %s: ya ha tenido lugar y tiene empleados asignados.'
                                 % record.display_name)
         return super().unlink()
 
