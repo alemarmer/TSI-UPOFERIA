@@ -1,6 +1,4 @@
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError, UserError
-
 
 class Mision(models.Model):
 
@@ -27,14 +25,14 @@ class Mision(models.Model):
     def _check_titulo(self):
         for record in self:
             if not record.titulo.strip():
-                raise ValidationError('El título de la misión no puede estar vacío.')
+                raise models.ValidationError('El título de la misión no puede estar vacío.')
 
     @api.constrains('fecha_max', 'registro_xp_id')
     def _check_fecha_max_temporada(self):
         for record in self:
             temporada = record.registro_xp_id.temporada_pase_id
             if record.fecha_max and not (temporada.fecha_inicio <= record.fecha_max <= temporada.fecha_fin):
-                raise ValidationError('La fecha máxima debe estar dentro de la temporada «%s».' % temporada.nombre)
+                raise models.ValidationError('La fecha máxima debe estar dentro de la temporada «%s».' % temporada.nombre)
 
     def _check_subtipo_unico(self):
         """Una misión es de un único tipo: descubrimiento, evento o social. Lo llaman los tres subtipos."""
@@ -43,7 +41,7 @@ class Mision(models.Model):
                         for modelo in ('upoferia.mision_descubrimiento', 'upoferia.mision_evento',
                                        'upoferia.mision_social'))
             if total > 1:
-                raise ValidationError('La misión «%s» solo puede ser de un tipo.' % record.titulo)
+                raise models.ValidationError('La misión «%s» solo puede ser de un tipo.' % record.titulo)
 
     @api.onchange('registro_xp_id')
     def onchange_registro_xp_id(self):
@@ -55,9 +53,9 @@ class Mision(models.Model):
         hoy = fields.Date.context_today(self)
         for record in self:
             if record.completada:
-                raise UserError('La misión «%s» ya está completada.' % record.titulo)
+                raise models.UserError('La misión «%s» ya está completada.' % record.titulo)
             if record.fecha_max and hoy > record.fecha_max:
-                raise UserError('La misión «%s» venció el %s.' % (record.titulo, record.fecha_max))
+                raise models.UserError('La misión «%s» venció el %s.' % (record.titulo, record.fecha_max))
             racha = record.registro_xp_id.racha_ids[:1]
             xp = int(round(record.exp_adquirida * (racha.multiplicador_exp if racha else 1.0)))
             record.completada = True

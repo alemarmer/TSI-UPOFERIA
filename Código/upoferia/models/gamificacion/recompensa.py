@@ -1,6 +1,4 @@
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError
-
 
 class Recompensa(models.Model):
 
@@ -26,4 +24,4 @@ class Recompensa(models.Model):
     def _check_nombre(self):
         for record in self:
             if not record.nombre.strip():
-                raise ValidationError('El nombre de la recompensa no puede estar vacío.')
+                raise models.ValidationError('El nombre de la recompensa no puede estar vacío.')

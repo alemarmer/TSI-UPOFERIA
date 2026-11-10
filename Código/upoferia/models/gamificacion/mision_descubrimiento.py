@@ -1,5 +1,4 @@
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError
 
 
 class MisionDescubrimiento(models.Model):
@@ -26,7 +25,7 @@ class MisionDescubrimiento(models.Model):
     def _check_datos_minimos(self):
         for record in self:
             if not record.tipo_busqueda and not (record.arsenal or '').strip():
-                raise ValidationError('Indica el tipo de búsqueda o el arsenal de la misión.')
+                raise models.ValidationError('Indica el tipo de búsqueda o el arsenal de la misión.')
 
     def action_completar(self):
         return self.mision_id.action_completar()

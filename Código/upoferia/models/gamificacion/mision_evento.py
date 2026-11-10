@@ -1,5 +1,4 @@
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError
 
 
 class MisionEvento(models.Model):
@@ -27,7 +26,7 @@ class MisionEvento(models.Model):
         for record in self:
             temporada = record.registro_xp_id.temporada_pase_id
             if record.fecha and not (temporada.fecha_inicio <= record.fecha <= temporada.fecha_fin):
-                raise ValidationError('La fecha del evento debe estar dentro de la temporada «%s».' % temporada.nombre)
+                raise models.ValidationError('La fecha del evento debe estar dentro de la temporada «%s».' % temporada.nombre)
 
     @api.onchange('fecha')
     def onchange_fecha(self):

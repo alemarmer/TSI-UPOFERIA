@@ -1,5 +1,4 @@
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError
 
 
 class MisionSocial(models.Model):
@@ -28,7 +27,7 @@ class MisionSocial(models.Model):
     def _check_reto_clan(self):
         for record in self:
             if record.tipo_reto == 'clan' and not record.registro_xp_id.socio_id.clan_id:
-                raise ValidationError('El socio no pertenece a ningún clan: no puede tener un reto de clan.')
+                raise models.ValidationError('El socio no pertenece a ningún clan: no puede tener un reto de clan.')
 
     def action_completar(self):
         return self.mision_id.action_completar()

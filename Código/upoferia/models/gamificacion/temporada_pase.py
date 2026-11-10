@@ -1,5 +1,4 @@
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError
 from datetime import timedelta
 
 
@@ -27,7 +26,7 @@ class TemporadaPase(models.Model):
     def _check_nombre(self):
         for record in self:
             if not record.nombre.strip():
-                raise ValidationError('El nombre de la temporada no puede estar vacío.')
+                raise models.ValidationError('El nombre de la temporada no puede estar vacío.')
 
     @api.constrains('fecha_inicio', 'fecha_fin')
     def _check_solapamiento(self):
@@ -36,7 +35,7 @@ class TemporadaPase(models.Model):
                                     ('fecha_inicio', '<=', record.fecha_fin),
                                     ('fecha_fin', '>=', record.fecha_inicio)], limit=1)
             if solapada:
-                raise ValidationError('La temporada se solapa con «%s».' % solapada.nombre)
+                raise models.ValidationError('La temporada se solapa con «%s».' % solapada.nombre)
 
     @api.onchange('fecha_inicio')
     def onchange_fecha_inicio(self):

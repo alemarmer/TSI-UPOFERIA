@@ -1,5 +1,4 @@
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError
 
 
 class Clan(models.Model):
@@ -29,13 +28,13 @@ class Clan(models.Model):
     def _check_nombre(self):
         for record in self:
             if not record.nombre.strip():
-                raise ValidationError('El nombre del clan no puede estar vacío.')
+                raise models.ValidationError('El nombre del clan no puede estar vacío.')
 
     @api.constrains('lider_id')
     def _check_lider_en_otro_clan(self):
         for record in self:
             if record.lider_id.clan_id and record.lider_id.clan_id != record:
-                raise ValidationError('El líder ya pertenece al clan «%s».' % record.lider_id.clan_id.nombre)
+                raise models.ValidationError('El líder ya pertenece al clan «%s».' % record.lider_id.clan_id.nombre)
 
     @api.depends('registro_xp_ids.xp_ganada')
     def _compute_experiencia_total(self):

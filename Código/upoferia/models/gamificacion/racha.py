@@ -1,6 +1,4 @@
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError
-
 
 class Racha(models.Model):
 
@@ -28,7 +26,7 @@ class Racha(models.Model):
     def _check_multiplicador_maximo(self):
         for record in self:
             if record.multiplicador_exp > self.MULTIPLICADOR_MAX:
-                raise ValidationError('El multiplicador no puede superar x%.2f.' % self.MULTIPLICADOR_MAX)
+                raise models.ValidationError('El multiplicador no puede superar x%.2f.' % self.MULTIPLICADOR_MAX)
 
     @api.depends('multiplicador_exp', 'duracion')
     def _compute_display_name(self):

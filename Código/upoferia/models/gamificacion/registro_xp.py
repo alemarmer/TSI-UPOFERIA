@@ -1,5 +1,4 @@
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError, UserError
 
 
 class RegistroXp(models.Model):
@@ -37,7 +36,7 @@ class RegistroXp(models.Model):
         for record in self:
             for recompensa in record.recompensa_ids:
                 if recompensa.nivel_requerido > record.nivel:
-                    raise ValidationError('«%s» requiere el nivel %s y el socio está en el nivel %s.'
+                    raise models.ValidationError('«%s» requiere el nivel %s y el socio está en el nivel %s.'
                                           % (recompensa.nombre, recompensa.nivel_requerido, record.nivel))
 
     @api.depends('experiencia_acumulada')
@@ -53,7 +52,7 @@ class RegistroXp(models.Model):
     def sumar_xp(self, cantidad):
         """Suma XP y concede las recompensas de los niveles que se alcanzan."""
         if cantidad < 0:
-            raise UserError('No se puede sumar una cantidad negativa de experiencia.')
+            raise models.UserError('No se puede sumar una cantidad negativa de experiencia.')
         for record in self:
             nivel_anterior = record.nivel
             record.write({'xp_ganada': record.xp_ganada + cantidad,
