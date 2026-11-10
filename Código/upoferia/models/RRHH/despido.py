@@ -8,7 +8,7 @@ HORAS_JORNADA = 8
 
 class Despido(models.Model):
 
-    _name = 'upoferia.despido'
+    _name = 'upoferia.rrhh.despido'
     _description = 'Despido de un contrato laboral'
     _rec_names_search = ['empleado_id']
     _order = 'fecha_despido desc'
@@ -23,8 +23,8 @@ class Despido(models.Model):
                                     'Tipo de despido')
 
     # Relaciones (clave heredada del contrato: empleado + fecha de inicio del contrato)
-    contrato_laboral_id = fields.Many2one('upoferia.contrato_laboral', string="Contrato laboral", required=True, ondelete='cascade')
-    empleado_id = fields.Many2one('upoferia.empleado', string="Empleado", related='contrato_laboral_id.empleado_id', store=True)
+    contrato_laboral_id = fields.Many2one('upoferia.rrhh.contrato_laboral', string="Contrato laboral", required=True, ondelete='cascade')
+    empleado_id = fields.Many2one('upoferia.rrhh.empleado', string="Empleado", related='contrato_laboral_id.empleado_id', store=True)
     fecha_inicio_contrato_laboral = fields.Date(string="Inicio del contrato", related='contrato_laboral_id.fecha_inicio', store=True)
     fecha_fin_contrato_original = fields.Date(string="Fin previsto del contrato", readonly=True, copy=False,
                                               help="Fecha de fin que tenía el contrato antes del despido; "
@@ -121,7 +121,7 @@ class Despido(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             if vals.get('contrato_laboral_id'):
-                contrato = self.env['upoferia.contrato_laboral'].browse(vals['contrato_laboral_id'])
+                contrato = self.env['upoferia.rrhh.contrato_laboral'].browse(vals['contrato_laboral_id'])
                 vals['fecha_fin_contrato_original'] = contrato.fecha_fin
         records = super().create(vals_list)
         records._aplicar_fin_contrato()

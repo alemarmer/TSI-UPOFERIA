@@ -4,7 +4,7 @@ from odoo import models, fields, api
 
 class CursoFormacion(models.Model):
 
-    _name = 'upoferia.curso_formacion'
+    _name = 'upoferia.rrhh.curso_formacion'
     _description = 'Curso de formación'
     _rec_name = 'nombre_curso'
     _order = 'nombre_curso'
@@ -14,7 +14,7 @@ class CursoFormacion(models.Model):
     formador = fields.Char(string="Formador", size=100)
 
     # Relaciones
-    formacion_ids = fields.One2many('upoferia.formacion_empleado', 'curso_formacion_id', string="Participantes")
+    formacion_ids = fields.One2many('upoferia.rrhh.formacion_empleado', 'curso_formacion_id', string="Participantes")
 
     # Calculados
     num_participantes = fields.Integer(string="Participantes", compute='_compute_estadisticas', store=True)

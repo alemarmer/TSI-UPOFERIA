@@ -4,7 +4,7 @@ from odoo import models, fields, api
 
 class Ausencia(models.Model):
 
-    _name = 'upoferia.ausencia'
+    _name = 'upoferia.rrhh.ausencia'
     _description = 'Ausencia de un empleado'
     _rec_names_search = ['empleado_id']
     _order = 'fecha_desde desc'
@@ -18,7 +18,7 @@ class Ausencia(models.Model):
     motivo = fields.Text(string="Motivo")
 
     # Relaciones
-    empleado_id = fields.Many2one('upoferia.empleado', string="Empleado", required=True, ondelete='cascade')
+    empleado_id = fields.Many2one('upoferia.rrhh.empleado', string="Empleado", required=True, ondelete='cascade')
 
     # Calculados
     dias = fields.Integer(string="Días", compute='_compute_dias', store=True)
@@ -72,7 +72,7 @@ class Ausencia(models.Model):
     @api.constrains('estado', 'empleado_id', 'fecha_desde', 'fecha_hasta')
     def _check_turnos_asignados(self):
         for record in self.filtered(lambda r: r.estado == 'aprobada'):
-            turnos = self.env['upoferia.turno'].search([('empleado_ids', 'in', record.empleado_id.ids),
+            turnos = self.env['upoferia.rrhh.turno'].search([('empleado_ids', 'in', record.empleado_id.ids),
                                                         ('fecha', '>=', record.fecha_desde),
                                                         ('fecha', '<=', record.fecha_hasta or record.fecha_desde)])
             if turnos:

@@ -4,7 +4,7 @@ from odoo import models, fields, api
 
 class Taquilla(models.Model):
 
-    _name = 'upoferia.taquilla'
+    _name = 'upoferia.rrhh.taquilla'
     _description = 'Taquilla del personal'
     _rec_name = 'numero'
     _order = 'numero'
@@ -17,12 +17,12 @@ class Taquilla(models.Model):
                               'Estado', default='disponible')
 
     # Relaciones
-    asignacion_ids = fields.One2many('upoferia.asignacion_taquilla', 'taquilla_id', string="Asignaciones")
+    asignacion_ids = fields.One2many('upoferia.rrhh.asignacion_taquilla', 'taquilla_id', string="Asignaciones")
 
     # Calculados
-    asignacion_vigente_id = fields.Many2one('upoferia.asignacion_taquilla', string="Asignación vigente",
+    asignacion_vigente_id = fields.Many2one('upoferia.rrhh.asignacion_taquilla', string="Asignación vigente",
                                          compute='_compute_asignacion_vigente', store=True)
-    empleado_actual_id = fields.Many2one('upoferia.empleado', string="Empleado actual",
+    empleado_actual_id = fields.Many2one('upoferia.rrhh.empleado', string="Empleado actual",
                                       related='asignacion_vigente_id.empleado_id', store=True)
     num_asignaciones = fields.Integer(string="Nº de asignaciones", compute='_compute_num_asignaciones')
 
@@ -131,7 +131,7 @@ class Taquilla(models.Model):
         return {
             'type': 'ir.actions.act_window',
             'name': 'Asignaciones de la taquilla %s' % self.numero,
-            'res_model': 'upoferia.asignacion_taquilla',
+            'res_model': 'upoferia.rrhh.asignacion_taquilla',
             'view_mode': 'list,form,calendar',
             'domain': [('taquilla_id', '=', self.id)],
             'context': {'default_taquilla_id': self.id},

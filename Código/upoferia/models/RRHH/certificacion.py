@@ -4,7 +4,7 @@ from odoo import models, fields, api
 
 class Certificacion(models.Model):
 
-    _name = 'upoferia.certificacion'
+    _name = 'upoferia.rrhh.certificacion'
     _description = 'Certificación de un empleado'
     _rec_name = 'titulo'
     _order = 'fecha_expedicion desc'
@@ -13,7 +13,7 @@ class Certificacion(models.Model):
     fecha_expedicion = fields.Date(string="Fecha de expedición")
 
     # Relaciones
-    empleado_id = fields.Many2one('upoferia.empleado', string="Empleado", required=True, ondelete='cascade')
+    empleado_id = fields.Many2one('upoferia.rrhh.empleado', string="Empleado", required=True, ondelete='cascade')
 
     _sql_constraints = [
         ('natural_unique', 'UNIQUE(empleado_id, titulo)', 'Ese empleado ya tiene una certificación con ese título.'),

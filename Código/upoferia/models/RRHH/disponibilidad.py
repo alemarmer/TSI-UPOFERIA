@@ -7,7 +7,7 @@ DIAS_SEMANA = [('0', 'Lunes'), ('1', 'Martes'), ('2', 'Miércoles'), ('3', 'Juev
 
 class Disponibilidad(models.Model):
 
-    _name = 'upoferia.disponibilidad'
+    _name = 'upoferia.rrhh.disponibilidad'
     _description = 'Franja semanal de disponibilidad de un empleado'
     _rec_names_search = ['empleado_id']
     _order = 'empleado_id, dia_semana, hora_inicio'
@@ -17,7 +17,7 @@ class Disponibilidad(models.Model):
     hora_inicio = fields.Float(string="Hora de inicio", default=8.0, help="Hora en formato decimal (8.5 = 08:30)")
 
     # Relaciones
-    empleado_id = fields.Many2one('upoferia.empleado', string="Empleado", required=True, ondelete='cascade')
+    empleado_id = fields.Many2one('upoferia.rrhh.empleado', string="Empleado", required=True, ondelete='cascade')
 
     _sql_constraints = [
         ('natural_unique', 'UNIQUE(empleado_id, dia_semana, fecha_fin)',

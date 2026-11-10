@@ -2,9 +2,9 @@
 <!-- Autor: Juanjo (Personal - RRHH y Turnos) -->
 <odoo>
 
-    <record id="upoferia_certificacion_view_tree" model="ir.ui.view">
-        <field name="name">upoferia.certificacion.list</field>
-        <field name="model">upoferia.certificacion</field>
+    <record id="upoferia_rrhh_certificacion_list_view" model="ir.ui.view">
+        <field name="name">upoferia.rrhh.certificacion.list</field>
+        <field name="model">upoferia.rrhh.certificacion</field>
         <field name="arch" type="xml">
             <list>
                 <field name="titulo"/>
@@ -14,9 +14,9 @@
         </field>
     </record>
 
-    <record id="upoferia_certificacion_view_form" model="ir.ui.view">
-        <field name="name">upoferia.certificacion.form</field>
-        <field name="model">upoferia.certificacion</field>
+    <record id="upoferia_rrhh_certificacion_form_view" model="ir.ui.view">
+        <field name="name">upoferia.rrhh.certificacion.form</field>
+        <field name="model">upoferia.rrhh.certificacion</field>
         <field name="arch" type="xml">
             <form string="Certificación">
                 <sheet>
@@ -36,9 +36,9 @@
         </field>
     </record>
 
-    <record id="upoferia_certificacion_view_search" model="ir.ui.view">
-        <field name="name">upoferia.certificacion.search</field>
-        <field name="model">upoferia.certificacion</field>
+    <record id="upoferia_rrhh_certificacion_search_view" model="ir.ui.view">
+        <field name="name">upoferia.rrhh.certificacion.search</field>
+        <field name="model">upoferia.rrhh.certificacion</field>
         <field name="arch" type="xml">
             <search>
                 <field name="titulo"/>
@@ -53,9 +53,9 @@
         </field>
     </record>
 
-    <record id="upoferia_certificacion_view_calendar" model="ir.ui.view">
-        <field name="name">upoferia.certificacion.calendar</field>
-        <field name="model">upoferia.certificacion</field>
+    <record id="upoferia_rrhh_certificacion_calendar_view" model="ir.ui.view">
+        <field name="name">upoferia.rrhh.certificacion.calendar</field>
+        <field name="model">upoferia.rrhh.certificacion</field>
         <field name="arch" type="xml">
             <calendar string="Certificaciones" date_start="fecha_expedicion" color="empleado_id"
                       mode="month" quick_create="0">
@@ -65,9 +65,9 @@
         </field>
     </record>
 
-    <record id="upoferia_certificacion_action" model="ir.actions.act_window">
+    <record id="upoferia_rrhh_certificacion_action" model="ir.actions.act_window">
         <field name="name">Certificaciones</field>
-        <field name="res_model">upoferia.certificacion</field>
+        <field name="res_model">upoferia.rrhh.certificacion</field>
         <field name="view_mode">list,form,calendar</field>
     </record>
 

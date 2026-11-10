@@ -4,7 +4,7 @@ from odoo import models, fields, api
 
 class AsignacionTaquilla(models.Model):
 
-    _name = 'upoferia.asignacion_taquilla'
+    _name = 'upoferia.rrhh.asignacion_taquilla'
     _description = 'Asignación de taquilla a un empleado'
     _rec_names_search = ['empleado_id', 'taquilla_id']
     _order = 'fecha_inicio desc'
@@ -13,8 +13,8 @@ class AsignacionTaquilla(models.Model):
     fecha_fin = fields.Date(string="Fecha de fin", help="Vacía mientras la asignación esté vigente")
 
     # Relaciones
-    taquilla_id = fields.Many2one('upoferia.taquilla', string="Taquilla", required=True, ondelete='cascade')
-    empleado_id = fields.Many2one('upoferia.empleado', string="Empleado", required=True, ondelete='restrict')
+    taquilla_id = fields.Many2one('upoferia.rrhh.taquilla', string="Taquilla", required=True, ondelete='cascade')
+    empleado_id = fields.Many2one('upoferia.rrhh.empleado', string="Empleado", required=True, ondelete='restrict')
 
     # Calculados
     vigente = fields.Boolean(string="Vigente", compute='_compute_vigente', store=True)
@@ -111,7 +111,7 @@ class AsignacionTaquilla(models.Model):
     def default_get(self, fields_list):
         res = super().default_get(fields_list)
         if 'taquilla_id' in fields_list and not res.get('taquilla_id'):
-            libre = self.env['upoferia.taquilla'].search([('estado', '=', 'disponible')], limit=1)
+            libre = self.env['upoferia.rrhh.taquilla'].search([('estado', '=', 'disponible')], limit=1)
             if libre:
                 res['taquilla_id'] = libre.id
         return res

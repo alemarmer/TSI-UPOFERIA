@@ -5,7 +5,7 @@ from datetime import timedelta
 
 class ContratoLaboral(models.Model):
 
-    _name = 'upoferia.contrato_laboral'
+    _name = 'upoferia.rrhh.contrato_laboral'
     _description = 'Contrato laboral'
     _rec_names_search = ['empleado_id']
     _order = 'fecha_inicio desc'
@@ -20,8 +20,8 @@ class ContratoLaboral(models.Model):
     precio_hora = fields.Float(string="Precio por hora", digits=(10, 2), help="Base del cálculo de la nómina (RN-20)")
 
     # Relaciones
-    empleado_id = fields.Many2one('upoferia.empleado', string="Empleado", required=True, ondelete='cascade')
-    despido_ids = fields.One2many('upoferia.despido', 'contrato_laboral_id', string="Despido")
+    empleado_id = fields.Many2one('upoferia.rrhh.empleado', string="Empleado", required=True, ondelete='cascade')
+    despido_ids = fields.One2many('upoferia.rrhh.despido', 'contrato_laboral_id', string="Despido")
 
     # Calculados
     tiene_despido = fields.Boolean(string="Con despido", compute='_compute_tiene_despido', store=True)
@@ -146,7 +146,7 @@ class ContratoLaboral(models.Model):
         return {
             'type': 'ir.actions.act_window',
             'name': 'Registrar despido',
-            'res_model': 'upoferia.despido',
+            'res_model': 'upoferia.rrhh.despido',
             'view_mode': 'form',
             'context': {'default_contrato_laboral_id': self.id},
             'target': 'new',

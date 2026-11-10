@@ -7,28 +7,28 @@
               groups="group_upoferia_manager" sequence="40"/>
 
     <menuitem id="menu_empleado" name="Empleados" parent="menu_personal"
-              action="upoferia_empleado_action" sequence="10"/>
+              action="upoferia_rrhh_empleado_action" sequence="10"/>
     <menuitem id="menu_turno" name="Turnos" parent="menu_personal"
-              action="upoferia_turno_action" sequence="20"/>
+              action="upoferia_rrhh_turno_action" sequence="20"/>
     <menuitem id="menu_disponibilidad" name="Disponibilidad" parent="menu_personal"
-              action="upoferia_disponibilidad_action" sequence="30"/>
+              action="upoferia_rrhh_disponibilidad_action" sequence="30"/>
     <menuitem id="menu_ausencia" name="Ausencias" parent="menu_personal"
-              action="upoferia_ausencia_action" sequence="40"/>
+              action="upoferia_rrhh_ausencia_action" sequence="40"/>
     <menuitem id="menu_contrato_laboral" name="Contratos laborales" parent="menu_personal"
-              action="upoferia_contrato_laboral_action" sequence="50"/>
+              action="upoferia_rrhh_contrato_laboral_action" sequence="50"/>
     <menuitem id="menu_despido" name="Despidos" parent="menu_personal"
-              action="upoferia_despido_action" sequence="60"/>
+              action="upoferia_rrhh_despido_action" sequence="60"/>
     <menuitem id="menu_certificacion" name="Certificaciones" parent="menu_personal"
-              action="upoferia_certificacion_action" sequence="70"/>
+              action="upoferia_rrhh_certificacion_action" sequence="70"/>
     <menuitem id="menu_curso_formacion" name="Cursos de formación" parent="menu_personal"
-              action="upoferia_curso_formacion_action" sequence="80"/>
+              action="upoferia_rrhh_curso_formacion_action" sequence="80"/>
     <menuitem id="menu_formacion_empleado" name="Formación de empleados" parent="menu_personal"
-              action="upoferia_formacion_empleado_action" sequence="90"/>
+              action="upoferia_rrhh_formacion_empleado_action" sequence="90"/>
     <menuitem id="menu_entrega_uniforme" name="Entregas de uniforme" parent="menu_personal"
-              action="upoferia_entrega_uniforme_action" sequence="100"/>
+              action="upoferia_rrhh_entrega_uniforme_action" sequence="100"/>
     <menuitem id="menu_taquilla" name="Taquillas" parent="menu_personal"
-              action="upoferia_taquilla_action" sequence="110"/>
+              action="upoferia_rrhh_taquilla_action" sequence="110"/>
     <menuitem id="menu_asignacion_taquilla" name="Asignaciones de taquilla" parent="menu_personal"
-              action="upoferia_asignacion_taquilla_action" sequence="120"/>
+              action="upoferia_rrhh_asignacion_taquilla_action" sequence="120"/>
 
 </odoo>

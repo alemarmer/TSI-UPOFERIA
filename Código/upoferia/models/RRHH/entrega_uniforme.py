@@ -7,7 +7,7 @@ TALLAS = ('XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL')
 
 class EntregaUniforme(models.Model):
 
-    _name = 'upoferia.entrega_uniforme'
+    _name = 'upoferia.rrhh.entrega_uniforme'
     _description = 'Entrega de uniforme a un empleado'
     _rec_names_search = ['empleado_id', 'prenda']
     _order = 'fecha_entrega desc'
@@ -24,7 +24,7 @@ class EntregaUniforme(models.Model):
     fecha_devolucion = fields.Date(string="Fecha de devolución")
 
     # Relaciones
-    empleado_id = fields.Many2one('upoferia.empleado', string="Empleado", required=True, ondelete='cascade')
+    empleado_id = fields.Many2one('upoferia.rrhh.empleado', string="Empleado", required=True, ondelete='cascade')
 
     _sql_constraints = [
         ('natural_unique', 'UNIQUE(empleado_id, fecha_entrega, prenda)', 'Ese empleado ya recibió esa prenda en esa fecha.'),

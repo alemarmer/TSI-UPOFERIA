@@ -15,7 +15,7 @@ def _float_a_datetime_utc(fecha, hora):
 
 class Turno(models.Model):
 
-    _name = 'upoferia.turno'
+    _name = 'upoferia.rrhh.turno'
     _description = 'Turno de trabajo'
     _rec_names_search = ['empleado_ids']
     _order = 'fecha desc, hora_inicio'
@@ -25,7 +25,7 @@ class Turno(models.Model):
     hora_fin = fields.Float(string="Hora de fin", help="Hora en formato decimal (16.0 = 16:00)")
 
     # Relaciones
-    empleado_ids = fields.Many2many('upoferia.empleado', 'upoferia_empleado_turno_rel', 'turno_id', 'empleado_id',
+    empleado_ids = fields.Many2many('upoferia.rrhh.empleado', 'upoferia_rrhh_empleado_turno_rel', 'turno_id', 'empleado_id',
                                  string="Empleados asignados")
 
     # Calculados (usados por las vistas Calendar, Graph y Pivot)
@@ -113,7 +113,7 @@ class Turno(models.Model):
     @api.constrains('empleado_ids', 'fecha')
     def _check_ausencias(self):
         for record in self.filtered('empleado_ids'):
-            ausentes = self.env['upoferia.ausencia'].search([('empleado_id', 'in', record.empleado_ids.ids),
+            ausentes = self.env['upoferia.rrhh.ausencia'].search([('empleado_id', 'in', record.empleado_ids.ids),
                                                              ('estado', '=', 'aprobada'),
                                                              ('fecha_desde', '<=', record.fecha),
                                                              '|', ('fecha_hasta', '>=', record.fecha),
@@ -199,13 +199,13 @@ class Turno(models.Model):
         return super().copy(default)
 
     def action_copiar_semana_siguiente(self):
-        nuevos = self.env['upoferia.turno']
+        nuevos = self.env['upoferia.rrhh.turno']
         for record in self:
             nuevos |= record.copy({'fecha': record.fecha + timedelta(days=7), 'empleado_ids': [(6, 0, record.empleado_ids.ids)]})
         return {
             'type': 'ir.actions.act_window',
             'name': 'Turnos copiados',
-            'res_model': 'upoferia.turno',
+            'res_model': 'upoferia.rrhh.turno',
             'view_mode': 'list,form,calendar',
             'domain': [('id', 'in', nuevos.ids)],
         }

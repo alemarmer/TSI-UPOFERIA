@@ -4,7 +4,7 @@ from odoo import models, fields, api
 
 class Empleado(models.Model):
 
-    _name = 'upoferia.empleado'
+    _name = 'upoferia.rrhh.empleado'
     _description = 'Empleado'
     _inherits = {'upoferia.socios.persona': 'persona_id'}
     _rec_name = 'nombre'
@@ -29,18 +29,18 @@ class Empleado(models.Model):
     activo = fields.Boolean(string="Activo", default=True)
 
     # Relaciones
-    disponibilidad_ids = fields.One2many('upoferia.disponibilidad', 'empleado_id', string="Disponibilidad")
-    certificacion_ids = fields.One2many('upoferia.certificacion', 'empleado_id', string="Certificaciones")
-    ausencia_ids = fields.One2many('upoferia.ausencia', 'empleado_id', string="Ausencias")
-    contrato_laboral_ids = fields.One2many('upoferia.contrato_laboral', 'empleado_id', string="Contratos laborales")
-    entrega_uniforme_ids = fields.One2many('upoferia.entrega_uniforme', 'empleado_id', string="Entregas de uniforme")
-    asignacion_taquilla_ids = fields.One2many('upoferia.asignacion_taquilla', 'empleado_id', string="Asignaciones de taquilla")
-    formacion_ids = fields.One2many('upoferia.formacion_empleado', 'empleado_id', string="Formación")
-    turno_ids = fields.Many2many('upoferia.turno', 'upoferia_empleado_turno_rel', 'empleado_id', 'turno_id',
+    disponibilidad_ids = fields.One2many('upoferia.rrhh.disponibilidad', 'empleado_id', string="Disponibilidad")
+    certificacion_ids = fields.One2many('upoferia.rrhh.certificacion', 'empleado_id', string="Certificaciones")
+    ausencia_ids = fields.One2many('upoferia.rrhh.ausencia', 'empleado_id', string="Ausencias")
+    contrato_laboral_ids = fields.One2many('upoferia.rrhh.contrato_laboral', 'empleado_id', string="Contratos laborales")
+    entrega_uniforme_ids = fields.One2many('upoferia.rrhh.entrega_uniforme', 'empleado_id', string="Entregas de uniforme")
+    asignacion_taquilla_ids = fields.One2many('upoferia.rrhh.asignacion_taquilla', 'empleado_id', string="Asignaciones de taquilla")
+    formacion_ids = fields.One2many('upoferia.rrhh.formacion_empleado', 'empleado_id', string="Formación")
+    turno_ids = fields.Many2many('upoferia.rrhh.turno', 'upoferia_rrhh_empleado_turno_rel', 'empleado_id', 'turno_id',
                               string="Turnos asignados")
 
     # Calculados
-    taquilla_actual_id = fields.Many2one('upoferia.taquilla', string="Taquilla actual", compute='_compute_taquilla_actual')
+    taquilla_actual_id = fields.Many2one('upoferia.rrhh.taquilla', string="Taquilla actual", compute='_compute_taquilla_actual')
     num_turnos = fields.Integer(string="Nº de turnos", compute='_compute_num_turnos')
 
     _sql_constraints = [
@@ -156,7 +156,7 @@ class Empleado(models.Model):
         return {
             'type': 'ir.actions.act_window',
             'name': 'Turnos de %s' % self.nombre,
-            'res_model': 'upoferia.turno',
+            'res_model': 'upoferia.rrhh.turno',
             'view_mode': 'calendar,list,form',
             'domain': [('empleado_ids', 'in', self.ids)],
         }

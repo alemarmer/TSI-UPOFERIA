@@ -4,15 +4,15 @@ from odoo import models, fields, api
 
 class FormacionEmpleado(models.Model):
 
-    _name = 'upoferia.formacion_empleado'
+    _name = 'upoferia.rrhh.formacion_empleado'
     _description = 'Formación realizada por un empleado'
     _rec_names_search = ['empleado_id', 'curso_formacion_id']
 
     nota = fields.Float(string="Nota", digits=(10, 2), help="Nota sobre 10")
 
     # Relaciones
-    curso_formacion_id = fields.Many2one('upoferia.curso_formacion', string="Curso", required=True, ondelete='cascade')
-    empleado_id = fields.Many2one('upoferia.empleado', string="Empleado", required=True, ondelete='cascade')
+    curso_formacion_id = fields.Many2one('upoferia.rrhh.curso_formacion', string="Curso", required=True, ondelete='cascade')
+    empleado_id = fields.Many2one('upoferia.rrhh.empleado', string="Empleado", required=True, ondelete='cascade')
 
     # Calculados
     aprobado = fields.Boolean(string="Aprobado", compute='_compute_aprobado', store=True)

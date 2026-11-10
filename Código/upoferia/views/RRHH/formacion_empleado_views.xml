@@ -2,9 +2,9 @@
 <!-- Autor: Juanjo (Personal - RRHH y Turnos) -->
 <odoo>
 
-    <record id="upoferia_formacion_empleado_view_tree" model="ir.ui.view">
-        <field name="name">upoferia.formacion_empleado.list</field>
-        <field name="model">upoferia.formacion_empleado</field>
+    <record id="upoferia_rrhh_formacion_empleado_list_view" model="ir.ui.view">
+        <field name="name">upoferia.rrhh.formacion_empleado.list</field>
+        <field name="model">upoferia.rrhh.formacion_empleado</field>
         <field name="arch" type="xml">
             <list decoration-success="aprobado" decoration-danger="nota and not aprobado">
                 <field name="empleado_id"/>
@@ -15,9 +15,9 @@
         </field>
     </record>
 
-    <record id="upoferia_formacion_empleado_view_form" model="ir.ui.view">
-        <field name="name">upoferia.formacion_empleado.form</field>
-        <field name="model">upoferia.formacion_empleado</field>
+    <record id="upoferia_rrhh_formacion_empleado_form_view" model="ir.ui.view">
+        <field name="name">upoferia.rrhh.formacion_empleado.form</field>
+        <field name="model">upoferia.rrhh.formacion_empleado</field>
         <field name="arch" type="xml">
             <form string="Formación de empleado">
                 <sheet>
@@ -37,9 +37,9 @@
         </field>
     </record>
 
-    <record id="upoferia_formacion_empleado_view_search" model="ir.ui.view">
-        <field name="name">upoferia.formacion_empleado.search</field>
-        <field name="model">upoferia.formacion_empleado</field>
+    <record id="upoferia_rrhh_formacion_empleado_search_view" model="ir.ui.view">
+        <field name="name">upoferia.rrhh.formacion_empleado.search</field>
+        <field name="model">upoferia.rrhh.formacion_empleado</field>
         <field name="arch" type="xml">
             <search>
                 <field name="empleado_id"/>
@@ -55,9 +55,9 @@
         </field>
     </record>
 
-    <record id="upoferia_formacion_empleado_view_graph" model="ir.ui.view">
-        <field name="name">upoferia.formacion_empleado.graph</field>
-        <field name="model">upoferia.formacion_empleado</field>
+    <record id="upoferia_rrhh_formacion_empleado_graph_view" model="ir.ui.view">
+        <field name="name">upoferia.rrhh.formacion_empleado.graph</field>
+        <field name="model">upoferia.rrhh.formacion_empleado</field>
         <field name="arch" type="xml">
             <graph string="Inscripciones por curso" type="bar">
                 <field name="curso_formacion_id"/>
@@ -66,9 +66,9 @@
         </field>
     </record>
 
-    <record id="upoferia_formacion_empleado_view_pivot" model="ir.ui.view">
-        <field name="name">upoferia.formacion_empleado.pivot</field>
-        <field name="model">upoferia.formacion_empleado</field>
+    <record id="upoferia_rrhh_formacion_empleado_pivot_view" model="ir.ui.view">
+        <field name="name">upoferia.rrhh.formacion_empleado.pivot</field>
+        <field name="model">upoferia.rrhh.formacion_empleado</field>
         <field name="arch" type="xml">
             <pivot string="Notas por curso">
                 <field name="curso_formacion_id" type="row"/>
@@ -78,9 +78,9 @@
         </field>
     </record>
 
-    <record id="upoferia_formacion_empleado_action" model="ir.actions.act_window">
+    <record id="upoferia_rrhh_formacion_empleado_action" model="ir.actions.act_window">
         <field name="name">Formación de empleados</field>
-        <field name="res_model">upoferia.formacion_empleado</field>
+        <field name="res_model">upoferia.rrhh.formacion_empleado</field>
         <field name="view_mode">list,form,graph,pivot</field>
     </record>
 

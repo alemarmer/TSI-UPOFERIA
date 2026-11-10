@@ -2,9 +2,9 @@
 <!-- Autor: Juanjo (Personal - RRHH y Turnos) -->
 <odoo>
 
-    <record id="upoferia_taquilla_view_tree" model="ir.ui.view">
-        <field name="name">upoferia.taquilla.list</field>
-        <field name="model">upoferia.taquilla</field>
+    <record id="upoferia_rrhh_taquilla_list_view" model="ir.ui.view">
+        <field name="name">upoferia.rrhh.taquilla.list</field>
+        <field name="model">upoferia.rrhh.taquilla</field>
         <field name="arch" type="xml">
             <list decoration-success="estado == 'disponible'" decoration-warning="estado == 'mantenimiento'">
                 <field name="numero"/>
@@ -15,9 +15,9 @@
         </field>
     </record>
 
-    <record id="upoferia_taquilla_view_form" model="ir.ui.view">
-        <field name="name">upoferia.taquilla.form</field>
-        <field name="model">upoferia.taquilla</field>
+    <record id="upoferia_rrhh_taquilla_form_view" model="ir.ui.view">
+        <field name="name">upoferia.rrhh.taquilla.form</field>
+        <field name="model">upoferia.rrhh.taquilla</field>
         <field name="arch" type="xml">
             <form string="Taquilla">
                 <header>
@@ -61,9 +61,9 @@
         </field>
     </record>
 
-    <record id="upoferia_taquilla_view_search" model="ir.ui.view">
-        <field name="name">upoferia.taquilla.search</field>
-        <field name="model">upoferia.taquilla</field>
+    <record id="upoferia_rrhh_taquilla_search_view" model="ir.ui.view">
+        <field name="name">upoferia.rrhh.taquilla.search</field>
+        <field name="model">upoferia.rrhh.taquilla</field>
         <field name="arch" type="xml">
             <search>
                 <field name="numero"/>
@@ -80,9 +80,9 @@
         </field>
     </record>
 
-    <record id="upoferia_taquilla_view_graph" model="ir.ui.view">
-        <field name="name">upoferia.taquilla.graph</field>
-        <field name="model">upoferia.taquilla</field>
+    <record id="upoferia_rrhh_taquilla_graph_view" model="ir.ui.view">
+        <field name="name">upoferia.rrhh.taquilla.graph</field>
+        <field name="model">upoferia.rrhh.taquilla</field>
         <field name="arch" type="xml">
             <graph string="Taquillas por estado" type="pie">
                 <field name="estado"/>
@@ -90,9 +90,9 @@
         </field>
     </record>
 
-    <record id="upoferia_taquilla_action" model="ir.actions.act_window">
+    <record id="upoferia_rrhh_taquilla_action" model="ir.actions.act_window">
         <field name="name">Taquillas</field>
-        <field name="res_model">upoferia.taquilla</field>
+        <field name="res_model">upoferia.rrhh.taquilla</field>
         <field name="view_mode">list,form,graph</field>
     </record>
 
