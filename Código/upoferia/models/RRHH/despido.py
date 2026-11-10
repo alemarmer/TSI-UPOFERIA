@@ -1,6 +1,5 @@
 # Autor: Juanjo (Personal - RRHH y Turnos)
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError, UserError
 
 # Propuesta de cálculo para TA-20 (pendiente de validar por el equipo): días de salario por año trabajado
 DIAS_INDEMNIZACION = {'procedente': 0, 'improcedente': 33, 'objetivo': 20, 'mutuo_acuerdo': 0, 'fin_contrato': 12}
@@ -60,7 +59,7 @@ class Despido(models.Model):
         for record in self:
             inicio = record.fecha_inicio_contrato_laboral
             if record.fecha_despido and inicio and record.fecha_despido < inicio:
-                raise ValidationError('La fecha del despido (%s) no puede ser anterior al inicio del contrato (%s).'
+                raise models.ValidationError('La fecha del despido (%s) no puede ser anterior al inicio del contrato (%s).'
                                       % (record.fecha_despido, inicio))
 
     @api.constrains('fecha_despido')
@@ -68,13 +67,13 @@ class Despido(models.Model):
         hoy = fields.Date.context_today(self)
         for record in self:
             if record.fecha_despido and record.fecha_despido > hoy:
-                raise ValidationError('La fecha del despido no puede ser futura.')
+                raise models.ValidationError('La fecha del despido no puede ser futura.')
 
     @api.constrains('motivo', 'tipo_despido')
     def _check_motivo(self):
         for record in self:
             if record.tipo_despido in ('procedente', 'improcedente', 'objetivo') and not (record.motivo or '').strip():
-                raise ValidationError('Un despido de tipo «%s» debe indicar el motivo.'
+                raise models.ValidationError('Un despido de tipo «%s» debe indicar el motivo.'
                                       % dict(self._fields['tipo_despido'].selection).get(record.tipo_despido))
 
     @api.constrains('contrato_laboral_id', 'fecha_despido')
@@ -83,13 +82,13 @@ class Despido(models.Model):
             # Se compara con el fin ORIGINAL: el despido ya ha modificado contrato.fecha_fin
             fin = record.fecha_fin_contrato_original
             if fin and record.fecha_despido and record.fecha_despido > fin:
-                raise ValidationError('El contrato ya había terminado el %s; no se puede despedir después.' % fin)
+                raise models.ValidationError('El contrato ya había terminado el %s; no se puede despedir después.' % fin)
 
     @api.constrains('tipo_despido', 'fecha_despido')
     def _check_tipo_obligatorio(self):
         for record in self:
             if record.fecha_despido and not record.tipo_despido:
-                raise ValidationError('Indica el tipo de despido.')
+                raise models.ValidationError('Indica el tipo de despido.')
 
     @api.onchange('tipo_despido')
     def onchange_tipo_despido(self):
@@ -135,7 +134,7 @@ class Despido(models.Model):
 
     def write(self, vals):
         if 'contrato_laboral_id' in vals:
-            raise UserError('No se puede cambiar el contrato de un despido.')
+            raise models.UserError('No se puede cambiar el contrato de un despido.')
         res = super().write(vals)
         if 'fecha_despido' in vals:
             self._aplicar_fin_contrato()
@@ -144,11 +143,11 @@ class Despido(models.Model):
     def unlink(self):
         for record in self:
             if record.fecha_despido and record.fecha_despido < fields.Date.context_today(self) and not self.env.su:
-                raise UserError('No se puede eliminar un despido ya efectivo (%s).' % record.display_name)
+                raise models.UserError('No se puede eliminar un despido ya efectivo (%s).' % record.display_name)
         # Se restaura la fecha de fin que tenía el contrato antes del despido
         for record in self:
             record.contrato_laboral_id.fecha_fin = record.fecha_fin_contrato_original
         return super().unlink()
 
     def copy(self, default=None):
-        raise UserError('No se puede duplicar un despido: cada contrato tiene como máximo uno (RN-67).')
+        raise models.UserError('No se puede duplicar un despido: cada contrato tiene como máximo uno (RN-67).')
