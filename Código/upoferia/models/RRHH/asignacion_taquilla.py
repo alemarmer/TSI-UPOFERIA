@@ -1,6 +1,5 @@
 # Autor: Juanjo (Personal - RRHH y Turnos)
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError, UserError
 
 
 class AsignacionTaquilla(models.Model):
@@ -49,32 +48,32 @@ class AsignacionTaquilla(models.Model):
     def _check_taquilla_vigente_unica(self):
         for record in self.filtered(lambda r: not r.fecha_fin):
             if self.search_count([('taquilla_id', '=', record.taquilla_id.id), ('fecha_fin', '=', False), ('id', '!=', record.id)]):
-                raise ValidationError('La taquilla %s ya tiene una asignación vigente (RN-48).' % record.taquilla_id.numero)
+                raise models.ValidationError('La taquilla %s ya tiene una asignación vigente (RN-48).' % record.taquilla_id.numero)
 
     @api.constrains('empleado_id', 'fecha_fin')
     def _check_empleado_vigente_unica(self):
         for record in self.filtered(lambda r: not r.fecha_fin):
             if self.search_count([('empleado_id', '=', record.empleado_id.id), ('fecha_fin', '=', False), ('id', '!=', record.id)]):
-                raise ValidationError('%s ya tiene una taquilla asignada y vigente (RN-48).' % record.empleado_id.nombre)
+                raise models.ValidationError('%s ya tiene una taquilla asignada y vigente (RN-48).' % record.empleado_id.nombre)
 
     @api.constrains('taquilla_id', 'fecha_fin')
     def _check_taquilla_operativa(self):
         for record in self.filtered(lambda r: not r.fecha_fin):
             if record.taquilla_id.estado == 'mantenimiento':
-                raise ValidationError('La taquilla %s está en mantenimiento y no se puede asignar.' % record.taquilla_id.numero)
+                raise models.ValidationError('La taquilla %s está en mantenimiento y no se puede asignar.' % record.taquilla_id.numero)
 
     @api.constrains('empleado_id')
     def _check_empleado_activo(self):
         for record in self:
             if not record.empleado_id.activo:
-                raise ValidationError('No se puede asignar una taquilla a un empleado de baja (%s).' % record.empleado_id.nombre)
+                raise models.ValidationError('No se puede asignar una taquilla a un empleado de baja (%s).' % record.empleado_id.nombre)
 
     @api.constrains('fecha_inicio')
     def _check_fecha_inicio(self):
         hoy = fields.Date.context_today(self)
         for record in self:
             if record.fecha_inicio > hoy:
-                raise ValidationError('La fecha de inicio de la asignación no puede ser futura.')
+                raise models.ValidationError('La fecha de inicio de la asignación no puede ser futura.')
 
     @api.onchange('taquilla_id')
     def onchange_taquilla(self):
@@ -127,7 +126,7 @@ class AsignacionTaquilla(models.Model):
         if 'empleado_id' in vals:
             for record in self:
                 if record.empleado_id.id != vals['empleado_id'] and record.fecha_fin:
-                    raise UserError('No se puede cambiar el empleado de una asignación cerrada.')
+                    raise models.UserError('No se puede cambiar el empleado de una asignación cerrada.')
         taquillas = self.mapped('taquilla_id')
         res = super().write(vals)
         self._sincronizar_estado_taquillas(taquillas | self.mapped('taquilla_id'))
