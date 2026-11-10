@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Autor: Juanjo (Personal - RRHH y Turnos) -->
+<odoo>
+
+    <record id="upoferia_ausencia_view_tree" model="ir.ui.view">
+        <field name="name">upoferia.ausencia.list</field>
+        <field name="model">upoferia.ausencia</field>
+        <field name="arch" type="xml">
+            <list decoration-success="estado == 'aprobada'" decoration-danger="estado == 'rechazada'"
+                  decoration-warning="estado == 'pendiente'">
+                <field name="empleado_id"/>
+                <field name="fecha_desde"/>
+                <field name="fecha_hasta"/>
+                <field name="dias"/>
+                <field name="estado" widget="badge"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="upoferia_ausencia_view_form" model="ir.ui.view">
+        <field name="name">upoferia.ausencia.form</field>
+        <field name="model">upoferia.ausencia</field>
+        <field name="arch" type="xml">
+            <form string="Ausencia">
+                <header>
+                    <button name="action_aprobar" type="object" string="Aprobar" class="btn-primary"
+                            invisible="estado != 'pendiente'"/>
+                    <button name="action_rechazar" type="object" string="Rechazar"
+                            invisible="estado != 'pendiente'"/>
+                    <field name="estado" widget="statusbar" statusbar_visible="pendiente,aprobada"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group string="Empleado">
+                            <field name="empleado_id" readonly="estado == 'aprobada'"/>
+                        </group>
+                        <group string="Periodo">
+                            <field name="fecha_desde" readonly="estado == 'aprobada'"/>
+                            <field name="fecha_hasta" readonly="estado == 'aprobada'"/>
+                            <field name="dias"/>
+                        </group>
+                    </group>
+                    <group string="Motivo">
+                        <field name="motivo" nolabel="1" colspan="2"
+                               placeholder="Obligatorio si la ausencia se rechaza"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="upoferia_ausencia_view_search" model="ir.ui.view">
+        <field name="name">upoferia.ausencia.search</field>
+        <field name="model">upoferia.ausencia</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="empleado_id"/>
+                <field name="motivo"/>
+                <filter string="Pendientes" name="pendientes" domain="[('estado', '=', 'pendiente')]"/>
+                <filter string="Aprobadas" name="aprobadas" domain="[('estado', '=', 'aprobada')]"/>
+                <filter string="Rechazadas" name="rechazadas" domain="[('estado', '=', 'rechazada')]"/>
+                <separator/>
+                <filter string="Fecha de inicio" name="filter_fecha_desde" date="fecha_desde"/>
+                <group expand="0" string="Agrupar por">
+                    <filter string="Empleado" name="group_empleado" context="{'group_by': 'empleado_id'}"/>
+                    <filter string="Estado" name="group_estado" context="{'group_by': 'estado'}"/>
+                    <filter string="Mes" name="group_mes" context="{'group_by': 'fecha_desde:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="upoferia_ausencia_view_calendar" model="ir.ui.view">
+        <field name="name">upoferia.ausencia.calendar</field>
+        <field name="model">upoferia.ausencia</field>
+        <field name="arch" type="xml">
+            <calendar string="Ausencias" date_start="fecha_desde" date_stop="fecha_hasta" color="empleado_id"
+                      mode="month" quick_create="0">
+                <field name="empleado_id"/>
+                <field name="estado"/>
+            </calendar>
+        </field>
+    </record>
+
+    <record id="upoferia_ausencia_action" model="ir.actions.act_window">
+        <field name="name">Ausencias</field>
+        <field name="res_model">upoferia.ausencia</field>
+        <field name="view_mode">list,form,calendar</field>
+    </record>
+
+</odoo>
