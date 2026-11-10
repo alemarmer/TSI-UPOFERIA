@@ -13,8 +13,7 @@ class Premio(models.Model):
     fImporte = fields.Float(string='Importe')
     iXp_otorgada = fields.Integer(string='XP otorgada')
 
-    concurso_id = fields.Many2one('upoferia.concurso', string='Concurso',
-                                  required=True, ondelete='cascade')
+    concurso_id = fields.Many2one('upoferia.concurso', string='Concurso', required=True)
     registro_xp_ids = fields.One2many('upoferia.registro_xp', 'premio_id', string='Registros de XP')
 
     _sql_constraints = [('premio_concurso_puesto_unique', 'UNIQUE ("concurso_id", "iPuesto")', 'Ese concurso ya tiene un premio para ese puesto.')]
@@ -24,28 +23,28 @@ class Premio(models.Model):
     def _check_iPuesto(self):
         for record in self:
             if record.iPuesto <= 0:
-                raise ValidationError('«iPuesto» debe ser mayor que 0.')
+                raise models.ValidationError('«iPuesto» debe ser mayor que 0.')
 
     @api.constrains('fImporte')
     def _check_fImporte(self):
         for record in self:
             if record.fImporte < 0:
-                raise ValidationError('«fImporte» no puede ser menor que 0.')
+                raise models.ValidationError('«fImporte» no puede ser menor que 0.')
 
     @api.constrains('iXp_otorgada')
     def _check_iXp_otorgada(self):
         for record in self:
             if record.iXp_otorgada < 0:
-                raise ValidationError('«XP otorgada» no puede ser menor que 0.')
+                raise models.ValidationError('«XP otorgada» no puede ser menor que 0.')
 
     @api.constrains('sDescripcion')
     def _check_sDescripcion_espacios(self):
         for record in self:
             if record.sDescripcion and not record.sDescripcion.strip():
-                raise ValidationError('«Descripción» no puede contener solo espacios.')
+                raise models.ValidationError('«Descripción» no puede contener solo espacios.')
 
     @api.constrains('sDescripcion')
     def _check_sDescripcion_longitud(self):
         for record in self:
             if record.sDescripcion and len(record.sDescripcion) > 100:
-                raise ValidationError('«Descripción» no puede superar los 100 caracteres.')
+                raise models.ValidationError('«Descripción» no puede superar los 100 caracteres.')

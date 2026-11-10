@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models,fields,api
-
+import re;
 
 class Carruaje(models.Model):
     _name = 'upoferia.carruaje'
@@ -27,7 +27,7 @@ class Carruaje(models.Model):
     def _check_sNum_registro_formato(self):
         for record in self:
             if not re.fullmatch(r'[A-Za-z0-9]+([-/._][A-Za-z0-9]+)*', record.sNum_registro or ''):
-                raise ValidationError('«Número de registro» solo admite letras y números, separados por - / . _ y sin espacios.')
+                raise models.ValidationError('«Número de registro» solo admite letras y números, separados por - / . _ y sin espacios.')
 
     @api.constrains('sModelo')
     def _check_sModelo(self):

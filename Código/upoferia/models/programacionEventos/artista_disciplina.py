@@ -10,7 +10,7 @@ class ArtistaDisciplina(models.Model):
 
     sDisciplina = fields.Char(string='Disciplina', required=True)
 
-    artista_id = fields.Many2one('upoferia.artista', string='Artista', required=True, ondelete='cascade') 
+    artista_id = fields.Many2one('upoferia.artista', string='Artista', required=True) 
 
     _sql_constraints = [('artista_disciplina_unique', 'UNIQUE ("artista_id", "sDisciplina")', 'Ese artista ya tiene esa disciplina.')]
 
