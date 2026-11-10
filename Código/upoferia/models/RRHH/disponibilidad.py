@@ -1,6 +1,5 @@
 # Autor: Juanjo (Personal - RRHH y Turnos)
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError, UserError
 
 DIAS_SEMANA = [('0', 'Lunes'), ('1', 'Martes'), ('2', 'Miércoles'), ('3', 'Jueves'),
                ('4', 'Viernes'), ('5', 'Sábado'), ('6', 'Domingo')]
@@ -41,19 +40,19 @@ class Disponibilidad(models.Model):
         hoy = fields.Date.context_today(self)
         for record in self:
             if record.fecha_fin < hoy and not self.env.context.get('importando_historico'):
-                raise ValidationError('La franja no puede terminar en el pasado (%s).' % record.fecha_fin)
+                raise models.ValidationError('La franja no puede terminar en el pasado (%s).' % record.fecha_fin)
 
     @api.constrains('hora_inicio')
     def _check_hora_cuartos(self):
         for record in self:
             if round(record.hora_inicio * 60) % 15:
-                raise ValidationError('La hora de inicio debe ser múltiplo de 15 minutos.')
+                raise models.ValidationError('La hora de inicio debe ser múltiplo de 15 minutos.')
 
     @api.constrains('empleado_id')
     def _check_empleado_activo(self):
         for record in self:
             if not record.empleado_id.activo:
-                raise ValidationError('No se puede registrar disponibilidad a un empleado de baja (%s).' % record.empleado_id.nombre)
+                raise models.ValidationError('No se puede registrar disponibilidad a un empleado de baja (%s).' % record.empleado_id.nombre)
 
     @api.onchange('hora_inicio')
     def onchange_hora_inicio(self):
@@ -80,7 +79,7 @@ class Disponibilidad(models.Model):
 
     def write(self, vals):
         if 'empleado_id' in vals:
-            raise UserError('No se puede mover una franja a otro empleado; crea una nueva.')
+            raise models.UserError('No se puede mover una franja a otro empleado; crea una nueva.')
         if vals.get('hora_inicio') is not None:
             vals['hora_inicio'] = round(vals['hora_inicio'] * 4) / 4
         return super().write(vals)
@@ -90,7 +89,7 @@ class Disponibilidad(models.Model):
             # Se comprueba por empleado y con todo el conjunto a borrar, para que no se puedan borrar todas de golpe
             for empleado in self.mapped('empleado_id'):
                 if not (empleado.disponibilidad_ids - self):
-                    raise ValidationError('%s debe conservar al menos una franja de disponibilidad (RN-66).' % empleado.nombre)
+                    raise models.ValidationError('%s debe conservar al menos una franja de disponibilidad (RN-66).' % empleado.nombre)
         return super().unlink()
 
     def copy(self, default=None):
