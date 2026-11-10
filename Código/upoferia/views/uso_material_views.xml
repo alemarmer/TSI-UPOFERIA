@@ -1,0 +1,48 @@
+<odoo>
+
+  <!-- Vistas de Uso de material -->
+  <record id="upoferia_uso_material_list_view" model="ir.ui.view">
+    <field name="name">upoferia.uso_material.list</field>
+    <field name="model">upoferia.uso_material</field>
+    <field name="arch" type="xml">
+      <list string="Uso de material">
+        <field name="plan_montaje_id"/>
+        <field name="tarea_montaje_id"/>
+        <field name="material_id"/>
+        <field name="iCantidad"/>
+      </list>
+    </field>
+  </record>
+
+  <record id="upoferia_uso_material_form_view" model="ir.ui.view">
+    <field name="name">upoferia.uso_material.form</field>
+    <field name="model">upoferia.uso_material</field>
+    <field name="arch" type="xml">
+      <form string="Uso de material">
+        <sheet>
+          <group>
+            <group string="Tarea">
+              <field name="tarea_montaje_id"/>
+              <field name="plan_montaje_id" readonly="1"/>
+            </group>
+            <group string="Material">
+              <field name="material_id"/>
+              <field name="iCantidad"/>
+              <field name="sObservaciones"/>
+            </group>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="upoferia_uso_material_action" model="ir.actions.act_window">
+    <field name="name">Uso de material</field>
+    <field name="res_model">upoferia.uso_material</field>
+    <field name="view_mode">list,form</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">Asigna el primer material a una tarea</p>
+    </field>
+  </record>
+
+</odoo>

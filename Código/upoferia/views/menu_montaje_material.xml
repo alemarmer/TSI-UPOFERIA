@@ -1,0 +1,20 @@
+<odoo>
+
+  <!-- Menú de Montaje y de Material y Préstamos -->
+  <menuitem name="Montaje y Material" id="upoferia_montaje_material_menu_root"/>
+
+  <menuitem name="Montaje" id="upoferia_menu_montaje" parent="upoferia_montaje_material_menu_root" sequence="10"/>
+  <menuitem name="Cuadrillas" id="upoferia_cuadrilla_menu" parent="upoferia_menu_montaje" action="upoferia_cuadrilla_action"/>
+  <menuitem name="Planes de montaje" id="upoferia_plan_montaje_menu" parent="upoferia_menu_montaje" action="upoferia_plan_montaje_action"/>
+  <menuitem name="Fases de montaje" id="upoferia_fase_montaje_menu" parent="upoferia_menu_montaje" action="upoferia_fase_montaje_action"/>
+  <menuitem name="Tareas de montaje" id="upoferia_tarea_montaje_menu" parent="upoferia_menu_montaje" action="upoferia_tarea_montaje_action"/>
+  <menuitem name="Transportes" id="upoferia_transporte_menu" parent="upoferia_menu_montaje" action="upoferia_transporte_action"/>
+
+  <menuitem name="Material y Préstamos" id="upoferia_menu_material" parent="upoferia_montaje_material_menu_root" sequence="20"/>
+  <menuitem name="Categorías de material" id="upoferia_categoria_material_menu" parent="upoferia_menu_material" action="upoferia_categoria_material_action"/>
+  <menuitem name="Materiales" id="upoferia_material_menu" parent="upoferia_menu_material" action="upoferia_material_action"/>
+  <menuitem name="Uso de material" id="upoferia_uso_material_menu" parent="upoferia_menu_material" action="upoferia_uso_material_action"/>
+  <menuitem name="Préstamos" id="upoferia_prestamo_menu" parent="upoferia_menu_material" action="upoferia_prestamo_action"/>
+  <menuitem name="Líneas de préstamo" id="upoferia_prestamo_linea_menu" parent="upoferia_menu_material" action="upoferia_prestamo_linea_action"/>
+
+</odoo>
