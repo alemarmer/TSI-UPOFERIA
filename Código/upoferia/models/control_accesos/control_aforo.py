@@ -9,3 +9,7 @@ class ControlAforo(models.Model):
     ocupacion_actual = fields.Integer("Ocupación actual")
     aforo_maximo = fields.Integer("Aforo máximo")
     
+    @api.constrains('ocupacion_actual', 'aforo_maximo')
+    def _check_aforo(self):
+        if self.ocupacion_actual > self.aforo_maximo:
+            raise models.ValidationError('La ocupación actual no puede superar el aforo máximo.')
