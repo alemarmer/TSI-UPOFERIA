@@ -1,6 +1,5 @@
 # Autor: Juanjo (Personal - RRHH y Turnos)
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError, UserError
 
 
 class Ausencia(models.Model):
@@ -50,25 +49,25 @@ class Ausencia(models.Model):
                                  ('estado', '!=', 'rechazada'), ('fecha_desde', '<=', fin)])
             for otra in otras:
                 if (otra.fecha_hasta or otra.fecha_desde) >= record.fecha_desde:
-                    raise ValidationError('La ausencia se solapa con otra del mismo empleado (%s).' % otra.display_name)
+                    raise models.ValidationError('La ausencia se solapa con otra del mismo empleado (%s).' % otra.display_name)
 
     @api.constrains('estado', 'motivo')
     def _check_motivo_rechazo(self):
         for record in self:
             if record.estado == 'rechazada' and not (record.motivo or '').strip():
-                raise ValidationError('Una ausencia rechazada debe indicar el motivo del rechazo.')
+                raise models.ValidationError('Una ausencia rechazada debe indicar el motivo del rechazo.')
 
     @api.constrains('empleado_id')
     def _check_empleado_activo(self):
         for record in self:
             if not record.empleado_id.activo:
-                raise ValidationError('No se pueden registrar ausencias a un empleado de baja (%s).' % record.empleado_id.nombre)
+                raise models.ValidationError('No se pueden registrar ausencias a un empleado de baja (%s).' % record.empleado_id.nombre)
 
     @api.constrains('fecha_desde', 'fecha_hasta')
     def _check_duracion_maxima(self):
         for record in self:
             if record.dias > 365:
-                raise ValidationError('Una ausencia no puede durar más de un año.')
+                raise models.ValidationError('Una ausencia no puede durar más de un año.')
 
     @api.constrains('estado', 'empleado_id', 'fecha_desde', 'fecha_hasta')
     def _check_turnos_asignados(self):
@@ -77,7 +76,7 @@ class Ausencia(models.Model):
                                                         ('fecha', '>=', record.fecha_desde),
                                                         ('fecha', '<=', record.fecha_hasta or record.fecha_desde)])
             if turnos:
-                raise ValidationError('No se puede aprobar: %s tiene turnos asignados en esas fechas (%s).'
+                raise models.ValidationError('No se puede aprobar: %s tiene turnos asignados en esas fechas (%s).'
                                       % (record.empleado_id.nombre, ', '.join(turnos.mapped('display_name'))))
 
     @api.onchange('fecha_desde')
@@ -110,14 +109,14 @@ class Ausencia(models.Model):
         if {'fecha_desde', 'fecha_hasta', 'empleado_id'} & set(vals):
             for record in self:
                 if record.estado == 'aprobada':
-                    raise UserError('No se pueden cambiar las fechas de una ausencia ya aprobada.')
+                    raise models.UserError('No se pueden cambiar las fechas de una ausencia ya aprobada.')
         return super().write(vals)
 
     def unlink(self):
         hoy = fields.Date.context_today(self)
         for record in self:
             if record.estado == 'aprobada' and record.fecha_desde <= hoy:
-                raise UserError('No se puede eliminar una ausencia aprobada que ya ha comenzado.')
+                raise models.UserError('No se puede eliminar una ausencia aprobada que ya ha comenzado.')
         return super().unlink()
 
     def copy(self, default=None):
