@@ -1,6 +1,5 @@
 # Autor: Juanjo (Personal - RRHH y Turnos)
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError, UserError
 from datetime import timedelta
 
 
@@ -59,32 +58,32 @@ class ContratoLaboral(models.Model):
                 fin_a = record.fecha_fin or fields.Date.to_date('9999-12-31')
                 fin_b = otro.fecha_fin or fields.Date.to_date('9999-12-31')
                 if record.fecha_inicio <= fin_b and otro.fecha_inicio <= fin_a:
-                    raise ValidationError('El contrato se solapa con otro del mismo empleado (%s).' % otro.display_name)
+                    raise models.ValidationError('El contrato se solapa con otro del mismo empleado (%s).' % otro.display_name)
 
     @api.constrains('tipo_contrato', 'fecha_fin')
     def _check_fecha_fin_temporal(self):
         for record in self:
             if record.tipo_contrato in ('temporal', 'obra') and not record.fecha_fin and not record.despido_ids:
-                raise ValidationError('Un contrato «%s» debe indicar la fecha de fin.'
+                raise models.ValidationError('Un contrato «%s» debe indicar la fecha de fin.'
                                       % dict(self._fields['tipo_contrato'].selection).get(record.tipo_contrato))
 
     @api.constrains('despido_ids')
     def _check_un_despido(self):
         for record in self:
             if len(record.despido_ids) > 1:
-                raise ValidationError('Un contrato solo puede tener un despido (RN-67).')
+                raise models.ValidationError('Un contrato solo puede tener un despido (RN-67).')
 
     @api.constrains('precio_hora')
     def _check_precio_hora_maximo(self):
         for record in self:
             if record.precio_hora > 200:
-                raise ValidationError('El precio por hora (%.2f) parece excesivo; revísalo.' % record.precio_hora)
+                raise models.ValidationError('El precio por hora (%.2f) parece excesivo; revísalo.' % record.precio_hora)
 
     @api.constrains('empleado_id')
     def _check_empleado_activo(self):
         for record in self:
             if not record.empleado_id.activo:
-                raise ValidationError('No se puede hacer un contrato a un empleado de baja (%s).' % record.empleado_id.nombre)
+                raise models.ValidationError('No se puede hacer un contrato a un empleado de baja (%s).' % record.empleado_id.nombre)
 
     @api.onchange('tipo_contrato', 'fecha_inicio')
     def onchange_tipo_contrato(self):
@@ -125,7 +124,7 @@ class ContratoLaboral(models.Model):
         if 'fecha_inicio' in vals or 'empleado_id' in vals:
             for record in self:
                 if record.despido_ids:
-                    raise UserError('No se puede cambiar el inicio ni el empleado de un contrato que tiene despido.')
+                    raise models.UserError('No se puede cambiar el inicio ni el empleado de un contrato que tiene despido.')
         if vals.get('precio_hora'):
             vals['precio_hora'] = round(vals['precio_hora'], 2)
         return super().write(vals)
@@ -133,7 +132,7 @@ class ContratoLaboral(models.Model):
     def unlink(self):
         for record in self:
             if record.despido_ids:
-                raise UserError('No se puede eliminar el contrato de %s: tiene un despido registrado.' % record.empleado_id.nombre)
+                raise models.UserError('No se puede eliminar el contrato de %s: tiene un despido registrado.' % record.empleado_id.nombre)
         return super().unlink()
 
     def copy(self, default=None):
