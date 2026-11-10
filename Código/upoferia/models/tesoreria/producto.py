@@ -18,6 +18,9 @@ class Producto(models.Model):
     # Relaciones
     tipo_producto_id = fields.Many2one('upoferia.tipo_producto', string="Tipo de producto", required=True)
     linea_ticket_ids = fields.One2many('upoferia.linea_ticket', 'producto_id', string="Líneas de ticket")
+    # Relaciones con modelos de otro grupo
+    marca_id = fields.Many2one('upoferia.marca', string="Marca")  # MARCA (nombre_marca)
+    linea_transaccion_ids = fields.One2many('upoferia.linea_transaccion', 'producto_id', string="Líneas de transacción")  # LINEA_TRANSACCION (codigo_interno_producto)
 
     _sql_constraints = [
         ('codigo_interno_unique', 'UNIQUE("sCodigoInterno")', 'Ya existe un producto con ese código interno.'),
