@@ -1,4 +1,4 @@
-## Caseta (`feria.caseta`) — `caseta.py`
+## Caseta (`upoferia.caseta`) — `caseta.py`
 
 ### `sNombre` (Char) — clave
 - Obligatorio y único — `required` / `_sql_constraints`
@@ -37,7 +37,7 @@
 - `licencia_ids` (One2many → Licencia) — licencias de la caseta (inverso de `caseta_id`).
 - `inspeccion_ids` (One2many → Inspeccion) — inspecciones de la caseta (inverso de `caseta_id`, bloque Inspecciones e Incidencias).
 
-## ZonaCaseta (`feria.zona_caseta`) — `zona_caseta.py`
+## ZonaCaseta (`upoferia.zona_caseta`) — `zona_caseta.py`
 
 ### `sNombre` (Char) — clave (junto con la caseta)
 - Obligatorio — `required`
@@ -54,7 +54,7 @@
 - Como mucho dos decimales — `@api.constrains`
 
 ### Relaciones
-- `caseta_id` (Many2one → Caseta) — obligatorio (`required`), entidad débil: si se borra la caseta se borran sus zonas (`ondelete='cascade'`).
+- `caseta_id` (Many2one → Caseta) — obligatorio (`required`), entidad débil: si se borra la caseta se borran sus zonas - unlink de Caseta.
 - La pareja caseta + `sNombre` no se repite (clave de la entidad débil) — `_sql_constraints` `UNIQUE (caseta_id, "sNombre")`.
 - `mesa_ids` (One2many → Mesa) — mesas de la zona (inverso de `zona_id`).
 
@@ -62,7 +62,7 @@
 - En los desplegables una zona aparece con su caseta (ej. `El Rebujito / Comedor`) — `_compute_display_name` con `@api.depends`
 - Se puede buscar por el nombre de la zona o por el de la caseta — `_rec_names_search`
 
-## Mesa (`feria.mesa`) — `mesa.py`
+## Mesa (`upoferia.mesa`) — `mesa.py`
 
 ### `iNumero` (Integer) — clave
 - Obligatorio y único — `required` / `_sql_constraints`
@@ -73,12 +73,12 @@
 - Entre 1 y 50 personas — `@api.constrains`
 
 ### Relaciones
-- `zona_id` (Many2one → ZonaCaseta) — opcional; si se borra la zona, la mesa se queda sin zona (`ondelete='set null'`). La FK compuesta `nombre_caseta, nombre_zona_caseta` del relacional se convierte en este único Many2one.
+- `zona_id` (Many2one → ZonaCaseta) — opcional; si se borra la zona, la mesa se queda sin zona (comportamiento por defecto de Odoo en un Many2one opcional). La FK compuesta `nombre_caseta, nombre_zona_caseta` del relacional se convierte en este único Many2one.
 
 ### Nombre que se muestra
 - `Mesa 12 (El Rebujito / Comedor)`, o `Mesa 12` si no tiene zona — `_compute_display_name` con `@api.depends`
 
-## MobiliarioCaseta (`feria.mobiliario_caseta`) — `mobiliario_caseta.py`
+## MobiliarioCaseta (`upoferia.mobiliario_caseta`) — `mobiliario_caseta.py`
 
 ### `sNumeroSerie` (Char) — clave
 - Obligatorio y único — `required` / `_sql_constraints`
@@ -102,13 +102,13 @@
 - Como mucho dos decimales (céntimos) — `@api.constrains`
 
 ### Relaciones
-- `caseta_id` (Many2one → Caseta) — opcional; si se borra la caseta, el mobiliario se queda sin caseta (`ondelete='set null'`). **No está en el relacional** (ver notas).
+- `caseta_id` (Many2one → Caseta) — opcional; si se borra la caseta, el mobiliario se queda sin caseta y sin fecha de asignación — unlink de Caseta. **No está en el relacional** (ver notas).
 
-## ElementoSeguridad (`feria.elemento_seguridad`) — `elemento_seguridad.py`
+## ElementoSeguridad (`upoferia.elemento_seguridad`) — `elemento_seguridad.py`
 
 ### Herencia
 - Subtipo de MobiliarioCaseta con herencia por delegación (`_inherits`). Cada elemento de seguridad tiene su registro de mobiliario, así que también tiene `sNumeroSerie`, `sNombre`, `dFechaAsignacion`, `fCoste` y `caseta_id`, con las mismas validaciones.
-- `mobiliario_id` (Many2one → MobiliarioCaseta) — obligatorio (`required`); si se borra el mobiliario se borra el elemento de seguridad (`ondelete='cascade'`).
+- `mobiliario_id` (Many2one → MobiliarioCaseta) — obligatorio (`required`); si se borra el mobiliario se borra el elemento de seguridad - Al borrar un elemento de seguridad se borra también su mobiliario, porque el elemento es ese mobiliario — unlink.
 - Un mobiliario solo puede ser un elemento de seguridad — `_sql_constraints` `UNIQUE (mobiliario_id)`
 
 ### `sTipo` (Selection)
@@ -125,7 +125,7 @@
 ### Atributos derivados
 - `bRevisionVencida` (Boolean) — verdadero si la próxima revisión es anterior a hoy; solo lectura, no se guarda porque depende de la fecha de hoy — `compute` + `@api.depends`
 
-## Licencia (`feria.licencia`) — `licencia.py`
+## Licencia (`upoferia.licencia`) — `licencia.py`
 
 ### `sNumeroExpediente` (Char) — clave
 - Obligatorio y único — `required` / `_sql_constraints`
@@ -159,12 +159,12 @@
 - URL `http(s)://` o archivo `.pdf/.doc/.docx/.odt` — `@api.constrains`
 
 ### Relaciones
-- `caseta_id` (Many2one → Caseta) — obligatorio (`required`); no se puede borrar una caseta que tenga licencias (`ondelete='restrict'`).
+- `caseta_id` (Many2one → Caseta) — obligatorio (`required`); no se puede borrar una caseta que tenga licencias — unlink de Caseta conUserError.
 
 ### Atributos derivados
 - `bVigente` (Boolean) — verdadero si el estado es concedida y hoy está entre la fecha de concesión y la de caducidad; solo lectura, no se guarda porque depende de la fecha de hoy — `compute` + `@api.depends`
 
-## Llave (`feria.llave`) — `llave.py`
+## Llave (`upoferia.llave`) — `llave.py`
 
 ### `sCodigoLlave` (Char) — clave
 - Obligatorio y único — `required` / `_sql_constraints`
@@ -181,7 +181,7 @@
 - Lista cerrada (dada por el E-R): maestra, original — `fields.Selection`
 - Solo puede haber una llave maestra — `@api.constrains` con `search_count`
 
-## CopiaLlave (`feria.copia_llave`) — `copia_llave.py`
+## CopiaLlave (`upoferia.copia_llave`) — `copia_llave.py`
 
 ### `iNumeroCopia` (Integer) — clave (junto con la asignación de taquilla)
 - Obligatorio — `required`
@@ -207,9 +207,9 @@
 
 # Pendiente (relaciones con tablas de otros bloques)
 
-- **Licencia**: `carruaje_id` (Many2one → Carruaje), opcional, `ondelete='set null'`. Cuando esté, una licencia de tipo `carruaje` tendrá que tenerlo obligatoriamente.
+- **Licencia**: `carruaje_id` (Many2one → Carruaje), opcional. Cuando esté, una licencia de tipo `carruaje` tendrá que tenerlo obligatoriamente.
 - **Llave**: `taquilla_id` (Many2one → Taquilla), opcional y único (`UNIQUE (taquilla_id)`). Cuando esté: la maestra no puede tener taquilla y una llave original tiene que tenerla.
-- **CopiaLlave**: `asignacion_id` (Many2one → AsignacionTaquilla), obligatorio, `ondelete='cascade'`. Cuando esté: `UNIQUE (asignacion_id, "iNumeroCopia")`, solo una copia activa por asignación, y el nombre que se muestra pasará a ser `Taquilla X – copia N`.
+- **CopiaLlave**: `asignacion_id` (Many2one → AsignacionTaquilla), obligatorio; al borrar la asignación se borrarán sus copias (unlink). Cuando esté: `UNIQUE (asignacion_id, "iNumeroCopia")`, solo una copia activa por asignación, y el nombre que se muestra pasará a ser `Taquilla X – copia N`.
 - **Caseta**: los One2many inversos de las tablas de otros bloques (eventos, transacciones…), cuando existan esos modelos.
 
 ---
