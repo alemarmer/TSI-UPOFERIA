@@ -1,6 +1,5 @@
 # Autor: Juanjo (Personal - RRHH y Turnos)
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError, UserError
 import re
 
 TALLAS = ('XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL')
@@ -44,7 +43,7 @@ class EntregaUniforme(models.Model):
     def _check_prenda(self):
         for record in self:
             if not record.prenda.strip():
-                raise ValidationError('La prenda no puede estar vacía.')
+                raise models.ValidationError('La prenda no puede estar vacía.')
 
     @api.constrains('talla')
     def _check_talla(self):
@@ -52,29 +51,29 @@ class EntregaUniforme(models.Model):
             if record.talla:
                 t = record.talla.strip().upper()
                 if t not in TALLAS and not (re.fullmatch(r'\d{2}', t) and 34 <= int(t) <= 60):
-                    raise ValidationError('La talla «%s» no es válida. Usa XS, S, M, L, XL, XXL, XXXL o un número entre 34 y 60.'
+                    raise models.ValidationError('La talla «%s» no es válida. Usa XS, S, M, L, XL, XXL, XXXL o un número entre 34 y 60.'
                                           % record.talla)
 
     @api.constrains('estado', 'fecha_devolucion')
     def _check_estado_devolucion(self):
         for record in self:
             if record.estado == 'devuelto' and not record.fecha_devolucion:
-                raise ValidationError('Una entrega «Devuelta» debe indicar la fecha de devolución.')
+                raise models.ValidationError('Una entrega «Devuelta» debe indicar la fecha de devolución.')
             if record.estado == 'entregado' and record.fecha_devolucion:
-                raise ValidationError('Una entrega con fecha de devolución no puede seguir en estado «Entregado».')
+                raise models.ValidationError('Una entrega con fecha de devolución no puede seguir en estado «Entregado».')
 
     @api.constrains('fecha_entrega')
     def _check_fecha_entrega(self):
         hoy = fields.Date.context_today(self)
         for record in self:
             if record.fecha_entrega > hoy:
-                raise ValidationError('La fecha de entrega no puede ser futura.')
+                raise models.ValidationError('La fecha de entrega no puede ser futura.')
 
     @api.constrains('cantidad')
     def _check_cantidad_maxima(self):
         for record in self:
             if record.cantidad > 10:
-                raise ValidationError('No se pueden entregar más de 10 unidades de una prenda a la vez.')
+                raise models.ValidationError('No se pueden entregar más de 10 unidades de una prenda a la vez.')
 
     @api.onchange('fecha_devolucion')
     def onchange_fecha_devolucion(self):
@@ -131,7 +130,7 @@ class EntregaUniforme(models.Model):
     def unlink(self):
         for record in self:
             if record.estado == 'entregado':
-                raise UserError('No se puede eliminar una entrega pendiente de devolución (%s).' % record.display_name)
+                raise models.UserError('No se puede eliminar una entrega pendiente de devolución (%s).' % record.display_name)
         return super().unlink()
 
     def copy(self, default=None):
