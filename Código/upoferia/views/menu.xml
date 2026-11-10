@@ -1,0 +1,16 @@
+<odoo>
+    <menuitem name="UPO Feria" id="main_upoferia_menu" groups="group_upoferia_manager"/>
+
+    <menuitem name="Gamificación" id="upoferia_gamificacion_menu" parent="main_upoferia_menu" groups="group_upoferia_manager"/>
+
+    <menuitem name="Temporadas de Pase" id="temporadas_pase_menu" parent="upoferia_gamificacion_menu" groups="group_upoferia_manager" action="upoferia_gamificacion_temporada_pase_action"/>
+    <menuitem name="Misiones de Descubrimiento" id="misiones_descubrimiento_menu" parent="upoferia_gamificacion_menu" groups="group_upoferia_manager" action="upoferia_gamificacion_mision_descubrimiento_action"/>
+    <menuitem name="Misiones de Evento" id="misiones_evento_menu" parent="upoferia_gamificacion_menu" groups="group_upoferia_manager" action="upoferia_gamificacion_mision_evento_action"/>
+    <menuitem name="Misiones Sociales" id="misiones_sociales_menu" parent="upoferia_gamificacion_menu" groups="group_upoferia_manager" action="upoferia_gamificacion_mision_sociales_action"/>
+    <menuitem name="Mision" id="misiones_mision_menu" parent="upoferia_gamificacion_menu" groups="group_upoferia_manager" action="upoferia_gamificacion_mision_action"/>
+    <menuitem name="Racha" id="misiones_racha_menu" parent="upoferia_gamificacion_menu" groups="group_upoferia_manager" action="upoferia_gamificacion_mision_racha_action"/>
+    <menuitem name="Recompensas" id="misiones_recompensas_menu" parent="upoferia_gamificacion_menu" groups="group_upoferia_manager" action="upoferia_gamificacion_mision_recompensas_action"/>
+    <menuitem name="Registros" id="misiones_registros_menu" parent="upoferia_gamificacion_menu" groups="group_upoferia_manager" action="upoferia_gamificacion_mision_registros_action"/>
+    <menuitem name="Temporadas" id="misiones_temporadas_menu" parent="upoferia_gamificacion_menu" groups="group_upoferia_manager" action="upoferia_gamificacion_mision_temporadas_action"/>
+
+</odoo>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vista Lista -->
+    <record id="upoferia_gamificacion_mision_descubrimiento_list_view" model="ir.ui.view">
+        <field name="name">upoferia.gamificacion.mision_descubrimiento.list</field>
+        <field name="model">upoferia.gamificacion.mision_descubrimiento</field>
+        <field name="arch" type="xml">
+            <list string="Misiones de Descubrimiento">
+                <field name="mision_id"/>
+                <field name="tipo_busqueda"/>
+                <field name="arsenal"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Vista Formulario -->
+    <record id="upoferia_gamificacion_mision_descubrimiento_form_view" model="ir.ui.view">
+        <field name="name">upoferia.gamificacion.mision_descubrimiento.form</field>
+        <field name="model">upoferia.gamificacion.mision_descubrimiento</field>
+        <field name="arch" type="xml">
+            <form string="Misiones de Descubrimiento">
+                <sheet>
+                    <group>
+                        <field name="mision_id"/>
+                        <field name="tipo_busqueda"/>
+                        <field name="arsenal"/>
+                    </group>
+                </sheet>
+            </form>     
+        </field>
+    </record>
+
+    <!-- Acción de Ventana -->
+    <record id="upoferia_gamificacion_mision_descubrimiento_action" model="ir.actions.act_window">
+        <field name="name">Misiones de Descubrimiento</field>
+        <field name="res_model">upoferia.gamificacion.mision_descubrimiento</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Crea la primera misión para comenzar a gestionar la gamificación.
+            </p>
+        </field>
+    </record>
+</odoo>

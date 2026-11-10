@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vista Lista -->
+    <record id="upoferia_gamificacion_racha_list_view" model="ir.ui.view">
+        <field name="name">upoferia.gamificacion.racha.list</field>
+        <field name="model">upoferia.gamificacion.racha</field>
+        <field name="arch" type="xml">
+            <list string="Rachas">
+                <field name="multiplicador_exp"/>
+                <field name="duracion"/>
+                <field name="registro_xp_id"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Vista Formulario -->
+    <record id="upoferia_gamificacion_racha_form_view" model="ir.ui.view">
+        <field name="name">upoferia.gamificacion.racha.form</field>
+        <field name="model">upoferia.gamificacion.racha</field>
+        <field name="arch" type="xml">
+            <form string="Rachas">
+                <sheet>
+                    <group>
+                        <field name="multiplicador_exp"/>
+                        <field name="duracion"/>
+                        <field name="registro_xp_id"/>
+                    </group>
+                </sheet>
+            </form>     
+        </field>
+    </record>
+
+    <!-- Acción de Ventana -->
+    <record id="upoferia_gamificacion_racha_action" model="ir.actions.act_window">
+        <field name="name">Rachas</field>
+        <field name="res_model">upoferia.gamificacion.racha</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Crea la primera racha para comenzar a gestionar la gamificación.
+            </p>
+        </field>
+    </record>
+</odoo>

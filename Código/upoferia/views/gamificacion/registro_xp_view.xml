@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vista Lista -->
+    <record id="upoferia_gamificacion_registro_xp_list_view" model="ir.ui.view">
+        <field name="name">upoferia.gamificacion.registro_xp.list</field>
+        <field name="model">upoferia.gamificacion.registro_xp</field>
+        <field name="arch" type="xml">
+            <list string="Registros de XP">
+                <field name="experiencia_acumulada" />
+                <field name="xp_ganada" />
+                <field name="nivel" />
+                <field name="temporada_pase_id" />
+                <field name="socio_id" />
+                <field name="premio_id" />
+                <field name="clan_id" />
+                <field name="mision_ids" />
+                <field name="racha_ids" />
+                <field name="recompensa_ids" />
+            </list>
+        </field>
+    </record>
+
+    <!-- Vista Formulario -->
+    <record id="upoferia_gamificacion_registro_xp_form_view" model="ir.ui.view">
+        <field name="name">upoferia.gamificacion.registro_xp.form</field>
+        <field name="model">upoferia.gamificacion.registro_xp</field>
+        <field name="arch" type="xml">
+            <form string="Registros de XP">
+                <sheet>
+                    <group>
+                        <field name="experiencia_acumulada" />
+                        <field name="xp_ganada" />
+                        <field name="nivel" />
+                        <field name="temporada_pase_id" />
+                        <field name="socio_id" />
+                        <field name="premio_id" />
+                        <field name="clan_id" />
+                        <field name="mision_ids" />
+                        <field name="racha_ids" />
+                        <field name="recompensa_ids" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Acción de Ventana -->
+    <record id="upoferia_gamificacion_registro_xp_action" model="ir.actions.act_window">
+        <field name="name">Registros de XP</field>
+        <field name="res_model">upoferia.gamificacion.registro_xp</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Crea el primer registro de XP para comenzar a gestionar la gamificación.
+            </p>
+        </field>
+    </record>
+</odoo>

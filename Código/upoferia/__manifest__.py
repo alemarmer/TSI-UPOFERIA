@@ -22,9 +22,18 @@ Long description of module's purpose
 
     # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
+        'security/security.xml',
+        'security/ir.model.access.csv',
         'views/views.xml',
-        'views/templates.xml',
+        'views/menu.xml',
+        'views/gamificacion/mision_view.xml',
+        'views/gamificacion/mision_descubrimiento_view.xml',
+        'views/gamificacion/mision_evento_view.xml',
+        'views/gamificacion/mision_sociales_view.xml',
+        'views/gamificacion/racha_view.xml',
+        'views/gamificacion/recompensas_view.xml',
+        'views/gamificacion/registros_view.xml',
+        'views/gamificacion/temporadas_view.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
