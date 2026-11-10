@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Autor: Juanjo (Personal - RRHH y Turnos) -->
+<odoo>
+
+    <record id="upoferia_formacion_empleado_view_tree" model="ir.ui.view">
+        <field name="name">upoferia.formacion_empleado.list</field>
+        <field name="model">upoferia.formacion_empleado</field>
+        <field name="arch" type="xml">
+            <list decoration-success="aprobado" decoration-danger="nota and not aprobado">
+                <field name="empleado_id"/>
+                <field name="curso_formacion_id"/>
+                <field name="nota"/>
+                <field name="aprobado"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="upoferia_formacion_empleado_view_form" model="ir.ui.view">
+        <field name="name">upoferia.formacion_empleado.form</field>
+        <field name="model">upoferia.formacion_empleado</field>
+        <field name="arch" type="xml">
+            <form string="Formación de empleado">
+                <sheet>
+                    <field name="id" invisible="1"/>
+                    <group>
+                        <group string="Inscripción">
+                            <field name="empleado_id" readonly="id"/>
+                            <field name="curso_formacion_id" readonly="id"/>
+                        </group>
+                        <group string="Evaluación">
+                            <field name="nota"/>
+                            <field name="aprobado"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="upoferia_formacion_empleado_view_search" model="ir.ui.view">
+        <field name="name">upoferia.formacion_empleado.search</field>
+        <field name="model">upoferia.formacion_empleado</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="empleado_id"/>
+                <field name="curso_formacion_id"/>
+                <filter string="Aprobados" name="aprobados" domain="[('aprobado', '=', True)]"/>
+                <filter string="No aprobados" name="no_aprobados" domain="[('aprobado', '=', False)]"/>
+                <group expand="0" string="Agrupar por">
+                    <filter string="Curso" name="group_curso" context="{'group_by': 'curso_formacion_id'}"/>
+                    <filter string="Empleado" name="group_empleado" context="{'group_by': 'empleado_id'}"/>
+                    <filter string="Aprobado" name="group_aprobado" context="{'group_by': 'aprobado'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="upoferia_formacion_empleado_view_graph" model="ir.ui.view">
+        <field name="name">upoferia.formacion_empleado.graph</field>
+        <field name="model">upoferia.formacion_empleado</field>
+        <field name="arch" type="xml">
+            <graph string="Inscripciones por curso" type="bar">
+                <field name="curso_formacion_id"/>
+                <field name="aprobado"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="upoferia_formacion_empleado_view_pivot" model="ir.ui.view">
+        <field name="name">upoferia.formacion_empleado.pivot</field>
+        <field name="model">upoferia.formacion_empleado</field>
+        <field name="arch" type="xml">
+            <pivot string="Notas por curso">
+                <field name="curso_formacion_id" type="row"/>
+                <field name="aprobado" type="col"/>
+                <field name="nota" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="upoferia_formacion_empleado_action" model="ir.actions.act_window">
+        <field name="name">Formación de empleados</field>
+        <field name="res_model">upoferia.formacion_empleado</field>
+        <field name="view_mode">list,form,graph,pivot</field>
+    </record>
+
+</odoo>
