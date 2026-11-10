@@ -6,12 +6,12 @@
         <field name="model">upoferia.control_accesos.registro_accesos</field>
         <field name="arch" type="xml">
             <list string="Registros de Accesos">
-                <field name="name"/>
+                <field name="punto_acceso_id"/>
                 <field name="fecha_hora"/>
                 <field name="metodo_acceso"/>
                 <field name="tipo_movimiento"/>
-                <field name="dni_usuario"/>
-                <field name="id_evento_puerta"/>
+                <field name="persona_id"/>
+                <field name="evento_puerta_id"/>
             </list>
         </field>
     </record>
@@ -24,12 +24,12 @@
             <form string="Registros de Accesos">
                 <sheet>
                     <group>
-                        <field name="name"/>
+                        <field name="punto_acceso_id"/>
                         <field name="fecha_hora"/>
                         <field name="metodo_acceso"/>
                         <field name="tipo_movimiento"/>
-                        <field name="dni_usuario"/>
-                        <field name="id_evento_puerta"/>
+                        <field name="persona_id"/>
+                        <field name="evento_puerta_id"/>
                     </group>
                 </sheet>
             </form>

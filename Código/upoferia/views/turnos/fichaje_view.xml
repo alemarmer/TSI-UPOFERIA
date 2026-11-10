@@ -6,7 +6,7 @@
         <field name="model">upoferia.turnos.fichaje</field>
         <field name="arch" type="xml">
             <list string="Fichajes">
-                <field name="name"/>
+                <field name="evento_puerta_num"/>
                 <field name="fecha_turno"/>
                 <field name="referencia_nomina"/>
             </list>
@@ -21,7 +21,7 @@
             <form string="Fichajes">
                 <sheet>
                     <group>
-                        <field name="name"/>
+                        <field name="evento_puerta_num" readonly="1"/>
                         <field name="fecha_turno"/>
                         <field name="referencia_nomina"/>
                     </group>

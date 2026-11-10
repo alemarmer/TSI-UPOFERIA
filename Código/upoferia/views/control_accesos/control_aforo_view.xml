@@ -6,7 +6,7 @@
         <field name="model">upoferia.control_accesos.control_aforo</field>
         <field name="arch" type="xml">
             <list string="Control de Aforo">
-                <field name="name"/>
+                <field name="evento_puerta_num"/>
                 <field name="ocupacion_actual"/>
                 <field name="aforo_maximo"/>
             </list>
@@ -21,7 +21,7 @@
             <form string="Control de Aforo">
                 <sheet>
                     <group>
-                        <field name="name"/>
+                        <field name="evento_puerta_num" readonly="1"/>
                         <field name="ocupacion_actual"/>
                         <field name="aforo_maximo"/>
                     </group>

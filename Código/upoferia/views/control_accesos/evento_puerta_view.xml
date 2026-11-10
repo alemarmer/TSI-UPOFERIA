@@ -6,7 +6,7 @@
         <field name="model">upoferia.control_accesos.evento_puerta</field>
         <field name="arch" type="xml">
             <list string="Evento de Puerta">
-                <field name="name"/>
+                <field name="evento_puerta_num"/>
             </list>
         </field>
     </record>
@@ -19,7 +19,7 @@
             <form string="Evento de Puerta">
                 <sheet>
                     <group>
-                        <field name="name"/>
+                        <field name="evento_puerta_num" readonly="1"/>
                     </group>
                 </sheet>
             </form>
