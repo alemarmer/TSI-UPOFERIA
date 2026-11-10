@@ -49,7 +49,7 @@
     <field name="arch" type="xml">
       <search string="Buscar reservas">
         <filter name="proximas" string="Próximas"
-                domain="[('dHora_llegada', '&gt;=', context_today().strftime('%Y-%m-%d'))]"/>
+                domain="[('dHora_llegada', '&gt;=', time.strftime('%Y-%m-%d'))]"/>
         <filter name="fecha_llegada" string="Fecha de llegada"/>
         <separator/>
         <filter name="pendientes" string="Pendientes" domain="[('sEstado', '=', 'pendiente')]"/>

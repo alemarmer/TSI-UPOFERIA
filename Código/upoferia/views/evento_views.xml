@@ -62,7 +62,7 @@
         <field name="sNombre_evento"/>
         <field name="tipo_evento_id"/>
         <filter name="proximos" string="Próximos"
-                domain="[('dFecha_hora_inicio', '&gt;=', context_today().strftime('%Y-%m-%d'))]"/>
+                domain="[('dFecha_hora_inicio', '&gt;=', time.strftime('%Y-%m-%d'))]"/>
         <filter name="fecha_inicio" string="Fecha de inicio"/>
         <separator/>
         <filter name="programados" string="Programados" domain="[('sEstado', '=', 'programado')]"/>
