@@ -1,6 +1,5 @@
 # Autor: Juanjo (Personal - RRHH y Turnos)
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError, UserError
 
 
 class FormacionEmpleado(models.Model):
@@ -39,13 +38,13 @@ class FormacionEmpleado(models.Model):
     def _check_empleado_activo(self):
         for record in self:
             if not record.empleado_id.activo:
-                raise ValidationError('No se puede inscribir en un curso a un empleado de baja (%s).' % record.empleado_id.nombre)
+                raise models.ValidationError('No se puede inscribir en un curso a un empleado de baja (%s).' % record.empleado_id.nombre)
 
     @api.constrains('nota', 'curso_formacion_id')
     def _check_nota_con_duracion(self):
         for record in self:
             if record.nota and not record.curso_formacion_id.duracion:
-                raise ValidationError('No se puede poner nota en un curso sin duración definida (%s).'
+                raise models.ValidationError('No se puede poner nota en un curso sin duración definida (%s).'
                                       % record.curso_formacion_id.nombre_curso)
 
     @api.onchange('nota')
@@ -73,7 +72,7 @@ class FormacionEmpleado(models.Model):
 
     def write(self, vals):
         if 'curso_formacion_id' in vals or 'empleado_id' in vals:
-            raise UserError('No se puede cambiar el curso ni el empleado de una inscripción; crea una nueva.')
+            raise models.UserError('No se puede cambiar el curso ni el empleado de una inscripción; crea una nueva.')
         if vals.get('nota'):
             vals['nota'] = round(vals['nota'], 2)
         return super().write(vals)
@@ -81,8 +80,8 @@ class FormacionEmpleado(models.Model):
     def unlink(self):
         for record in self:
             if record.nota:
-                raise UserError('No se puede eliminar la inscripción de %s: ya tiene nota.' % record.display_name)
+                raise models.UserError('No se puede eliminar la inscripción de %s: ya tiene nota.' % record.display_name)
         return super().unlink()
 
     def copy(self, default=None):
-        raise UserError('No se puede duplicar una inscripción: cada empleado solo se inscribe una vez por curso.')
+        raise models.UserError('No se puede duplicar una inscripción: cada empleado solo se inscribe una vez por curso.')
