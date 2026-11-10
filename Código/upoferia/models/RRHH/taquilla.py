@@ -1,6 +1,5 @@
 # Autor: Juanjo (Personal - RRHH y Turnos)
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError, UserError
 
 
 class Taquilla(models.Model):
@@ -52,22 +51,22 @@ class Taquilla(models.Model):
     def _check_numero_maximo(self):
         for record in self:
             if record.numero > 999:
-                raise ValidationError('El número de taquilla no puede superar 999.')
+                raise models.ValidationError('El número de taquilla no puede superar 999.')
 
     @api.constrains('ubicacion')
     def _check_ubicacion(self):
         for record in self:
             if record.ubicacion and not record.ubicacion.strip():
-                raise ValidationError('La ubicación de la taquilla no puede contener solo espacios.')
+                raise models.ValidationError('La ubicación de la taquilla no puede contener solo espacios.')
 
     @api.constrains('estado')
     def _check_estado(self):
         for record in self:
             vigentes = record.asignacion_ids.filtered(lambda a: not a.fecha_fin)
             if vigentes and record.estado != 'ocupada':
-                raise ValidationError('La taquilla %s tiene una asignación vigente: debe estar «Ocupada».' % record.numero)
+                raise models.ValidationError('La taquilla %s tiene una asignación vigente: debe estar «Ocupada».' % record.numero)
             if not vigentes and record.estado == 'ocupada':
-                raise ValidationError('La taquilla %s no puede estar «Ocupada» sin una asignación vigente.' % record.numero)
+                raise models.ValidationError('La taquilla %s no puede estar «Ocupada» sin una asignación vigente.' % record.numero)
 
     @api.onchange('estado')
     def onchange_estado(self):
@@ -111,13 +110,13 @@ class Taquilla(models.Model):
         if 'numero' in vals:
             for record in self:
                 if record.asignacion_ids and vals['numero'] != record.numero:
-                    raise UserError('No se puede renumerar la taquilla %s: ya tiene asignaciones registradas.' % record.numero)
+                    raise models.UserError('No se puede renumerar la taquilla %s: ya tiene asignaciones registradas.' % record.numero)
         return super().write(vals)
 
     def unlink(self):
         for record in self:
             if record.asignacion_ids:
-                raise UserError('No se puede eliminar la taquilla %s: tiene historial de asignaciones. '
+                raise models.UserError('No se puede eliminar la taquilla %s: tiene historial de asignaciones. '
                                 'Ponla en mantenimiento en su lugar.' % record.numero)
         return super().unlink()
 
