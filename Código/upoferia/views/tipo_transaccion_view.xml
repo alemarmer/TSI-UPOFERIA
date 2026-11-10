@@ -1,28 +1,18 @@
 <odoo>
-  <record id="upoferia_linea_transaccion_form_view" model="ir.ui.view">
-    <field name="name">upoferia.linea_transaccion.form</field>
-    <field name="model">upoferia.linea_transaccion</field>
+  <record id="upoferia_tipo_transaccion_form_view" model="ir.ui.view">
+    <field name="name">upoferia.tipo_transaccion.form</field>
+    <field name="model">upoferia.tipo_transaccion</field>
     <field name="arch" type="xml">
-      <form string="Líneas de transacción">
+      <form string="Tipos de transacción">
         <sheet layout="auto">
           <group>
-            <group>
-              <field name="transaccion_id" />
-              <field name="iNumeroLinea" />
-              <field name="producto_id" />
-              <field name="linea_pedido_id" />
-            </group>
-            <group>
-              <field name="iCantidad" />
-              <field name="fPrecioUnitario" />
-              <field name="fSubtotal" />
-              <field name="iCantidadRecibida" />
-              <field name="iCantidadFacturada" />
-            </group>
+            <field name="sCodigo" />
+            <field name="sNombre" />
+            <field name="sDescripcion" />
           </group>
           <notebook>
-            <page name="lineas_factura" string="Líneas de factura">
-              <field name="linea_factura_ids" readonly="1" />
+            <page name="transacciones" string="Transacciones">
+              <field name="transaccion_ids" readonly="1" />
             </page>
           </notebook>
         </sheet>
@@ -30,38 +20,24 @@
     </field>
   </record>
 
-  <record id="upoferia_linea_transaccion_list_view" model="ir.ui.view">
-    <field name="name">upoferia.linea_transaccion.list</field>
-    <field name="model">upoferia.linea_transaccion</field>
+  <record id="upoferia_tipo_transaccion_list_view" model="ir.ui.view">
+    <field name="name">upoferia.tipo_transaccion.list</field>
+    <field name="model">upoferia.tipo_transaccion</field>
     <field name="arch" type="xml">
-      <list string="Líneas de transacción">
-        <field name="transaccion_id" />
-        <field name="iNumeroLinea" />
-        <field name="producto_id" />
-        <field name="iCantidad" />
-        <field name="fPrecioUnitario" />
-        <field name="fSubtotal" />
+      <list string="Tipos de transacción">
+        <field name="sCodigo" />
+        <field name="sNombre" />
+        <field name="sDescripcion" />
       </list>
     </field>
   </record>
 
-  <record id="upoferia_linea_transaccion_graph_view" model="ir.ui.view">
-    <field name="name">upoferia.linea_transaccion.graph</field>
-    <field name="model">upoferia.linea_transaccion</field>
-    <field name="arch" type="xml">
-      <graph string="Cantidad por transacción" type="bar">
-        <field name="transaccion_id" />
-        <field name="iCantidad" type="measure" />
-      </graph>
-    </field>
-  </record>
-
-  <record id="linea_transaccion_list_action" model="ir.actions.act_window">
-    <field name="name">Líneas de transacción</field>
-    <field name="res_model">upoferia.linea_transaccion</field>
-    <field name="view_mode">list,form,graph</field>
+  <record id="tipo_transaccion_list_action" model="ir.actions.act_window">
+    <field name="name">Tipos de transacción</field>
+    <field name="res_model">upoferia.tipo_transaccion</field>
+    <field name="view_mode">list,form</field>
     <field name="help" type="html">
-      <p class="o_view_nocontent_smiling_face">Crea la primera línea de transacción</p>
+      <p class="o_view_nocontent_smiling_face">Crea el primer tipo de transacción</p>
     </field>
   </record>
 </odoo>
