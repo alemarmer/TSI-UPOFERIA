@@ -43,7 +43,6 @@
     </field>
   </record>
 
-  <!-- SEARCH -->
   <record id="upoferia_reserva_search_view" model="ir.ui.view">
     <field name="name">upoferia.reserva.search</field>
     <field name="model">upoferia.reserva</field>
@@ -51,7 +50,7 @@
       <search string="Buscar reservas">
         <filter name="proximas" string="Próximas"
                 domain="[('dHora_llegada', '&gt;=', context_today().strftime('%Y-%m-%d'))]"/>
-        <filter name="fecha_llegada" string="Fecha de llegada" date="dHora_llegada"/>
+        <filter name="fecha_llegada" string="Fecha de llegada"/>
         <separator/>
         <filter name="pendientes" string="Pendientes" domain="[('sEstado', '=', 'pendiente')]"/>
         <filter name="confirmadas" string="Confirmadas" domain="[('sEstado', '=', 'confirmada')]"/>

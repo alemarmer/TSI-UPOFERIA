@@ -63,7 +63,7 @@
         <field name="tipo_evento_id"/>
         <filter name="proximos" string="Próximos"
                 domain="[('dFecha_hora_inicio', '&gt;=', context_today().strftime('%Y-%m-%d'))]"/>
-        <filter name="fecha_inicio" string="Fecha de inicio" date="dFecha_hora_inicio"/>
+        <filter name="fecha_inicio" string="Fecha de inicio"/>
         <separator/>
         <filter name="programados" string="Programados" domain="[('sEstado', '=', 'programado')]"/>
         <filter name="en_curso" string="En curso" domain="[('sEstado', '=', 'en_curso')]"/>
