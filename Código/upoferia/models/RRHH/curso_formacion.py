@@ -1,6 +1,5 @@
 # Autor: Juanjo (Personal - RRHH y Turnos)
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError, UserError
 
 
 class CursoFormacion(models.Model):
@@ -38,25 +37,25 @@ class CursoFormacion(models.Model):
     def _check_nombre(self):
         for record in self:
             if not record.nombre_curso.strip():
-                raise ValidationError('El nombre del curso no puede estar vacío.')
+                raise models.ValidationError('El nombre del curso no puede estar vacío.')
 
     @api.constrains('duracion')
     def _check_duracion(self):
         for record in self:
             if record.duracion and record.duracion > 500:
-                raise ValidationError('Un curso de %d horas no es razonable; revisa la duración (máx. 500 h).' % record.duracion)
+                raise models.ValidationError('Un curso de %d horas no es razonable; revisa la duración (máx. 500 h).' % record.duracion)
 
     @api.constrains('formador')
     def _check_formador(self):
         for record in self:
             if record.formador and not any(c.isalpha() for c in record.formador):
-                raise ValidationError('El nombre del formador debe contener letras.')
+                raise models.ValidationError('El nombre del formador debe contener letras.')
 
     @api.constrains('formacion_ids')
     def _check_aforo(self):
         for record in self:
             if len(record.formacion_ids) > 50:
-                raise ValidationError('El curso «%s» no puede tener más de 50 participantes.' % record.nombre_curso)
+                raise models.ValidationError('El curso «%s» no puede tener más de 50 participantes.' % record.nombre_curso)
 
     @api.onchange('duracion')
     def onchange_duracion(self):
@@ -96,14 +95,14 @@ class CursoFormacion(models.Model):
         if 'duracion' in vals:
             for record in self:
                 if record.num_participantes and vals['duracion'] != record.duracion:
-                    raise UserError('No se puede cambiar la duración de «%s»: ya tiene %d participantes.'
+                    raise models.UserError('No se puede cambiar la duración de «%s»: ya tiene %d participantes.'
                                     % (record.nombre_curso, record.num_participantes))
         return super().write(vals)
 
     def unlink(self):
         for record in self:
             if record.formacion_ids.filtered('nota'):
-                raise UserError('No se puede eliminar el curso «%s»: hay empleados con nota registrada.' % record.nombre_curso)
+                raise models.UserError('No se puede eliminar el curso «%s»: hay empleados con nota registrada.' % record.nombre_curso)
         return super().unlink()
 
     def copy(self, default=None):
