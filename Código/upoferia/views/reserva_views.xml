@@ -43,6 +43,17 @@
     </field>
   </record>
 
+  <record id="upoferia_reserva_graph_view" model="ir.ui.view">
+  <field name="name">upoferia.reserva.graph</field>
+  <field name="model">upoferia.reserva</field>
+  <field name="arch" type="xml">
+    <graph string="Personas por estado" type="pie">
+      <field name="sEstado" type="row"/>
+      <field name="iNum_personas" type="measure"/>
+    </graph>
+  </field>
+  </record>
+
   <record id="upoferia_reserva_search_view" model="ir.ui.view">
     <field name="name">upoferia.reserva.search</field>
     <field name="model">upoferia.reserva</field>
@@ -66,7 +77,7 @@
   <record id="upoferia_reserva_action" model="ir.actions.act_window">
     <field name="name">Reservas</field>
     <field name="res_model">upoferia.reserva</field>
-    <field name="view_mode">list,form,calendar</field>
+    <field name="view_mode">list,form,calendar,graph</field>
     <field name="help" type="html">
       <p class="o_view_nocontent_smiling_face">Crea la primera reserva</p>
     </field>

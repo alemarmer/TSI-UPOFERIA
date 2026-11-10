@@ -57,6 +57,17 @@
     </field>
   </record>
 
+  <record id="upoferia_salida_graph_view" model="ir.ui.view">
+  <field name="name">upoferia.salida.graph</field>
+  <field name="model">upoferia.salida</field>
+  <field name="arch" type="xml">
+    <graph string="Pasajeros por carruaje" type="bar">
+      <field name="carruaje_id" type="row"/>
+      <field name="iNum_pasajeros" type="measure"/>
+    </graph>
+  </field>
+  </record>
+
   <record id="upoferia_salida_search_view" model="ir.ui.view">
     <field name="name">upoferia.salida.search</field>
     <field name="model">upoferia.salida</field>
@@ -83,7 +94,7 @@
   <record id="upoferia_salida_action" model="ir.actions.act_window">
     <field name="name">Salidas</field>
     <field name="res_model">upoferia.salida</field>
-    <field name="view_mode">list,form,calendar</field>
+    <field name="view_mode">list,form,calendar,graph</field>
     <field name="help" type="html">
       <p class="o_view_nocontent_smiling_face">Programa la primera salida</p>
     </field>

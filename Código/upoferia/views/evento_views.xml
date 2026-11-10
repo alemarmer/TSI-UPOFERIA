@@ -54,6 +54,17 @@
     </field>
   </record>
 
+  <record id="upoferia_evento_graph_view" model="ir.ui.view">
+  <field name="name">upoferia.evento.graph</field>
+  <field name="model">upoferia.evento</field>
+  <field name="arch" type="xml">
+    <graph string="Aforo reservado por tipo" type="bar">
+      <field name="tipo_evento_id" type="row"/>
+      <field name="iAforo_reservado" type="measure"/>
+    </graph>
+  </field>
+  </record>
+
   <record id="upoferia_evento_search_view" model="ir.ui.view">
     <field name="name">upoferia.evento.search</field>
     <field name="model">upoferia.evento</field>
@@ -80,7 +91,7 @@
   <record id="upoferia_evento_action" model="ir.actions.act_window">
     <field name="name">Eventos</field>
     <field name="res_model">upoferia.evento</field>
-    <field name="view_mode">list,form,calendar</field>
+    <field name="view_mode">list,form,calendar,graph</field>
     <field name="help" type="html">
       <p class="o_view_nocontent_smiling_face">Crea el primer evento</p>
     </field>
