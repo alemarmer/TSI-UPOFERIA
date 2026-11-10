@@ -5,5 +5,5 @@ class Beneficiario(models.Model):
     _inherits = {'upoferia.socios.persona': 'beneficiario_id'}
 
     beneficiario_id = fields.Many2one('upoferia.socios.persona', string='Persona', required=True, ondelete='cascade')
-    parentesco = fields.Char("Parentesco con el socio")
+    parentesco = fields.Selection(selection=[('padre', 'Padre'), ('madre', 'Madre'), ('hijo', 'Hijo'), ('hija', 'Hija'), ('hermano', 'Hermano'), ('hermana', 'Hermana'), ('familiar_segundo_grado', 'Familiar de segundo grado'), ('otro', 'Otro')], string="Parentesco con el socio")
     socio_id = fields.Many2one('upoferia.socios.socio', string='Socio', required=True, ondelete='cascade')
