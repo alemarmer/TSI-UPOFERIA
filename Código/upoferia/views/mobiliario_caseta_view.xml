@@ -6,10 +6,10 @@
       <form string="Mobiliario de caseta">
         <sheet layout="auto">
           <group>
-            <field name="sNumeroSerie" placeholder="Ej. MES-2026-0001" />
+            <field name="sNumeroSerie" />
             <field name="sNombre" />
-            <field name="caseta_id" />
-            <field name="dFechaAsignacion" invisible="not caseta_id" required="caseta_id" />
+            <field name="caseta_id" widget="many2one" />
+            <field name="dFechaAsignacion" />
             <field name="fCoste" />
           </group>
         </sheet>
@@ -24,9 +24,9 @@
       <list string="Mobiliario de caseta">
         <field name="sNumeroSerie" />
         <field name="sNombre" />
-        <field name="caseta_id" />
+        <field name="caseta_id" widget="many2one" />
         <field name="dFechaAsignacion" />
-        <field name="fCoste" sum="Coste total" />
+        <field name="fCoste" />
       </list>
     </field>
   </record>
