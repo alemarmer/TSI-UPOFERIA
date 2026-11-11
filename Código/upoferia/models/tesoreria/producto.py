@@ -1,5 +1,4 @@
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError
 import re
 
 
@@ -30,26 +29,26 @@ class Producto(models.Model):
     def _check_codigo_interno(self):
         for record in self:
             if not re.fullmatch(r'[A-Z0-9_-]+', record.sCodigoInterno or ''):
-                raise ValidationError('El código interno «%s» solo puede contener letras mayúsculas, números, '
+                raise models.ValidationError('El código interno «%s» solo puede contener letras mayúsculas, números, '
                                       'guiones y guiones bajos, sin espacios.' % record.sCodigoInterno)
 
     @api.constrains('sNombre')
     def _check_nombre(self):
         for record in self:
             if not record.sNombre.strip():
-                raise ValidationError('El nombre del producto no puede estar vacío.')
+                raise models.ValidationError('El nombre del producto no puede estar vacío.')
 
     @api.constrains('fPrecioSocio')
     def _check_precio_socio(self):
         for record in self:
             if record.fPrecioSocio < 0:
-                raise ValidationError('El precio de socio no puede ser negativo.')
+                raise models.ValidationError('El precio de socio no puede ser negativo.')
 
     @api.constrains('iXpOtorgada')
     def _check_xp_otorgada(self):
         for record in self:
             if record.iXpOtorgada < 0:
-                raise ValidationError('La experiencia otorgada no puede ser negativa.')
+                raise models.ValidationError('La experiencia otorgada no puede ser negativa.')
 
     @api.onchange('sCodigoInterno')
     def onchange_codigo_interno(self):
