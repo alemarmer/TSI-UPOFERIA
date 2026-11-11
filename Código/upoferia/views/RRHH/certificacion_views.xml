@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Autor: Juanjo (Personal - RRHH y Turnos) -->
+<odoo>
+
+    <record id="upoferia_rrhh_certificacion_list_view" model="ir.ui.view">
+        <field name="name">upoferia.rrhh.certificacion.list</field>
+        <field name="model">upoferia.rrhh.certificacion</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="titulo"/>
+                <field name="empleado_id"/>
+                <field name="fecha_expedicion"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="upoferia_rrhh_certificacion_form_view" model="ir.ui.view">
+        <field name="name">upoferia.rrhh.certificacion.form</field>
+        <field name="model">upoferia.rrhh.certificacion</field>
+        <field name="arch" type="xml">
+            <form string="Certificación">
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="titulo" placeholder="Título de la certificación"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="empleado_id"/>
+                        </group>
+                        <group>
+                            <field name="fecha_expedicion"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="upoferia_rrhh_certificacion_search_view" model="ir.ui.view">
+        <field name="name">upoferia.rrhh.certificacion.search</field>
+        <field name="model">upoferia.rrhh.certificacion</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="titulo"/>
+                <field name="empleado_id"/>
+                <filter string="Fecha de expedición" name="filter_fecha_expedicion" date="fecha_expedicion"/>
+                <filter string="Sin fecha" name="sin_fecha" domain="[('fecha_expedicion', '=', False)]"/>
+                <group expand="0" string="Agrupar por">
+                    <filter string="Empleado" name="group_empleado" context="{'group_by': 'empleado_id'}"/>
+                    <filter string="Año de expedición" name="group_anio" context="{'group_by': 'fecha_expedicion:year'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="upoferia_rrhh_certificacion_calendar_view" model="ir.ui.view">
+        <field name="name">upoferia.rrhh.certificacion.calendar</field>
+        <field name="model">upoferia.rrhh.certificacion</field>
+        <field name="arch" type="xml">
+            <calendar string="Certificaciones" date_start="fecha_expedicion" color="empleado_id"
+                      mode="month" quick_create="0">
+                <field name="titulo"/>
+                <field name="empleado_id"/>
+            </calendar>
+        </field>
+    </record>
+
+    <record id="upoferia_rrhh_certificacion_action" model="ir.actions.act_window">
+        <field name="name">Certificaciones</field>
+        <field name="res_model">upoferia.rrhh.certificacion</field>
+        <field name="view_mode">list,form,calendar</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Autor: Juanjo (Personal - RRHH y Turnos) -->
+<odoo>
+
+    <record id="upoferia_rrhh_curso_formacion_list_view" model="ir.ui.view">
+        <field name="name">upoferia.rrhh.curso_formacion.list</field>
+        <field name="model">upoferia.rrhh.curso_formacion</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="nombre_curso"/>
+                <field name="formador"/>
+                <field name="duracion"/>
+                <field name="num_participantes"/>
+                <field name="nota_media"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="upoferia_rrhh_curso_formacion_form_view" model="ir.ui.view">
+        <field name="name">upoferia.rrhh.curso_formacion.form</field>
+        <field name="model">upoferia.rrhh.curso_formacion</field>
+        <field name="arch" type="xml">
+            <form string="Curso de formación">
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="nombre_curso" placeholder="Nombre del curso"/></h1>
+                    </div>
+                    <group>
+                        <group string="Curso">
+                            <field name="formador"/>
+                            <field name="duracion"/>
+                        </group>
+                        <group string="Resultados">
+                            <field name="num_participantes"/>
+                            <field name="nota_media"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Participantes" name="participantes">
+                            <field name="formacion_ids">
+                                <list editable="bottom" decoration-success="aprobado" decoration-danger="nota and not aprobado">
+                                    <field name="empleado_id"/>
+                                    <field name="nota"/>
+                                    <field name="aprobado"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="upoferia_rrhh_curso_formacion_search_view" model="ir.ui.view">
+        <field name="name">upoferia.rrhh.curso_formacion.search</field>
+        <field name="model">upoferia.rrhh.curso_formacion</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="nombre_curso"/>
+                <field name="formador"/>
+                <filter string="Con participantes" name="con_participantes" domain="[('num_participantes', '&gt;', 0)]"/>
+                <filter string="Sin participantes" name="sin_participantes" domain="[('num_participantes', '=', 0)]"/>
+                <group expand="0" string="Agrupar por">
+                    <filter string="Formador" name="group_formador" context="{'group_by': 'formador'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="upoferia_rrhh_curso_formacion_graph_view" model="ir.ui.view">
+        <field name="name">upoferia.rrhh.curso_formacion.graph</field>
+        <field name="model">upoferia.rrhh.curso_formacion</field>
+        <field name="arch" type="xml">
+            <graph string="Participantes por curso" type="bar">
+                <field name="nombre_curso"/>
+                <field name="num_participantes" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="upoferia_rrhh_curso_formacion_action" model="ir.actions.act_window">
+        <field name="name">Cursos de formación</field>
+        <field name="res_model">upoferia.rrhh.curso_formacion</field>
+        <field name="view_mode">list,form,graph</field>
+    </record>
+
+</odoo>

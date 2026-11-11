@@ -36,6 +36,20 @@ Long description of module's purpose
         'views/control_accesos/registro_accesos_view.xml',
         'views/turnos/fichaje_view.xml',
         'views/menu.xml',
+        # Personal (RRHH y Turnos) - Juanjo
+        'views/RRHH/empleado_views.xml',
+        'views/RRHH/disponibilidad_views.xml',
+        'views/RRHH/certificacion_views.xml',
+        'views/RRHH/ausencia_views.xml',
+        'views/RRHH/contrato_laboral_views.xml',
+        'views/RRHH/despido_views.xml',
+        'views/RRHH/entrega_uniforme_views.xml',
+        'views/RRHH/taquilla_views.xml',
+        'views/RRHH/asignacion_taquilla_views.xml',
+        'views/RRHH/curso_formacion_views.xml',
+        'views/RRHH/formacion_empleado_views.xml',
+        'views/RRHH/turno_views.xml',
+        'views/RRHH/menus.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

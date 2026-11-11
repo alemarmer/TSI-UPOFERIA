@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Autor: Juanjo (Personal - RRHH y Turnos) -->
+<odoo>
+
+    <record id="upoferia_rrhh_disponibilidad_list_view" model="ir.ui.view">
+        <field name="name">upoferia.rrhh.disponibilidad.list</field>
+        <field name="model">upoferia.rrhh.disponibilidad</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="empleado_id"/>
+                <field name="dia_semana"/>
+                <field name="hora_inicio" widget="float_time"/>
+                <field name="fecha_fin"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="upoferia_rrhh_disponibilidad_form_view" model="ir.ui.view">
+        <field name="name">upoferia.rrhh.disponibilidad.form</field>
+        <field name="model">upoferia.rrhh.disponibilidad</field>
+        <field name="arch" type="xml">
+            <form string="Disponibilidad">
+                <sheet>
+                    <group>
+                        <group string="Empleado">
+                            <field name="empleado_id"/>
+                        </group>
+                        <group string="Franja">
+                            <field name="dia_semana"/>
+                            <field name="hora_inicio" widget="float_time"/>
+                            <field name="fecha_fin"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="upoferia_rrhh_disponibilidad_search_view" model="ir.ui.view">
+        <field name="name">upoferia.rrhh.disponibilidad.search</field>
+        <field name="model">upoferia.rrhh.disponibilidad</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="empleado_id"/>
+                <field name="dia_semana"/>
+                <filter string="Vigentes" name="vigentes"
+                        domain="[('fecha_fin', '&gt;=', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter string="Caducadas" name="caducadas"
+                        domain="[('fecha_fin', '&lt;', context_today().strftime('%Y-%m-%d'))]"/>
+                <separator/>
+                <filter string="Fin de semana" name="fin_semana" domain="[('dia_semana', 'in', ['5', '6'])]"/>
+                <group expand="0" string="Agrupar por">
+                    <filter string="Empleado" name="group_empleado" context="{'group_by': 'empleado_id'}"/>
+                    <filter string="Día de la semana" name="group_dia" context="{'group_by': 'dia_semana'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="upoferia_rrhh_disponibilidad_graph_view" model="ir.ui.view">
+        <field name="name">upoferia.rrhh.disponibilidad.graph</field>
+        <field name="model">upoferia.rrhh.disponibilidad</field>
+        <field name="arch" type="xml">
+            <graph string="Disponibilidad por día" type="bar">
+                <field name="dia_semana"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="upoferia_rrhh_disponibilidad_action" model="ir.actions.act_window">
+        <field name="name">Disponibilidad</field>
+        <field name="res_model">upoferia.rrhh.disponibilidad</field>
+        <field name="view_mode">list,form,graph</field>
+        <field name="context">{'search_default_vigentes': 1}</field>
+    </record>
+
+</odoo>

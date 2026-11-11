@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Autor: Juanjo (Personal - RRHH y Turnos) -->
+<odoo>
+
+    <record id="upoferia_rrhh_asignacion_taquilla_list_view" model="ir.ui.view">
+        <field name="name">upoferia.rrhh.asignacion_taquilla.list</field>
+        <field name="model">upoferia.rrhh.asignacion_taquilla</field>
+        <field name="arch" type="xml">
+            <list decoration-bf="vigente" decoration-muted="not vigente">
+                <field name="taquilla_id"/>
+                <field name="empleado_id"/>
+                <field name="fecha_inicio"/>
+                <field name="fecha_fin"/>
+                <field name="duracion_dias"/>
+                <field name="vigente"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="upoferia_rrhh_asignacion_taquilla_form_view" model="ir.ui.view">
+        <field name="name">upoferia.rrhh.asignacion_taquilla.form</field>
+        <field name="model">upoferia.rrhh.asignacion_taquilla</field>
+        <field name="arch" type="xml">
+            <form string="Asignación de taquilla">
+                <header>
+                    <button name="action_cerrar" type="object" string="Cerrar asignación" class="btn-primary"
+                            invisible="not vigente or not id"/>
+                </header>
+                <sheet>
+                    <field name="id" invisible="1"/>
+                    <group>
+                        <group string="Asignación">
+                            <field name="taquilla_id"/>
+                            <field name="empleado_id" readonly="not vigente"/>
+                        </group>
+                        <group string="Periodo">
+                            <field name="fecha_inicio"/>
+                            <field name="fecha_fin"/>
+                            <field name="duracion_dias"/>
+                            <field name="vigente"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="upoferia_rrhh_asignacion_taquilla_search_view" model="ir.ui.view">
+        <field name="name">upoferia.rrhh.asignacion_taquilla.search</field>
+        <field name="model">upoferia.rrhh.asignacion_taquilla</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="taquilla_id"/>
+                <field name="empleado_id"/>
+                <filter string="Vigentes" name="vigentes" domain="[('vigente', '=', True)]"/>
+                <filter string="Cerradas" name="cerradas" domain="[('vigente', '=', False)]"/>
+                <separator/>
+                <filter string="Fecha de inicio" name="filter_fecha_inicio" date="fecha_inicio"/>
+                <group expand="0" string="Agrupar por">
+                    <filter string="Taquilla" name="group_taquilla" context="{'group_by': 'taquilla_id'}"/>
+                    <filter string="Empleado" name="group_empleado" context="{'group_by': 'empleado_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="upoferia_rrhh_asignacion_taquilla_calendar_view" model="ir.ui.view">
+        <field name="name">upoferia.rrhh.asignacion_taquilla.calendar</field>
+        <field name="model">upoferia.rrhh.asignacion_taquilla</field>
+        <field name="arch" type="xml">
+            <calendar string="Asignaciones de taquilla" date_start="fecha_inicio" date_stop="fecha_fin"
+                      color="empleado_id" mode="month" quick_create="0">
+                <field name="taquilla_id"/>
+                <field name="empleado_id"/>
+            </calendar>
+        </field>
+    </record>
+
+    <record id="upoferia_rrhh_asignacion_taquilla_action" model="ir.actions.act_window">
+        <field name="name">Asignaciones de taquilla</field>
+        <field name="res_model">upoferia.rrhh.asignacion_taquilla</field>
+        <field name="view_mode">list,form,calendar</field>
+        <field name="context">{'search_default_vigentes': 1}</field>
+    </record>
+
+</odoo>

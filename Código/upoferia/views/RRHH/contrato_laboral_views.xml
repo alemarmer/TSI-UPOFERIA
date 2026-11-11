@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Autor: Juanjo (Personal - RRHH y Turnos) -->
+<odoo>
+
+    <record id="upoferia_rrhh_contrato_laboral_list_view" model="ir.ui.view">
+        <field name="name">upoferia.rrhh.contrato_laboral.list</field>
+        <field name="model">upoferia.rrhh.contrato_laboral</field>
+        <field name="arch" type="xml">
+            <list decoration-muted="tiene_despido">
+                <field name="empleado_id"/>
+                <field name="tipo_contrato"/>
+                <field name="fecha_inicio"/>
+                <field name="fecha_fin"/>
+                <field name="precio_hora"/>
+                <field name="vigente"/>
+                <field name="tiene_despido"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="upoferia_rrhh_contrato_laboral_form_view" model="ir.ui.view">
+        <field name="name">upoferia.rrhh.contrato_laboral.form</field>
+        <field name="model">upoferia.rrhh.contrato_laboral</field>
+        <field name="arch" type="xml">
+            <form string="Contrato laboral">
+                <header>
+                    <button name="action_registrar_despido" type="object" string="Registrar despido"
+                            invisible="tiene_despido or not id"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="Con despido" bg_color="text-bg-danger" invisible="not tiene_despido"/>
+                    <field name="id" invisible="1"/>
+                    <group>
+                        <group string="Contrato">
+                            <field name="empleado_id" readonly="tiene_despido"/>
+                            <field name="tipo_contrato"/>
+                            <field name="precio_hora"/>
+                        </group>
+                        <group string="Vigencia">
+                            <field name="fecha_inicio" readonly="tiene_despido"/>
+                            <field name="fecha_fin"/>
+                            <field name="vigente"/>
+                            <field name="tiene_despido"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Despido" name="despido">
+                            <field name="despido_ids" readonly="1">
+                                <list>
+                                    <field name="fecha_despido"/>
+                                    <field name="tipo_despido"/>
+                                    <field name="indemnizacion"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="upoferia_rrhh_contrato_laboral_search_view" model="ir.ui.view">
+        <field name="name">upoferia.rrhh.contrato_laboral.search</field>
+        <field name="model">upoferia.rrhh.contrato_laboral</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="empleado_id"/>
+                <filter string="Indefinidos" name="indefinidos" domain="[('tipo_contrato', '=', 'indefinido')]"/>
+                <filter string="Temporales" name="temporales" domain="[('tipo_contrato', '=', 'temporal')]"/>
+                <filter string="Por obra" name="obra" domain="[('tipo_contrato', '=', 'obra')]"/>
+                <separator/>
+                <filter string="Sin despido" name="sin_despido" domain="[('tiene_despido', '=', False)]"/>
+                <filter string="Con despido" name="con_despido" domain="[('tiene_despido', '=', True)]"/>
+                <separator/>
+                <filter string="Fecha de inicio" name="filter_fecha_inicio" date="fecha_inicio"/>
+                <group expand="0" string="Agrupar por">
+                    <filter string="Empleado" name="group_empleado" context="{'group_by': 'empleado_id'}"/>
+                    <filter string="Tipo de contrato" name="group_tipo" context="{'group_by': 'tipo_contrato'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="upoferia_rrhh_contrato_laboral_calendar_view" model="ir.ui.view">
+        <field name="name">upoferia.rrhh.contrato_laboral.calendar</field>
+        <field name="model">upoferia.rrhh.contrato_laboral</field>
+        <field name="arch" type="xml">
+            <calendar string="Contratos" date_start="fecha_inicio" date_stop="fecha_fin" color="empleado_id"
+                      mode="month" quick_create="0">
+                <field name="empleado_id"/>
+                <field name="tipo_contrato"/>
+            </calendar>
+        </field>
+    </record>
+
+    <record id="upoferia_rrhh_contrato_laboral_action" model="ir.actions.act_window">
+        <field name="name">Contratos laborales</field>
+        <field name="res_model">upoferia.rrhh.contrato_laboral</field>
+        <field name="view_mode">list,form,calendar</field>
+    </record>
+
+</odoo>

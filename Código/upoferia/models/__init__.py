@@ -2,3 +2,4 @@
 from . import socios
 from . import control_accesos
 from . import turnos
+from . import RRHH

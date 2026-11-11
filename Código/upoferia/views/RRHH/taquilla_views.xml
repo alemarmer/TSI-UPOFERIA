@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Autor: Juanjo (Personal - RRHH y Turnos) -->
+<odoo>
+
+    <record id="upoferia_rrhh_taquilla_list_view" model="ir.ui.view">
+        <field name="name">upoferia.rrhh.taquilla.list</field>
+        <field name="model">upoferia.rrhh.taquilla</field>
+        <field name="arch" type="xml">
+            <list decoration-success="estado == 'disponible'" decoration-warning="estado == 'mantenimiento'">
+                <field name="numero"/>
+                <field name="ubicacion"/>
+                <field name="empleado_actual_id"/>
+                <field name="estado" widget="badge"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="upoferia_rrhh_taquilla_form_view" model="ir.ui.view">
+        <field name="name">upoferia.rrhh.taquilla.form</field>
+        <field name="model">upoferia.rrhh.taquilla</field>
+        <field name="arch" type="xml">
+            <form string="Taquilla">
+                <header>
+                    <button name="action_ver_asignaciones" type="object" string="Ver asignaciones"/>
+                    <button name="action_poner_mantenimiento" type="object" string="Poner en mantenimiento"
+                            invisible="estado != 'disponible'"/>
+                    <button name="action_poner_disponible" type="object" string="Marcar disponible"
+                            class="btn-primary" invisible="estado != 'mantenimiento'"/>
+                    <field name="estado" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="numero"/>
+                        <h1><field name="numero"/></h1>
+                    </div>
+                    <group>
+                        <group string="Datos">
+                            <field name="ubicacion"/>
+                        </group>
+                        <group string="Ocupación">
+                            <field name="asignacion_vigente_id"/>
+                            <field name="empleado_actual_id"/>
+                            <field name="num_asignaciones"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Historial de asignaciones" name="asignaciones">
+                            <field name="asignacion_ids" readonly="1">
+                                <list decoration-bf="vigente">
+                                    <field name="empleado_id"/>
+                                    <field name="fecha_inicio"/>
+                                    <field name="fecha_fin"/>
+                                    <field name="duracion_dias"/>
+                                    <field name="vigente"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="upoferia_rrhh_taquilla_search_view" model="ir.ui.view">
+        <field name="name">upoferia.rrhh.taquilla.search</field>
+        <field name="model">upoferia.rrhh.taquilla</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="numero"/>
+                <field name="ubicacion"/>
+                <field name="empleado_actual_id"/>
+                <filter string="Disponibles" name="disponibles" domain="[('estado', '=', 'disponible')]"/>
+                <filter string="Ocupadas" name="ocupadas" domain="[('estado', '=', 'ocupada')]"/>
+                <filter string="En mantenimiento" name="mantenimiento" domain="[('estado', '=', 'mantenimiento')]"/>
+                <group expand="0" string="Agrupar por">
+                    <filter string="Estado" name="group_estado" context="{'group_by': 'estado'}"/>
+                    <filter string="Ubicación" name="group_ubicacion" context="{'group_by': 'ubicacion'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="upoferia_rrhh_taquilla_graph_view" model="ir.ui.view">
+        <field name="name">upoferia.rrhh.taquilla.graph</field>
+        <field name="model">upoferia.rrhh.taquilla</field>
+        <field name="arch" type="xml">
+            <graph string="Taquillas por estado" type="pie">
+                <field name="estado"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="upoferia_rrhh_taquilla_action" model="ir.actions.act_window">
+        <field name="name">Taquillas</field>
+        <field name="res_model">upoferia.rrhh.taquilla</field>
+        <field name="view_mode">list,form,graph</field>
+    </record>
+
+</odoo>

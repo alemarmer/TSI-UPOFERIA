@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Autor: Juanjo (Personal - RRHH y Turnos) -->
+<odoo>
+
+    <record id="upoferia_rrhh_turno_list_view" model="ir.ui.view">
+        <field name="name">upoferia.rrhh.turno.list</field>
+        <field name="model">upoferia.rrhh.turno</field>
+        <field name="arch" type="xml">
+            <list decoration-muted="estado == 'finalizado'" decoration-info="estado == 'en_curso'">
+                <field name="fecha"/>
+                <field name="hora_inicio" widget="float_time"/>
+                <field name="hora_fin" widget="float_time"/>
+                <field name="duracion" widget="float_time" sum="Total"/>
+                <field name="num_empleados"/>
+                <field name="estado" widget="badge"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="upoferia_rrhh_turno_form_view" model="ir.ui.view">
+        <field name="name">upoferia.rrhh.turno.form</field>
+        <field name="model">upoferia.rrhh.turno</field>
+        <field name="arch" type="xml">
+            <form string="Turno">
+                <header>
+                    <button name="action_copiar_semana_siguiente" type="object" string="Copiar a la semana siguiente"
+                            invisible="not id"/>
+                    <field name="estado" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <field name="id" invisible="1"/>
+                    <group>
+                        <group string="Horario">
+                            <field name="fecha"/>
+                            <field name="hora_inicio" widget="float_time"/>
+                            <field name="hora_fin" widget="float_time"/>
+                        </group>
+                        <group string="Resumen">
+                            <field name="duracion" widget="float_time"/>
+                            <field name="num_empleados"/>
+                            <field name="fecha_hora_inicio"/>
+                            <field name="fecha_hora_fin"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Empleados asignados" name="empleados">
+                            <field name="empleado_ids">
+                                <list>
+                                    <field name="nombre"/>
+                                    <field name="dni"/>
+                                    <field name="rol"/>
+                                    <field name="puesto"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="upoferia_rrhh_turno_search_view" model="ir.ui.view">
+        <field name="name">upoferia.rrhh.turno.search</field>
+        <field name="model">upoferia.rrhh.turno</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="fecha"/>
+                <field name="empleado_ids"/>
+                <filter string="Hoy" name="hoy"
+                        domain="[('fecha', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter string="Próximos" name="proximos"
+                        domain="[('fecha', '&gt;=', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter string="Pasados" name="pasados"
+                        domain="[('fecha', '&lt;', context_today().strftime('%Y-%m-%d'))]"/>
+                <separator/>
+                <filter string="Sin empleados" name="sin_empleados" domain="[('num_empleados', '=', 0)]"/>
+                <filter string="Fecha" name="filter_fecha" date="fecha"/>
+                <group expand="0" string="Agrupar por">
+                    <filter string="Día" name="group_dia" context="{'group_by': 'fecha:day'}"/>
+                    <filter string="Semana" name="group_semana" context="{'group_by': 'fecha:week'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="upoferia_rrhh_turno_calendar_view" model="ir.ui.view">
+        <field name="name">upoferia.rrhh.turno.calendar</field>
+        <field name="model">upoferia.rrhh.turno</field>
+        <field name="arch" type="xml">
+            <calendar string="Turnos" date_start="fecha_hora_inicio" date_stop="fecha_hora_fin"
+                      mode="week" quick_create="0">
+                <field name="num_empleados"/>
+                <field name="empleado_ids" widget="many2many_tags"/>
+            </calendar>
+        </field>
+    </record>
+
+    <record id="upoferia_rrhh_turno_pivot_view" model="ir.ui.view">
+        <field name="name">upoferia.rrhh.turno.pivot</field>
+        <field name="model">upoferia.rrhh.turno</field>
+        <field name="arch" type="xml">
+            <pivot string="Horas de turno">
+                <field name="fecha" interval="week" type="row"/>
+                <field name="duracion" type="measure"/>
+                <field name="num_empleados" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="upoferia_rrhh_turno_action" model="ir.actions.act_window">
+        <field name="name">Turnos</field>
+        <field name="res_model">upoferia.rrhh.turno</field>
+        <field name="view_mode">list,form,calendar,pivot</field>
+        <field name="context">{'search_default_proximos': 1}</field>
+    </record>
+
+</odoo>

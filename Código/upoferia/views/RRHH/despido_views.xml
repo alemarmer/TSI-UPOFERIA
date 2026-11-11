@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Autor: Juanjo (Personal - RRHH y Turnos) -->
+<odoo>
+
+    <record id="upoferia_rrhh_despido_list_view" model="ir.ui.view">
+        <field name="name">upoferia.rrhh.despido.list</field>
+        <field name="model">upoferia.rrhh.despido</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="empleado_id"/>
+                <field name="contrato_laboral_id"/>
+                <field name="fecha_despido"/>
+                <field name="tipo_despido"/>
+                <field name="indemnizacion"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="upoferia_rrhh_despido_form_view" model="ir.ui.view">
+        <field name="name">upoferia.rrhh.despido.form</field>
+        <field name="model">upoferia.rrhh.despido</field>
+        <field name="arch" type="xml">
+            <form string="Despido">
+                <sheet>
+                    <field name="id" invisible="1"/>
+                    <group>
+                        <group string="Contrato">
+                            <field name="contrato_laboral_id" readonly="id"/>
+                            <field name="empleado_id"/>
+                            <field name="fecha_inicio_contrato_laboral"/>
+                            <field name="fecha_fin_contrato_original"/>
+                        </group>
+                        <group string="Despido">
+                            <field name="fecha_despido"/>
+                            <field name="tipo_despido"/>
+                            <field name="indemnizacion"/>
+                        </group>
+                    </group>
+                    <group string="Motivo">
+                        <field name="motivo" nolabel="1" colspan="2"
+                               placeholder="Obligatorio en despidos procedentes, improcedentes u objetivos"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="upoferia_rrhh_despido_search_view" model="ir.ui.view">
+        <field name="name">upoferia.rrhh.despido.search</field>
+        <field name="model">upoferia.rrhh.despido</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="empleado_id"/>
+                <field name="contrato_laboral_id"/>
+                <filter string="Procedentes" name="procedentes" domain="[('tipo_despido', '=', 'procedente')]"/>
+                <filter string="Improcedentes" name="improcedentes" domain="[('tipo_despido', '=', 'improcedente')]"/>
+                <filter string="Fin de contrato" name="fin_contrato" domain="[('tipo_despido', '=', 'fin_contrato')]"/>
+                <separator/>
+                <filter string="Fecha del despido" name="filter_fecha_despido" date="fecha_despido"/>
+                <group expand="0" string="Agrupar por">
+                    <filter string="Tipo de despido" name="group_tipo" context="{'group_by': 'tipo_despido'}"/>
+                    <filter string="Empleado" name="group_empleado" context="{'group_by': 'empleado_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="upoferia_rrhh_despido_calendar_view" model="ir.ui.view">
+        <field name="name">upoferia.rrhh.despido.calendar</field>
+        <field name="model">upoferia.rrhh.despido</field>
+        <field name="arch" type="xml">
+            <calendar string="Despidos" date_start="fecha_despido" color="empleado_id"
+                      mode="month" quick_create="0">
+                <field name="empleado_id"/>
+                <field name="tipo_despido"/>
+            </calendar>
+        </field>
+    </record>
+
+    <record id="upoferia_rrhh_despido_action" model="ir.actions.act_window">
+        <field name="name">Despidos</field>
+        <field name="res_model">upoferia.rrhh.despido</field>
+        <field name="view_mode">list,form,calendar</field>
+    </record>
+
+</odoo>
