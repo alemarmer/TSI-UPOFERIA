@@ -7,10 +7,6 @@ class Incidencia(models.Model):
     _name = 'upoferia.incidencia'
     _description = 'Incidencia'
     _rec_name = 'sReferencia'
-    _sql_constraints = [
-        ('referencia_uniq', 'UNIQUE ("sReferencia")',
-         'Ya existe una incidencia con esa referencia.'),
-    ]
 
     sReferencia = fields.Char(string='Referencia', required=True)
     dFecha = fields.Date(string='Fecha', required=True, default=fields.Date.context_today)
@@ -30,6 +26,12 @@ class Incidencia(models.Model):
     mobiliario_id = fields.Many2one('upoferia.mobiliario_caseta', string='Mobiliario afectado')
     punto_control_id = fields.Many2one('upoferia.punto_control', string='Punto de control que la detecta')
     mantenimiento_ids = fields.One2many('upoferia.mantenimiento', 'incidencia_id', string='Mantenimientos')
+    servicio_id = fields.Many2one('upoferia.servicio', string='Servicio')
+
+    _sql_constraints = [
+            ('referencia_uniq', 'UNIQUE ("sReferencia")',
+             'Ya existe una incidencia con esa referencia.'),
+    ]
 
     @api.constrains('punto_control_id', 'mobiliario_id')
     def _check_punto_control(self):
