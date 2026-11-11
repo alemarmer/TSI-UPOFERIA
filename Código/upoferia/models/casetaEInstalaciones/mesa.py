@@ -7,15 +7,16 @@ class Mesa(models.Model):
     _name = 'upoferia.mesa'
     _description = 'Mesa'
     _rec_name = 'iNumero'
-    _sql_constraints = [
-        ('numero_uniq', 'UNIQUE ("iNumero")',
-         'Ya existe una mesa con ese número.'),
-    ]
 
     iNumero = fields.Integer(string='Número', required=True)
     iCapacidad = fields.Integer(string='Capacidad', required=True)
 
     zona_id = fields.Many2one('upoferia.zona_caseta', string='Zona')
+
+    _sql_constraints = [
+            ('numero_uniq', 'UNIQUE ("iNumero")',
+             'Ya existe una mesa con ese número.'),
+    ]
 
     @api.depends('iNumero', 'zona_id.display_name')
     def _compute_display_name(self):
