@@ -1,0 +1,82 @@
+<odoo>
+  <record id="upoferia_incidencia_form_view" model="ir.ui.view">
+    <field name="name">upoferia.incidencia.form</field>
+    <field name="model">upoferia.incidencia</field>
+    <field name="arch" type="xml">
+      <form string="Incidencias">
+        <header>
+          <field name="sEstado" widget="statusbar" options="{'clickable': '1'}" />
+        </header>
+        <sheet layout="auto">
+          <group>
+            <group string="Datos de la incidencia">
+              <field name="sReferencia" placeholder="Ej. INC-2026-001" />
+              <field name="dFecha" />
+              <field name="sPrioridad" widget="badge" decoration-danger="sPrioridad == 'urgente'" decoration-warning="sPrioridad == 'alta'" decoration-info="sPrioridad == 'media'" />
+            </group>
+            <group string="Origen">
+              <field name="punto_control_id" domain="[('sResultado', '=', 'no_superado')]" />
+              <field name="mobiliario_id" />
+            </group>
+          </group>
+          <notebook>
+            <page string="Mantenimientos" name="mantenimientos">
+              <field name="mantenimiento_ids" context="{'default_sTipoMantenimiento': 'correctivo'}">
+                <list>
+                  <field name="sIdMantenimiento" />
+                  <field name="sAsunto" />
+                  <field name="sTipoMantenimiento" />
+                  <field name="dFechaProgramada" />
+                  <field name="sEstado" widget="badge" />
+                </list>
+              </field>
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="upoferia_incidencia_list_view" model="ir.ui.view">
+    <field name="name">upoferia.incidencia.list</field>
+    <field name="model">upoferia.incidencia</field>
+    <field name="arch" type="xml">
+      <list string="Incidencias" decoration-danger="sPrioridad == 'urgente'" decoration-warning="sPrioridad == 'alta'" decoration-muted="sEstado in ('resuelta', 'cancelada')">
+        <field name="sReferencia" />
+        <field name="dFecha" />
+        <field name="sPrioridad" widget="badge" />
+        <field name="sEstado" />
+        <field name="mobiliario_id" />
+        <field name="punto_control_id" />
+      </list>
+    </field>
+  </record>
+
+  <record id="upoferia_incidencia_kanban_view" model="ir.ui.view">
+    <field name="name">upoferia.incidencia.kanban</field>
+    <field name="model">upoferia.incidencia</field>
+    <field name="arch" type="xml">
+      <kanban string="Incidencias" default_group_by="sEstado" quick_create="false">
+        <templates>
+          <t t-name="card">
+            <field name="sReferencia" class="fw-bold fs-5" />
+            <field name="mobiliario_id" />
+            <footer>
+              <field name="dFecha" />
+              <field name="sPrioridad" widget="badge" class="ms-auto" decoration-danger="sPrioridad == 'urgente'" decoration-warning="sPrioridad == 'alta'" decoration-info="sPrioridad == 'media'" />
+            </footer>
+          </t>
+        </templates>
+      </kanban>
+    </field>
+  </record>
+
+  <record id="incidencia_list_action" model="ir.actions.act_window">
+    <field name="name">Incidencias</field>
+    <field name="res_model">upoferia.incidencia</field>
+    <field name="view_mode">list,form,kanban</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">Crea la primera incidencia</p>
+    </field>
+  </record>
+</odoo>
