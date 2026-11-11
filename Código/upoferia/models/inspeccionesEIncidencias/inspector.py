@@ -3,7 +3,6 @@
 import re
 
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError
 
 
 class Inspector(models.Model):
@@ -28,11 +27,11 @@ class Inspector(models.Model):
         for oRegistro in self:
             sNumeroAcreditacion = oRegistro.sNumeroAcreditacion or ''
             if not sNumeroAcreditacion.strip():
-                raise ValidationError('El campo «Número de acreditación» es obligatorio.')
+                raise models.ValidationError('El campo «Número de acreditación» es obligatorio.')
             if not 2 <= len(sNumeroAcreditacion) <= 20:
-                raise ValidationError('El «Número de acreditación» debe tener entre 2 y 20 caracteres.')
+                raise models.ValidationError('El «Número de acreditación» debe tener entre 2 y 20 caracteres.')
             if not re.fullmatch(r'[A-Z0-9]+([-/._][A-Z0-9]+)*', sNumeroAcreditacion):
-                raise ValidationError('El «Número de acreditación» solo puede tener letras mayúsculas y números, separados por - / . _ y sin espacios (por ejemplo ACR-SEV-0042).')
+                raise models.ValidationError('El «Número de acreditación» solo puede tener letras mayúsculas y números, separados por - / . _ y sin espacios (por ejemplo ACR-SEV-0042).')
 
     @api.constrains('sOrganismo')
     def _check_organismo(self):
@@ -43,11 +42,11 @@ class Inspector(models.Model):
             if not sOrganismo:
                 continue
             if not sOrganismo.strip():
-                raise ValidationError('El campo «Organismo» no puede estar formado solo por espacios.')
+                raise models.ValidationError('El campo «Organismo» no puede estar formado solo por espacios.')
             if sOrganismo != sOrganismo.strip():
-                raise ValidationError('El «Organismo» no puede empezar ni terminar con espacios.')
+                raise models.ValidationError('El «Organismo» no puede empezar ni terminar con espacios.')
             if not 2 <= len(sOrganismo) <= 100:
-                raise ValidationError('El «Organismo» debe tener entre 2 y 100 caracteres.')
+                raise models.ValidationError('El «Organismo» debe tener entre 2 y 100 caracteres.')
 
     @api.constrains('sCargo')
     def _check_cargo(self):
@@ -58,11 +57,11 @@ class Inspector(models.Model):
             if not sCargo:
                 continue
             if not sCargo.strip():
-                raise ValidationError('El campo «Cargo» no puede estar formado solo por espacios.')
+                raise models.ValidationError('El campo «Cargo» no puede estar formado solo por espacios.')
             if sCargo != sCargo.strip():
-                raise ValidationError('El «Cargo» no puede empezar ni terminar con espacios.')
+                raise models.ValidationError('El «Cargo» no puede empezar ni terminar con espacios.')
             if not 2 <= len(sCargo) <= 100:
-                raise ValidationError('El «Cargo» debe tener entre 2 y 100 caracteres.')
+                raise models.ValidationError('El «Cargo» debe tener entre 2 y 100 caracteres.')
 
 
     def unlink(self):
