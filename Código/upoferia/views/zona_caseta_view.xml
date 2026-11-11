@@ -6,19 +6,16 @@
       <form string="Zonas de caseta">
         <sheet layout="auto">
           <group>
-            <field name="caseta_id" />
+            <field name="caseta_id" widget="many2one" />
             <field name="sNombre" />
             <field name="sTipo" />
             <field name="fSuperficieM2" />
           </group>
           <notebook>
-            <page string="Mesas" name="mesas">
-              <field name="mesa_ids">
-                <list editable="bottom">
-                  <field name="iNumero" />
-                  <field name="iCapacidad" />
-                </list>
-              </field>
+            <page name="mesas" string="Mesas">
+              <group>
+                <field name="mesa_ids" widget="one2many" />
+              </group>
             </page>
           </notebook>
         </sheet>
@@ -31,7 +28,7 @@
     <field name="model">upoferia.zona_caseta</field>
     <field name="arch" type="xml">
       <list string="Zonas de caseta">
-        <field name="caseta_id" />
+        <field name="caseta_id" widget="many2one" />
         <field name="sNombre" />
         <field name="sTipo" />
         <field name="fSuperficieM2" />
