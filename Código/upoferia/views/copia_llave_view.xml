@@ -12,6 +12,7 @@
             <field name="iNumeroCopia" />
             <field name="dFechaEntrega" />
             <field name="dFechaBaja" />
+            <field name="numero_y_fecha_inicio" widget="many2one" />
           </group>
         </sheet>
       </form>
@@ -27,6 +28,7 @@
         <field name="dFechaEntrega" />
         <field name="dFechaBaja" />
         <field name="sEstado" />
+        <field name="numero_y_fecha_inicio" widget="many2one" />
       </list>
     </field>
   </record>
