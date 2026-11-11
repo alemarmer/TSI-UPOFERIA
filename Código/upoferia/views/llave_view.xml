@@ -6,8 +6,8 @@
       <form string="Llaves">
         <sheet layout="auto">
           <group>
-            <field name="sCodigoLlave" placeholder="Ej. LL-T-014" />
-            <field name="sTipo" widget="radio" />
+            <field name="sCodigoLlave" />
+            <field name="sTipo" />
             <field name="sDescripcion" />
           </group>
         </sheet>
@@ -21,7 +21,7 @@
     <field name="arch" type="xml">
       <list string="Llaves">
         <field name="sCodigoLlave" />
-        <field name="sTipo" widget="badge" />
+        <field name="sTipo" />
         <field name="sDescripcion" />
       </list>
     </field>
