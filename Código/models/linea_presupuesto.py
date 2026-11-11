@@ -18,7 +18,7 @@ class LineaPresupuesto(models.Model):
     categoria_economica_id = fields.Many2one('upoferia.categoria_economica', string="Categoría económica", required=True)
     movimiento_ids = fields.One2many('upoferia.movimiento', 'linea_presupuesto_id', string="Movimientos")
     # Relaciones con modelos de otro grupo
-    transaccion_ids = fields.One2many('upoferia.transaccion', 'linea_presupuesto_id', string="Transacciones")  # TRANSACCION (ejercicio_presupuesto, concepto_linea_presupuesto)
+    # PENDIENTE (modelo no existe): transaccion_ids = fields.One2many('upoferia.transaccion', 'linea_presupuesto_id', string="Transacciones")  # TRANSACCION (ejercicio_presupuesto, concepto_linea_presupuesto)
 
     _sql_constraints = [
         ('concepto_presupuesto_unique', 'UNIQUE("presupuesto_id", "sConcepto")',
