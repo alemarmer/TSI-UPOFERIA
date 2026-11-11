@@ -1,0 +1,38 @@
+<odoo>
+  <record id="upoferia_mesa_form_view" model="ir.ui.view">
+    <field name="name">upoferia.mesa.form</field>
+    <field name="model">upoferia.mesa</field>
+    <field name="arch" type="xml">
+      <form string="Mesas">
+        <sheet layout="auto">
+          <group>
+            <field name="iNumero" />
+            <field name="iCapacidad" />
+            <field name="zona_id" />
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="upoferia_mesa_list_view" model="ir.ui.view">
+    <field name="name">upoferia.mesa.list</field>
+    <field name="model">upoferia.mesa</field>
+    <field name="arch" type="xml">
+      <list string="Mesas">
+        <field name="iNumero" />
+        <field name="iCapacidad" />
+        <field name="zona_id" />
+      </list>
+    </field>
+  </record>
+
+  <record id="mesa_list_action" model="ir.actions.act_window">
+    <field name="name">Mesas</field>
+    <field name="res_model">upoferia.mesa</field>
+    <field name="view_mode">list,form</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">Crea la primera mesa</p>
+    </field>
+  </record>
+</odoo>
