@@ -15,6 +15,6 @@ class Jurado(models.Model):
 
     concurso_id = fields.Many2one('upoferia.concurso', string='Concurso', required=True)
 
-    persona_id = fields.Many2one('upoferia.persona', string='Miembro', required=True)
+    persona_id = fields.Many2one('upoferia.socios.persona', string='Miembro', required=True)
 
     _sql_constraints = [('jurado_concurso_persona_unique', 'UNIQUE ("concurso_id", "persona_id")', 'Esa persona ya está en el jurado de ese concurso.')]

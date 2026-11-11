@@ -7,7 +7,6 @@ class Empleado(models.Model):
     _name = 'upoferia.rrhh.empleado'
     _description = 'Empleado'
     _inherits = {'upoferia.socios.persona': 'persona_id'}
-    _rec_name = 'nombre'
     _order = 'nombre'
 
     # La clave (dni) y los datos personales se heredan de Persona (especialización)

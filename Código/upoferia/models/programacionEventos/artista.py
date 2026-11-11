@@ -6,8 +6,7 @@ from odoo import models, fields, api
 class Artista(models.Model):
     _name = 'upoferia.artista'
     _description = 'Artista'
-    _inherits = {'upoferia.persona': 'persona_id'}
-    _rec_name = 'sDni'
+    _inherits = {'upoferia.socios.persona': 'persona_id'}
 
     fCache_base = fields.Float(string='Caché base')
     sMontaje = fields.Char(string='Montaje')
@@ -16,7 +15,7 @@ class Artista(models.Model):
     sSonido = fields.Char(string='Sonido')
     sEspacio = fields.Char(string='Espacio')
 
-    persona_id = fields.Many2one('upoferia.persona', string='Persona', required=True)
+    persona_id = fields.Many2one('upoferia.socios.persona', string='Persona', required=True)
     disciplina_ids = fields.One2many('upoferia.artista_disciplina', 'artista_id', string='Disciplinas')
     actuacion_ids = fields.Many2many('upoferia.actuacion', 'upoferia_actuacion_artista',
                                      'artista_id', 'actuacion_id', string='Actuaciones')

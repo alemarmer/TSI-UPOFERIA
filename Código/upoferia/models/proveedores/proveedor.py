@@ -6,10 +6,9 @@ from odoo import models, fields, api
 class Proveedor(models.Model):
      _name = 'upoferia.proveedor'
      _description = 'Proveedor'
-     _inherits = {'upoferia.persona': 'persona_id'}
-     _rec_name = 'sNombre'
+     _inherits = {'upoferia.socios.persona': 'persona_id'}
 
-     persona_id = fields.Many2one("upoferia.persona", string="Persona", required=True, ondelete='cascade')
+     persona_id = fields.Many2one("upoferia.socios.persona", string="Persona", required=True, ondelete='cascade')
 
      sCif = fields.Char(string="CIF", size=9)
 
