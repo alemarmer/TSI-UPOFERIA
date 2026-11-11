@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from . import categoria_material
 from . import material
 from . import uso_material
