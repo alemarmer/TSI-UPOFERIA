@@ -7,10 +7,6 @@ class Llave(models.Model):
     _name = 'upoferia.llave'
     _description = 'Llave'
     _rec_name = 'sCodigoLlave'
-    _sql_constraints = [
-        ('codigo_llave_uniq', 'UNIQUE ("sCodigoLlave")',
-         'Ya existe una llave con ese código.'),
-    ]
 
     sCodigoLlave = fields.Char(string='Código de llave', required=True)
     sDescripcion = fields.Char(string='Descripción')
@@ -18,6 +14,15 @@ class Llave(models.Model):
         ('maestra', 'Maestra'),
         ('original', 'Original'),
     ], string='Tipo', required=True, default='original')
+
+    numero = fields.Many2one('upoferia.taquilla', string='Taquilla')
+
+    _sql_constraints = [
+            ('codigo_llave_uniq', 'UNIQUE ("sCodigoLlave")',
+             'Ya existe una llave con ese código.'),
+            ('taquilla_uniq', 'UNIQUE (taquilla_id)',
+             'Esa taquilla ya tiene una llave.'),
+    ]
 
     @api.constrains('sTipo')
     def _check_tipo(self):
