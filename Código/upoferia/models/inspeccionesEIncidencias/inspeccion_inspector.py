@@ -16,18 +16,3 @@ class InspeccionInspector(models.Model):
 
     inspeccion_id = fields.Many2one('upoferia.inspeccion', string='Inspección', required=True)
     inspector_id = fields.Many2one('upoferia.inspector', string='Inspector', required=True)
-
-    @api.constrains('sRol')
-    def _check_rol(self):
-        oRegistro = None
-        sRol = ''
-        for oRegistro in self:
-            sRol = oRegistro.sRol or ''
-            if not sRol:
-                continue
-            if not sRol.strip():
-                raise models.ValidationError('El campo «Rol» no puede estar formado solo por espacios.')
-            if sRol != sRol.strip():
-                raise models.ValidationError('El «Rol» del inspector no puede empezar ni terminar con espacios.')
-            if not 2 <= len(sRol) <= 100:
-                raise models.ValidationError('El «Rol» del inspector debe tener entre 2 y 100 caracteres.')
