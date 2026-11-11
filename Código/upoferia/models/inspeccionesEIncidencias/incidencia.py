@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import re
-from datetime import date
-
 from odoo import models, fields, api
 
 
@@ -31,47 +28,15 @@ class Incidencia(models.Model):
     ], string='Estado', required=True, default='abierta')
 
     mobiliario_id = fields.Many2one('upoferia.mobiliario_caseta', string='Mobiliario afectado')
-
     punto_control_id = fields.Many2one('upoferia.punto_control', string='Punto de control que la detecta')
     mantenimiento_ids = fields.One2many('upoferia.mantenimiento', 'incidencia_id', string='Mantenimientos')
-
-    @api.constrains('sReferencia')
-    def _check_referencia(self):
-        oRegistro = None
-        sReferencia = ''
-        for oRegistro in self:
-            sReferencia = oRegistro.sReferencia or ''
-            if not sReferencia.strip():
-                raise models.ValidationError('El campo «Referencia» es obligatorio.')
-            if not 2 <= len(sReferencia) <= 20:
-                raise models.ValidationError('La «Referencia» de la incidencia debe tener entre 2 y 20 caracteres.')
-            if not re.fullmatch(r'[A-Z0-9]+([-/._][A-Z0-9]+)*', sReferencia):
-                raise models.ValidationError('La «Referencia» de la incidencia solo puede tener letras mayúsculas y números, separados por - / . _ y sin espacios (por ejemplo INC-2026-001).')
-
-    @api.constrains('dFecha', 'punto_control_id')
-    def _check_fecha(self):
-        oRegistro = None
-        dHoy = None
-        for oRegistro in self:
-            dHoy = fields.Date.context_today(oRegistro)
-            if not date(1970, 1, 1) <= oRegistro.dFecha <= dHoy:
-                raise models.ValidationError('La «Fecha» de la incidencia debe estar entre el 01/01/1970 y hoy.')
-            if oRegistro.punto_control_id and oRegistro.dFecha < oRegistro.punto_control_id.inspeccion_id.dFecha:
-                raise models.ValidationError('La «Fecha» de la incidencia no puede ser anterior a la de la inspección que la detecta.')
 
     @api.constrains('punto_control_id', 'mobiliario_id')
     def _check_punto_control(self):
         oRegistro = None
-        oPunto = None
         for oRegistro in self:
-            oPunto = oRegistro.punto_control_id
-            if not oPunto:
-                continue
-            if oPunto.sResultado != 'no_superado':
-                raise models.ValidationError('Una incidencia solo la puede detectar un punto de control no superado.')
-            if oRegistro.mobiliario_id and oRegistro.mobiliario_id.caseta_id != oPunto.inspeccion_id.caseta_id:
+            if oRegistro.punto_control_id and oRegistro.mobiliario_id and oRegistro.mobiliario_id.caseta_id != oRegistro.punto_control_id.inspeccion_id.caseta_id:
                 raise models.ValidationError('Si la incidencia la detecta un punto de control, el mobiliario afectado tiene que ser de la caseta inspeccionada.')
-
 
     def unlink(self):
         oRegistro = None
