@@ -6,23 +6,18 @@
       <form string="Puntos de control">
         <sheet layout="auto">
           <group>
-            <field name="inspeccion_id" />
+            <field name="inspeccion_id" widget="many2one" />
             <field name="iNumeroPunto" />
             <field name="sDescripcion" />
-            <field name="elemento_seguridad_id" />
+            <field name="elemento_seguridad_id" widget="many2one" />
             <field name="sResultado" />
-            <field name="sObservaciones" required="sResultado == 'no_superado'" />
+            <field name="sObservaciones" />
           </group>
           <notebook>
-            <page string="Incidencias detectadas" name="incidencias">
-              <field name="incidencia_ids">
-                <list>
-                  <field name="sReferencia" />
-                  <field name="dFecha" />
-                  <field name="sPrioridad" widget="badge" />
-                  <field name="sEstado" />
-                </list>
-              </field>
+            <page name="incidencias" string="Incidencias detectadas">
+              <group>
+                <field name="incidencia_ids" widget="one2many" />
+              </group>
             </page>
           </notebook>
         </sheet>
@@ -34,11 +29,11 @@
     <field name="name">upoferia.punto_control.list</field>
     <field name="model">upoferia.punto_control</field>
     <field name="arch" type="xml">
-      <list string="Puntos de control" decoration-danger="sResultado == 'no_superado'" decoration-success="sResultado == 'superado'">
-        <field name="inspeccion_id" />
+      <list string="Puntos de control">
+        <field name="inspeccion_id" widget="many2one" />
         <field name="iNumeroPunto" />
         <field name="sDescripcion" />
-        <field name="elemento_seguridad_id" />
+        <field name="elemento_seguridad_id" widget="many2one" />
         <field name="sResultado" />
       </list>
     </field>
