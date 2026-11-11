@@ -54,3 +54,17 @@ class Mantenimiento(models.Model):
         for oRegistro in self:
             if oRegistro.transaccion_id and oRegistro.transaccion_id.tipo_transaccion_id.sCodigo != 'CON':
                 raise models.ValidationError('El mantenimiento solo puede estar cubierto por un contrato (transacción de tipo CON).')
+
+    @api.constrains('transaccion_id', 'incidencia_id')
+    def _check_contrato_caseta(self):
+        oRegistro = None
+        for oRegistro in self:
+            if oRegistro.transaccion_id and oRegistro.incidencia_id.mobiliario_id and oRegistro.transaccion_id.caseta_id != oRegistro.incidencia_id.mobiliario_id.caseta_id:
+                raise models.ValidationError('El contrato que cubre el mantenimiento tiene que ser de la misma caseta que el mobiliario afectado.')
+
+    @api.constrains('transaccion_id', 'incidencia_id')
+    def _check_contrato_servicio(self):
+        oRegistro = None
+        for oRegistro in self:
+            if oRegistro.transaccion_id and oRegistro.incidencia_id.servicio_id and oRegistro.transaccion_id.proveedor_id not in oRegistro.incidencia_id.servicio_id.servicio_proveedor_ids.mapped('proveedor_id'):
+                raise models.ValidationError('El contrato que cubre el mantenimiento tiene que ser con un proveedor que ofrezca el servicio de la incidencia.')
