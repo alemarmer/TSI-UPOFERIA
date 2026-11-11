@@ -4,6 +4,9 @@
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
+        <mxCell id="DgTwVWPJy0nZshoLbb-F-1" parent="1" style="rounded=1;arcSize=3;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=16;spacingTop=8;fontStyle=1;fontSize=22;fillColor=#e6d0de;opacity=40;textOpacity=100;fontColor=#1F3864;strokeColor=#996185;strokeWidth=2;movable=0;resizable=0;rotatable=0;deletable=0;editable=0;locked=1;connectable=0;" value="Caballos y enganches" vertex="1">
+          <mxGeometry height="970" width="1039" x="5988" y="4763" as="geometry" />
+        </mxCell>
         <mxCell id="WyhmgDAVou7qgDR6EW2x-1" parent="1" style="rounded=1;arcSize=3;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=16;spacingTop=8;fontStyle=1;fontSize=22;fillColor=#ffe6cc;opacity=40;textOpacity=100;fontColor=#1F3864;strokeColor=#d79b00;strokeWidth=2;movable=0;resizable=0;rotatable=0;deletable=0;editable=0;locked=1;connectable=0;" value="&lt;meta charset=&quot;utf-8&quot;&gt;PATROCINIO Y SERVICIOS" vertex="1">
           <mxGeometry height="1597" width="1466" x="5451" y="1518" as="geometry" />
         </mxCell>
@@ -71,7 +74,7 @@
         <mxCell id="blk10" parent="1" style="rounded=1;arcSize=3;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=16;spacingTop=8;fontStyle=1;fontSize=22;fillColor=#f8cecc;opacity=40;textOpacity=100;fontColor=#1F3864;strokeColor=#b85450;strokeWidth=2;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" value="TURNOS Y FICHAJES" vertex="1">
           <mxGeometry height="536" width="820" x="2850" y="4741" as="geometry" />
         </mxCell>
-        <mxCell id="blk11" parent="1" style="rounded=1;arcSize=3;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=16;spacingTop=8;fontStyle=1;fontSize=22;fillColor=#e6d0de;opacity=40;textOpacity=100;fontColor=#1F3864;strokeColor=#996185;strokeWidth=2;movable=0;resizable=0;rotatable=0;deletable=0;editable=0;locked=1;connectable=0;" value="PROGRAMACIÓN DE EVENTOS" vertex="1">
+        <mxCell id="blk11" parent="1" style="rounded=1;arcSize=3;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=16;spacingTop=8;fontStyle=1;fontSize=22;fillColor=#e6d0de;opacity=40;textOpacity=100;fontColor=#1F3864;strokeColor=#996185;strokeWidth=2;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" value="PROGRAMACIÓN DE EVENTOS" vertex="1">
           <mxGeometry height="1306" width="1623" x="6005" y="3225" as="geometry" />
         </mxCell>
         <mxCell id="blk12" parent="1" style="rounded=1;arcSize=3;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=16;spacingTop=8;fontStyle=1;fontSize=22;fillColor=#e6d0de;opacity=40;textOpacity=100;fontColor=#1F3864;strokeColor=#996185;strokeWidth=2;movable=0;resizable=0;rotatable=0;deletable=0;editable=0;locked=1;connectable=0;" value="CONCURSOS" vertex="1">
@@ -1438,16 +1441,13 @@
         <mxCell id="a78" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;fillColor=#ffffff;strokeColor=#000000;dashed=1;" value="cantidad_facturada" vertex="1">
           <mxGeometry height="30" width="156" x="2275" y="2305" as="geometry" />
         </mxCell>
-        <mxCell id="a80" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;fillColor=#ffffff;strokeColor=#000000;" value="&lt;u&gt;nombre&lt;/u&gt;" vertex="1">
-          <mxGeometry height="30" width="80" x="6587" y="3691" as="geometry" />
+        <mxCell id="a80" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;fillColor=#ffffff;strokeColor=#000000;" value="&lt;u&gt;nombre_evento&lt;/u&gt;" vertex="1">
+          <mxGeometry height="30" width="80" x="6554" y="3623" as="geometry" />
         </mxCell>
-        <mxCell id="a81" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;fillColor=#ffffff;strokeColor=#000000;" value="tipo" vertex="1">
-          <mxGeometry height="30" width="80" x="6551" y="3740" as="geometry" />
+        <mxCell id="a82" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;fillColor=#ffffff;strokeColor=#000000;" value="fecha_hora_inicio" vertex="1">
+          <mxGeometry height="30" width="105" x="6289" y="3707" as="geometry" />
         </mxCell>
-        <mxCell id="a82" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;fillColor=#ffffff;strokeColor=#000000;" value="hora_inicio" vertex="1">
-          <mxGeometry height="30" width="80" x="6314" y="3707" as="geometry" />
-        </mxCell>
-        <mxCell id="a83" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;fillColor=#ffffff;strokeColor=#000000;" value="fin" vertex="1">
+        <mxCell id="a83" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;fillColor=#ffffff;strokeColor=#000000;" value="fecha_hora_fin" vertex="1">
           <mxGeometry height="30" width="80" x="6314" y="3661" as="geometry" />
         </mxCell>
         <mxCell id="a84" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;fillColor=#ffffff;strokeColor=#000000;" value="aforo_reservado" vertex="1">
@@ -1544,7 +1544,7 @@
           <mxGeometry height="30" width="98" x="7442" y="3947" as="geometry" />
         </mxCell>
         <mxCell id="a132" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;fillColor=#ffffff;strokeColor=#000000;" value="requisitos_tecnicos" vertex="1">
-          <mxGeometry height="30" width="163" x="7261" y="3970" as="geometry" />
+          <mxGeometry height="30" width="163" x="7254.5" y="3974" as="geometry" />
         </mxCell>
         <mxCell id="a133" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;fillColor=#ffffff;strokeColor=#000000;fontStyle=4;" value="referencia" vertex="1">
           <mxGeometry height="30" width="98" x="5414" y="3667" as="geometry" />
@@ -1748,7 +1748,7 @@
           <mxGeometry height="30" width="105" x="3130.5" y="4203" as="geometry" />
         </mxCell>
         <mxCell id="a246" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;fillColor=#ffffff;strokeColor=#000000;" value="cache_pactado" vertex="1">
-          <mxGeometry height="30" width="120" x="6853" y="3328" as="geometry" />
+          <mxGeometry height="30" width="120" x="6823" y="3270" as="geometry" />
         </mxCell>
         <mxCell id="a247" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;fillColor=#ffffff;strokeColor=#000000;" value="bases" vertex="1">
           <mxGeometry height="30" width="80" x="7771" y="3009" as="geometry" />
@@ -2034,11 +2034,6 @@
         <mxCell id="y583" edge="1" parent="1" source="jPIXmBHTrFzqlWevcCDV-8" style="endArrow=none;html=1;rounded=0;strokeColor=#999999;" target="a80" value="">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="4549.698113207547" y="2146" as="sourcePoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="y584" edge="1" parent="1" source="jPIXmBHTrFzqlWevcCDV-8" style="endArrow=none;html=1;rounded=0;strokeColor=#999999;" target="a81" value="">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="4667" y="2169" as="sourcePoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="y585" edge="1" parent="1" source="jPIXmBHTrFzqlWevcCDV-8" style="endArrow=none;html=1;rounded=0;strokeColor=#999999;" target="a82" value="">
@@ -3208,26 +3203,23 @@
         <mxCell id="leyenda" parent="1" style="text;html=1;align=left;verticalAlign=top;whiteSpace=wrap;fontSize=16;strokeColor=#666666;fillColor=#ffffff;spacing=14;" value="&lt;b&gt;Leyenda&lt;/b&gt;&lt;br&gt;Rectángulo: entidad · Rectángulo doble: entidad débil · Gris discontinuo: entidad estándar de Odoo&lt;br&gt;Rombo: relación · Rombo doble: relación identificadora (de la que depende una entidad débil) · Triángulo ES: especialización&lt;br&gt;Atributo &lt;u&gt;subrayado&lt;/u&gt;: clave primaria (si hay varios, la clave es compuesta) · &lt;span style=&quot;border-bottom:1px dashed #000;&quot;&gt;Subrayado discontinuo&lt;/span&gt;: discriminante (clave parcial)&lt;br&gt;Elipse discontinua: atributo derivado · Doble elipse: multivaluado · Elipse con elipses colgando: atributo compuesto&lt;br&gt;(min,max) junto a una entidad: nº de ocurrencias de esa entidad asociadas a una ocurrencia de la otra&lt;br&gt;&lt;font color=&quot;#C00000&quot;&gt;&lt;b&gt;Líneas rojas&lt;/b&gt;&lt;/font&gt;: relaciones entre bloques conceptuales distintos" vertex="1">
           <mxGeometry height="215" width="1500" x="7919" y="140" as="geometry" />
         </mxCell>
-        <mxCell id="restricciones" parent="1" style="text;html=1;align=left;verticalAlign=top;whiteSpace=wrap;fontSize=15;strokeColor=#666666;fillColor=#f5f5f5;spacing=14;" value="&lt;ol dir=&quot;ltr&quot;&gt;&lt;li&gt;SOCIO.estado es derivado: depende de si tiene CUOTAS pendientes.&lt;/li&gt;&lt;br/&gt;&lt;li&gt;TRANSACCION: codigo_tipo es obligatorio y debe existir en TIPO_TRANSACCION (PED pedido, ALB albarán, FAC factura, ABO abono, CON contrato).&lt;/li&gt;&lt;br/&gt;&lt;li&gt;TRANSACCION, atributos según el tipo (NULL si no aplica): PED → fecha_prevista_fin, importe · ALB → fecha_prevista_fin · FAC/ABO → ref_proveedor, vencimiento, importe · CON → fecha_prevista_fin, importe, documento, renovacion_auto, importe_facturado. El estado depende del tipo: PED (borrador, confirmado, recibido, cancelado) · ALB (previsto, hecho) · FAC/ABO (pendiente, pagada, vencida) · CON (borrador, vigente, vencido, rescindido).&lt;/li&gt;&lt;br/&gt;&lt;li&gt;TRANSACCION, relaciones según el tipo: toda transacción tiene PROVEEDOR («interviene en»). Solo las de tipo CON pueden relacionarse con CASETA, LINEA_PRESUPUESTO, PRESTAMO, ACTUACION y MANTENIMIENTO. Solo las de tipo FAC o ABO pueden tener MOVIMIENTOS. Solo las de tipo PED, FAC o ABO tienen LINEAS, y como mínimo una.&lt;/li&gt;&lt;br/&gt;&lt;li&gt;«genera» (reflexiva de TRANSACCION) solo admite estas parejas origen → derivada: CON → PED, CON → FAC/ABO y PED → ALB. Origen y derivada son del mismo PROVEEDOR. Un PRESTAMO solo puede estar respaldado por un CON del mismo PROVEEDOR.&lt;/li&gt;&lt;br/&gt;&lt;li&gt;LINEA_TRANSACCION: subtotal = cantidad × precio_unitario. cantidad_recibida y cantidad_facturada solo existen en líneas de PED y no pueden superar la cantidad. «Se factura en» une una línea de PED con una línea de FAC/ABO que tenga el mismo PRODUCTO.&lt;/li&gt;&lt;br/&gt;&lt;li&gt;FAC/ABO: la pareja PROVEEDOR + ref_proveedor no se repite; vencimiento ≥ fecha_inicial; importe = suma de los subtotales de sus líneas.&lt;/li&gt;&lt;br/&gt;&lt;li&gt;CON: fecha_prevista_fin ≥ fecha_inicial; importe_facturado = suma de los importes de las FAC que genera.&lt;/li&gt;&lt;br/&gt;&lt;li&gt;Una categoría (de proveedor, de producto o de material) no puede ser subcategoría de sí misma ni formar ciclos.&lt;/li&gt;&lt;br/&gt;&lt;li&gt;LICENCIA: fecha_caducidad ≥ fecha_concesion; vigente = hoy entre ambas fechas y estado concedida. ELEMENTO_SEGURIDAD: fecha_proxima_revision ≥ fecha_ultima_revision.&lt;/li&gt;&lt;br/&gt;&lt;li&gt;INSPECCION.porcentaje_superado = puntos con resultado «superado» / total × 100. Un PUNTO_CONTROL solo revisa elementos de seguridad de la misma CASETA.&lt;/li&gt;&lt;br/&gt;&lt;li&gt;Si una INCIDENCIA la detecta un PUNTO_CONTROL, el MOBILIARIO_CASETA al que afecta pertenece a la CASETA inspeccionada.&lt;/li&gt;&lt;br/&gt;&lt;li&gt;El contrato que cubre un MANTENIMIENTO pertenece a la misma CASETA que el MOBILIARIO_CASETA afectado por la INCIDENCIA que lo genera.&lt;/li&gt;&lt;br/&gt;&lt;li&gt;Si una INCIDENCIA la origina un SERVICIO, el contrato que cubre su MANTENIMIENTO es con un PROVEEDOR que ofrece ese servicio.&lt;/li&gt;&lt;br/&gt;&lt;li&gt;Los valores de estado, tipo, prioridad, resultado, especialidad y unidad_facturacion son listas cerradas (selection en Odoo).&lt;/li&gt;&lt;br/&gt;&lt;li&gt;PERSONA.dni: para menores sin DNI se usará el NIE o el pasaporte en el mismo campo (documento de identidad).&lt;/li&gt;&lt;br/&gt;&lt;li&gt;La especialización de PERSONA es parcial y solapada: una persona puede no ser de ningún subtipo o ser de varios a la vez (por ejemplo, un ARTISTA que además es PROVEEDOR). Un TECNICO es siempre una persona física.&lt;/li&gt;&lt;br/&gt;&lt;li&gt;PROVEEDOR.cif es único y solo se rellena cuando el proveedor es una empresa; en proveedores que son personas físicas se usa PERSONA.dni.&lt;/li&gt;&lt;br/&gt;&lt;li&gt;EXHIBICION: fecha_retirada ≥ fecha_montaje, y no se solapa con otra exhibición del mismo ESPACIO_PUBLICITARIO. Su estado no se guarda: se calcula con esas fechas.&lt;/li&gt;&lt;br/&gt;&lt;li&gt;ESPACIO_PUBLICITARIO.superficie_m2 = ancho_m × alto_m.&lt;/li&gt;&lt;br/&gt;&lt;li&gt;Exactamente un EMPLEADO de cada CUADRILLA tiene es_jefe = true.&lt;/li&gt;&lt;br/&gt;&lt;li&gt;LLAVE.tipo es maestra u original. Hay una única llave maestra, custodiada por el jefe (EMPLEADO con es_jefe) y sin taquilla. Cada TAQUILLA tiene exactamente una llave original.&lt;/li&gt;&lt;br/&gt;&lt;li&gt;ASIGNACION_TAQUILLA: fecha_fin ≥ fecha_inicio. Una TAQUILLA tiene como máximo una asignación vigente (sin fecha_fin), y un EMPLEADO también.&lt;/li&gt;&lt;br/&gt;&lt;li&gt;COPIA_LLAVE depende de ASIGNACION_TAQUILLA y es siempre copia de la llave original de la taquilla asignada. Solo hay una copia activa por asignación; fecha_baja ≥ fecha_entrega.&lt;/li&gt;&lt;br/&gt;&lt;li&gt;Si una copia se pierde (estado = perdida), se usa la llave original hasta el cierre de la caseta; al cerrar se crea una nueva COPIA_LLAVE (numero_copia + 1) de la misma asignación.&lt;/li&gt;&lt;br/&gt;&lt;li&gt;ENTREGA_UNIFORME: depende de EMPLEADO; fecha_devolucion ≥ fecha_entrega y cantidad &amp;gt; 0.&lt;/li&gt;&lt;/ol&gt;" vertex="1">
-          <mxGeometry height="1053" width="2600" x="600" y="5955" as="geometry" />
+        <mxCell id="restricciones" parent="1" style="text;html=1;align=left;verticalAlign=top;whiteSpace=wrap;fontSize=15;strokeColor=#666666;fillColor=#f5f5f5;spacing=14;" value="&lt;ol dir=&quot;ltr&quot;&gt;&lt;li&gt;RESTRICCIONES SEMÁNTICAS&lt;/li&gt;&lt;/ol&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;ol dir=&quot;ltr&quot;&gt;&lt;li&gt;GENERAL&lt;/li&gt;&lt;/ol&gt;&lt;ol dir=&quot;ltr&quot;&gt;&lt;li&gt;Los valores de estado, tipo, prioridad, resultado, especialidad y unidad_facturacion son listas cerradas (selection en Odoo).&lt;/li&gt;&lt;li&gt;Una categoría (de proveedor, de producto o de material) no puede ser subcategoría de sí misma ni formar ciclos&lt;/li&gt;&lt;/ol&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;ol dir=&quot;ltr&quot;&gt;&lt;li&gt;PERSONAS Y SOCIOS&lt;/li&gt;&lt;/ol&gt;&lt;ol dir=&quot;ltr&quot;&gt;&lt;li&gt;PERSONA.dni: para menores sin DNI se usará el NIE o el pasaporte en el mismo campo (documento de identidad).&lt;/li&gt;&lt;li&gt;La especialización de PERSONA es parcial y solapada: una persona puede no ser de ningún subtipo o ser de varios a la vez (por ejemplo, un ARTISTA que además es PROVEEDOR).&lt;/li&gt;&lt;li&gt;SOCIO.estado es derivado: depende de si tiene CUOTAS pendientes.&lt;/li&gt;&lt;/ol&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;ol dir=&quot;ltr&quot;&gt;&lt;li&gt;PROVEEDORES Y CONTRATOS&lt;/li&gt;&lt;/ol&gt;&lt;ol dir=&quot;ltr&quot;&gt;&lt;li&gt;PROVEEDOR.cif es único y solo se rellena cuando el proveedor es una empresa; en proveedores que son personas físicas se usa PERSONA.dni.&lt;/li&gt;&lt;li&gt;PROVEEDOR.cif debe tener un carácter de control correcto.&lt;/li&gt;&lt;li&gt;CATEGORIA_PROVEEDOR.nombre no se repite aunque cambien las mayúsculas.&lt;/li&gt;&lt;li&gt;CATEGORIA_PROVEEDOR.color es un número del 0 al 11.&lt;/li&gt;&lt;/ol&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;ol dir=&quot;ltr&quot;&gt;&lt;li&gt;TRANSACCIONES&lt;/li&gt;&lt;/ol&gt;&lt;ol dir=&quot;ltr&quot;&gt;&lt;li&gt;TRANSACCION.codigo_tipo es obligatorio y debe existir en TIPO_TRANSACCION (PED pedido, ALB albarán, FAC factura, ABO abono, CON contrato).&lt;/li&gt;&lt;li&gt;TIPO_TRANSACCION.nombre es obligatorio.&lt;/li&gt;&lt;li&gt;LINEA_TRANSACCION.cantidad es obligatoria, mayor que 0 y no puede superar 1.000.000.&lt;/li&gt;&lt;li&gt;Atributos según el tipo (NULL si no aplica):&lt;/li&gt;&lt;li&gt;&amp;nbsp; &amp;nbsp; PED → fecha_prevista_fin, importe&lt;/li&gt;&lt;li&gt;&amp;nbsp; &amp;nbsp; ALB → fecha_prevista_fin&lt;/li&gt;&lt;li&gt;&amp;nbsp; &amp;nbsp; FAC/ABO → ref_proveedor, vencimiento, importe&lt;/li&gt;&lt;li&gt;&amp;nbsp; &amp;nbsp; CON → fecha_prevista_fin, importe, documento, renovacion_auto, importe_facturado&lt;/li&gt;&lt;li&gt;Estado según el tipo:&lt;/li&gt;&lt;li&gt;&amp;nbsp; &amp;nbsp; PED → borrador, confirmado, recibido, cancelado&lt;/li&gt;&lt;li&gt;&amp;nbsp; &amp;nbsp; ALB → previsto, hecho&lt;/li&gt;&lt;li&gt;&amp;nbsp; &amp;nbsp; FAC/ABO → pendiente, pagada, vencida&lt;/li&gt;&lt;li&gt;&amp;nbsp; &amp;nbsp; CON → borrador, vigente, vencido, rescindido&lt;/li&gt;&lt;li&gt;Toda transacción tiene PROVEEDOR («interviene en»).&lt;/li&gt;&lt;li&gt;Solo las de tipo CON pueden relacionarse con CASETA, LINEA_PRESUPUESTO, PRESTAMO, ACTUACION y MANTENIMIENTO.&lt;/li&gt;&lt;li&gt;Solo las de tipo FAC o ABO pueden tener MOVIMIENTOS.&lt;/li&gt;&lt;li&gt;Solo las de tipo PED, FAC o ABO tienen LINEAS, y como mínimo una.&lt;/li&gt;&lt;li&gt;«genera» (reflexiva) solo admite estas parejas origen → derivada: CON → PED, CON → FAC/ABO y PED → ALB. Origen y derivada son del mismo PROVEEDOR.&lt;/li&gt;&lt;li&gt;Un PRESTAMO solo puede estar respaldado por un CON del mismo PROVEEDOR.&lt;/li&gt;&lt;li&gt;FAC/ABO: la pareja PROVEEDOR + ref_proveedor no se repite; vencimiento ≥ fecha_inicial.&lt;/li&gt;&lt;li&gt;CON: fecha_prevista_fin ≥ fecha_inicial; importe_facturado = suma de los importes de las FAC que genera.&lt;/li&gt;&lt;li&gt;LINEA_TRANSACCION: subtotal = cantidad × precio_unitario.&lt;/li&gt;&lt;li&gt;LINEA_TRANSACCION: cantidad_recibida y cantidad_facturada solo existen en líneas de PED y no pueden superar la cantidad.&lt;/li&gt;&lt;li&gt;«Se factura en» une una línea de PED con una línea de FAC/ABO que tenga el mismo PRODUCTO.&lt;/li&gt;&lt;li&gt;TRANSACCION.importe no puede ser negativo.&lt;/li&gt;&lt;li&gt;TRANSACCION.fecha_inicial está entre el 01/01/1970 y dos años después de hoy.&lt;/li&gt;&lt;li&gt;TRANSACCION: no puede haber vencimiento ni fecha_prevista_fin sin fecha_inicial; el vencimiento es como mucho un año posterior a la fecha_inicial y la fecha_prevista_fin como mucho diez años posterior.&lt;/li&gt;&lt;li&gt;LINEA_TRANSACCION.precio_unitario no puede ser negativo.&lt;/li&gt;&lt;/ol&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;ol dir=&quot;ltr&quot;&gt;&lt;li&gt;PATROCINIO Y SERVICIOS&lt;/li&gt;&lt;/ol&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;ol dir=&quot;ltr&quot;&gt;&lt;li&gt;MARCA.nombre no se repite aunque cambien las mayúsculas.&lt;/li&gt;&lt;li&gt;EXHIBICION_MARCA: fecha_retirada ≥ fecha_montaje, y no se solapa con otra exhibición del mismo ESPACIO_PUBLICITARIO.&amp;nbsp;&lt;/li&gt;&lt;li&gt;EXHIBICION_MARCA.estado es derivado: se calcula con fecha_montaje, fecha_retirada y la fecha de hoy ∈ {sin programar, programada, montada, retirada}.&lt;/li&gt;&lt;li&gt;EXHIBICION_MARCA: no puede haber fecha_retirada sin fecha_montaje, y dura como mucho un año.&lt;/li&gt;&lt;li&gt;EXHIBICION_MARCA.fecha_montaje está entre el 01/01/1970 y dos años después de hoy.&lt;/li&gt;&lt;li&gt;ESPACIO_PUBLICITARIO.superficie_m2 = ancho_m × alto_m.&lt;/li&gt;&lt;li&gt;ESPACIO_PUBLICITARIO: alto_m y ancho_m son obligatorios, mayores que 0 y de como mucho 30 m.&lt;/li&gt;&lt;li&gt;ESPACIO_PUBLICITARIO.tipo ∈ {lona, valla, banderola, pantalla digital, photocall, mupi, vinilo de suelo}.&lt;/li&gt;&lt;li&gt;SERVICIO.nombre es obligatorio.&lt;/li&gt;&lt;li&gt;SERVICIO.unidad_facturacion ∈ {hora, día, evento, unidad, persona, metro cuadrado, precio cerrado}.&lt;/li&gt;&lt;li&gt;Un TECNICO es siempre una persona física.&lt;/li&gt;&lt;li&gt;TECNICO.especialidad ∈ {electricidad, sonido, iluminación, montaje y estructuras, fontanería, climatización, gas}.&lt;/li&gt;&lt;li&gt;TECNICO.cod_carnet_profesional no se repite, y no puede haber fecha_caducidad_carnet sin cod_carnet_profesional.&lt;/li&gt;&lt;li&gt;SERVICIO_PROVEEDOR.precio_tarifa es obligatorio, no puede ser negativo y no puede superar 1.000.000 €.&lt;/li&gt;&lt;/ol&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;ol dir=&quot;ltr&quot;&gt;&lt;li&gt;CASETA E INSPECCIONES&lt;/li&gt;&lt;/ol&gt;&lt;ol dir=&quot;ltr&quot;&gt;&lt;li&gt;LICENCIA: fecha_caducidad ≥ fecha_concesion; vigente = hoy entre ambas fechas y estado concedida.&lt;/li&gt;&lt;li&gt;ELEMENTO_SEGURIDAD: fecha_proxima_revision ≥ fecha_ultima_revision.&lt;/li&gt;&lt;li&gt;INSPECCION.porcentaje_superado = puntos con resultado «superado» / total × 100.&lt;/li&gt;&lt;li&gt;Un PUNTO_CONTROL solo revisa elementos de seguridad de la misma CASETA.&lt;/li&gt;&lt;li&gt;Si una INCIDENCIA la detecta un PUNTO_CONTROL, el MOBILIARIO_CASETA al que afecta pertenece a la CASETA inspeccionada.&lt;/li&gt;&lt;li&gt;El contrato que cubre un MANTENIMIENTO pertenece a la misma CASETA que el MOBILIARIO_CASETA afectado por la INCIDENCIA que lo genera.&lt;/li&gt;&lt;li&gt;Si una INCIDENCIA la origina un SERVICIO, el contrato que cubre su MANTENIMIENTO es con un PROVEEDOR que ofrece ese servicio.&lt;/li&gt;&lt;/ol&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;ol dir=&quot;ltr&quot;&gt;&lt;li&gt;EMPLEADOS, TAQUILLAS Y LLAVES&lt;/li&gt;&lt;/ol&gt;&lt;ol dir=&quot;ltr&quot;&gt;&lt;li&gt;Exactamente un EMPLEADO de cada CUADRILLA tiene es_jefe = true.&lt;/li&gt;&lt;li&gt;LLAVE.tipo es maestra u original. Hay una única llave maestra, custodiada por el jefe (EMPLEADO con es_jefe) y sin taquilla. Cada TAQUILLA tiene exactamente una llave original.&lt;/li&gt;&lt;li&gt;ASIGNACION_TAQUILLA: fecha_fin ≥ fecha_inicio. Una TAQUILLA tiene como máximo una asignación vigente (sin fecha_fin), y un EMPLEADO también.&lt;/li&gt;&lt;li&gt;COPIA_LLAVE depende de ASIGNACION_TAQUILLA y es siempre copia de la llave original de la taquilla asignada. Solo hay una copia activa por asignación; fecha_baja ≥ fecha_entrega.&lt;/li&gt;&lt;li&gt;Si una copia se pierde (estado = perdida), se usa la llave original hasta el cierre de la caseta; al cerrar se crea una nueva COPIA_LLAVE (numero_copia + 1) de la misma asignación.&lt;/li&gt;&lt;li&gt;ENTREGA_UNIFORME: depende de EMPLEADO; fecha_devolucion ≥ fecha_entrega y cantidad &amp;gt; 0.&lt;br&gt;&lt;/li&gt;&lt;/ol&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;ol&gt;&lt;li&gt;PROGRAMACIÓN DE EVENTOS&lt;/li&gt;&lt;/ol&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;ol&gt;&lt;li&gt;EVENTO.nombre no se repite y es obligatorio.&lt;/li&gt;&lt;li&gt;EVENTO: fecha_hora_fin &amp;gt; fecha_hora_inicio; no puede haber fecha_hora_fin sin fecha_hora_inicio.&lt;/li&gt;&lt;li&gt;EVENTO.aforo_reservado no puede ser negativo ni superar CASETA.aforo_autorizado.&lt;/li&gt;&lt;li&gt;EVENTO.duracion es derivado: fecha_hora_fin − fecha_hora_inicio, en horas.&lt;/li&gt;&lt;li&gt;EVENTO.plazas_libres es derivado: CASETA.aforo_autorizado − aforo_reservado.&lt;/li&gt;&lt;li&gt;EVENTO.estado ∈ {programado, en curso, finalizado, cancelado}.&lt;/li&gt;&lt;li&gt;TIPO_EVENTO.nombre no se repite y es obligatorio.&lt;/li&gt;&lt;li&gt;ACTUACION.cache_pactado no puede ser negativo.&lt;/li&gt;&lt;li&gt;ARTISTA: cache_base y potencia_kw no pueden ser negativos.&lt;/li&gt;&lt;li&gt;ARTISTA_DISCIPLINA: un ARTISTA no repite la misma disciplina.&lt;/li&gt;&lt;li&gt;RESERVA.num_personas es mayor que 0.&lt;/li&gt;&lt;li&gt;RESERVA: una MESA no tiene dos reservas con la misma hora_llegada.&lt;/li&gt;&lt;li&gt;RESERVA.estado ∈ {pendiente, confirmada, cancelada, no presentado}.&lt;/li&gt;&lt;/ol&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;ol&gt;&lt;li&gt;CONCURSOS&lt;/li&gt;&lt;/ol&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;ol&gt;&lt;li&gt;CONCURSO.estado ∈ {inscripción abierta, inscripción cerrada, resuelto}.&lt;/li&gt;&lt;li&gt;CONCURSO.fecha_resultado ≥ fecha_hora_inicio del EVENTO.&lt;/li&gt;&lt;li&gt;PREMIO.puesto es mayor que 0 y no se repite dentro del mismo CONCURSO.&lt;/li&gt;&lt;li&gt;PREMIO: importe y xp_otorgada no pueden ser negativos.&lt;/li&gt;&lt;li&gt;JURADO.rol ∈ {presidente, vocal, secretario}; una PERSONA no está dos veces en el jurado del mismo CONCURSO.&lt;/li&gt;&lt;li&gt;PARTICIPACION_CONCURSO: un SOCIO no se inscribe dos veces en el mismo CONCURSO.&lt;/li&gt;&lt;/ol&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;ol&gt;&lt;li&gt;CABALLOS Y ENGANCHES&lt;/li&gt;&lt;/ol&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;ol&gt;&lt;li&gt;CABALLO.microchip no se repite y tiene 15 dígitos (norma ISO 11784/11785).&lt;/li&gt;&lt;li&gt;CABALLO.sexo ∈ {macho, hembra, castrado}.&lt;/li&gt;&lt;li&gt;CARRUAJE.num_registro no se repite y solo admite letras, números y los separadores - / . _, sin espacios.&lt;/li&gt;&lt;li&gt;CARRUAJE.plazas es mayor que 0.&lt;/li&gt;&lt;li&gt;SALIDA: fecha_hora_vuelta &amp;gt; fecha_hora_salida.&lt;/li&gt;&lt;li&gt;SALIDA.num_pasajeros no puede ser negativo ni superar CARRUAJE.plazas.&lt;/li&gt;&lt;li&gt;SALIDA.plazas_libres es derivado: CARRUAJE.plazas − num_pasajeros.&lt;/li&gt;&lt;li&gt;SALIDA: un CARRUAJE no tiene dos salidas con la misma fecha_hora_salida.&lt;/li&gt;&lt;li&gt;SALIDA.estado ∈ {programada, en curso, finalizada, cancelada}.&lt;/li&gt;&lt;/ol&gt;&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="2758" width="2600" x="-85" y="4741" as="geometry" />
         </mxCell>
         <mxCell id="jPIXmBHTrFzqlWevcCDV-8" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;fontSize=13;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="EVENTO" vertex="1">
           <mxGeometry height="46" width="140" x="6426" y="3691" as="geometry" />
         </mxCell>
         <mxCell id="jPIXmBHTrFzqlWevcCDV-20" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;fillColor=#ffffff;strokeColor=#000000;" value="espacio" vertex="1">
-          <mxGeometry height="30" width="80" x="7296" y="4092" as="geometry" />
+          <mxGeometry height="30" width="80" x="7237" y="4132" as="geometry" />
         </mxCell>
         <mxCell id="jPIXmBHTrFzqlWevcCDV-21" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;fillColor=#ffffff;strokeColor=#000000;" value="sonido" vertex="1">
-          <mxGeometry height="30" width="80" x="7410" y="4066" as="geometry" />
+          <mxGeometry height="30" width="80" x="7350" y="4140" as="geometry" />
         </mxCell>
         <mxCell id="jPIXmBHTrFzqlWevcCDV-22" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;fillColor=#ffffff;strokeColor=#000000;" value="potencia_kw" vertex="1">
           <mxGeometry height="30" width="80" x="7473" y="3995" as="geometry" />
         </mxCell>
         <mxCell id="jPIXmBHTrFzqlWevcCDV-23" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;fillColor=#ffffff;strokeColor=#000000;" value="iluminacion" vertex="1">
-          <mxGeometry height="30" width="80" x="7268" y="4028" as="geometry" />
-        </mxCell>
-        <mxCell id="jPIXmBHTrFzqlWevcCDV-24" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;fillColor=#ffffff;strokeColor=#000000;" value="montaje" vertex="1">
-          <mxGeometry height="30" width="80" x="7369" y="4012" as="geometry" />
+          <mxGeometry height="30" width="80" x="7206" y="4066" as="geometry" />
         </mxCell>
         <mxCell id="jPIXmBHTrFzqlWevcCDV-28" edge="1" parent="1" source="a132" style="endArrow=none;html=1;rounded=0;strokeColor=#999999;" target="jPIXmBHTrFzqlWevcCDV-24" value="">
           <mxGeometry relative="1" as="geometry">
@@ -3247,7 +3239,7 @@
             <mxPoint x="5056" y="3073" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="jPIXmBHTrFzqlWevcCDV-32" edge="1" parent="1" source="a132" style="endArrow=none;html=1;rounded=0;strokeColor=#999999;" target="jPIXmBHTrFzqlWevcCDV-21" value="">
+        <mxCell id="jPIXmBHTrFzqlWevcCDV-32" edge="1" parent="1" source="jPIXmBHTrFzqlWevcCDV-24" style="endArrow=none;html=1;rounded=0;strokeColor=#999999;" target="jPIXmBHTrFzqlWevcCDV-21" value="">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="5053" y="3022" as="sourcePoint" />
             <mxPoint x="5036" y="3073" as="targetPoint" />
@@ -3397,7 +3389,7 @@
         <mxCell id="WyhmgDAVou7qgDR6EW2x-42" edge="1" parent="1" source="WyhmgDAVou7qgDR6EW2x-3" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;" target="WyhmgDAVou7qgDR6EW2x-41" value="">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="WyhmgDAVou7qgDR6EW2x-44" connectable="0" parent="WyhmgDAVou7qgDR6EW2x-42" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontStyle=1" value="(0,1)" vertex="1">
+        <mxCell id="WyhmgDAVou7qgDR6EW2x-44" connectable="0" parent="WyhmgDAVou7qgDR6EW2x-42" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontStyle=1" value="(1,1)" vertex="1">
           <mxGeometry relative="1" x="-0.3294" y="-3" as="geometry">
             <mxPoint x="-10" y="4" as="offset" />
           </mxGeometry>
@@ -3510,7 +3502,7 @@
         <mxCell id="WyhmgDAVou7qgDR6EW2x-22" edge="1" parent="1" source="WyhmgDAVou7qgDR6EW2x-18" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;" target="WyhmgDAVou7qgDR6EW2x-2">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="zUWi_hv3AC_cFwNtpTxl-1" connectable="0" parent="WyhmgDAVou7qgDR6EW2x-22" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontStyle=1" value="(0,1)" vertex="1">
+        <mxCell id="zUWi_hv3AC_cFwNtpTxl-1" connectable="0" parent="WyhmgDAVou7qgDR6EW2x-22" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontStyle=1" value="(1,1)" vertex="1">
           <mxGeometry relative="1" x="0.6828" y="2" as="geometry">
             <mxPoint as="offset" />
           </mxGeometry>
@@ -3882,9 +3874,6 @@
         </mxCell>
         <mxCell id="QcIZ7G1UqV4TLQHogCVb-3" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;fillColor=#ffffff;strokeColor=#000000;" value="&lt;u&gt;codigo_interno&lt;/u&gt;" vertex="1">
           <mxGeometry height="30" width="127" x="865" y="3326" as="geometry" />
-        </mxCell>
-        <mxCell id="xJk2i0uFE-D-mGsZ0rAo-1" parent="1" style="rounded=1;arcSize=2;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=16;spacingTop=8;fontStyle=1;fontSize=22;fillColor=#d5e8d4;opacity=40;textOpacity=100;fontColor=#1F3864;strokeColor=#82b366;strokeWidth=2;movable=0;resizable=0;rotatable=0;deletable=0;editable=0;locked=1;connectable=0;" value="CABALLOS Y ENGANCHES&amp;nbsp;" vertex="1">
-          <mxGeometry height="1193" width="994" x="6001" y="4641" as="geometry" />
         </mxCell>
         <mxCell id="xJk2i0uFE-D-mGsZ0rAo-75" edge="1" parent="1" source="xJk2i0uFE-D-mGsZ0rAo-119" style="endArrow=none;html=1;rounded=0;strokeColor=#999999;" target="xJk2i0uFE-D-mGsZ0rAo-120">
           <mxGeometry relative="1" as="geometry" />
@@ -4463,7 +4452,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="r88" parent="1" style="rhombus;whiteSpace=wrap;html=1;fontSize=11;fillColor=#d5e8d4;strokeColor=#2E7D32;strokeWidth=2;fontColor=#1B5E20;" value="participa&lt;br&gt;&lt;font style=&quot;font-size:10px&quot;&gt;N:M&lt;/font&gt;" vertex="1">
-          <mxGeometry height="70" width="130" x="7427" y="2967" as="geometry" />
+          <mxGeometry height="70" width="130" x="7369" y="2946" as="geometry" />
         </mxCell>
         <mxCell id="bUfMVO3xLfQtyc6e68x_-1" parent="1" style="shape=ext;double=1;margin=3;rounded=0;whiteSpace=wrap;html=1;fontStyle=1;fontSize=13;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="COPIA_LLAVE" vertex="1">
           <mxGeometry height="46" width="154" x="4456" y="5605" as="geometry" />
@@ -5281,8 +5270,8 @@
         <mxCell id="dxjOu8125h0Wwrg71cro-5" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=1;fontSize=13;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="TIPO EVENTO" vertex="1">
           <mxGeometry height="46" width="140" x="6058" y="3852" as="geometry" />
         </mxCell>
-        <mxCell id="dxjOu8125h0Wwrg71cro-7" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;fillColor=#ffffff;strokeColor=#000000;" value="&lt;u&gt;nombre&lt;/u&gt;" vertex="1">
-          <mxGeometry height="30" width="80" x="6059" y="3931" as="geometry" />
+        <mxCell id="dxjOu8125h0Wwrg71cro-7" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;fillColor=#ffffff;strokeColor=#000000;" value="&lt;u&gt;nombre_tipo_evento&lt;/u&gt;" vertex="1">
+          <mxGeometry height="30" width="120" x="6019" y="3931" as="geometry" />
         </mxCell>
         <mxCell id="dxjOu8125h0Wwrg71cro-8" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;fillColor=#ffffff;strokeColor=#000000;" value="descripcion" vertex="1">
           <mxGeometry height="30" width="80" x="6158" y="3923" as="geometry" />
@@ -5342,6 +5331,21 @@
         </mxCell>
         <mxCell id="fix9" parent="1" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=16;fillColor=#d5e8d4;strokeColor=#2E7D32;strokeWidth=2;spacing=10;fontColor=#1B5E20;" value="&lt;b&gt;En verde:&lt;/b&gt; correcciones hechas al E-R para que coincida con el modelo relacional." vertex="1">
           <mxGeometry height="45" width="1500" x="7919" y="370" as="geometry" />
+        </mxCell>
+        <mxCell id="Cku9xPT3M6ifIroEpbw5-1" edge="1" parent="1" source="a132" style="endArrow=none;html=1;rounded=0;strokeColor=#999999;" target="jPIXmBHTrFzqlWevcCDV-24" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="7354" y="4004" as="sourcePoint" />
+            <mxPoint x="7433" y="4067" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="jPIXmBHTrFzqlWevcCDV-24" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;fillColor=#ffffff;strokeColor=#000000;" value="montaje" vertex="1">
+          <mxGeometry height="30" width="80" x="7332" y="4054" as="geometry" />
+        </mxCell>
+        <mxCell id="pC56LNH7uK5X_9Ej3W5c-1" parent="1" style="ellipse;whiteSpace=wrap;html=1;fontSize=11;fillColor=#ffffff;strokeColor=#000000;dashed=1;" value="estadoExhibicion" vertex="1">
+          <mxGeometry height="30" width="105" x="6371" y="1956" as="geometry" />
+        </mxCell>
+        <mxCell id="pC56LNH7uK5X_9Ej3W5c-2" edge="1" parent="1" source="pC56LNH7uK5X_9Ej3W5c-1" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.946;entryY=0.101;entryDx=0;entryDy=0;entryPerimeter=0;defaultLabelBackgroundColor=page;endArrow=none;endFill=0;" target="UwmyGTv0wwu-5-Jp1nYP-2">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
