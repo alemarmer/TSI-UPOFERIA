@@ -1,58 +1,47 @@
-<?xml version="1.0" encoding="utf-8"?>
 <odoo>
+  <record id="upoferia_bonificacion_form_view" model="ir.ui.view">
+    <field name="name">upoferia.bonificacion.form</field>
+    <field name="model">upoferia.bonificacion</field>
+    <field name="arch" type="xml">
+      <form string="Bonificaciones">
+        <sheet layout="auto">
+          <group>
+            <field name="sNombre" placeholder="Socio de honor" />
+            <field name="fPorcentajeDescuento" />
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
 
-    <record id="bonificacion_view_list" model="ir.ui.view">
-        <field name="name">upoferia.bonificacion.list</field>
-        <field name="model">upoferia.bonificacion</field>
-        <field name="arch" type="xml">
-            <list>
-                <field name="sNombre"/>
-                <field name="fPorcentajeDescuento"/>
-            </list>
-        </field>
-    </record>
+  <record id="upoferia_bonificacion_list_view" model="ir.ui.view">
+    <field name="name">upoferia.bonificacion.list</field>
+    <field name="model">upoferia.bonificacion</field>
+    <field name="arch" type="xml">
+      <list string="Bonificaciones">
+        <field name="sNombre" />
+        <field name="fPorcentajeDescuento" />
+      </list>
+    </field>
+  </record>
 
-    <record id="bonificacion_view_form" model="ir.ui.view">
-        <field name="name">upoferia.bonificacion.form</field>
-        <field name="model">upoferia.bonificacion</field>
-        <field name="arch" type="xml">
-            <form>
-                <sheet>
-                    <div class="oe_title">
-                        <h1><field name="sNombre" placeholder="Nombre"/></h1>
-                    </div>
-                    <group>
-                        <group>
-                            <field name="fPorcentajeDescuento"/>
-                        </group>
-                        <group>
-                        </group>
-                    </group>
-                </sheet>
-            </form>
-        </field>
-    </record>
+  <record id="upoferia_bonificacion_graph_view" model="ir.ui.view">
+    <field name="name">upoferia.bonificacion.graph</field>
+    <field name="model">upoferia.bonificacion</field>
+    <field name="arch" type="xml">
+      <graph string="Descuento por bonificación" type="bar">
+        <field name="sNombre" />
+        <field name="fPorcentajeDescuento" type="measure" />
+      </graph>
+    </field>
+  </record>
 
-    <record id="bonificacion_view_graph" model="ir.ui.view">
-        <field name="name">upoferia.bonificacion.graph</field>
-        <field name="model">upoferia.bonificacion</field>
-        <field name="arch" type="xml">
-            <graph string="Bonificaciones" type="bar">
-                <field name="sNombre"/>
-                <field name="fPorcentajeDescuento" type="measure"/>
-            </graph>
-        </field>
-    </record>
-
-    <record id="bonificacion_list_action" model="ir.actions.act_window">
-        <field name="name">Bonificaciones</field>
-        <field name="res_model">upoferia.bonificacion</field>
-        <field name="view_mode">list,form,graph</field>
-        <field name="help" type="html">
-            <p class="o_view_nocontent_smiling_face">Crea la primera bonificación</p>
-        </field>
-    </record>
-
-    <menuitem name="Bonificaciones" id="bonificacion_menu" parent="catalogos_menu" action="bonificacion_list_action" sequence="20"/>
-
+  <record id="bonificacion_list_action" model="ir.actions.act_window">
+    <field name="name">Bonificaciones</field>
+    <field name="res_model">upoferia.bonificacion</field>
+    <field name="view_mode">list,form,graph</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">Crea la primera bonificación</p>
+    </field>
+  </record>
 </odoo>
