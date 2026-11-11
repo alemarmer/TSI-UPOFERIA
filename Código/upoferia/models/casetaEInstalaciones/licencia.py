@@ -7,10 +7,6 @@ class Licencia(models.Model):
     _name = 'upoferia.licencia'
     _description = 'Licencia'
     _rec_name = 'sNumeroExpediente'
-    _sql_constraints = [
-        ('numero_expediente_uniq', 'UNIQUE ("sNumeroExpediente")',
-         'Ya existe una licencia con ese número de expediente.'),
-    ]
 
     sNumeroExpediente = fields.Char(string='Número de expediente', required=True)
     sTipo = fields.Selection([
@@ -33,8 +29,14 @@ class Licencia(models.Model):
     sDocumento = fields.Char(string='Documento')
 
     caseta_id = fields.Many2one('upoferia.caseta', string='Caseta', required=True)
+    num_registro = fields.Many2one('upoferia.carruaje', string='Carruaje')
 
     bVigente = fields.Boolean(string='Vigente', compute='_compute_vigente')
+
+    _sql_constraints = [
+            ('numero_expediente_uniq', 'UNIQUE ("sNumeroExpediente")',
+             'Ya existe una licencia con ese número de expediente.'),
+    ]
 
     @api.depends('sEstado', 'dFechaConcesion', 'dFechaCaducidad')
     def _compute_vigente(self):
