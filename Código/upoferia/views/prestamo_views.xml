@@ -58,6 +58,28 @@
     </field>
   </record>
 
+  <record id="upoferia_prestamo_calendar_view" model="ir.ui.view">
+    <field name="name">upoferia.prestamo.calendar</field>
+    <field name="model">upoferia.prestamo</field>
+    <field name="arch" type="xml">
+      <calendar string="Préstamos" date_start="dFechaInicio" date_stop="dFechaFinPrevista" color="selEstado" mode="month">
+        <field name="sReferencia"/>
+        <field name="sResponsable"/>
+      </calendar>
+    </field>
+  </record>
+
+  <record id="upoferia_prestamo_graph_view" model="ir.ui.view">
+    <field name="name">upoferia.prestamo.graph</field>
+    <field name="model">upoferia.prestamo</field>
+    <field name="arch" type="xml">
+      <graph string="Importe de préstamos por estado" type="bar">
+        <field name="selEstado"/>
+        <field name="fImporte" type="measure"/>
+      </graph>
+    </field>
+  </record>
+
   <record id="upoferia_prestamo_search_view" model="ir.ui.view">
     <field name="name">upoferia.prestamo.search</field>
     <field name="model">upoferia.prestamo</field>
@@ -76,7 +98,7 @@
     <field name="name">Préstamos</field>
     <field name="res_model">upoferia.prestamo</field>
     <field name="search_view_id" ref="upoferia_prestamo_search_view"/>
-    <field name="view_mode">list,form</field>
+    <field name="view_mode">list,form,calendar,graph</field>
     <field name="help" type="html">
       <p class="o_view_nocontent_smiling_face">Crea el primer préstamo</p>
     </field>

@@ -73,10 +73,22 @@
     </field>
   </record>
 
+  <record id="upoferia_material_pivot_view" model="ir.ui.view">
+    <field name="name">upoferia.material.pivot</field>
+    <field name="model">upoferia.material</field>
+    <field name="arch" type="xml">
+      <pivot string="Resumen de material">
+        <field name="categoria_material_id" type="row"/>
+        <field name="selEstadoConservacion" type="col"/>
+        <field name="iCantidadTotal" type="measure"/>
+      </pivot>
+    </field>
+  </record>
+
   <record id="upoferia_material_action" model="ir.actions.act_window">
     <field name="name">Materiales</field>
     <field name="res_model">upoferia.material</field>
-    <field name="view_mode">list,form,graph</field>
+    <field name="view_mode">list,form,graph,pivot</field>
     <field name="help" type="html">
       <p class="o_view_nocontent_smiling_face">Crea el primer material</p>
     </field>
