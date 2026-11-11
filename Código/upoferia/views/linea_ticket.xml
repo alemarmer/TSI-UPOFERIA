@@ -1,0 +1,74 @@
+<odoo>
+  <record id="upoferia_linea_ticket_form_view" model="ir.ui.view">
+    <field name="name">upoferia.linea_ticket.form</field>
+    <field name="model">upoferia.linea_ticket</field>
+    <field name="arch" type="xml">
+      <form string="Líneas de ticket">
+        <sheet layout="auto">
+          <group>
+            <group>
+              <field name="ticket_id" />
+              <field name="iNumeroLinea" />
+              <field name="producto_id" />
+            </group>
+            <group>
+              <field name="iCantidad" />
+              <field name="fPrecioUnitario" />
+            </group>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="upoferia_linea_ticket_list_view" model="ir.ui.view">
+    <field name="name">upoferia.linea_ticket.list</field>
+    <field name="model">upoferia.linea_ticket</field>
+    <field name="arch" type="xml">
+      <list string="Líneas de ticket">
+        <field name="ticket_id" />
+        <field name="iNumeroLinea" />
+        <field name="producto_id" />
+        <field name="iCantidad" sum="Total" />
+        <field name="fPrecioUnitario" />
+      </list>
+    </field>
+  </record>
+
+  <record id="upoferia_linea_ticket_graph_view" model="ir.ui.view">
+    <field name="name">upoferia.linea_ticket.graph</field>
+    <field name="model">upoferia.linea_ticket</field>
+    <field name="arch" type="xml">
+      <graph string="Productos vendidos" type="bar">
+        <field name="producto_id" />
+        <field name="iCantidad" type="measure" />
+      </graph>
+    </field>
+  </record>
+
+  <record id="upoferia_linea_ticket_search_view" model="ir.ui.view">
+    <field name="name">upoferia.linea_ticket.search</field>
+    <field name="model">upoferia.linea_ticket</field>
+    <field name="arch" type="xml">
+      <search>
+        <field name="ticket_id" />
+        <field name="producto_id" />
+        <separator orientation="vertical" />
+        <group expand="0" string="Agrupar por...">
+          <filter name="group_by_ticket" string="Ticket" context="{'group_by':'ticket_id'}" />
+          <filter name="group_by_producto" string="Producto" context="{'group_by':'producto_id'}" />
+        </group>
+      </search>
+    </field>
+  </record>
+
+  <record id="linea_ticket_list_action" model="ir.actions.act_window">
+    <field name="name">Líneas de ticket</field>
+    <field name="res_model">upoferia.linea_ticket</field>
+    <field name="search_view_id" ref="upoferia_linea_ticket_search_view" />
+    <field name="view_mode">list,form,graph</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">Crea la primera línea de ticket</p>
+    </field>
+  </record>
+</odoo>

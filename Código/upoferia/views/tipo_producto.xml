@@ -1,0 +1,72 @@
+<odoo>
+  <record id="upoferia_tipo_producto_form_view" model="ir.ui.view">
+    <field name="name">upoferia.tipo_producto.form</field>
+    <field name="model">upoferia.tipo_producto</field>
+    <field name="arch" type="xml">
+      <form string="Tipos de producto">
+        <sheet layout="auto">
+          <group>
+            <field name="sNombre" placeholder="Bebidas" />
+            <field name="padre_id" />
+          </group>
+          <notebook>
+            <page name="productos" string="Productos">
+              <field name="producto_ids" readonly="1" />
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="upoferia_tipo_producto_list_view" model="ir.ui.view">
+    <field name="name">upoferia.tipo_producto.list</field>
+    <field name="model">upoferia.tipo_producto</field>
+    <field name="arch" type="xml">
+      <list string="Tipos de producto">
+        <field name="sNombre" />
+        <field name="padre_id" />
+      </list>
+    </field>
+  </record>
+
+  <record id="upoferia_tipo_producto_kanban_view" model="ir.ui.view">
+    <field name="name">upoferia.tipo_producto.kanban</field>
+    <field name="model">upoferia.tipo_producto</field>
+    <field name="arch" type="xml">
+      <kanban string="Tipos de producto">
+        <templates>
+          <t t-name="card">
+            <field name="sNombre" class="fw-bold fs-5" />
+            <field name="padre_id" />
+          </t>
+        </templates>
+      </kanban>
+    </field>
+  </record>
+
+  <record id="upoferia_tipo_producto_search_view" model="ir.ui.view">
+    <field name="name">upoferia.tipo_producto.search</field>
+    <field name="model">upoferia.tipo_producto</field>
+    <field name="arch" type="xml">
+      <search>
+        <field name="sNombre" />
+        <field name="padre_id" />
+        <separator orientation="vertical" />
+        <group expand="0" string="Agrupar por...">
+          <filter name="group_by_padre" string="Tipo padre" context="{'group_by':'padre_id'}" />
+        </group>
+      </search>
+    </field>
+  </record>
+
+  <record id="tipo_producto_list_action" model="ir.actions.act_window">
+    <field name="name">Tipos de producto</field>
+    <field name="res_model">upoferia.tipo_producto</field>
+    <field name="search_view_id" ref="upoferia_tipo_producto_search_view" />
+    <field name="view_mode">list,form,kanban</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">Crea el primer tipo de producto</p>
+    </field>
+  </record>
+</odoo>
