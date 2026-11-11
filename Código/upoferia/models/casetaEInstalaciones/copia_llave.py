@@ -17,6 +17,13 @@ class CopiaLlave(models.Model):
     ], string='Estado', required=True, default='activa')
     dFechaEntrega = fields.Date(string='Fecha de entrega')
 
+    numero_y_fecha_inicio = fields.Many2one('upoferia.asignacion_taquilla', string='Asignación de taquilla', required=True)
+
+    _sql_constraints = [
+            ('asignacion_numero_copia_uniq', 'UNIQUE (asignacion_id, "iNumeroCopia")',
+             'Esa asignación ya tiene una copia con ese número.'),
+    ]
+
     @api.depends('iNumeroCopia')
     def _compute_display_name(self):
         oRegistro = None
