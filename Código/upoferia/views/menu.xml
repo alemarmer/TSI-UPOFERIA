@@ -1,71 +1,49 @@
 <odoo>
-    <menuitem name="UPO Feria" id="main_upoferia_menu" groups="group_upoferia_manager"/>
+  <menuitem name="Feria" id="main_upoferia_menu" groups="group_upoferia_manager" />
 
-    <menuitem name="Socios" id="upoferia_socios_menu" parent="main_upoferia_menu" groups="group_upoferia_manager"/>
-
-    <menuitem name="Socios" id="socios_menu" parent="upoferia_socios_menu" groups="group_upoferia_manager" action="upoferia_socios_socio_action"/>
-    <menuitem name="Beneficiario" id="beneficiario_menu" parent="upoferia_socios_menu" groups="group_upoferia_manager" action="upoferia_socios_beneficiario_action"/>
-    <menuitem name="Tipo de socio" id="tipo_socio_menu" parent="upoferia_socios_menu" groups="group_upoferia_manager" action="upoferia_socios_tipo_socio_action"/>
-    <menuitem name="Consentimiento biometrico" id="consentimiento_biometrico_menu" parent="upoferia_socios_menu" groups="group_upoferia_manager" action="upoferia_socios_consentimiento_biometrico_action"/>
-    <menuitem name="Invitacion de Acceso" id="invitacion_acceso_menu" parent="upoferia_socios_menu" groups="group_upoferia_manager" action="upoferia_socios_invitacion_acceso_action"/>
-    
-    <menuitem name="Control de acceso" id="upoferia_control_acceso_menu" parent="main_upoferia_menu" groups="group_upoferia_manager"/>
-
-    <menuitem name="Puntos de Acceso" id="puntos_acceso_menu" parent="upoferia_control_acceso_menu" groups="group_upoferia_manager" action="upoferia_control_accesos_punto_acceso_action"/>
-    <menuitem name="Control de Aforo" id="control_aforo_menu" parent="upoferia_control_acceso_menu" groups="group_upoferia_manager" action="upoferia_control_accesos_control_aforo_action"/>
-    <menuitem name="Incidencias de Puerta" id="incidencias_puerta_menu" parent="upoferia_control_acceso_menu" groups="group_upoferia_manager" action="upoferia_control_accesos_incidencia_puerta_action"/>
-    <menuitem name="Registros de Accesos" id="registros_accesos_menu" parent="upoferia_control_acceso_menu" groups="group_upoferia_manager" action="upoferia_control_accesos_registro_accesos_action"/>
-
-    <menuitem name="Turnos" id="upoferia_turnos_menu" parent="main_upoferia_menu" groups="group_upoferia_manager"/>
-
-    <menuitem name="Fichajes" id="fichajes_menu" parent="upoferia_turnos_menu" groups="group_upoferia_manager" action="upoferia_turnos_fichajes_action"/>
+  <menuitem name="Tesorería" id="tesoreria_menu" groups="group_upoferia_manager" parent="main_upoferia_menu" sequence="10" />
+  <menuitem name="Catálogos" id="catalogos_menu" groups="group_upoferia_manager" parent="main_upoferia_menu" sequence="20" />
+  <menuitem name="Barra" id="barra_menu" groups="group_upoferia_manager" parent="main_upoferia_menu" sequence="30" />
 
 
-  <menuitem name="Compras" id="compras_menu" groups="group_upoferia_manager" parent="main_upoferia_menu" sequence="10" />
-  <menuitem name="Proveedores" id="proveedores_menu" groups="group_upoferia_manager" parent="main_upoferia_menu" sequence="20" />
-  <menuitem name="Patrocinios" id="patrocinios_menu" groups="group_upoferia_manager" parent="main_upoferia_menu" sequence="30" />
+  <menuitem name="Movimientos" id="movimiento_menu" parent="tesoreria_menu" groups="group_upoferia_manager" action="movimiento_list_action" sequence="10" />
+  <menuitem name="Cuotas" id="cuota_menu" parent="tesoreria_menu" groups="group_upoferia_manager" action="cuota_list_action" sequence="20" />
+  <menuitem name="Presupuestos" id="presupuesto_menu" parent="tesoreria_menu" groups="group_upoferia_manager" action="presupuesto_list_action" sequence="30" />
+  <menuitem name="Líneas de presupuesto" id="linea_presupuesto_menu" parent="tesoreria_menu" groups="group_upoferia_manager" action="linea_presupuesto_list_action" sequence="40" />
+
+  <menuitem name="Tipos de cuota" id="tipo_cuota_menu" parent="catalogos_menu" groups="group_upoferia_manager" action="tipo_cuota_list_action" sequence="10" />
+  <menuitem name="Bonificaciones" id="bonificacion_menu" parent="catalogos_menu" groups="group_upoferia_manager" action="bonificacion_list_action" sequence="20" />
+  <menuitem name="Métodos de pago" id="metodo_pago_menu" parent="catalogos_menu" groups="group_upoferia_manager" action="metodo_pago_list_action" sequence="30" />
+  <menuitem name="Cajas" id="caja_menu" parent="catalogos_menu" groups="group_upoferia_manager" action="caja_list_action" sequence="40" />
+  <menuitem name="Cuentas bancarias" id="cuenta_bancaria_menu" parent="catalogos_menu" groups="group_upoferia_manager" action="cuenta_bancaria_list_action" sequence="50" />
+  <menuitem name="Categorías económicas" id="categoria_economica_menu" parent="catalogos_menu" groups="group_upoferia_manager" action="categoria_economica_list_action" sequence="60" />
+
+  <menuitem name="Tickets" id="ticket_menu" parent="barra_menu" groups="group_upoferia_manager" action="ticket_list_action" sequence="10" />
+  <menuitem name="Líneas de ticket" id="linea_ticket_menu" parent="barra_menu" groups="group_upoferia_manager" action="linea_ticket_list_action" sequence="20" />
+  <menuitem name="Productos" id="producto_menu" parent="barra_menu" groups="group_upoferia_manager" action="producto_list_action" sequence="30" />
+  <menuitem name="Tipos de producto" id="tipo_producto_menu" parent="barra_menu" groups="group_upoferia_manager" action="tipo_producto_list_action" sequence="40" />
+  <menuitem name="Tarifas" id="tarifa_menu" parent="barra_menu" groups="group_upoferia_manager" action="tarifa_list_action" sequence="50" />
+
+  <menuitem name="Tesorería" id="tesoreria_menu" groups="group_upoferia_manager" parent="main_upoferia_menu" sequence="10" />
+  <menuitem name="Catálogos" id="catalogos_menu" groups="group_upoferia_manager" parent="main_upoferia_menu" sequence="20" />
+  <menuitem name="Barra" id="barra_menu" groups="group_upoferia_manager" parent="main_upoferia_menu" sequence="30" />
 
 
-  <menuitem name="Transacciones" id="transaccion_menu" parent="compras_menu" groups="group_upoferia_manager" action="transaccion_list_action" sequence="10" />
-  <menuitem name="Líneas" id="linea_transaccion_menu" parent="compras_menu" groups="group_upoferia_manager" action="linea_transaccion_list_action" sequence="20" />
-  <menuitem name="Tipos de transacción" id="tipo_transaccion_menu" parent="compras_menu" groups="group_upoferia_manager" action="tipo_transaccion_list_action" sequence="30" />
+  <menuitem name="Movimientos" id="movimiento_menu" parent="tesoreria_menu" groups="group_upoferia_manager" action="movimiento_list_action" sequence="10" />
+  <menuitem name="Cuotas" id="cuota_menu" parent="tesoreria_menu" groups="group_upoferia_manager" action="cuota_list_action" sequence="20" />
+  <menuitem name="Presupuestos" id="presupuesto_menu" parent="tesoreria_menu" groups="group_upoferia_manager" action="presupuesto_list_action" sequence="30" />
+  <menuitem name="Líneas de presupuesto" id="linea_presupuesto_menu" parent="tesoreria_menu" groups="group_upoferia_manager" action="linea_presupuesto_list_action" sequence="40" />
 
-  <menuitem name="Proveedores" id="proveedor_menu" parent="proveedores_menu" groups="group_upoferia_manager" action="proveedor_list_action" sequence="10" />
-  <menuitem name="Categorías" id="categoria_proveedor_menu" parent="proveedores_menu" groups="group_upoferia_manager" action="categoria_proveedor_list_action" sequence="20" />
+  <menuitem name="Tipos de cuota" id="tipo_cuota_menu" parent="catalogos_menu" groups="group_upoferia_manager" action="tipo_cuota_list_action" sequence="10" />
+  <menuitem name="Bonificaciones" id="bonificacion_menu" parent="catalogos_menu" groups="group_upoferia_manager" action="bonificacion_list_action" sequence="20" />
+  <menuitem name="Métodos de pago" id="metodo_pago_menu" parent="catalogos_menu" groups="group_upoferia_manager" action="metodo_pago_list_action" sequence="30" />
+  <menuitem name="Cajas" id="caja_menu" parent="catalogos_menu" groups="group_upoferia_manager" action="caja_list_action" sequence="40" />
+  <menuitem name="Cuentas bancarias" id="cuenta_bancaria_menu" parent="catalogos_menu" groups="group_upoferia_manager" action="cuenta_bancaria_list_action" sequence="50" />
+  <menuitem name="Categorías económicas" id="categoria_economica_menu" parent="catalogos_menu" groups="group_upoferia_manager" action="categoria_economica_list_action" sequence="60" />
 
-  <menuitem name="Marcas" id="marca_menu" parent="patrocinios_menu" groups="group_upoferia_manager" action="marca_list_action" sequence="10" />
-  <menuitem name="Patrocinios" id="patrocinio_menu" parent="patrocinios_menu" groups="group_upoferia_manager" action="patrocinio_list_action" sequence="20" />
-  <menuitem name="Exhibiciones" id="exhibicion_marca_menu" parent="patrocinios_menu" groups="group_upoferia_manager" action="exhibicion_marca_list_action" sequence="30" />
-  <menuitem name="Espacios publicitarios" id="espacio_publicitario_menu" parent="patrocinios_menu" groups="group_upoferia_manager" action="espacio_publicitario_list_action" sequence="40" />
-  <menuitem name="Servicios" id="servicio_menu" parent="patrocinios_menu" groups="group_upoferia_manager" action="servicio_list_action" sequence="50" />
-  <menuitem name="Tarifas" id="servicio_proveedor_menu" parent="patrocinios_menu" groups="group_upoferia_manager" action="servicio_proveedor_list_action" sequence="60" />
-  <menuitem name="Técnicos" id="tecnico_menu" parent="patrocinios_menu" groups="group_upoferia_manager" action="tecnico_list_action" sequence="70" />
-
-
-  <menuitem id="upoferia_menu_eventos" name="Eventos" parent="main_upoferia_menu" sequence="10"/>
-  <menuitem id="upoferia_menu_evento" name="Eventos" parent="upoferia_menu_eventos"
-            action="upoferia_evento_action" sequence="10"/>
-  <menuitem id="upoferia_menu_actuacion" name="Actuaciones" parent="upoferia_menu_eventos"
-            action="upoferia_actuacion_action" sequence="20"/>
-  <menuitem id="upoferia_menu_concurso" name="Concursos" parent="upoferia_menu_eventos"
-            action="upoferia_concurso_action" sequence="30"/>
-  <menuitem id="upoferia_menu_concurso_abiertos" name="Concursos abiertos" parent="upoferia_menu_eventos"
-            action="upoferia_concurso_abiertos_action" sequence="35"/>
-  <menuitem id="upoferia_menu_reserva" name="Reservas" parent="upoferia_menu_eventos"
-            action="upoferia_reserva_action" sequence="40"/>
-
-  <menuitem id="upoferia_menu_artista" name="Artistas" parent="main_upoferia_menu"
-            action="upoferia_artista_action" sequence="20"/>
-
-  <menuitem id="upoferia_menu_caballos" name="Caballos y enganches" parent="main_upoferia_menu" sequence="30"/>
-  <menuitem id="upoferia_menu_caballo" name="Caballos" parent="upoferia_menu_caballos"
-            action="upoferia_caballo_action" sequence="10"/>
-  <menuitem id="upoferia_menu_carruaje" name="Carruajes" parent="upoferia_menu_caballos"
-            action="upoferia_carruaje_action" sequence="20"/>
-  <menuitem id="upoferia_menu_salida" name="Salidas" parent="upoferia_menu_caballos"
-            action="upoferia_salida_action" sequence="30"/>
-
-  <menuitem id="upoferia_menu_config" name="Configuración" parent="main_upoferia_menu" sequence="90"/>
-  <menuitem id="upoferia_menu_tipo_evento" name="Tipos de evento" parent="upoferia_menu_config"
-            action="upoferia_tipo_evento_action" sequence="10"/>
+  <menuitem name="Tickets" id="ticket_menu" parent="barra_menu" groups="group_upoferia_manager" action="ticket_list_action" sequence="10" />
+  <menuitem name="Líneas de ticket" id="linea_ticket_menu" parent="barra_menu" groups="group_upoferia_manager" action="linea_ticket_list_action" sequence="20" />
+  <menuitem name="Productos" id="producto_menu" parent="barra_menu" groups="group_upoferia_manager" action="producto_list_action" sequence="30" />
+  <menuitem name="Tipos de producto" id="tipo_producto_menu" parent="barra_menu" groups="group_upoferia_manager" action="tipo_producto_list_action" sequence="40" />
+  <menuitem name="Tarifas" id="tarifa_menu" parent="barra_menu" groups="group_upoferia_manager" action="tarifa_list_action" sequence="50" />
 </odoo>

@@ -22,7 +22,7 @@ class Cuota(models.Model):
     bonificacion_id = fields.Many2one('upoferia.bonificacion', string="Bonificación")
     movimiento_ids = fields.One2many('upoferia.movimiento', 'cuota_id', string="Movimientos")
     # Relaciones con modelos de otro grupo
-    socio_id = fields.Many2one('upoferia.socio', string="Socio", required=True)  # SOCIO (dni_socio)
+    socio_id = fields.Many2one('upoferia.socios.socio', string="Socio", required=True)  # SOCIO (dni_socio)
 
     _sql_constraints = [
         ('referencia_unique', 'UNIQUE("sReferencia")', 'Ya existe una cuota con esa referencia.'),

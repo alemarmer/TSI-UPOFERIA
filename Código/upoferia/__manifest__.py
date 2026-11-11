@@ -4,7 +4,9 @@
 
     'summary': "Gestión del modulo de UPOFERIA",
 
-    'description': """Gestion de transacciones con proveedores, categorias de proveedor, marcas, patrocinios, exhibiciones, espacios publicitarios, servicios y tecnicos.""",
+    'description': """
+    Gestion de transacciones con proveedores, categorias de proveedor, marcas, patrocinios, exhibiciones, espacios publicitarios, servicios y tecnicos.
+    Gestion de tesoreria: movimientos, cuotas, presupuestos, cajas, cuentas bancarias, metodos de pago, tickets y productos de barra.""",
 
     'author': "TSI - UPOFERIA",
     'website': "https://www.upo.es",
@@ -98,6 +100,22 @@
         'views/punto_control_view.xml',
         'views/incidencia_view.xml',
         'views/mantenimiento_view.xml',
+        # Tesorería - Carlos
+        'views/tesoreria/movimiento_view.xml',
+        'views/tesoreria/cuota_view.xml',
+        'views/tesoreria/presupuesto_view.xml',
+        'views/tesoreria/linea_presupuesto_view.xml',
+        'views/tesoreria/tipo_cuota_view.xml',
+        'views/tesoreria/bonificacion_view.xml',
+        'views/tesoreria/metodo_pago_view.xml',
+        'views/tesoreria/caja_view.xml',
+        'views/tesoreria/cuenta_bancaria_view.xml',
+        'views/tesoreria/categoria_economica_view.xml',
+        'views/tesoreria/ticket_view.xml',
+        'views/tesoreria/linea_ticket_view.xml',
+        'views/tesoreria/producto_view.xml',
+        'views/tesoreria/tipo_producto_view.xml',
+        'views/tesoreria/tarifa_view.xml',
         'views/menu.xml',
     ],
     # only loaded in demonstration mode

@@ -13,3 +13,4 @@ from . import montaje
 from . import material
 from . import casetaEInstalaciones
 from . import inspeccionesEIncidencias
+from . import tesoreria
