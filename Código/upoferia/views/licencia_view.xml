@@ -17,6 +17,7 @@
             <field name="dFechaCaducidad" />
             <field name="bVigente" />
             <field name="sDocumento" />
+            <field name="num_registro" widget="many2one" />
           </group>
         </sheet>
       </form>
@@ -36,6 +37,7 @@
         <field name="dFechaCaducidad" />
         <field name="sEstado" />
         <field name="bVigente" />
+        <field name="num_registro" widget="many2one" />
       </list>
     </field>
   </record>
