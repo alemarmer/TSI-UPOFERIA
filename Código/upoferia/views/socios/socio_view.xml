@@ -39,11 +39,22 @@
         </field>
     </record>
 
+    <!-- Vista Gráfico -->
+    <record id="upoferia_socios_socio_graph_view" model="ir.ui.view">
+        <field name="name">upoferia.socios.socio.graph</field>
+        <field name="model">upoferia.socios.socio</field>
+        <field name="arch" type="xml">
+            <graph string="Socios" type="pie">
+                <field name="tipo_socio_id"/>
+            </graph>
+        </field>
+    </record>
+
     <!-- Acción de Ventana -->
     <record id="upoferia_socios_socio_action" model="ir.actions.act_window">
         <field name="name">Socios</field>
         <field name="res_model">upoferia.socios.socio</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">list,form,graph</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Crea el primer socio de la caseta
