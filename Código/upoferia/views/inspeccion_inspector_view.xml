@@ -6,8 +6,8 @@
       <form string="Inspectores de inspección">
         <sheet layout="auto">
           <group>
-            <field name="inspeccion_id" />
-            <field name="inspector_id" />
+            <field name="inspeccion_id" widget="many2one" />
+            <field name="inspector_id" widget="many2one" />
             <field name="sRol" />
           </group>
         </sheet>
@@ -20,8 +20,8 @@
     <field name="model">upoferia.inspeccion_inspector</field>
     <field name="arch" type="xml">
       <list string="Inspectores de inspección">
-        <field name="inspeccion_id" />
-        <field name="inspector_id" />
+        <field name="inspeccion_id" widget="many2one" />
+        <field name="inspector_id" widget="many2one" />
         <field name="sRol" />
       </list>
     </field>
