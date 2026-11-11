@@ -1,0 +1,85 @@
+<odoo>
+
+  <!-- Vistas de Préstamo -->
+  <record id="upoferia_prestamo_list_view" model="ir.ui.view">
+    <field name="name">upoferia.prestamo.list</field>
+    <field name="model">upoferia.prestamo</field>
+    <field name="arch" type="xml">
+      <list string="Préstamos">
+        <field name="sReferencia"/>
+        <field name="dFechaInicio"/>
+        <field name="dFechaFinPrevista"/>
+        <field name="dFechaDevolucion"/>
+        <field name="selEstado"/>
+        <field name="fImporte"/>
+        <field name="sResponsable"/>
+      </list>
+    </field>
+  </record>
+
+  <record id="upoferia_prestamo_form_view" model="ir.ui.view">
+    <field name="name">upoferia.prestamo.form</field>
+    <field name="model">upoferia.prestamo</field>
+    <field name="arch" type="xml">
+      <form string="Préstamo">
+        <header>
+          <button name="btn_submit_to_solicitado" string="Solicitar" type="object" class="oe_highlight"/>
+          <button name="btn_submit_to_en_curso" string="Iniciar préstamo" type="object" class="oe_highlight"/>
+          <button name="btn_submit_to_devuelto" string="Marcar devuelto" type="object" class="oe_highlight"/>
+          <field name="selEstado" widget="statusbar"/>
+        </header>
+        <sheet>
+          <group>
+            <group string="Préstamo">
+              <field name="sReferencia"/>
+              <field name="sResponsable"/>
+              <field name="fImporte"/>
+            </group>
+            <group string="Fechas">
+              <field name="dFechaInicio"/>
+              <field name="dFechaFinPrevista"/>
+              <field name="dFechaDevolucion"/>
+            </group>
+          </group>
+          <notebook>
+            <page name="lineas" string="Líneas">
+              <field name="prestamo_linea_ids">
+                <list>
+                  <field name="material_id"/>
+                  <field name="iCantidad"/>
+                  <field name="iCantidadDevuelta"/>
+                  <field name="selEstadoDevolucion"/>
+                </list>
+              </field>
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="upoferia_prestamo_search_view" model="ir.ui.view">
+    <field name="name">upoferia.prestamo.search</field>
+    <field name="model">upoferia.prestamo</field>
+    <field name="arch" type="xml">
+      <search>
+        <field name="sReferencia"/>
+        <filter name="search_en_curso" string="En curso" domain="[('selEstado','=','en_curso')]"/>
+        <group expand="0" string="Agrupar por...">
+          <filter name="group_by_estado" string="Estado" context="{'group_by':'selEstado'}"/>
+        </group>
+      </search>
+    </field>
+  </record>
+
+  <record id="upoferia_prestamo_action" model="ir.actions.act_window">
+    <field name="name">Préstamos</field>
+    <field name="res_model">upoferia.prestamo</field>
+    <field name="search_view_id" ref="upoferia_prestamo_search_view"/>
+    <field name="view_mode">list,form</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">Crea el primer préstamo</p>
+    </field>
+  </record>
+
+</odoo>

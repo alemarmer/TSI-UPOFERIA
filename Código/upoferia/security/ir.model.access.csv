@@ -63,3 +63,13 @@ access_linea_ticket,linea_ticket,model_upoferia_linea_ticket,base.group_user,1,1
 access_producto,producto,model_upoferia_producto,base.group_user,1,1,1,1
 access_tipo_producto,tipo_producto,model_upoferia_tipo_producto,base.group_user,1,1,1,1
 access_tarifa,tarifa,model_upoferia_tarifa,base.group_user,1,1,1,1
+access_categoria_material,categoria_material,model_upoferia_categoria_material,base.group_user,1,1,1,1
+access_material,material,model_upoferia_material,base.group_user,1,1,1,1
+access_uso_material,uso_material,model_upoferia_uso_material,base.group_user,1,1,1,1
+access_prestamo,prestamo,model_upoferia_prestamo,base.group_user,1,1,1,1
+access_prestamo_linea,prestamo_linea,model_upoferia_prestamo_linea,base.group_user,1,1,1,1
+access_cuadrilla,cuadrilla,model_upoferia_cuadrilla,base.group_user,1,1,1,1
+access_plan_montaje,plan_montaje,model_upoferia_plan_montaje,base.group_user,1,1,1,1
+access_fase_montaje,fase_montaje,model_upoferia_fase_montaje,base.group_user,1,1,1,1
+access_tarea_montaje,tarea_montaje,model_upoferia_tarea_montaje,base.group_user,1,1,1,1
+access_transporte,transporte,model_upoferia_transporte,base.group_user,1,1,1,1

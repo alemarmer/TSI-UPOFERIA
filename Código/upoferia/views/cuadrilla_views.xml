@@ -1,0 +1,54 @@
+<odoo>
+
+  <!-- Vistas de Cuadrilla -->
+  <record id="upoferia_cuadrilla_list_view" model="ir.ui.view">
+    <field name="name">upoferia.cuadrilla.list</field>
+    <field name="model">upoferia.cuadrilla</field>
+    <field name="arch" type="xml">
+      <list string="Cuadrillas">
+        <field name="sNombre"/>
+        <field name="sEspecialidad"/>
+        <field name="bActiva"/>
+      </list>
+    </field>
+  </record>
+
+  <record id="upoferia_cuadrilla_form_view" model="ir.ui.view">
+    <field name="name">upoferia.cuadrilla.form</field>
+    <field name="model">upoferia.cuadrilla</field>
+    <field name="arch" type="xml">
+      <form string="Cuadrilla">
+        <sheet>
+          <group>
+            <group string="Cuadrilla">
+              <field name="sNombre"/>
+              <field name="sEspecialidad"/>
+              <field name="bActiva"/>
+            </group>
+          </group>
+          <notebook>
+            <page name="tareas" string="Tareas de montaje">
+              <field name="tarea_montaje_ids">
+                <list>
+                  <field name="sNombre"/>
+                  <field name="fase_montaje_id"/>
+                  <field name="selEstado"/>
+                </list>
+              </field>
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="upoferia_cuadrilla_action" model="ir.actions.act_window">
+    <field name="name">Cuadrillas</field>
+    <field name="res_model">upoferia.cuadrilla</field>
+    <field name="view_mode">list,form</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">Crea la primera cuadrilla</p>
+    </field>
+  </record>
+
+</odoo>

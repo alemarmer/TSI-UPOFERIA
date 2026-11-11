@@ -1,0 +1,49 @@
+<odoo>
+
+  <!-- Vistas de Línea de préstamo -->
+  <record id="upoferia_prestamo_linea_list_view" model="ir.ui.view">
+    <field name="name">upoferia.prestamo_linea.list</field>
+    <field name="model">upoferia.prestamo_linea</field>
+    <field name="arch" type="xml">
+      <list string="Líneas de préstamo">
+        <field name="prestamo_id"/>
+        <field name="material_id"/>
+        <field name="iCantidad"/>
+        <field name="iCantidadDevuelta"/>
+        <field name="selEstadoDevolucion"/>
+      </list>
+    </field>
+  </record>
+
+  <record id="upoferia_prestamo_linea_form_view" model="ir.ui.view">
+    <field name="name">upoferia.prestamo_linea.form</field>
+    <field name="model">upoferia.prestamo_linea</field>
+    <field name="arch" type="xml">
+      <form string="Línea de préstamo">
+        <sheet>
+          <group>
+            <group string="Línea">
+              <field name="prestamo_id"/>
+              <field name="material_id"/>
+            </group>
+            <group string="Devolución">
+              <field name="iCantidad"/>
+              <field name="iCantidadDevuelta"/>
+              <field name="selEstadoDevolucion" readonly="1"/>
+            </group>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="upoferia_prestamo_linea_action" model="ir.actions.act_window">
+    <field name="name">Líneas de préstamo</field>
+    <field name="res_model">upoferia.prestamo_linea</field>
+    <field name="view_mode">list,form</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">Añade la primera línea a un préstamo</p>
+    </field>
+  </record>
+
+</odoo>

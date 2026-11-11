@@ -1,0 +1,75 @@
+<odoo>
+
+  <!-- Vistas de Transporte -->
+  <record id="upoferia_transporte_list_view" model="ir.ui.view">
+    <field name="name">upoferia.transporte.list</field>
+    <field name="model">upoferia.transporte</field>
+    <field name="arch" type="xml">
+      <list string="Transportes">
+        <field name="sNumero"/>
+        <field name="dtFechaPrevista"/>
+        <field name="dtFechaRealizada"/>
+        <field name="selEstado"/>
+        <field name="sUbicacionOrigen"/>
+        <field name="sUbicacionDestino"/>
+        <field name="tarea_montaje_id"/>
+      </list>
+    </field>
+  </record>
+
+  <record id="upoferia_transporte_form_view" model="ir.ui.view">
+    <field name="name">upoferia.transporte.form</field>
+    <field name="model">upoferia.transporte</field>
+    <field name="arch" type="xml">
+      <form string="Transporte">
+        <header>
+          <field name="selEstado" widget="statusbar" options="{'clickable': '1'}"/>
+        </header>
+        <sheet>
+          <group>
+            <group string="Transporte">
+              <field name="sNumero"/>
+              <field name="tarea_montaje_id"/>
+              <field name="sTipoOperacion"/>
+            </group>
+            <group string="Fechas y ubicaciones">
+              <field name="dtFechaPrevista"/>
+              <field name="dtFechaRealizada"/>
+              <field name="sUbicacionOrigen"/>
+              <field name="sUbicacionDestino"/>
+            </group>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="upoferia_transporte_kanban_view" model="ir.ui.view">
+    <field name="name">upoferia.transporte.kanban</field>
+    <field name="model">upoferia.transporte</field>
+    <field name="arch" type="xml">
+      <kanban default_group_by="selEstado" quick_create="false">
+        <templates>
+          <t t-name="card">
+            <field name="sNumero" class="fw-bold"/>
+            <field name="tarea_montaje_id"/>
+            <div>
+              <field name="sUbicacionOrigen"/> → <field name="sUbicacionDestino"/>
+            </div>
+            <field name="dtFechaPrevista"/>
+          </t>
+        </templates>
+      </kanban>
+    </field>
+  </record>
+
+  <record id="upoferia_transporte_action" model="ir.actions.act_window">
+    <field name="name">Transportes</field>
+    <field name="res_model">upoferia.transporte</field>
+    <field name="view_mode">kanban,list,form</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">Crea el primer transporte</p>
+    </field>
+  </record>
+
+</odoo>

@@ -1,0 +1,111 @@
+<odoo>
+
+  <!-- Vistas de Tarea de montaje -->
+  <record id="upoferia_tarea_montaje_list_view" model="ir.ui.view">
+    <field name="name">upoferia.tarea_montaje.list</field>
+    <field name="model">upoferia.tarea_montaje</field>
+    <field name="arch" type="xml">
+      <list string="Tareas de montaje">
+        <field name="plan_montaje_id" />
+        <field name="fase_montaje_id" />
+        <field name="sNombre" />
+        <field name="dFechaInicio" />
+        <field name="dFechaLimite" />
+        <field name="selPrioridad" />
+        <field name="selEstado" />
+        <field name="cuadrilla_id" />
+      </list>
+    </field>
+  </record>
+
+  <record id="upoferia_tarea_montaje_form_view" model="ir.ui.view">
+    <field name="name">upoferia.tarea_montaje.form</field>
+    <field name="model">upoferia.tarea_montaje</field>
+    <field name="arch" type="xml">
+      <form string="Tarea de montaje">
+        <header>
+          <button name="btn_submit_to_pendiente" string="Pendiente" type="object" class="oe_highlight" />
+          <button name="btn_submit_to_en_curso" string="Empezar" type="object" class="oe_highlight" />
+          <button name="btn_submit_to_hecha" string="Terminar" type="object" class="oe_highlight" />
+          <field name="selEstado" widget="statusbar" />
+        </header>
+        <sheet>
+          <group>
+            <group string="Tarea">
+              <field name="fase_montaje_id" />
+              <field name="plan_montaje_id" readonly="1" />
+              <field name="sNombre" />
+              <field name="cuadrilla_id" />
+            </group>
+            <group string="Planificación">
+              <field name="selPrioridad" />
+              <field name="dFechaInicio" />
+              <field name="dFechaLimite" />
+              <field name="fHorasPrevistas" />
+            </group>
+          </group>
+          <notebook>
+            <page name="transportes" string="Transportes">
+              <field name="transporte_ids">
+                <list>
+                  <field name="sNumero" />
+                  <field name="dtFechaPrevista" />
+                  <field name="selEstado" />
+                </list>
+              </field>
+            </page>
+            <page name="material" string="Material utilizado">
+              <field name="uso_material_ids">
+                <list>
+                  <field name="material_id" />
+                  <field name="iCantidad" />
+                </list>
+              </field>
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="upoferia_tarea_montaje_calendar_view" model="ir.ui.view">
+    <field name="name">upoferia.tarea_montaje.calendar</field>
+    <field name="model">upoferia.tarea_montaje</field>
+    <field name="arch" type="xml">
+      <calendar string="Calendario de tareas" date_start="dFechaInicio" date_stop="dFechaLimite"
+        color="cuadrilla_id" mode="month" quick_create="0">
+        <field name="sNombre" />
+        <field name="fase_montaje_id" />
+        <field name="cuadrilla_id" filters="1" />
+        <field name="selPrioridad" />
+        <field name="selEstado" />
+      </calendar>
+    </field>
+  </record>
+
+  <record id="upoferia_tarea_montaje_search_view" model="ir.ui.view">
+    <field name="name">upoferia.tarea_montaje.search</field>
+    <field name="model">upoferia.tarea_montaje</field>
+    <field name="arch" type="xml">
+      <search>
+        <field name="sNombre" />
+        <filter name="search_pendientes" string="Pendientes" domain="[('selEstado','=','pendiente')]" />
+        <filter name="search_prioridad_alta" string="Prioridad alta" domain="[('selPrioridad','=','alta')]" />
+        <group expand="0" string="Agrupar por...">
+          <filter name="group_by_cuadrilla" string="Cuadrilla" context="{'group_by':'cuadrilla_id'}" />
+        </group>
+      </search>
+    </field>
+  </record>
+
+  <record id="upoferia_tarea_montaje_action" model="ir.actions.act_window">
+    <field name="name">Tareas de montaje</field>
+    <field name="res_model">upoferia.tarea_montaje</field>
+    <field name="search_view_id" ref="upoferia_tarea_montaje_search_view" />
+    <field name="view_mode">list,form,calendar</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">Crea la primera tarea de montaje</p>
+    </field>
+  </record>
+
+</odoo>

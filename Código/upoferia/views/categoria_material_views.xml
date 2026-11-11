@@ -1,0 +1,58 @@
+<odoo>
+
+  <!-- Vistas de Categoría de material -->
+  <record id="upoferia_categoria_material_list_view" model="ir.ui.view">
+    <field name="name">upoferia.categoria_material.list</field>
+    <field name="model">upoferia.categoria_material</field>
+    <field name="arch" type="xml">
+      <list string="Categorías de material">
+        <field name="sNombre"/>
+        <field name="padre_id"/>
+      </list>
+    </field>
+  </record>
+
+  <record id="upoferia_categoria_material_form_view" model="ir.ui.view">
+    <field name="name">upoferia.categoria_material.form</field>
+    <field name="model">upoferia.categoria_material</field>
+    <field name="arch" type="xml">
+      <form string="Categoría de material">
+        <sheet>
+          <group>
+            <group string="Categoría">
+              <field name="sNombre"/>
+              <field name="padre_id"/>
+            </group>
+          </group>
+          <notebook>
+            <page name="subcategorias" string="Subcategorías">
+              <field name="hijo_ids">
+                <list>
+                  <field name="sNombre"/>
+                </list>
+              </field>
+            </page>
+            <page name="materiales" string="Materiales">
+              <field name="material_ids">
+                <list>
+                  <field name="sCodigoInterno"/>
+                  <field name="sNombre"/>
+                </list>
+              </field>
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="upoferia_categoria_material_action" model="ir.actions.act_window">
+    <field name="name">Categorías de material</field>
+    <field name="res_model">upoferia.categoria_material</field>
+    <field name="view_mode">list,form</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">Crea la primera categoría de material</p>
+    </field>
+  </record>
+
+</odoo>

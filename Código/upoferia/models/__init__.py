@@ -9,3 +9,5 @@ from . import patrocinios
 from . import programacionEventos
 from . import concursos
 from . import caballosCarruajes
+from . import montaje
+from . import material

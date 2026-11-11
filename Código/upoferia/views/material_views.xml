@@ -1,0 +1,85 @@
+<odoo>
+
+  <!-- Vistas de Material -->
+  <record id="upoferia_material_list_view" model="ir.ui.view">
+    <field name="name">upoferia.material.list</field>
+    <field name="model">upoferia.material</field>
+    <field name="arch" type="xml">
+      <list string="Materiales">
+        <field name="sCodigoInterno"/>
+        <field name="sNombre"/>
+        <field name="categoria_material_id"/>
+        <field name="selTipoPropiedad"/>
+        <field name="iCantidadTotal"/>
+        <field name="selEstadoConservacion"/>
+      </list>
+    </field>
+  </record>
+
+  <record id="upoferia_material_form_view" model="ir.ui.view">
+    <field name="name">upoferia.material.form</field>
+    <field name="model">upoferia.material</field>
+    <field name="arch" type="xml">
+      <form string="Material">
+        <sheet>
+          <group>
+            <group string="Material">
+              <field name="sCodigoInterno"/>
+              <field name="sNombre"/>
+              <field name="categoria_material_id"/>
+              <field name="selTipoPropiedad"/>
+            </group>
+            <group string="Inventario">
+              <field name="iCantidadTotal"/>
+              <field name="selEstadoConservacion"/>
+              <field name="dFechaAdquisicion"/>
+              <field name="sObservaciones"/>
+            </group>
+          </group>
+          <notebook>
+            <page name="usos" string="Usos en tareas">
+              <field name="uso_material_ids">
+                <list>
+                  <field name="tarea_montaje_id"/>
+                  <field name="iCantidad"/>
+                </list>
+              </field>
+            </page>
+            <page name="prestamos" string="Préstamos">
+              <field name="prestamo_linea_ids">
+                <list>
+                  <field name="prestamo_id"/>
+                  <field name="iCantidad"/>
+                  <field name="iCantidadDevuelta"/>
+                  <field name="selEstadoDevolucion"/>
+                </list>
+              </field>
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="upoferia_material_graph_view" model="ir.ui.view">
+    <field name="name">upoferia.material.graph</field>
+    <field name="model">upoferia.material</field>
+    <field name="arch" type="xml">
+      <graph string="Cantidad de material por categoría" type="bar">
+        <field name="categoria_material_id"/>
+        <field name="selEstadoConservacion"/>
+        <field name="iCantidadTotal" type="measure"/>
+      </graph>
+    </field>
+  </record>
+
+  <record id="upoferia_material_action" model="ir.actions.act_window">
+    <field name="name">Materiales</field>
+    <field name="res_model">upoferia.material</field>
+    <field name="view_mode">list,form,graph</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">Crea el primer material</p>
+    </field>
+  </record>
+
+</odoo>
