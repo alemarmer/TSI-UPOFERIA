@@ -22,6 +22,7 @@ Long description of module's purpose
 
     # always loaded
     'data': [
+        'security/security.xml',
         'security/ir.model.access.csv',
         'views/caseta_view.xml',
         'views/zona_caseta_view.xml',
