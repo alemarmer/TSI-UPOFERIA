@@ -83,6 +83,23 @@
     </field>
   </record>
 
+  <record id="upoferia_tarea_montaje_kanban_view" model="ir.ui.view">
+    <field name="name">upoferia.tarea_montaje.kanban</field>
+    <field name="model">upoferia.tarea_montaje</field>
+    <field name="arch" type="xml">
+      <kanban default_group_by="selEstado" quick_create="false">
+        <templates>
+          <t t-name="card">
+            <field name="sNombre" class="fw-bold" />
+            <field name="fase_montaje_id" />
+            <field name="cuadrilla_id" />
+            <field name="dFechaLimite" />
+          </t>
+        </templates>
+      </kanban>
+    </field>
+  </record>
+
   <record id="upoferia_tarea_montaje_search_view" model="ir.ui.view">
     <field name="name">upoferia.tarea_montaje.search</field>
     <field name="model">upoferia.tarea_montaje</field>
@@ -102,7 +119,7 @@
     <field name="name">Tareas de montaje</field>
     <field name="res_model">upoferia.tarea_montaje</field>
     <field name="search_view_id" ref="upoferia_tarea_montaje_search_view" />
-    <field name="view_mode">list,form,calendar</field>
+    <field name="view_mode">list,form,calendar,kanban</field>
     <field name="help" type="html">
       <p class="o_view_nocontent_smiling_face">Crea la primera tarea de montaje</p>
     </field>
