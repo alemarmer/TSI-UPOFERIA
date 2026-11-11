@@ -1,0 +1,115 @@
+<odoo>
+  <record id="upoferia_caseta_form_view" model="ir.ui.view">
+    <field name="name">upoferia.caseta.form</field>
+    <field name="model">upoferia.caseta</field>
+    <field name="arch" type="xml">
+      <form string="Casetas">
+        <sheet layout="auto">
+          <group>
+            <group string="Datos de la caseta">
+              <field name="sNombre" />
+              <field name="sCalle" />
+              <field name="sNumero" placeholder="Ej. 12, 12B o 45-47" />
+            </group>
+            <group string="Capacidad y horario">
+              <field name="iModulos" />
+              <field name="iAforoAutorizado" />
+              <field name="fHoraApertura" widget="float_time" />
+              <field name="fHoraCierre" widget="float_time" />
+            </group>
+          </group>
+          <notebook>
+            <page string="Zonas" name="zonas">
+              <field name="zona_ids">
+                <list editable="bottom">
+                  <field name="sNombre" />
+                  <field name="sTipo" />
+                  <field name="fSuperficieM2" />
+                </list>
+              </field>
+            </page>
+            <page string="Mobiliario" name="mobiliario">
+              <field name="mobiliario_ids">
+                <list editable="bottom">
+                  <field name="sNumeroSerie" />
+                  <field name="sNombre" />
+                  <field name="dFechaAsignacion" />
+                  <field name="fCoste" />
+                </list>
+              </field>
+            </page>
+            <page string="Licencias" name="licencias">
+              <field name="licencia_ids">
+                <list>
+                  <field name="sNumeroExpediente" />
+                  <field name="sTipo" />
+                  <field name="dFechaConcesion" />
+                  <field name="dFechaCaducidad" />
+                  <field name="sEstado" widget="badge" />
+                  <field name="bVigente" />
+                </list>
+              </field>
+            </page>
+            <page string="Inspecciones" name="inspecciones">
+              <field name="inspeccion_ids">
+                <list>
+                  <field name="sReferencia" />
+                  <field name="sTipo" />
+                  <field name="dFecha" />
+                  <field name="sEstado" widget="badge" />
+                  <field name="sResultado" />
+                </list>
+              </field>
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="upoferia_caseta_list_view" model="ir.ui.view">
+    <field name="name">upoferia.caseta.list</field>
+    <field name="model">upoferia.caseta</field>
+    <field name="arch" type="xml">
+      <list string="Casetas">
+        <field name="sNombre" />
+        <field name="sCalle" />
+        <field name="sNumero" />
+        <field name="iModulos" />
+        <field name="iAforoAutorizado" />
+        <field name="fHoraApertura" widget="float_time" />
+        <field name="fHoraCierre" widget="float_time" />
+      </list>
+    </field>
+  </record>
+
+  <record id="upoferia_caseta_kanban_view" model="ir.ui.view">
+    <field name="name">upoferia.caseta.kanban</field>
+    <field name="model">upoferia.caseta</field>
+    <field name="arch" type="xml">
+      <kanban string="Casetas">
+        <templates>
+          <t t-name="card">
+            <field name="sNombre" class="fw-bold fs-5" />
+            <div>
+              <field name="sCalle" /> <field name="sNumero" />
+            </div>
+            <footer>
+              <span>Aforo: <field name="iAforoAutorizado" /></span>
+              <span class="ms-auto">Módulos: <field name="iModulos" /></span>
+            </footer>
+          </t>
+        </templates>
+      </kanban>
+    </field>
+  </record>
+
+  <record id="caseta_list_action" model="ir.actions.act_window">
+    <field name="name">Casetas</field>
+    <field name="res_model">upoferia.caseta</field>
+    <field name="view_mode">list,form,kanban</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">Crea la primera caseta</p>
+    </field>
+  </record>
+</odoo>
