@@ -14,7 +14,7 @@ class LineaTicket(models.Model):
     ticket_id = fields.Many2one('upoferia.ticket', string="Ticket", required=True)
     producto_id = fields.Many2one('upoferia.producto', string="Producto", required=True)
     # Relaciones con modelos de otro grupo
-    # PENDIENTE (modelo no existe): registro_xp_id = fields.Many2one('upoferia.registro_xp', string="Registro de XP")  # REGISTRO_XP (nombre_temporada_pase, dni_socio)
+    registro_xp_id = fields.Many2one('upoferia.registro_xp', string="Registro de XP")  # REGISTRO_XP (nombre_temporada_pase, dni_socio)
 
     _sql_constraints = [
         ('numero_linea_ticket_unique', 'UNIQUE("ticket_id", "iNumeroLinea")',
