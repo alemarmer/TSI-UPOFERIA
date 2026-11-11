@@ -1,12 +1,26 @@
-<?xml version="1.0" encoding="utf-8"?>
 <odoo>
+  <menuitem name="Feria" id="main_upoferia_menu" groups="group_upoferia_manager" />
 
-    <!-- Top menu item -->
-    <menuitem name="UPO Feria" id="main_upoferia_menu"/>
+  <menuitem name="Tesorería" id="tesoreria_menu" groups="group_upoferia_manager" parent="main_upoferia_menu" sequence="10" />
+  <menuitem name="Catálogos" id="catalogos_menu" groups="group_upoferia_manager" parent="main_upoferia_menu" sequence="20" />
+  <menuitem name="Barra" id="barra_menu" groups="group_upoferia_manager" parent="main_upoferia_menu" sequence="30" />
 
-    <!-- menu categories -->
-    <menuitem name="Tesorería" id="tesoreria_menu" parent="main_upoferia_menu" sequence="10"/>
-    <menuitem name="Catálogos" id="catalogos_menu" parent="main_upoferia_menu" sequence="20"/>
-    <menuitem name="Barra" id="barra_menu" parent="main_upoferia_menu" sequence="30"/>
 
+  <menuitem name="Movimientos" id="movimiento_menu" parent="tesoreria_menu" groups="group_upoferia_manager" action="movimiento_list_action" sequence="10" />
+  <menuitem name="Cuotas" id="cuota_menu" parent="tesoreria_menu" groups="group_upoferia_manager" action="cuota_list_action" sequence="20" />
+  <menuitem name="Presupuestos" id="presupuesto_menu" parent="tesoreria_menu" groups="group_upoferia_manager" action="presupuesto_list_action" sequence="30" />
+  <menuitem name="Líneas de presupuesto" id="linea_presupuesto_menu" parent="tesoreria_menu" groups="group_upoferia_manager" action="linea_presupuesto_list_action" sequence="40" />
+
+  <menuitem name="Tipos de cuota" id="tipo_cuota_menu" parent="catalogos_menu" groups="group_upoferia_manager" action="tipo_cuota_list_action" sequence="10" />
+  <menuitem name="Bonificaciones" id="bonificacion_menu" parent="catalogos_menu" groups="group_upoferia_manager" action="bonificacion_list_action" sequence="20" />
+  <menuitem name="Métodos de pago" id="metodo_pago_menu" parent="catalogos_menu" groups="group_upoferia_manager" action="metodo_pago_list_action" sequence="30" />
+  <menuitem name="Cajas" id="caja_menu" parent="catalogos_menu" groups="group_upoferia_manager" action="caja_list_action" sequence="40" />
+  <menuitem name="Cuentas bancarias" id="cuenta_bancaria_menu" parent="catalogos_menu" groups="group_upoferia_manager" action="cuenta_bancaria_list_action" sequence="50" />
+  <menuitem name="Categorías económicas" id="categoria_economica_menu" parent="catalogos_menu" groups="group_upoferia_manager" action="categoria_economica_list_action" sequence="60" />
+
+  <menuitem name="Tickets" id="ticket_menu" parent="barra_menu" groups="group_upoferia_manager" action="ticket_list_action" sequence="10" />
+  <menuitem name="Líneas de ticket" id="linea_ticket_menu" parent="barra_menu" groups="group_upoferia_manager" action="linea_ticket_list_action" sequence="20" />
+  <menuitem name="Productos" id="producto_menu" parent="barra_menu" groups="group_upoferia_manager" action="producto_list_action" sequence="30" />
+  <menuitem name="Tipos de producto" id="tipo_producto_menu" parent="barra_menu" groups="group_upoferia_manager" action="tipo_producto_list_action" sequence="40" />
+  <menuitem name="Tarifas" id="tarifa_menu" parent="barra_menu" groups="group_upoferia_manager" action="tarifa_list_action" sequence="50" />
 </odoo>
