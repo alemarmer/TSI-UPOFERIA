@@ -1,0 +1,56 @@
+<odoo>
+  <record id="upoferia_tarifa_form_view" model="ir.ui.view">
+    <field name="name">upoferia.tarifa.form</field>
+    <field name="model">upoferia.tarifa</field>
+    <field name="arch" type="xml">
+      <form string="Tarifas">
+        <sheet layout="auto">
+          <group>
+            <field name="sNombre" placeholder="Tarifa socio" />
+            <field name="sMoneda" placeholder="EUR" />
+          </group>
+          <notebook>
+            <page name="tickets" string="Tickets">
+              <field name="ticket_ids" readonly="1" />
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="upoferia_tarifa_list_view" model="ir.ui.view">
+    <field name="name">upoferia.tarifa.list</field>
+    <field name="model">upoferia.tarifa</field>
+    <field name="arch" type="xml">
+      <list string="Tarifas">
+        <field name="sNombre" />
+        <field name="sMoneda" />
+      </list>
+    </field>
+  </record>
+
+  <record id="upoferia_tarifa_kanban_view" model="ir.ui.view">
+    <field name="name">upoferia.tarifa.kanban</field>
+    <field name="model">upoferia.tarifa</field>
+    <field name="arch" type="xml">
+      <kanban string="Tarifas">
+        <templates>
+          <t t-name="card">
+            <field name="sNombre" class="fw-bold fs-5" />
+            <field name="sMoneda" />
+          </t>
+        </templates>
+      </kanban>
+    </field>
+  </record>
+
+  <record id="tarifa_list_action" model="ir.actions.act_window">
+    <field name="name">Tarifas</field>
+    <field name="res_model">upoferia.tarifa</field>
+    <field name="view_mode">list,form,kanban</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">Crea la primera tarifa</p>
+    </field>
+  </record>
+</odoo>

@@ -1,0 +1,84 @@
+<odoo>
+  <record id="upoferia_linea_presupuesto_form_view" model="ir.ui.view">
+    <field name="name">upoferia.linea_presupuesto.form</field>
+    <field name="model">upoferia.linea_presupuesto</field>
+    <field name="arch" type="xml">
+      <form string="Líneas de presupuesto">
+        <sheet layout="auto">
+          <group>
+            <group>
+              <field name="sConcepto" placeholder="Alquiler de carpas" />
+              <field name="presupuesto_id" />
+              <field name="categoria_economica_id" />
+            </group>
+            <group>
+              <field name="selTipo" />
+              <field name="fImportePrevisto" />
+            </group>
+          </group>
+          <notebook>
+            <page name="movimientos" string="Movimientos">
+              <field name="movimiento_ids" readonly="1" />
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="upoferia_linea_presupuesto_list_view" model="ir.ui.view">
+    <field name="name">upoferia.linea_presupuesto.list</field>
+    <field name="model">upoferia.linea_presupuesto</field>
+    <field name="arch" type="xml">
+      <list string="Líneas de presupuesto">
+        <field name="presupuesto_id" />
+        <field name="sConcepto" />
+        <field name="selTipo" />
+        <field name="categoria_economica_id" />
+        <field name="fImportePrevisto" sum="Total" />
+      </list>
+    </field>
+  </record>
+
+  <record id="upoferia_linea_presupuesto_pivot_view" model="ir.ui.view">
+    <field name="name">upoferia.linea_presupuesto.pivot</field>
+    <field name="model">upoferia.linea_presupuesto</field>
+    <field name="arch" type="xml">
+      <pivot string="Líneas de presupuesto">
+        <field name="categoria_economica_id" type="row" />
+        <field name="selTipo" type="col" />
+        <field name="fImportePrevisto" type="measure" />
+      </pivot>
+    </field>
+  </record>
+
+  <record id="upoferia_linea_presupuesto_search_view" model="ir.ui.view">
+    <field name="name">upoferia.linea_presupuesto.search</field>
+    <field name="model">upoferia.linea_presupuesto</field>
+    <field name="arch" type="xml">
+      <search>
+        <field name="sConcepto" />
+        <field name="presupuesto_id" />
+        <field name="categoria_economica_id" />
+        <filter name="search_ingresos" string="Ingresos" domain="[('selTipo','=','ingreso')]" />
+        <filter name="search_gastos" string="Gastos" domain="[('selTipo','=','gasto')]" />
+        <separator orientation="vertical" />
+        <group expand="0" string="Agrupar por...">
+          <filter name="group_by_presupuesto" string="Presupuesto" context="{'group_by':'presupuesto_id'}" />
+          <filter name="group_by_tipo" string="Tipo" context="{'group_by':'selTipo'}" />
+          <filter name="group_by_categoria" string="Categoría económica" context="{'group_by':'categoria_economica_id'}" />
+        </group>
+      </search>
+    </field>
+  </record>
+
+  <record id="linea_presupuesto_list_action" model="ir.actions.act_window">
+    <field name="name">Líneas de presupuesto</field>
+    <field name="res_model">upoferia.linea_presupuesto</field>
+    <field name="search_view_id" ref="upoferia_linea_presupuesto_search_view" />
+    <field name="view_mode">list,form,pivot</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">Crea la primera línea de presupuesto</p>
+    </field>
+  </record>
+</odoo>
