@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from datetime import date
-
-from dateutil.relativedelta import relativedelta
-
 from odoo import models, fields, api
 
 
@@ -42,28 +38,12 @@ class ElementoSeguridad(models.Model):
             dHoy = fields.Date.context_today(oRegistro)
             oRegistro.bRevisionVencida = bool(oRegistro.dFechaProximaRevision and oRegistro.dFechaProximaRevision < dHoy)
 
-    @api.constrains('dFechaUltimaRevision')
-    def _check_fecha_ultima_revision(self):
-        oRegistro = None
-        dHoy = None
-        for oRegistro in self:
-            if not oRegistro.dFechaUltimaRevision:
-                continue
-            dHoy = fields.Date.context_today(oRegistro)
-            if not date(1970, 1, 1) <= oRegistro.dFechaUltimaRevision <= dHoy:
-                raise models.ValidationError('La «Fecha de la última revisión» debe estar entre el 01/01/1970 y hoy.')
-
     @api.constrains('dFechaProximaRevision', 'dFechaUltimaRevision')
     def _check_fecha_proxima_revision(self):
         oRegistro = None
         for oRegistro in self:
-            if not oRegistro.dFechaProximaRevision or not oRegistro.dFechaUltimaRevision:
-                continue
-            if oRegistro.dFechaProximaRevision <= oRegistro.dFechaUltimaRevision:
+            if oRegistro.dFechaProximaRevision and oRegistro.dFechaUltimaRevision and oRegistro.dFechaProximaRevision <= oRegistro.dFechaUltimaRevision:
                 raise models.ValidationError('La «Fecha de la próxima revisión» tiene que ser posterior a la de la última revisión.')
-            if oRegistro.dFechaProximaRevision > oRegistro.dFechaUltimaRevision + relativedelta(years=5):
-                raise models.ValidationError('La «Fecha de la próxima revisión» puede ser como mucho cinco años después de la última revisión.')
-
 
     def unlink(self):
         oMobiliarios = self.mobiliario_id
