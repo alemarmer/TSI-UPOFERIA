@@ -34,6 +34,18 @@
         </field>
     </record>
 
+        <!-- Vistas Gantt -->
+    <record id="upoferia_gamificacion_temporada_pase_gantt_view" model="ir.ui.view">
+        <field name="name">upoferia.gamificacion.temporada_pase.gantt</field>
+        <field name="model">upoferia.gamificacion.temporada_pase</field>
+        <field name="arch" type="xml">
+            <gantt string="Temporadas de Pase" date_start="fecha_inicio" date_stop="fecha_fin">
+                <field name="nombre"/>
+            </gantt>
+        </field>
+    </record>
+
+
     <!-- Acción de Ventana -->
     <record id="upoferia_gamificacion_temporada_pase_action" model="ir.actions.act_window">
         <field name="name">Temporadas de Pase</field>
