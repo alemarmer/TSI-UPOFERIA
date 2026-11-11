@@ -35,28 +35,9 @@ class ZonaCaseta(models.Model):
         for oRegistro in self:
             oRegistro.display_name = f'{oRegistro.caseta_id.sNombre or ""} / {oRegistro.sNombre or ""}'
 
-    @api.constrains('sNombre')
-    def _check_nombre(self):
-        oRegistro = None
-        sNombre = ''
-        for oRegistro in self:
-            sNombre = oRegistro.sNombre or ''
-            if not sNombre.strip():
-                raise models.ValidationError('El campo «Nombre» es obligatorio.')
-            if sNombre != sNombre.strip():
-                raise models.ValidationError('El nombre de la zona no puede empezar ni terminar con espacios.')
-            if not 2 <= len(sNombre) <= 50:
-                raise models.ValidationError('El nombre de la zona debe tener entre 2 y 50 caracteres.')
-
     @api.constrains('fSuperficieM2')
     def _check_superficie_m2(self):
         oRegistro = None
-        fSuperficie = 0.0
         for oRegistro in self:
-            fSuperficie = oRegistro.fSuperficieM2
-            if fSuperficie < 0:
+            if oRegistro.fSuperficieM2 < 0:
                 raise models.ValidationError('La «Superficie» de la zona no puede ser negativa.')
-            if fSuperficie > 5000:
-                raise models.ValidationError('La «Superficie» de la zona puede ser como mucho de 5.000 m².')
-            if round(fSuperficie, 2) != fSuperficie:
-                raise models.ValidationError('La «Superficie» de la zona solo admite dos decimales.')
