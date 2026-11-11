@@ -1,5 +1,4 @@
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError
 
 TIPOS_CON_PERIODO = ('liquidacion_cuenta', 'nomina')
 
@@ -53,39 +52,39 @@ class Movimiento(models.Model):
     def _check_referencia(self):
         for record in self:
             if not record.sReferencia.strip():
-                raise ValidationError('La referencia del movimiento no puede estar vacía.')
+                raise models.ValidationError('La referencia del movimiento no puede estar vacía.')
 
     @api.constrains('fImporte')
     def _check_importe(self):
         for record in self:
             if record.fImporte <= 0:
-                raise ValidationError('El importe debe ser mayor que 0; si es ingreso o gasto lo indica el tipo '
+                raise models.ValidationError('El importe debe ser mayor que 0; si es ingreso o gasto lo indica el tipo '
                                       'de movimiento.')
 
     @api.constrains('ticket_id')
     def _check_ticket(self):
         for record in self.filtered('ticket_id'):
             if self.search_count([('ticket_id', '=', record.ticket_id.id), ('id', '!=', record.id)]):
-                raise ValidationError('Ese ticket ya está asociado a otro movimiento.')
+                raise models.ValidationError('Ese ticket ya está asociado a otro movimiento.')
 
     @api.constrains('selTipo', 'sPeriodo')
     def _check_periodo(self):
         for record in self:
             if record.selTipo in TIPOS_CON_PERIODO and not (record.sPeriodo or '').strip():
-                raise ValidationError('Los movimientos de tipo «%s» deben indicar el periodo que cubren.'
+                raise models.ValidationError('Los movimientos de tipo «%s» deben indicar el periodo que cubren.'
                                       % dict(self._fields['selTipo'].selection).get(record.selTipo))
 
     @api.constrains('selTipo', 'sConcepto')
     def _check_concepto(self):
         for record in self:
             if record.selTipo == 'gasto_adelantado' and not (record.sConcepto or '').strip():
-                raise ValidationError('Un gasto adelantado debe indicar en el concepto en qué se ha gastado el dinero.')
+                raise models.ValidationError('Un gasto adelantado debe indicar en el concepto en qué se ha gastado el dinero.')
 
     @api.constrains('selEstado', 'dFecha')
     def _check_fecha_confirmado(self):
         for record in self:
             if record.selEstado == 'confirmado' and record.dFecha > fields.Date.context_today(record):
-                raise ValidationError('No se puede confirmar un movimiento con fecha futura (%s).' % record.dFecha)
+                raise models.ValidationError('No se puede confirmar un movimiento con fecha futura (%s).' % record.dFecha)
 
     @api.onchange('fImporte')
     def onchange_importe(self):
