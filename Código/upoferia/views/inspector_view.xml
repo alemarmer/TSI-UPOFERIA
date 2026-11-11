@@ -9,6 +9,7 @@
             <field name="sNumeroAcreditacion" />
             <field name="sOrganismo" />
             <field name="sCargo" />
+            <field name="persona_id" widget="many2one" />
           </group>
           <notebook>
             <page name="inspecciones" string="Inspecciones">
@@ -30,6 +31,7 @@
         <field name="sNumeroAcreditacion" />
         <field name="sOrganismo" />
         <field name="sCargo" />
+        <field name="persona_id" widget="many2one" />
       </list>
     </field>
   </record>
