@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError
 
 
 class ZonaCaseta(models.Model):
@@ -43,11 +42,11 @@ class ZonaCaseta(models.Model):
         for oRegistro in self:
             sNombre = oRegistro.sNombre or ''
             if not sNombre.strip():
-                raise ValidationError('El campo «Nombre» es obligatorio.')
+                raise models.ValidationError('El campo «Nombre» es obligatorio.')
             if sNombre != sNombre.strip():
-                raise ValidationError('El nombre de la zona no puede empezar ni terminar con espacios.')
+                raise models.ValidationError('El nombre de la zona no puede empezar ni terminar con espacios.')
             if not 2 <= len(sNombre) <= 50:
-                raise ValidationError('El nombre de la zona debe tener entre 2 y 50 caracteres.')
+                raise models.ValidationError('El nombre de la zona debe tener entre 2 y 50 caracteres.')
 
     @api.constrains('fSuperficieM2')
     def _check_superficie_m2(self):
@@ -56,8 +55,8 @@ class ZonaCaseta(models.Model):
         for oRegistro in self:
             fSuperficie = oRegistro.fSuperficieM2
             if fSuperficie < 0:
-                raise ValidationError('La «Superficie» de la zona no puede ser negativa.')
+                raise models.ValidationError('La «Superficie» de la zona no puede ser negativa.')
             if fSuperficie > 5000:
-                raise ValidationError('La «Superficie» de la zona puede ser como mucho de 5.000 m².')
+                raise models.ValidationError('La «Superficie» de la zona puede ser como mucho de 5.000 m².')
             if round(fSuperficie, 2) != fSuperficie:
-                raise ValidationError('La «Superficie» de la zona solo admite dos decimales.')
+                raise models.ValidationError('La «Superficie» de la zona solo admite dos decimales.')
