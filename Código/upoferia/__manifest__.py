@@ -21,11 +21,10 @@ Long description of module's purpose
     'depends': ['base'],
 
     # always loaded
-    'data': [
+        'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
         'views/views.xml',
-        'views/menu.xml',
         'views/gamificacion/mision_view.xml',
         'views/gamificacion/mision_descubrimiento_view.xml',
         'views/gamificacion/mision_evento_view.xml',
@@ -34,6 +33,7 @@ Long description of module's purpose
         'views/gamificacion/recompensas_view.xml',
         'views/gamificacion/registros_view.xml',
         'views/gamificacion/temporadas_view.xml',
+        'views/menu.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
