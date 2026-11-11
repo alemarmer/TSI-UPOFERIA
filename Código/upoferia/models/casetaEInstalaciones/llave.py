@@ -3,7 +3,6 @@
 import re
 
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError
 
 
 class Llave(models.Model):
@@ -29,11 +28,11 @@ class Llave(models.Model):
         for oRegistro in self:
             sCodigoLlave = oRegistro.sCodigoLlave or ''
             if not sCodigoLlave.strip():
-                raise ValidationError('El campo «Código de llave» es obligatorio.')
+                raise models.ValidationError('El campo «Código de llave» es obligatorio.')
             if not 2 <= len(sCodigoLlave) <= 20:
-                raise ValidationError('El «Código de llave» debe tener entre 2 y 20 caracteres.')
+                raise models.ValidationError('El «Código de llave» debe tener entre 2 y 20 caracteres.')
             if not re.fullmatch(r'[A-Z0-9]+([-/._][A-Z0-9]+)*', sCodigoLlave):
-                raise ValidationError('El «Código de llave» solo puede tener letras mayúsculas y números, separados por - / . _ y sin espacios (por ejemplo LL-T-014).')
+                raise models.ValidationError('El «Código de llave» solo puede tener letras mayúsculas y números, separados por - / . _ y sin espacios (por ejemplo LL-T-014).')
 
     @api.constrains('sDescripcion')
     def _check_descripcion(self):
@@ -44,9 +43,9 @@ class Llave(models.Model):
             if not sDescripcion:
                 continue
             if sDescripcion != sDescripcion.strip():
-                raise ValidationError('La «Descripción» de la llave no puede empezar ni terminar con espacios.')
+                raise models.ValidationError('La «Descripción» de la llave no puede empezar ni terminar con espacios.')
             if len(sDescripcion) > 255:
-                raise ValidationError('La «Descripción» de la llave puede tener como mucho 255 caracteres.')
+                raise models.ValidationError('La «Descripción» de la llave puede tener como mucho 255 caracteres.')
 
     @api.constrains('sTipo')
     def _check_tipo(self):
@@ -57,4 +56,4 @@ class Llave(models.Model):
                 continue
             iMaestras = self.search_count([('sTipo', '=', 'maestra'), ('id', '!=', oRegistro.id)])
             if iMaestras > 0:
-                raise ValidationError('Ya existe una llave maestra: solo puede haber una.')
+                raise models.ValidationError('Ya existe una llave maestra: solo puede haber una.')
