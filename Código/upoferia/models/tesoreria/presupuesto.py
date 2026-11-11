@@ -1,5 +1,4 @@
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError
 from datetime import date
 
 
@@ -29,17 +28,17 @@ class Presupuesto(models.Model):
     def _check_nombre(self):
         for record in self:
             if not record.sNombre.strip():
-                raise ValidationError('El nombre del presupuesto no puede estar vacío.')
+                raise models.ValidationError('El nombre del presupuesto no puede estar vacío.')
 
     @api.constrains('iEjercicio', 'dFechaInicio', 'dFechaFin')
     def _check_ejercicio(self):
         for record in self:
             if not (2000 <= record.iEjercicio <= 2100):
-                raise ValidationError('El ejercicio debe ser un año válido (2000-2100).')
+                raise models.ValidationError('El ejercicio debe ser un año válido (2000-2100).')
             if record.dFechaFin < record.dFechaInicio:
-                raise ValidationError('La fecha de fin no puede ser anterior a la de inicio.')
+                raise models.ValidationError('La fecha de fin no puede ser anterior a la de inicio.')
             if not (record.dFechaInicio.year <= record.iEjercicio <= record.dFechaFin.year):
-                raise ValidationError('El periodo del presupuesto (%s – %s) no incluye el ejercicio %s.'
+                raise models.ValidationError('El periodo del presupuesto (%s – %s) no incluye el ejercicio %s.'
                                       % (record.dFechaInicio, record.dFechaFin, record.iEjercicio))
 
     @api.onchange('iEjercicio')
