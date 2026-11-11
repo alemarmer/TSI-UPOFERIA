@@ -1,5 +1,4 @@
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError
 from datetime import timedelta
 
 
@@ -33,22 +32,22 @@ class Cuota(models.Model):
     def _check_referencia(self):
         for record in self:
             if not record.sReferencia.strip():
-                raise ValidationError('La referencia de la cuota no puede estar vacía.')
+                raise models.ValidationError('La referencia de la cuota no puede estar vacía.')
 
     @api.constrains('iEjercicio', 'dFechaEmision')
     def _check_ejercicio(self):
         for record in self:
             if not (2000 <= record.iEjercicio <= 2100):
-                raise ValidationError('El ejercicio debe ser un año válido (2000-2100).')
+                raise models.ValidationError('El ejercicio debe ser un año válido (2000-2100).')
             if abs(record.dFechaEmision.year - record.iEjercicio) > 1:
-                raise ValidationError('La fecha de emisión (%s) no corresponde al ejercicio %s.'
+                raise models.ValidationError('La fecha de emisión (%s) no corresponde al ejercicio %s.'
                                       % (record.dFechaEmision, record.iEjercicio))
 
     @api.constrains('dFechaEmision', 'dFechaVencimiento')
     def _check_fechas(self):
         for record in self:
             if record.dFechaVencimiento < record.dFechaEmision:
-                raise ValidationError('La fecha de vencimiento no puede ser anterior a la de emisión.')
+                raise models.ValidationError('La fecha de vencimiento no puede ser anterior a la de emisión.')
 
     @api.onchange('dFechaEmision')
     def onchange_fecha_emision(self):
