@@ -35,8 +35,8 @@
         <field name="name">upoferia.socios.invitacion_acceso.calendar</field>
         <field name="model">upoferia.socios.invitacion_acceso</field>
         <field name="arch" type="xml">
-            <calendar string="Invitación de acceso" date_start="fecha_validez" color="beneficiario_id">
-                <field name="beneficiario_id"/>
+            <calendar string="Invitación de acceso" date_start="fecha_validez" color="persona_id">
+                <field name="persona_id"/>
                 <field name="socio_id"/>
             </calendar>
         </field>
