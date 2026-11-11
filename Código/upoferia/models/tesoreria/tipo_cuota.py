@@ -1,5 +1,4 @@
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError
 
 
 class TipoCuota(models.Model):
@@ -22,13 +21,13 @@ class TipoCuota(models.Model):
     def _check_nombre(self):
         for record in self:
             if not record.sNombre.strip():
-                raise ValidationError('El nombre del tipo de cuota no puede estar vacío.')
+                raise models.ValidationError('El nombre del tipo de cuota no puede estar vacío.')
 
     @api.constrains('fImporte')
     def _check_importe(self):
         for record in self:
             if record.fImporte <= 0:
-                raise ValidationError('El importe del tipo de cuota debe ser mayor que 0.')
+                raise models.ValidationError('El importe del tipo de cuota debe ser mayor que 0.')
 
     @api.onchange('fImporte')
     def onchange_importe(self):
