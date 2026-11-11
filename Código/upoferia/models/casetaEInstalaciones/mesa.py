@@ -26,16 +26,9 @@ class Mesa(models.Model):
             else:
                 oRegistro.display_name = f'Mesa {oRegistro.iNumero}'
 
-    @api.constrains('iNumero')
-    def _check_numero(self):
-        oRegistro = None
-        for oRegistro in self:
-            if not 1 <= oRegistro.iNumero <= 9999:
-                raise models.ValidationError('El «Número» de la mesa debe estar entre 1 y 9999.')
-
     @api.constrains('iCapacidad')
     def _check_capacidad(self):
         oRegistro = None
         for oRegistro in self:
-            if not 1 <= oRegistro.iCapacidad <= 50:
-                raise models.ValidationError('La «Capacidad» de la mesa debe estar entre 1 y 50 personas.')
+            if oRegistro.iCapacidad <= 0:
+                raise models.ValidationError('La «Capacidad» de la mesa tiene que ser mayor que 0.')
