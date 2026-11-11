@@ -1,5 +1,4 @@
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError
 
 
 class MetodoPago(models.Model):
@@ -23,13 +22,13 @@ class MetodoPago(models.Model):
     def _check_nombre(self):
         for record in self:
             if not record.sNombre.strip():
-                raise ValidationError('El nombre del método de pago no puede estar vacío.')
+                raise models.ValidationError('El nombre del método de pago no puede estar vacío.')
 
     @api.constrains('fComisionPorcentaje')
     def _check_comision_porcentaje(self):
         for record in self:
             if not (0 <= record.fComisionPorcentaje <= 100):
-                raise ValidationError('La comisión debe estar entre 0 y 100 %.')
+                raise models.ValidationError('La comisión debe estar entre 0 y 100 %.')
 
     @api.onchange('fComisionPorcentaje')
     def onchange_comision_porcentaje(self):
