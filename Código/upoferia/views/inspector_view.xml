@@ -1,0 +1,47 @@
+<odoo>
+  <record id="upoferia_inspector_form_view" model="ir.ui.view">
+    <field name="name">upoferia.inspector.form</field>
+    <field name="model">upoferia.inspector</field>
+    <field name="arch" type="xml">
+      <form string="Inspectores">
+        <sheet layout="auto">
+          <group>
+            <field name="sNumeroAcreditacion" />
+            <field name="sOrganismo" />
+            <field name="sCargo" />
+            <field name="persona_id" widget="many2one" />
+          </group>
+          <notebook>
+            <page name="inspecciones" string="Inspecciones">
+              <group>
+                <field name="inspeccion_inspector_ids" widget="one2many" />
+              </group>
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="upoferia_inspector_list_view" model="ir.ui.view">
+    <field name="name">upoferia.inspector.list</field>
+    <field name="model">upoferia.inspector</field>
+    <field name="arch" type="xml">
+      <list string="Inspectores">
+        <field name="sNumeroAcreditacion" />
+        <field name="sOrganismo" />
+        <field name="sCargo" />
+        <field name="persona_id" widget="many2one" />
+      </list>
+    </field>
+  </record>
+
+  <record id="inspector_list_action" model="ir.actions.act_window">
+    <field name="name">Inspectores</field>
+    <field name="res_model">upoferia.inspector</field>
+    <field name="view_mode">list,form</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">Crea el primer inspector</p>
+    </field>
+  </record>
+</odoo>

@@ -1,0 +1,42 @@
+<odoo>
+  <record id="upoferia_mobiliario_caseta_form_view" model="ir.ui.view">
+    <field name="name">upoferia.mobiliario_caseta.form</field>
+    <field name="model">upoferia.mobiliario_caseta</field>
+    <field name="arch" type="xml">
+      <form string="Mobiliario de caseta">
+        <sheet layout="auto">
+          <group>
+            <field name="sNumeroSerie" />
+            <field name="sNombre" />
+            <field name="caseta_id" widget="many2one" />
+            <field name="dFechaAsignacion" />
+            <field name="fCoste" />
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="upoferia_mobiliario_caseta_list_view" model="ir.ui.view">
+    <field name="name">upoferia.mobiliario_caseta.list</field>
+    <field name="model">upoferia.mobiliario_caseta</field>
+    <field name="arch" type="xml">
+      <list string="Mobiliario de caseta">
+        <field name="sNumeroSerie" />
+        <field name="sNombre" />
+        <field name="caseta_id" widget="many2one" />
+        <field name="dFechaAsignacion" />
+        <field name="fCoste" />
+      </list>
+    </field>
+  </record>
+
+  <record id="mobiliario_caseta_list_action" model="ir.actions.act_window">
+    <field name="name">Mobiliario de caseta</field>
+    <field name="res_model">upoferia.mobiliario_caseta</field>
+    <field name="view_mode">list,form</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">Crea el primer mobiliario</p>
+    </field>
+  </record>
+</odoo>

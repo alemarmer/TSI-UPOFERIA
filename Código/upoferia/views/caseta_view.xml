@@ -1,0 +1,99 @@
+<odoo>
+  <record id="upoferia_caseta_form_view" model="ir.ui.view">
+    <field name="name">upoferia.caseta.form</field>
+    <field name="model">upoferia.caseta</field>
+    <field name="arch" type="xml">
+      <form string="Casetas">
+        <sheet layout="auto">
+          <group>
+            <field name="sNombre" />
+            <field name="sCalle" />
+            <field name="sNumero" />
+            <field name="iModulos" />
+            <field name="iAforoAutorizado" />
+            <field name="fHoraApertura" widget="float_time" />
+            <field name="fHoraCierre" widget="float_time" />
+          </group>
+          <notebook>
+            <page name="zonas" string="Zonas">
+              <group>
+                <field name="zona_ids" widget="one2many" />
+              </group>
+            </page>
+            <page name="mobiliario" string="Mobiliario">
+              <group>
+                <field name="mobiliario_ids" widget="one2many" />
+              </group>
+            </page>
+            <page name="licencias" string="Licencias">
+              <group>
+                <field name="licencia_ids" widget="one2many" />
+              </group>
+            </page>
+            <page name="inspecciones" string="Inspecciones">
+              <group>
+                <field name="inspeccion_ids" widget="one2many" />
+              </group>
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="upoferia_caseta_list_view" model="ir.ui.view">
+    <field name="name">upoferia.caseta.list</field>
+    <field name="model">upoferia.caseta</field>
+    <field name="arch" type="xml">
+      <list string="Casetas">
+        <field name="sNombre" />
+        <field name="sCalle" />
+        <field name="sNumero" />
+        <field name="iModulos" />
+        <field name="iAforoAutorizado" />
+        <field name="fHoraApertura" widget="float_time" />
+        <field name="fHoraCierre" widget="float_time" />
+      </list>
+    </field>
+  </record>
+
+  <record id="upoferia_caseta_kanban_view" model="ir.ui.view">
+    <field name="name">upoferia.caseta.kanban</field>
+    <field name="model">upoferia.caseta</field>
+    <field name="arch" type="xml">
+      <kanban string="Casetas">
+        <templates>
+          <t t-name="card">
+            <field name="sNombre" class="fw-bold" />
+            <field name="sCalle" />
+            <field name="iAforoAutorizado" />
+          </t>
+        </templates>
+      </kanban>
+    </field>
+  </record>
+
+  <record id="upoferia_caseta_search_view" model="ir.ui.view">
+    <field name="name">upoferia.caseta.search</field>
+    <field name="model">upoferia.caseta</field>
+    <field name="arch" type="xml">
+      <search>
+        <field name="sNombre" />
+        <filter name="search_aforo" string="Aforo > 100" domain="[('iAforoAutorizado','>',100)]" />
+        <group expand="0" string="Agrupar por...">
+          <filter name="group_by_calle" string="Calle" context="{'group_by':'sCalle'}" />
+        </group>
+      </search>
+    </field>
+  </record>
+
+  <record id="caseta_list_action" model="ir.actions.act_window">
+    <field name="name">Casetas</field>
+    <field name="res_model">upoferia.caseta</field>
+    <field name="search_view_id" ref="upoferia_caseta_search_view" />
+    <field name="view_mode">list,form,kanban</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">Crea la primera caseta</p>
+    </field>
+  </record>
+</odoo>

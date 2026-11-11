@@ -1,0 +1,84 @@
+<odoo>
+  <record id="upoferia_elemento_seguridad_form_view" model="ir.ui.view">
+    <field name="name">upoferia.elemento_seguridad.form</field>
+    <field name="model">upoferia.elemento_seguridad</field>
+    <field name="arch" type="xml">
+      <form string="Elementos de seguridad">
+        <sheet layout="auto">
+          <group>
+            <field name="sNumeroSerie" />
+            <field name="sNombre" />
+            <field name="sTipo" />
+          </group>
+          <notebook>
+            <page name="mobiliario" string="Mobiliario">
+              <group>
+                <field name="caseta_id" widget="many2one" />
+                <field name="dFechaAsignacion" />
+                <field name="fCoste" />
+              </group>
+            </page>
+            <page name="revisiones" string="Revisiones">
+              <group>
+                <field name="dFechaUltimaRevision" />
+                <field name="dFechaProximaRevision" />
+                <field name="bRevisionVencida" />
+              </group>
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="upoferia_elemento_seguridad_list_view" model="ir.ui.view">
+    <field name="name">upoferia.elemento_seguridad.list</field>
+    <field name="model">upoferia.elemento_seguridad</field>
+    <field name="arch" type="xml">
+      <list string="Elementos de seguridad">
+        <field name="sNumeroSerie" />
+        <field name="sNombre" />
+        <field name="sTipo" />
+        <field name="caseta_id" widget="many2one" />
+        <field name="dFechaUltimaRevision" />
+        <field name="dFechaProximaRevision" />
+        <field name="bRevisionVencida" />
+      </list>
+    </field>
+  </record>
+
+  <record id="upoferia_elemento_seguridad_graph_view" model="ir.ui.view">
+    <field name="name">upoferia.elemento_seguridad.graph</field>
+    <field name="model">upoferia.elemento_seguridad</field>
+    <field name="arch" type="xml">
+      <graph string="Elementos por tipo" type="bar">
+        <field name="sTipo" />
+        <field name="dFechaProximaRevision" interval="month" />
+      </graph>
+    </field>
+  </record>
+
+  <record id="upoferia_elemento_seguridad_search_view" model="ir.ui.view">
+    <field name="name">upoferia.elemento_seguridad.search</field>
+    <field name="model">upoferia.elemento_seguridad</field>
+    <field name="arch" type="xml">
+      <search>
+        <field name="sNumeroSerie" />
+        <filter name="search_extintores" string="Extintores" domain="[('sTipo','=','extintor')]" />
+        <group expand="0" string="Agrupar por...">
+          <filter name="group_by_tipo" string="Tipo" context="{'group_by':'sTipo'}" />
+        </group>
+      </search>
+    </field>
+  </record>
+
+  <record id="elemento_seguridad_list_action" model="ir.actions.act_window">
+    <field name="name">Elementos de seguridad</field>
+    <field name="res_model">upoferia.elemento_seguridad</field>
+    <field name="search_view_id" ref="upoferia_elemento_seguridad_search_view" />
+    <field name="view_mode">list,form,graph</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">Crea el primer elemento de seguridad</p>
+    </field>
+  </record>
+</odoo>

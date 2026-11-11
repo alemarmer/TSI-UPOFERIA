@@ -1,0 +1,47 @@
+<odoo>
+  <record id="upoferia_zona_caseta_form_view" model="ir.ui.view">
+    <field name="name">upoferia.zona_caseta.form</field>
+    <field name="model">upoferia.zona_caseta</field>
+    <field name="arch" type="xml">
+      <form string="Zonas de caseta">
+        <sheet layout="auto">
+          <group>
+            <field name="caseta_id" widget="many2one" />
+            <field name="sNombre" />
+            <field name="sTipo" />
+            <field name="fSuperficieM2" />
+          </group>
+          <notebook>
+            <page name="mesas" string="Mesas">
+              <group>
+                <field name="mesa_ids" widget="one2many" />
+              </group>
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="upoferia_zona_caseta_list_view" model="ir.ui.view">
+    <field name="name">upoferia.zona_caseta.list</field>
+    <field name="model">upoferia.zona_caseta</field>
+    <field name="arch" type="xml">
+      <list string="Zonas de caseta">
+        <field name="caseta_id" widget="many2one" />
+        <field name="sNombre" />
+        <field name="sTipo" />
+        <field name="fSuperficieM2" />
+      </list>
+    </field>
+  </record>
+
+  <record id="zona_caseta_list_action" model="ir.actions.act_window">
+    <field name="name">Zonas de caseta</field>
+    <field name="res_model">upoferia.zona_caseta</field>
+    <field name="view_mode">list,form</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">Crea la primera zona de caseta</p>
+    </field>
+  </record>
+</odoo>
