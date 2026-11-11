@@ -1,5 +1,4 @@
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError
 import re
 
 
@@ -37,15 +36,15 @@ class CuentaBancaria(models.Model):
         for record in self:
             iban = record.sIban.replace(' ', '').upper()
             if not self._iban_valido(iban):
-                raise ValidationError('El IBAN «%s» no es válido. Revisa que esté completo y bien escrito.' % record.sIban)
+                raise models.ValidationError('El IBAN «%s» no es válido. Revisa que esté completo y bien escrito.' % record.sIban)
 
     @api.constrains('sBanco', 'sTitular')
     def _check_textos(self):
         for record in self:
             if not record.sBanco.strip():
-                raise ValidationError('El nombre del banco no puede estar vacío.')
+                raise models.ValidationError('El nombre del banco no puede estar vacío.')
             if not record.sTitular.strip():
-                raise ValidationError('El titular de la cuenta no puede estar vacío.')
+                raise models.ValidationError('El titular de la cuenta no puede estar vacío.')
 
     @api.onchange('sIban')
     def onchange_iban(self):
