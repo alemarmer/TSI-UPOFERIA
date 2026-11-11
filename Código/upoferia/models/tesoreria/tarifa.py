@@ -1,5 +1,4 @@
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError
 import re
 
 
@@ -23,13 +22,13 @@ class Tarifa(models.Model):
     def _check_nombre(self):
         for record in self:
             if not record.sNombre.strip():
-                raise ValidationError('El nombre de la tarifa no puede estar vacío.')
+                raise models.ValidationError('El nombre de la tarifa no puede estar vacío.')
 
     @api.constrains('sMoneda')
     def _check_moneda(self):
         for record in self:
             if record.sMoneda and not re.fullmatch(r'[A-Z]{3}', record.sMoneda):
-                raise ValidationError('La moneda «%s» no es un código ISO válido: deben ser 3 letras, por ejemplo EUR.'
+                raise models.ValidationError('La moneda «%s» no es un código ISO válido: deben ser 3 letras, por ejemplo EUR.'
                                       % record.sMoneda)
 
     @api.onchange('sMoneda')
