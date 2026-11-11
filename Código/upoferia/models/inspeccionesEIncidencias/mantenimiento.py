@@ -7,10 +7,6 @@ class Mantenimiento(models.Model):
     _name = 'upoferia.mantenimiento'
     _description = 'Mantenimiento'
     _rec_name = 'sIdMantenimiento'
-    _sql_constraints = [
-        ('id_mantenimiento_uniq', 'UNIQUE ("sIdMantenimiento")',
-         'Ya existe un mantenimiento con ese identificador.'),
-    ]
 
     sIdMantenimiento = fields.Char(string='Id. mantenimiento', required=True)
     sAsunto = fields.Char(string='Asunto', required=True)
@@ -30,6 +26,13 @@ class Mantenimiento(models.Model):
     ], string='Estado', required=True, default='solicitado')
 
     incidencia_id = fields.Many2one('upoferia.incidencia', string='Incidencia')
+    transaccion_id = fields.Many2one('upoferia.transaccion', string='Contrato')
+    tecnico_ids = fields.Many2many('upoferia.tecnico', 'upoferia_mantenimiento_tecnico_rel', 'mantenimiento_id', 'tecnico_id', string='Técnicos')
+
+    _sql_constraints = [
+            ('id_mantenimiento_uniq', 'UNIQUE ("sIdMantenimiento")',
+             'Ya existe un mantenimiento con ese identificador.'),
+    ]
 
     @api.constrains('dFechaProgramada', 'dFechaSolicitud')
     def _check_fecha_programada(self):
@@ -44,3 +47,10 @@ class Mantenimiento(models.Model):
         for oRegistro in self:
             if oRegistro.sTipoMantenimiento == 'correctivo' and not oRegistro.incidencia_id:
                 raise models.ValidationError('Un mantenimiento correctivo tiene que estar asociado a una incidencia.')
+
+    @api.constrains('transaccion_id')
+    def _check_transaccion(self):
+        oRegistro = None
+        for oRegistro in self:
+            if oRegistro.transaccion_id and oRegistro.transaccion_id.tipo_transaccion_id.sCodigo != 'CON':
+                raise models.ValidationError('El mantenimiento solo puede estar cubierto por un contrato (transacción de tipo CON).')
