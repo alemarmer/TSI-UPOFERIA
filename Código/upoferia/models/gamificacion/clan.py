@@ -14,7 +14,7 @@ class Clan(models.Model):
 
     # Relaciones
     lider_id = fields.Many2one('upoferia.socio', string="Líder", ondelete='set null')
-    socio_ids = fields.One2many('upoferia.socio', 'clan_id', string="Socios")
+    socio_ids = fields.Char(string="Socios")
     registro_xp_ids = fields.One2many('upoferia.registro_xp', 'clan_id', string="Experiencia de sus socios")
     temporada_pase_ids = fields.Many2many('upoferia.temporada_pase', 'upoferia_clan_temporada_pase_rel',
                                           'clan_id', 'temporada_pase_id', string="Temporadas")
