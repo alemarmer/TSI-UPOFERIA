@@ -1,5 +1,5 @@
 <odoo>
-  <menuitem name="Feria" id="main_upoferia_menu" groups="group_upoferia_manager" />
+  <menuitem name="UPO Feria" id="main_upoferia_menu" groups="group_upoferia_manager" />
 
   <menuitem name="Tesorería" id="tesoreria_menu" groups="group_upoferia_manager" parent="main_upoferia_menu" sequence="10" />
   <menuitem name="Catálogos" id="catalogos_menu" groups="group_upoferia_manager" parent="main_upoferia_menu" sequence="20" />

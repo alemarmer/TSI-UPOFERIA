@@ -39,10 +39,12 @@ class Movimiento(models.Model):
                                      help="Movimiento de liquidación de cuenta en el que se incluye este movimiento")
     movimiento_liquidado_ids = fields.One2many('upoferia.movimiento', 'liquidacion_id', string="Movimientos liquidados")
     # Relaciones con modelos de otro grupo
-    socio_id = fields.Many2one('upoferia.socio', string="Socio")  # SOCIO (dni_socio)
+    socio_id = fields.Many2one('upoferia.socios.socio', string="Socio")  # SOCIO (dni_socio)
     transaccion_id = fields.Many2one('upoferia.transaccion', string="Transacción")  # TRANSACCION (id_transaccion)
-    empleado_id = fields.Many2one('upoferia.empleado', string="Empleado")  # EMPLEADO (dni_empleado)
-    fichaje_ids = fields.One2many('upoferia.fichaje', 'nomina_id', string="Fichajes retribuidos")  # FICHAJE (referencia_nomina)
+    empleado_id = fields.Many2one('upoferia.rrhh.empleado', string="Empleado")  # EMPLEADO (dni_empleado)
+    # FICHAJE (referencia_nomina): pendiente de que upoferia.turnos.fichaje tenga un Many2one nomina_id
+    # hacia upoferia.movimiento; hoy solo tiene referencia_nomina (Char) y el One2many rompería la instalación.
+    # fichaje_ids = fields.One2many('upoferia.turnos.fichaje', 'nomina_id', string="Fichajes retribuidos")
 
     _sql_constraints = [
         ('referencia_unique', 'UNIQUE("sReferencia")', 'Ya existe un movimiento con esa referencia.'),
