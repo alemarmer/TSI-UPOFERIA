@@ -6,3 +6,6 @@ from . import RRHH
 from . import compras
 from . import proveedores
 from . import patrocinios
+from . import programacionEventos
+from . import concursos
+from . import caballosCarruajes

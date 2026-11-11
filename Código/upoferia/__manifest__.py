@@ -60,6 +60,15 @@
         'views/tecnico_view.xml',
         'demo/upoferia.tipo_transaccion.csv', # Los tipos de transaccion (PED, ALB, FAC, ABO, CON) se cargan siempre porque los necesita el modulo.
         'views/RRHH/menus.xml',
+        'views/tipo_evento_views.xml',
+        'views/evento_views.xml',
+        'views/actuacion_views.xml',
+        'views/concurso_views.xml',
+        'views/reserva_views.xml',
+        'views/artista_views.xml',
+        'views/caballo_views.xml',
+        'views/carruaje_views.xml',
+        'views/salida_views.xml',
         'views/menu.xml',
     ],
     # only loaded in demonstration mode

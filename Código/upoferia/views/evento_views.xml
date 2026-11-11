@@ -1,0 +1,112 @@
+<odoo>
+
+  <record id="upoferia_evento_list_view" model="ir.ui.view">
+    <field name="name">upoferia.evento.list</field>
+    <field name="model">upoferia.evento</field>
+    <field name="arch" type="xml">
+      <list string="Eventos">
+        <field name="sNombre_evento"/>
+        <field name="tipo_evento_id"/>
+        <field name="dFecha_hora_inicio"/>
+        <field name="dFecha_hora_fin"/>
+        <field name="iAforo_reservado"/>
+        <field name="iPlazas_libres"/>
+        <field name="sEstado"/>
+      </list>
+    </field>
+  </record>
+
+  <record id="upoferia_evento_form_view" model="ir.ui.view">
+    <field name="name">upoferia.evento.form</field>
+    <field name="model">upoferia.evento</field>
+    <field name="arch" type="xml">
+      <form string="Evento">
+        <header>
+          <field name="sEstado" widget="statusbar"/>
+        </header>
+          <sheet>
+            <label for="sNombre_evento"/>
+              <h1><field name="sNombre_evento" placeholder="Nombre del evento"/></h1>
+              <group col="4">
+                <group string="Cuándo">
+                  <field name="dFecha_hora_inicio"/>
+                  <field name="dFecha_hora_fin"/>
+                  <field name="fDuracion"/>
+                </group>
+                <group string="Dónde y cuánto">
+                  <field name="tipo_evento_id"/>
+                  <field name="caseta_id"/>
+                  <field name="iAforo_reservado" help="Plazas reservadas para este evento"/>
+                  <field name="iPlazas_libres"/>
+                </group>
+              </group>
+              <notebook>
+                <page string="Concursos">
+                  <field name="concurso_ids" nolabel="1"/>
+                </page>
+                <page string="Actuaciones">
+                  <field name="actuacion_ids" nolabel="1"/>
+                </page>
+              </notebook>
+          </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="upoferia_evento_calendar_view" model="ir.ui.view">
+    <field name="name">upoferia.evento.calendar</field>
+    <field name="model">upoferia.evento</field>
+    <field name="arch" type="xml">
+      <calendar string="Programación" date_start="dFecha_hora_inicio" date_stop="dFecha_hora_fin"
+                color="tipo_evento_id" mode="week">
+        <field name="tipo_evento_id"/>
+        <field name="iAforo_reservado"/>
+        <field name="sEstado"/>
+      </calendar>
+    </field>
+  </record>
+
+  <record id="upoferia_evento_graph_view" model="ir.ui.view">
+  <field name="name">upoferia.evento.graph</field>
+  <field name="model">upoferia.evento</field>
+  <field name="arch" type="xml">
+    <graph string="Aforo reservado por tipo" type="bar">
+      <field name="tipo_evento_id" type="row"/>
+      <field name="iAforo_reservado" type="measure"/>
+    </graph>
+  </field>
+  </record>
+
+  <record id="upoferia_evento_search_view" model="ir.ui.view">
+    <field name="name">upoferia.evento.search</field>
+    <field name="model">upoferia.evento</field>
+    <field name="arch" type="xml">
+      <search string="Buscar eventos">
+        <field name="sNombre_evento"/>
+        <field name="tipo_evento_id"/>
+        <filter name="proximos" string="Próximos"
+                domain="[('dFecha_hora_inicio', '&gt;=', time.strftime('%Y-%m-%d'))]"/>
+        <filter name="fecha_inicio" string="Fecha de inicio"/>
+        <separator/>
+        <filter name="programados" string="Programados" domain="[('sEstado', '=', 'programado')]"/>
+        <filter name="en_curso" string="En curso" domain="[('sEstado', '=', 'en_curso')]"/>
+        <filter name="cancelados" string="Cancelados" domain="[('sEstado', '=', 'cancelado')]"/>
+        <group>
+          <filter name="group_tipo" string="Tipo de evento" context="{'group_by': 'tipo_evento_id'}"/>
+          <filter name="group_estado" string="Estado" context="{'group_by': 'sEstado'}"/>
+          <filter name="group_dia" string="Día" context="{'group_by': 'dFecha_hora_inicio'}"/>
+        </group>
+      </search>
+    </field>
+  </record>
+
+  <record id="upoferia_evento_action" model="ir.actions.act_window">
+    <field name="name">Eventos</field>
+    <field name="res_model">upoferia.evento</field>
+    <field name="view_mode">list,form,calendar,graph</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">Crea el primer evento</p>
+    </field>
+  </record>
+
+</odoo>

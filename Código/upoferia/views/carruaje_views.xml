@@ -1,0 +1,52 @@
+<odoo>
+
+  <record id="upoferia_carruaje_list_view" model="ir.ui.view">
+    <field name="name">upoferia.carruaje.list</field>
+    <field name="model">upoferia.carruaje</field>
+    <field name="arch" type="xml">
+      <list string="Carruajes">
+        <field name="sNum_registro"/>
+        <field name="sModelo"/>
+        <field name="iPlazas"/>
+      </list>
+    </field>
+  </record>
+
+  <record id="upoferia_carruaje_form_view" model="ir.ui.view">
+    <field name="name">upoferia.carruaje.form</field>
+    <field name="model">upoferia.carruaje</field>
+    <field name="arch" type="xml">
+      <form string="Carruaje">
+        <sheet>
+          <group>
+            <field name="sNum_registro"/>
+            <field name="sModelo"/>
+            <field name="iPlazas"/>
+          </group>
+          <notebook>
+            <page name="salidas" string="Salidas">
+              <field name="salida_ids">
+                <list>
+                  <field name="dFecha_hora_salida"/>
+                  <field name="dFecha_hora_vuelta"/>
+                  <field name="iNum_pasajeros"/>
+                  <field name="sEstado"/>
+                </list>
+              </field>
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="upoferia_carruaje_action" model="ir.actions.act_window">
+    <field name="name">Carruajes</field>
+    <field name="res_model">upoferia.carruaje</field>
+    <field name="view_mode">list,form</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">Registra el primer carruaje</p>
+    </field>
+  </record>
+
+</odoo>
