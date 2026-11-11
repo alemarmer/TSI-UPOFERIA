@@ -1,0 +1,89 @@
+<odoo>
+  <record id="upoferia_inspeccion_form_view" model="ir.ui.view">
+    <field name="name">upoferia.inspeccion.form</field>
+    <field name="model">upoferia.inspeccion</field>
+    <field name="arch" type="xml">
+      <form string="Inspecciones">
+        <header>
+          <field name="sEstado" widget="statusbar" options="{'clickable': '1'}" />
+        </header>
+        <sheet layout="auto">
+          <group>
+            <group string="Datos de la inspección">
+              <field name="sReferencia" placeholder="Ej. INS-2026-001" />
+              <field name="caseta_id" />
+              <field name="sTipo" />
+              <field name="sOrganismo" />
+              <field name="dFecha" />
+            </group>
+            <group string="Resultado">
+              <field name="sResultado" invisible="sEstado != 'realizada'" required="sEstado == 'realizada'" />
+              <field name="fPorcentajeSuperado" />
+              <field name="sDocumento" placeholder="URL o archivo .pdf/.doc/.docx/.odt" />
+            </group>
+          </group>
+          <notebook>
+            <page string="Puntos de control" name="puntos_control">
+              <field name="punto_control_ids">
+                <list editable="bottom">
+                  <field name="iNumeroPunto" />
+                  <field name="sDescripcion" />
+                  <field name="elemento_seguridad_id" domain="[('caseta_id', '=', parent.caseta_id)]" />
+                  <field name="sResultado" readonly="parent.sEstado != 'realizada'" />
+                  <field name="sObservaciones" required="sResultado == 'no_superado'" />
+                </list>
+              </field>
+            </page>
+            <page string="Inspectores" name="inspectores">
+              <field name="inspeccion_inspector_ids">
+                <list editable="bottom">
+                  <field name="inspector_id" />
+                  <field name="sRol" />
+                </list>
+              </field>
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="upoferia_inspeccion_list_view" model="ir.ui.view">
+    <field name="name">upoferia.inspeccion.list</field>
+    <field name="model">upoferia.inspeccion</field>
+    <field name="arch" type="xml">
+      <list string="Inspecciones" decoration-danger="sResultado == 'desfavorable'" decoration-muted="sEstado == 'cancelada'">
+        <field name="sReferencia" />
+        <field name="caseta_id" />
+        <field name="sTipo" />
+        <field name="sOrganismo" />
+        <field name="dFecha" />
+        <field name="sEstado" widget="badge" />
+        <field name="sResultado" />
+        <field name="fPorcentajeSuperado" />
+      </list>
+    </field>
+  </record>
+
+  <record id="upoferia_inspeccion_calendar_view" model="ir.ui.view">
+    <field name="name">upoferia.inspeccion.calendar</field>
+    <field name="model">upoferia.inspeccion</field>
+    <field name="arch" type="xml">
+      <calendar string="Inspecciones" date_start="dFecha" color="sTipo" mode="month" quick_create="0">
+        <field name="sReferencia" />
+        <field name="caseta_id" filters="1" />
+        <field name="sTipo" filters="1" />
+        <field name="sEstado" />
+      </calendar>
+    </field>
+  </record>
+
+  <record id="inspeccion_list_action" model="ir.actions.act_window">
+    <field name="name">Inspecciones</field>
+    <field name="res_model">upoferia.inspeccion</field>
+    <field name="view_mode">list,form,calendar</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">Crea la primera inspección</p>
+    </field>
+  </record>
+</odoo>
