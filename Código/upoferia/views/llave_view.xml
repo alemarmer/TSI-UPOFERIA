@@ -9,6 +9,7 @@
             <field name="sCodigoLlave" />
             <field name="sTipo" />
             <field name="sDescripcion" />
+            <field name="numero" widget="many2one" />
           </group>
         </sheet>
       </form>
@@ -23,6 +24,7 @@
         <field name="sCodigoLlave" />
         <field name="sTipo" />
         <field name="sDescripcion" />
+        <field name="numero" widget="many2one" />
       </list>
     </field>
   </record>
