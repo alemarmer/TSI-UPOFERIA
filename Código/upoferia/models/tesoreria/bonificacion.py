@@ -1,5 +1,4 @@
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError
 
 
 class Bonificacion(models.Model):
@@ -22,13 +21,13 @@ class Bonificacion(models.Model):
     def _check_nombre(self):
         for record in self:
             if not record.sNombre.strip():
-                raise ValidationError('El nombre de la bonificación no puede estar vacío.')
+                raise models.ValidationError('El nombre de la bonificación no puede estar vacío.')
 
     @api.constrains('fPorcentajeDescuento')
     def _check_porcentaje_descuento(self):
         for record in self:
             if not (0 < record.fPorcentajeDescuento <= 100):
-                raise ValidationError('El porcentaje de descuento debe estar entre 0 y 100.')
+                raise models.ValidationError('El porcentaje de descuento debe estar entre 0 y 100.')
 
     @api.onchange('fPorcentajeDescuento')
     def onchange_porcentaje_descuento(self):
