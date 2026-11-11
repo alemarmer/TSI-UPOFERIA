@@ -1,0 +1,66 @@
+<odoo>
+  <record id="upoferia_mantenimiento_form_view" model="ir.ui.view">
+    <field name="name">upoferia.mantenimiento.form</field>
+    <field name="model">upoferia.mantenimiento</field>
+    <field name="arch" type="xml">
+      <form string="Mantenimientos">
+        <header>
+          <field name="sEstado" widget="statusbar" options="{'clickable': '1'}" />
+        </header>
+        <sheet layout="auto">
+          <group>
+            <group string="Datos del mantenimiento">
+              <field name="sIdMantenimiento" placeholder="Ej. MNT-2026-001" />
+              <field name="sAsunto" />
+              <field name="sTipoMantenimiento" widget="radio" />
+              <field name="incidencia_id" invisible="sTipoMantenimiento != 'correctivo'" required="sTipoMantenimiento == 'correctivo'" />
+            </group>
+            <group string="Planificación">
+              <field name="dFechaSolicitud" />
+              <field name="dFechaProgramada" required="sEstado in ('programado', 'en_curso', 'finalizado')" />
+              <field name="fDuracionHoras" widget="float_time" required="sEstado == 'finalizado'" />
+            </group>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="upoferia_mantenimiento_list_view" model="ir.ui.view">
+    <field name="name">upoferia.mantenimiento.list</field>
+    <field name="model">upoferia.mantenimiento</field>
+    <field name="arch" type="xml">
+      <list string="Mantenimientos" decoration-info="sEstado == 'en_curso'" decoration-muted="sEstado in ('finalizado', 'cancelado')">
+        <field name="sIdMantenimiento" />
+        <field name="sAsunto" />
+        <field name="sTipoMantenimiento" />
+        <field name="incidencia_id" />
+        <field name="dFechaSolicitud" />
+        <field name="dFechaProgramada" />
+        <field name="fDuracionHoras" widget="float_time" sum="Total horas" />
+        <field name="sEstado" widget="badge" />
+      </list>
+    </field>
+  </record>
+
+  <record id="upoferia_mantenimiento_graph_view" model="ir.ui.view">
+    <field name="name">upoferia.mantenimiento.graph</field>
+    <field name="model">upoferia.mantenimiento</field>
+    <field name="arch" type="xml">
+      <graph string="Horas de mantenimiento por tipo y estado" type="bar" stacked="1">
+        <field name="sTipoMantenimiento" />
+        <field name="sEstado" />
+        <field name="fDuracionHoras" type="measure" />
+      </graph>
+    </field>
+  </record>
+
+  <record id="mantenimiento_list_action" model="ir.actions.act_window">
+    <field name="name">Mantenimientos</field>
+    <field name="res_model">upoferia.mantenimiento</field>
+    <field name="view_mode">list,form,graph</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">Crea el primer mantenimiento</p>
+    </field>
+  </record>
+</odoo>
