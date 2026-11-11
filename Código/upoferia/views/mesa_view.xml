@@ -8,7 +8,7 @@
           <group>
             <field name="iNumero" />
             <field name="iCapacidad" />
-            <field name="zona_id" />
+            <field name="zona_id" widget="many2one" />
           </group>
         </sheet>
       </form>
@@ -22,7 +22,7 @@
       <list string="Mesas">
         <field name="iNumero" />
         <field name="iCapacidad" />
-        <field name="zona_id" />
+        <field name="zona_id" widget="many2one" />
       </list>
     </field>
   </record>
