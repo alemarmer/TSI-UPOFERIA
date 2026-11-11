@@ -30,6 +30,18 @@
         </field>
     </record>
 
+    <!-- Vista Calendar -->
+    <record id="upoferia_socios_invitacion_acceso_calendar_view" model="ir.ui.view">
+        <field name="name">upoferia.socios.invitacion_acceso.calendar</field>
+        <field name="model">upoferia.socios.invitacion_acceso</field>
+        <field name="arch" type="xml">
+            <calendar string="Invitación de acceso" date_start="fecha_validez" color="beneficiario_id">
+                <field name="beneficiario_id"/>
+                <field name="socio_id"/>
+            </calendar>
+        </field>
+    </record>
+
     <!-- Acción de Ventana -->
     <record id="upoferia_socios_invitacion_acceso_action" model="ir.actions.act_window">
         <field name="name">Invitaciones de acceso</field>
