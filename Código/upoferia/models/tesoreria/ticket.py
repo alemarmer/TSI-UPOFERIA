@@ -1,5 +1,4 @@
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError
 
 
 class Ticket(models.Model):
@@ -24,14 +23,14 @@ class Ticket(models.Model):
     def _check_referencia(self):
         for record in self:
             if not record.sReferencia.strip():
-                raise ValidationError('La referencia del ticket no puede estar vacía.')
+                raise models.ValidationError('La referencia del ticket no puede estar vacía.')
 
     @api.constrains('dtFecha')
     def _check_fecha(self):
         ahora = fields.Datetime.now()
         for record in self:
             if record.dtFecha > ahora:
-                raise ValidationError('Un ticket no puede tener fecha futura (%s).' % record.dtFecha)
+                raise models.ValidationError('Un ticket no puede tener fecha futura (%s).' % record.dtFecha)
 
     @api.onchange('dtFecha')
     def onchange_fecha(self):
