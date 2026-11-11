@@ -1,5 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_upoferia_upoferia,upoferia.upoferia,model_upoferia_upoferia,base.group_user,1,1,1,1
 access_upoferia_caseta,upoferia.caseta,model_upoferia_caseta,base.group_user,1,1,1,1
 access_upoferia_zona_caseta,upoferia.zona_caseta,model_upoferia_zona_caseta,base.group_user,1,1,1,1
 access_upoferia_mesa,upoferia.mesa,model_upoferia_mesa,base.group_user,1,1,1,1
