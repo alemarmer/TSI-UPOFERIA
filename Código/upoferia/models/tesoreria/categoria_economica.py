@@ -1,5 +1,4 @@
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError
 
 
 class CategoriaEconomica(models.Model):
@@ -25,7 +24,7 @@ class CategoriaEconomica(models.Model):
     def _check_nombre(self):
         for record in self:
             if not record.sNombre.strip():
-                raise ValidationError('El nombre de la categoría económica no puede estar vacío.')
+                raise models.ValidationError('El nombre de la categoría económica no puede estar vacío.')
 
     @api.onchange('selTipo')
     def onchange_tipo(self):
