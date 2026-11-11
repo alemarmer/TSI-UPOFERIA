@@ -2,7 +2,7 @@
 {
     'name': "upoferia",
 
-    'summary': "Modulo de de gestión de activos relacionados con la feria y sus implicaciones.",
+    'summary': "Gestión del modulo de UPOFERIA",
 
     'description': """
 Long description of module's purpose
