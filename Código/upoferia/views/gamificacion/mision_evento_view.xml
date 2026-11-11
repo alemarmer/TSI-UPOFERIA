@@ -30,11 +30,23 @@
         </field>
     </record>
 
+        <!-- Vista Calendar --> 
+    <record id="upoferia_gamificacion_mision_evento_calendar_view" model="ir.ui.view">
+        <field name="name">upoferia.gamificacion.mision_evento.calendar</field>
+        <field name="model">upoferia.gamificacion.mision_evento</field>
+        <field name="arch" type="xml">  
+            <calendar string="Misiones de Evento" date_start="fecha">
+                <field name="mision_id"/>
+                <field name="tipo_evento"/>
+            </calendar>
+        </field>
+    </record> 
+
     <!-- Acción de Ventana -->
     <record id="upoferia_gamificacion_mision_evento_action" model="ir.actions.act_window">
         <field name="name">Misiones de Evento</field>
         <field name="res_model">upoferia.gamificacion.mision_evento</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">list,form,calendar</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Crea la primera misión para comenzar a gestionar la gamificación.
