@@ -17,6 +17,7 @@
             <field name="sResultado" />
             <field name="fPorcentajeSuperado" />
             <field name="sDocumento" />
+            <field name="microchip" widget="many2one" />
           </group>
           <notebook>
             <page name="puntos_control" string="Puntos de control">
@@ -48,6 +49,7 @@
         <field name="sEstado" />
         <field name="sResultado" />
         <field name="fPorcentajeSuperado" />
+        <field name="microchip" widget="many2one" />
       </list>
     </field>
   </record>
