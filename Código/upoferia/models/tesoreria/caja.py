@@ -1,5 +1,4 @@
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError
 
 
 class Caja(models.Model):
@@ -23,7 +22,7 @@ class Caja(models.Model):
     def _check_nombre(self):
         for record in self:
             if not record.sNombre.strip():
-                raise ValidationError('El nombre de la caja no puede estar vacío.')
+                raise models.ValidationError('El nombre de la caja no puede estar vacío.')
 
     @api.onchange('bActiva')
     def onchange_activa(self):
