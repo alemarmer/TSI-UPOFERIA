@@ -16,7 +16,15 @@
             <field name="dFechaSolicitud" />
             <field name="dFechaProgramada" />
             <field name="fDuracionHoras" widget="float_time" />
+            <field name="transaccion_id" widget="many2one" />
           </group>
+          <notebook>
+            <page name="tecnicos" string="Técnicos">
+              <group>
+                <field name="tecnico_ids" widget="many2many" />
+              </group>
+            </page>
+          </notebook>
         </sheet>
       </form>
     </field>
@@ -35,6 +43,7 @@
         <field name="dFechaProgramada" />
         <field name="fDuracionHoras" widget="float_time" />
         <field name="sEstado" />
+        <field name="transaccion_id" widget="many2one" />
       </list>
     </field>
   </record>
