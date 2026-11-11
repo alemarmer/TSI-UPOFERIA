@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from . import cuadrilla
 
 # from . import cuadrilla_empleado  # pendiente de integrar con RRHH (upoferia.empleado)
