@@ -1,0 +1,55 @@
+<odoo>
+  <record id="upoferia_punto_control_form_view" model="ir.ui.view">
+    <field name="name">upoferia.punto_control.form</field>
+    <field name="model">upoferia.punto_control</field>
+    <field name="arch" type="xml">
+      <form string="Puntos de control">
+        <sheet layout="auto">
+          <group>
+            <field name="inspeccion_id" />
+            <field name="iNumeroPunto" />
+            <field name="sDescripcion" />
+            <field name="elemento_seguridad_id" />
+            <field name="sResultado" />
+            <field name="sObservaciones" required="sResultado == 'no_superado'" />
+          </group>
+          <notebook>
+            <page string="Incidencias detectadas" name="incidencias">
+              <field name="incidencia_ids">
+                <list>
+                  <field name="sReferencia" />
+                  <field name="dFecha" />
+                  <field name="sPrioridad" widget="badge" />
+                  <field name="sEstado" />
+                </list>
+              </field>
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="upoferia_punto_control_list_view" model="ir.ui.view">
+    <field name="name">upoferia.punto_control.list</field>
+    <field name="model">upoferia.punto_control</field>
+    <field name="arch" type="xml">
+      <list string="Puntos de control" decoration-danger="sResultado == 'no_superado'" decoration-success="sResultado == 'superado'">
+        <field name="inspeccion_id" />
+        <field name="iNumeroPunto" />
+        <field name="sDescripcion" />
+        <field name="elemento_seguridad_id" />
+        <field name="sResultado" />
+      </list>
+    </field>
+  </record>
+
+  <record id="punto_control_list_action" model="ir.actions.act_window">
+    <field name="name">Puntos de control</field>
+    <field name="res_model">upoferia.punto_control</field>
+    <field name="view_mode">list,form</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">Crea el primer punto de control</p>
+    </field>
+  </record>
+</odoo>
