@@ -9,10 +9,6 @@ class PuntoControl(models.Model):
     _rec_name = 'iNumeroPunto'
     _rec_names_search = ['inspeccion_id.sReferencia', 'iNumeroPunto']
     _order = 'inspeccion_id, iNumeroPunto'
-    _sql_constraints = [
-        ('inspeccion_numero_punto_uniq', 'UNIQUE (inspeccion_id, "iNumeroPunto")',
-         'Esa inspección ya tiene un punto de control con ese número.'),
-    ]
 
     iNumeroPunto = fields.Integer(string='Número de punto', required=True)
     sDescripcion = fields.Char(string='Descripción', required=True)
@@ -26,6 +22,11 @@ class PuntoControl(models.Model):
     inspeccion_id = fields.Many2one('upoferia.inspeccion', string='Inspección', required=True)
     elemento_seguridad_id = fields.Many2one('upoferia.elemento_seguridad', string='Elemento de seguridad')
     incidencia_ids = fields.One2many('upoferia.incidencia', 'punto_control_id', string='Incidencias detectadas')
+
+    _sql_constraints = [
+            ('inspeccion_numero_punto_uniq', 'UNIQUE (inspeccion_id, "iNumeroPunto")',
+             'Esa inspección ya tiene un punto de control con ese número.'),
+    ]
 
     @api.depends('iNumeroPunto', 'inspeccion_id.sReferencia')
     def _compute_display_name(self):
