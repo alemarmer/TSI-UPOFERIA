@@ -14,3 +14,4 @@ from . import material
 from . import casetaEInstalaciones
 from . import inspeccionesEIncidencias
 from . import tesoreria
+from . import gamificacion

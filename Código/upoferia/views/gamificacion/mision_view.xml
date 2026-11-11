@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vista Lista -->
+    <record id="upoferia_gamificacion_mision_list_view" model="ir.ui.view">
+        <field name="name">upoferia.gamificacion.mision.list</field>
+        <field name="model">upoferia.gamificacion.mision</field>
+        <field name="arch" type="xml">
+            <list string="Misiones">
+                <field name="titulo"/>
+                <field name="descripcion"/>
+                <field name="fecha_max"/>
+                <field name="exp_adquirida"/>
+                <field name="completada"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Vista Formulario -->
+    <record id="upoferia_gamificacion_mision_form_view" model="ir.ui.view">
+        <field name="name">upoferia.gamificacion.mision.form</field>
+        <field name="model">upoferia.gamificacion.mision</field>
+        <field name="arch" type="xml">
+            <form string="Misiones">
+                <sheet>
+                    <group>
+                        <field name="titulo"/>
+                        <field name="descripcion"/>
+                        <field name="fecha_max"/>
+                        <field name="exp_adquirida"/>
+                        <field name="completada"/>  
+                    </group>
+                </sheet>
+            </form>     
+        </field>
+    </record>
+
+
+    <!-- Acción de Ventana -->
+    <record id="upoferia_gamificacion_mision_action" model="ir.actions.act_window">
+        <field name="name">Misiones</field>
+        <field name="res_model">upoferia.gamificacion.mision</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Crea la primera misión para comenzar a gestionar la gamificación.
+            </p>
+        </field>
+    </record>
+</odoo>

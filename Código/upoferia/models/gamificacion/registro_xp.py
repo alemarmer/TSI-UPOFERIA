@@ -1,0 +1,62 @@
+from odoo import models, fields, api
+
+
+class RegistroXp(models.Model):
+
+    _name = 'upoferia.registro_xp'
+    _description = 'Registro de experiencia de un socio en una temporada'
+
+    XP_POR_NIVEL = 100  # Provisional hasta cerrar TA-18
+
+    experiencia_acumulada = fields.Integer(string="Experiencia acumulada", default=0,
+                                           help="XP total del socio, incluyendo temporadas anteriores")
+    xp_ganada = fields.Integer(string="XP ganada", default=0, help="XP conseguida en esta temporada")
+    nivel = fields.Integer(string="Nivel", compute='_compute_nivel', store=True)
+
+    # Relaciones
+    temporada_pase_id = fields.Many2one('upoferia.temporada_pase', string="Temporada", required=True,
+                                        ondelete='cascade')
+    socio_id = fields.Char(string="Socio")
+    premio_id = fields.Char(string="Premio obtenido")
+    clan_id = fields.Many2one('upoferia.clan', string="Clan", store=True)
+    mision_ids = fields.One2many('upoferia.mision', 'registro_xp_id', string="Misiones")
+    racha_ids = fields.One2many('upoferia.racha', 'registro_xp_id', string="Rachas")
+    recompensa_ids = fields.Many2many('upoferia.recompensa', 'upoferia_registro_xp_recompensa_rel',
+                                      'registro_xp_id', 'recompensa_id', string="Recompensas pendientes")
+
+    _sql_constraints = [
+        ('natural_uniq', 'UNIQUE(temporada_pase_id, socio_id)', 'El socio ya tiene registro en esa temporada.'),
+        ('xp_ganada_positiva', 'CHECK(xp_ganada >= 0)', 'La XP ganada no puede ser negativa.'),
+        ('experiencia_coherente', 'CHECK(experiencia_acumulada >= xp_ganada)',
+         'La experiencia acumulada no puede ser menor que la ganada en la temporada.'),
+    ]
+
+    @api.constrains('recompensa_ids', 'experiencia_acumulada')
+    def _check_recompensas_alcanzadas(self):
+        for record in self:
+            for recompensa in record.recompensa_ids:
+                if recompensa.nivel_requerido > record.nivel:
+                    raise models.ValidationError('«%s» requiere el nivel %s y el socio está en el nivel %s.'
+                                          % (recompensa.nombre, recompensa.nivel_requerido, record.nivel))
+
+    @api.depends('experiencia_acumulada')
+    def _compute_nivel(self):
+        for record in self:
+            record.nivel = record.experiencia_acumulada // self.XP_POR_NIVEL + 1
+
+    @api.depends('socio_id', 'temporada_pase_id')
+    def _compute_display_name(self):
+        for record in self:
+            record.display_name = '%s · %s' % (record.socio_id.display_name or '', record.temporada_pase_id.nombre or '')
+
+    def sumar_xp(self, cantidad):
+        """Suma XP y concede las recompensas de los niveles que se alcanzan."""
+        if cantidad < 0:
+            raise models.UserError('No se puede sumar una cantidad negativa de experiencia.')
+        for record in self:
+            nivel_anterior = record.nivel
+            record.write({'xp_ganada': record.xp_ganada + cantidad,
+                          'experiencia_acumulada': record.experiencia_acumulada + cantidad})
+            nuevas = self.env['upoferia.recompensa'].search([('nivel_requerido', '>', nivel_anterior),
+                                                             ('nivel_requerido', '<=', record.nivel)])
+            record.recompensa_ids = [fields.Command.link(r.id) for r in nuevas]

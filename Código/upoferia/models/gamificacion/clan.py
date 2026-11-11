@@ -1,0 +1,42 @@
+from odoo import models, fields, api
+
+
+class Clan(models.Model):
+
+    _name = 'upoferia.clan'
+    _description = 'Clan del pase de feria'
+    _rec_name = 'nombre'
+
+    nombre = fields.Char(string="Nombre", required=True, help="Nombre único del clan")
+    fecha_creacion = fields.Date(string="Fecha de creación", default=fields.Date.context_today)
+    experiencia_total = fields.Integer(string="Experiencia total", compute='_compute_experiencia_total', store=True,
+                                       help="Suma de la experiencia ganada por los socios del clan")
+
+    # Relaciones
+    lider_id = fields.Char(string="Líder")
+    socio_ids = fields.Char(string="Socios")
+    registro_xp_ids = fields.One2many('upoferia.registro_xp', 'clan_id', string="Experiencia de sus socios")
+    temporada_pase_ids = fields.Many2many('upoferia.temporada_pase', 'upoferia_clan_temporada_pase_rel',
+                                          'clan_id', 'temporada_pase_id', string="Temporadas")
+
+    _sql_constraints = [
+        ('nombre_unique', 'UNIQUE(nombre)', 'Ya existe un clan con ese nombre.'),
+        ('lider_id_uniq', 'UNIQUE(lider_id)', 'Ese socio ya es líder de otro clan.'),
+    ]
+
+    @api.constrains('nombre')
+    def _check_nombre(self):
+        for record in self:
+            if not record.nombre.strip():
+                raise models.ValidationError('El nombre del clan no puede estar vacío.')
+
+    @api.constrains('lider_id')
+    def _check_lider_en_otro_clan(self):
+        for record in self:
+            if record.lider_id.clan_id and record.lider_id.clan_id != record:
+                raise models.ValidationError('El líder ya pertenece al clan «%s».' % record.lider_id.clan_id.nombre)
+
+    @api.depends('registro_xp_ids.xp_ganada')
+    def _compute_experiencia_total(self):
+        for record in self:
+            record.experiencia_total = sum(record.registro_xp_ids.mapped('xp_ganada'))

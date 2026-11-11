@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vista Lista -->
+    <record id="upoferia_gamificacion_temporada_pase_list_view" model="ir.ui.view">
+        <field name="name">upoferia.gamificacion.temporada_pase.list</field>
+        <field name="model">upoferia.gamificacion.temporada_pase</field>
+        <field name="arch" type="xml">
+            <list string="Temporadas de Pase">
+                <field name="nombre" />
+                <field name="fecha_inicio" />
+                <field name="fecha_fin" />
+                <field name="registro_xp_ids" />
+                <field name="clan_ids" />
+            </list>
+        </field>
+    </record>
+
+    <!-- Vista Formulario -->
+    <record id="upoferia_gamificacion_temporada_pase_form_view" model="ir.ui.view">
+        <field name="name">upoferia.gamificacion.temporada_pase.form</field>
+        <field name="model">upoferia.gamificacion.temporada_pase</field>
+        <field name="arch" type="xml">
+            <form string="Temporadas de Pase">
+                <sheet>
+                    <group>
+                        <field name="nombre" />
+                        <field name="fecha_inicio" />
+                        <field name="fecha_fin" />
+                        <field name="registro_xp_ids" />
+                        <field name="clan_ids" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+        <!-- Vistas Gantt -->
+    <record id="upoferia_gamificacion_temporada_pase_gantt_view" model="ir.ui.view">
+        <field name="name">upoferia.gamificacion.temporada_pase.gantt</field>
+        <field name="model">upoferia.gamificacion.temporada_pase</field>
+        <field name="arch" type="xml">
+            <gantt string="Temporadas de Pase" date_start="fecha_inicio" date_stop="fecha_fin">
+                <field name="nombre"/>
+            </gantt>
+        </field>
+    </record>
+
+
+    <!-- Acción de Ventana -->
+    <record id="upoferia_gamificacion_temporada_pase_action" model="ir.actions.act_window">
+        <field name="name">Temporadas de Pase</field>
+        <field name="res_model">upoferia.gamificacion.temporada_pase</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Crea la primera temporada de pase para comenzar a gestionar la gamificación.
+            </p>
+        </field>
+    </record>
+</odoo>
