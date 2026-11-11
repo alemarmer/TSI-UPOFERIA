@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError
 
 
 class InspeccionInspector(models.Model):
@@ -27,8 +26,8 @@ class InspeccionInspector(models.Model):
             if not sRol:
                 continue
             if not sRol.strip():
-                raise ValidationError('El campo «Rol» no puede estar formado solo por espacios.')
+                raise models.ValidationError('El campo «Rol» no puede estar formado solo por espacios.')
             if sRol != sRol.strip():
-                raise ValidationError('El «Rol» del inspector no puede empezar ni terminar con espacios.')
+                raise models.ValidationError('El «Rol» del inspector no puede empezar ni terminar con espacios.')
             if not 2 <= len(sRol) <= 100:
-                raise ValidationError('El «Rol» del inspector debe tener entre 2 y 100 caracteres.')
+                raise models.ValidationError('El «Rol» del inspector debe tener entre 2 y 100 caracteres.')
