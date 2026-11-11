@@ -1,5 +1,4 @@
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError
 
 
 class TipoProducto(models.Model):
@@ -23,7 +22,7 @@ class TipoProducto(models.Model):
     def _check_nombre(self):
         for record in self:
             if not record.sNombre.strip():
-                raise ValidationError('El nombre del tipo de producto no puede estar vacío.')
+                raise models.ValidationError('El nombre del tipo de producto no puede estar vacío.')
 
     @api.onchange('sNombre')
     def onchange_nombre(self):
