@@ -1,5 +1,4 @@
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError
 
 
 class LineaPresupuesto(models.Model):
@@ -30,13 +29,13 @@ class LineaPresupuesto(models.Model):
     def _check_concepto(self):
         for record in self:
             if not record.sConcepto.strip():
-                raise ValidationError('El concepto de la línea de presupuesto no puede estar vacío.')
+                raise models.ValidationError('El concepto de la línea de presupuesto no puede estar vacío.')
 
     @api.constrains('fImportePrevisto')
     def _check_importe_previsto(self):
         for record in self:
             if record.fImportePrevisto < 0:
-                raise ValidationError('El importe previsto no puede ser negativo; indica si es ingreso o gasto '
+                raise models.ValidationError('El importe previsto no puede ser negativo; indica si es ingreso o gasto '
                                       'con el campo «Tipo».')
 
     @api.onchange('fImportePrevisto')
