@@ -1,7 +1,5 @@
 <odoo>
     <record id="group_upoferia_manager" model="res.groups">
         <field name="name">Upoferia / Manager</field>
-        <!-- El administrador entra en el grupo al instalar, para que vea los menus -->
-        <field name="users" eval="[(4, ref('base.user_admin'))]" />
     </record>
 </odoo>
