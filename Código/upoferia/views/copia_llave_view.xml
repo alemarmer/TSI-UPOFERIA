@@ -11,7 +11,7 @@
           <group>
             <field name="iNumeroCopia" />
             <field name="dFechaEntrega" />
-            <field name="dFechaBaja" invisible="sEstado == 'activa'" required="sEstado in ('devuelta', 'perdida')" />
+            <field name="dFechaBaja" />
           </group>
         </sheet>
       </form>
@@ -22,11 +22,11 @@
     <field name="name">upoferia.copia_llave.list</field>
     <field name="model">upoferia.copia_llave</field>
     <field name="arch" type="xml">
-      <list string="Copias de llave" decoration-danger="sEstado == 'perdida'" decoration-muted="sEstado == 'devuelta'">
+      <list string="Copias de llave">
         <field name="iNumeroCopia" />
         <field name="dFechaEntrega" />
         <field name="dFechaBaja" />
-        <field name="sEstado" widget="badge" />
+        <field name="sEstado" />
       </list>
     </field>
   </record>
