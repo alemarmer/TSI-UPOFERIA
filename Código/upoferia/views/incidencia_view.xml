@@ -14,6 +14,7 @@
             <field name="sPrioridad" />
             <field name="punto_control_id" widget="many2one" />
             <field name="mobiliario_id" widget="many2one" />
+            <field name="servicio_id" widget="many2one" />
           </group>
           <notebook>
             <page name="mantenimientos" string="Mantenimientos">
@@ -38,6 +39,7 @@
         <field name="sEstado" />
         <field name="mobiliario_id" widget="many2one" />
         <field name="punto_control_id" widget="many2one" />
+        <field name="servicio_id" widget="many2one" />
       </list>
     </field>
   </record>
