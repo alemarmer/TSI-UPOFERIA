@@ -1,10 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import re
-from datetime import date
-
-from dateutil.relativedelta import relativedelta
-
 from odoo import models, fields, api
 
 
@@ -33,7 +28,6 @@ class Inspeccion(models.Model):
         ('favorable_condiciones', 'Favorable con condiciones'),
         ('desfavorable', 'Desfavorable'),
     ], string='Resultado')
-    
     sDocumento = fields.Char(string='Documento')
     sEstado = fields.Selection([
         ('programada', 'Programada'),
@@ -57,71 +51,12 @@ class Inspeccion(models.Model):
             iSuperados = len(oRegistro.punto_control_ids.filtered(lambda oPunto: oPunto.sResultado == 'superado'))
             oRegistro.fPorcentajeSuperado = round(iSuperados / iTotal * 100, 2) if iTotal else 0.0
 
-    @api.constrains('sReferencia')
-    def _check_referencia(self):
-        oRegistro = None
-        sReferencia = ''
-        for oRegistro in self:
-            sReferencia = oRegistro.sReferencia or ''
-            if not sReferencia.strip():
-                raise models.ValidationError('El campo «Referencia» es obligatorio.')
-            if not 2 <= len(sReferencia) <= 20:
-                raise models.ValidationError('La «Referencia» de la inspección debe tener entre 2 y 20 caracteres.')
-            if not re.fullmatch(r'[A-Z0-9]+([-/._][A-Z0-9]+)*', sReferencia):
-                raise models.ValidationError('La «Referencia» de la inspección solo puede tener letras mayúsculas y números, separados por - / . _ y sin espacios (por ejemplo INS-2026-001).')
-
-    @api.constrains('sOrganismo')
-    def _check_organismo(self):
-        oRegistro = None
-        sOrganismo = ''
-        for oRegistro in self:
-            sOrganismo = oRegistro.sOrganismo or ''
-            if not sOrganismo:
-                continue
-            if not sOrganismo.strip():
-                raise models.ValidationError('El campo «Organismo» no puede estar formado solo por espacios.')
-            if sOrganismo != sOrganismo.strip():
-                raise models.ValidationError('El «Organismo» no puede empezar ni terminar con espacios.')
-            if not 2 <= len(sOrganismo) <= 100:
-                raise models.ValidationError('El «Organismo» debe tener entre 2 y 100 caracteres.')
-
-    @api.constrains('dFecha', 'sEstado')
-    def _check_fecha(self):
-        oRegistro = None
-        dHoy = None
-        for oRegistro in self:
-            dHoy = fields.Date.context_today(oRegistro)
-            if not date(1970, 1, 1) <= oRegistro.dFecha <= dHoy + relativedelta(years=1):
-                raise models.ValidationError('La «Fecha» de la inspección debe estar entre el 01/01/1970 y un año después de hoy.')
-            if oRegistro.sEstado == 'realizada' and oRegistro.dFecha > dHoy:
-                raise models.ValidationError('Una inspección realizada no puede tener una «Fecha» posterior a hoy.')
-
     @api.constrains('sEstado', 'sResultado')
     def _check_estado(self):
         oRegistro = None
         for oRegistro in self:
             if oRegistro.sEstado == 'realizada' and not oRegistro.sResultado:
                 raise models.ValidationError('Una inspección realizada tiene que tener «Resultado».')
-            if oRegistro.sEstado != 'realizada' and oRegistro.sResultado:
-                raise models.ValidationError('Solo una inspección realizada puede tener «Resultado».')
-            if oRegistro.sEstado != 'realizada' and oRegistro.punto_control_ids.filtered('sResultado'):
-                raise models.ValidationError('La inspección tiene puntos de control con resultado: tiene que estar realizada.')
-
-    @api.constrains('sDocumento')
-    def _check_documento(self):
-        oRegistro = None
-        sDocumento = ''
-        for oRegistro in self:
-            sDocumento = oRegistro.sDocumento or ''
-            if not sDocumento:
-                continue
-            if re.search(r'\s', sDocumento):
-                raise models.ValidationError('El «Documento» no puede tener espacios.')
-            if len(sDocumento) > 255:
-                raise models.ValidationError('El «Documento» puede tener como mucho 255 caracteres.')
-            if not re.fullmatch(r'(https?://\S+|\S+\.(pdf|doc|docx|odt))', sDocumento, re.IGNORECASE):
-                raise models.ValidationError('El «Documento» tiene que ser una URL que empiece por http:// o https://, o un archivo .pdf, .doc, .docx u .odt.')
-
 
     def unlink(self):
         self.punto_control_ids.unlink()
