@@ -36,6 +36,17 @@
         </field>
     </record>
 
+    <!-- Vista Calendar -->
+    <record id="upoferia_control_accesos_registro_accesos_calendar_view" model="ir.ui.view">
+        <field name="name">upoferia.control_accesos.registro_accesos.calendar</field>
+        <field name="model">upoferia.control_accesos.registro_accesos</field>
+        <field name="arch" type="xml">
+            <calendar string="Registros de Accesos" date_start="fecha_hora" color="metodo_acceso">
+                <field name="punto_acceso_id"/>
+            </calendar>
+        </field>
+    </record>
+
     <!-- Acción de Ventana -->
     <record id="upoferia_control_accesos_registro_accesos_action" model="ir.actions.act_window">
         <field name="name">Registros de Accesos</field>
