@@ -4,7 +4,6 @@ import re
 from datetime import date
 
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError, UserError
 
 
 class Incidencia(models.Model):
@@ -43,11 +42,11 @@ class Incidencia(models.Model):
         for oRegistro in self:
             sReferencia = oRegistro.sReferencia or ''
             if not sReferencia.strip():
-                raise ValidationError('El campo «Referencia» es obligatorio.')
+                raise models.ValidationError('El campo «Referencia» es obligatorio.')
             if not 2 <= len(sReferencia) <= 20:
-                raise ValidationError('La «Referencia» de la incidencia debe tener entre 2 y 20 caracteres.')
+                raise models.ValidationError('La «Referencia» de la incidencia debe tener entre 2 y 20 caracteres.')
             if not re.fullmatch(r'[A-Z0-9]+([-/._][A-Z0-9]+)*', sReferencia):
-                raise ValidationError('La «Referencia» de la incidencia solo puede tener letras mayúsculas y números, separados por - / . _ y sin espacios (por ejemplo INC-2026-001).')
+                raise models.ValidationError('La «Referencia» de la incidencia solo puede tener letras mayúsculas y números, separados por - / . _ y sin espacios (por ejemplo INC-2026-001).')
 
     @api.constrains('dFecha', 'punto_control_id')
     def _check_fecha(self):
@@ -56,9 +55,9 @@ class Incidencia(models.Model):
         for oRegistro in self:
             dHoy = fields.Date.context_today(oRegistro)
             if not date(1970, 1, 1) <= oRegistro.dFecha <= dHoy:
-                raise ValidationError('La «Fecha» de la incidencia debe estar entre el 01/01/1970 y hoy.')
+                raise models.ValidationError('La «Fecha» de la incidencia debe estar entre el 01/01/1970 y hoy.')
             if oRegistro.punto_control_id and oRegistro.dFecha < oRegistro.punto_control_id.inspeccion_id.dFecha:
-                raise ValidationError('La «Fecha» de la incidencia no puede ser anterior a la de la inspección que la detecta.')
+                raise models.ValidationError('La «Fecha» de la incidencia no puede ser anterior a la de la inspección que la detecta.')
 
     @api.constrains('punto_control_id', 'mobiliario_id')
     def _check_punto_control(self):
@@ -69,14 +68,14 @@ class Incidencia(models.Model):
             if not oPunto:
                 continue
             if oPunto.sResultado != 'no_superado':
-                raise ValidationError('Una incidencia solo la puede detectar un punto de control no superado.')
+                raise models.ValidationError('Una incidencia solo la puede detectar un punto de control no superado.')
             if oRegistro.mobiliario_id and oRegistro.mobiliario_id.caseta_id != oPunto.inspeccion_id.caseta_id:
-                raise ValidationError('Si la incidencia la detecta un punto de control, el mobiliario afectado tiene que ser de la caseta inspeccionada.')
+                raise models.ValidationError('Si la incidencia la detecta un punto de control, el mobiliario afectado tiene que ser de la caseta inspeccionada.')
 
 
     def unlink(self):
         oRegistro = None
         for oRegistro in self:
             if oRegistro.mantenimiento_ids:
-                raise UserError(f'No se puede borrar la incidencia «{oRegistro.sReferencia}» porque tiene mantenimientos.')
+                raise models.UserError(f'No se puede borrar la incidencia «{oRegistro.sReferencia}» porque tiene mantenimientos.')
         return super().unlink()
