@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vista Formulario -->
+    <record id="upoferia_socios_persona_form_view" model="ir.ui.view">
+        <field name="name">upoferia.socios.persona.form</field>
+        <field name="model">upoferia.socios.persona</field>
+        <field name="arch" type="xml">
+            <form string="Persona">
+                <sheet>
+                    <group>
+                        <group string="Datos Personales">
+                            <field name="dni"/>
+                            <field name="nombre"/>
+                            <field name="telefono"/>
+                            <field name="codigo_persona"/>
+                            <field name="email"/>
+                        </group>
+                        <group string="Dirección">
+                            <field name="direccion_calle"/>
+                            <field name="direccion_ciudad"/>
+                            <field name="direccion_cp"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

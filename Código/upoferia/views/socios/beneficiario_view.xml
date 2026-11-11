@@ -7,19 +7,14 @@
         <field name="arch" type="xml">
             <list string="Beneficiario">
                 <field name="beneficiario_id"/>
-                <group string="Datos Personales">
-                            <field name="dni" />
-                            <field name="nombre" placeholder="Nombre completo"/>
-                            <field name="telefono"/>
-                            <field name="email"/>
-                            <field name="codigo_persona"/>
-                        </group>
-                        <group string="Dirección">
-                            <field name="direccion_calle"/>
-                            <field name="direccion_ciudad"/>
-                            <field name="direccion_cp"/>
-                        </group>
-                    </group>
+                <field name="nombre"/>
+                <field name="telefono"/>
+                <field name="email"/>
+                <field name="codigo_persona"/>
+                <field name="direccion_calle"/>
+                <field name="direccion_ciudad"/>
+                <field name="direccion_cp"/>
+                <field name="socio_id"/>
                 <field name="parentesco"/>
             </list>
         </field>
@@ -33,8 +28,10 @@
             <form string="Beneficiario">
                 <sheet>
                     <group>
-                        <field name="beneficiario_id"/>
-                        <field name="socio_id"/>
+                        <group>
+                            <field name="beneficiario_id" options="{'no_quick_create': True}"/>
+                            <field name="socio_id" options="{'no_quick_create': True}"/>
+                        </group>
                         <field name="parentesco"/>
                     </group>
                 </sheet>
