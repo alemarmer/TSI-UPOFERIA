@@ -18,7 +18,7 @@ class RegistroXp(models.Model):
                                         ondelete='cascade')
     socio_id = fields.Char(string="Socio")
     premio_id = fields.Char(string="Premio obtenido")
-    clan_id = fields.Many2one('upoferia.clan', string="Clan", related='socio_id.clan_id', store=True)
+    clan_id = fields.Many2one('upoferia.clan', string="Clan", store=True)
     mision_ids = fields.One2many('upoferia.mision', 'registro_xp_id', string="Misiones")
     racha_ids = fields.One2many('upoferia.racha', 'registro_xp_id', string="Rachas")
     recompensa_ids = fields.Many2many('upoferia.recompensa', 'upoferia_registro_xp_recompensa_rel',
