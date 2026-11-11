@@ -1,0 +1,19 @@
+  <menuitem name="Casetas e instalaciones" id="casetas_instalaciones_menu" groups="group_upoferia_manager" parent="main_upoferia_menu" sequence="40" />
+  <menuitem name="Inspecciones e incidencias" id="inspecciones_incidencias_menu" groups="group_upoferia_manager" parent="main_upoferia_menu" sequence="50" />
+
+
+  <menuitem name="Casetas" id="caseta_menu" parent="casetas_instalaciones_menu" groups="group_upoferia_manager" action="caseta_list_action" sequence="10" />
+  <menuitem name="Zonas" id="zona_caseta_menu" parent="casetas_instalaciones_menu" groups="group_upoferia_manager" action="zona_caseta_list_action" sequence="20" />
+  <menuitem name="Mesas" id="mesa_menu" parent="casetas_instalaciones_menu" groups="group_upoferia_manager" action="mesa_list_action" sequence="30" />
+  <menuitem name="Mobiliario" id="mobiliario_caseta_menu" parent="casetas_instalaciones_menu" groups="group_upoferia_manager" action="mobiliario_caseta_list_action" sequence="40" />
+  <menuitem name="Elementos de seguridad" id="elemento_seguridad_menu" parent="casetas_instalaciones_menu" groups="group_upoferia_manager" action="elemento_seguridad_list_action" sequence="50" />
+  <menuitem name="Licencias" id="licencia_menu" parent="casetas_instalaciones_menu" groups="group_upoferia_manager" action="licencia_list_action" sequence="60" />
+  <menuitem name="Llaves" id="llave_menu" parent="casetas_instalaciones_menu" groups="group_upoferia_manager" action="llave_list_action" sequence="70" />
+  <menuitem name="Copias de llave" id="copia_llave_menu" parent="casetas_instalaciones_menu" groups="group_upoferia_manager" action="copia_llave_list_action" sequence="80" />
+
+  <menuitem name="Inspecciones" id="inspeccion_menu" parent="inspecciones_incidencias_menu" groups="group_upoferia_manager" action="inspeccion_list_action" sequence="10" />
+  <menuitem name="Puntos de control" id="punto_control_menu" parent="inspecciones_incidencias_menu" groups="group_upoferia_manager" action="punto_control_list_action" sequence="20" />
+  <menuitem name="Inspectores" id="inspector_menu" parent="inspecciones_incidencias_menu" groups="group_upoferia_manager" action="inspector_list_action" sequence="30" />
+  <menuitem name="Inspectores por inspección" id="inspeccion_inspector_menu" parent="inspecciones_incidencias_menu" groups="group_upoferia_manager" action="inspeccion_inspector_list_action" sequence="40" />
+  <menuitem name="Incidencias" id="incidencia_menu" parent="inspecciones_incidencias_menu" groups="group_upoferia_manager" action="incidencia_list_action" sequence="50" />
+  <menuitem name="Mantenimientos" id="mantenimiento_menu" parent="inspecciones_incidencias_menu" groups="group_upoferia_manager" action="mantenimiento_list_action" sequence="60" />
