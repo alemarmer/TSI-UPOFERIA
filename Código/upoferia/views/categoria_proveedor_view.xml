@@ -1,0 +1,45 @@
+<odoo>
+  <record id="upoferia_categoria_proveedor_form_view" model="ir.ui.view">
+    <field name="name">upoferia.categoria_proveedor.form</field>
+    <field name="model">upoferia.categoria_proveedor</field>
+    <field name="arch" type="xml">
+      <form string="Categorías de proveedor">
+        <sheet layout="auto">
+          <group>
+            <field name="sNombre" />
+            <field name="padre_id" />
+            <field name="iColor" />
+          </group>
+          <notebook>
+            <page name="subcategorias" string="Subcategorías">
+              <field name="hija_ids" readonly="1" />
+            </page>
+            <page name="proveedores" string="Proveedores">
+              <field name="proveedor_ids" />
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="upoferia_categoria_proveedor_list_view" model="ir.ui.view">
+    <field name="name">upoferia.categoria_proveedor.list</field>
+    <field name="model">upoferia.categoria_proveedor</field>
+    <field name="arch" type="xml">
+      <list string="Categorías de proveedor">
+        <field name="sNombre" />
+        <field name="padre_id" />
+      </list>
+    </field>
+  </record>
+
+  <record id="categoria_proveedor_list_action" model="ir.actions.act_window">
+    <field name="name">Categorías de proveedor</field>
+    <field name="res_model">upoferia.categoria_proveedor</field>
+    <field name="view_mode">list,form</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">Crea la primera categoría de proveedor</p>
+    </field>
+  </record>
+</odoo>

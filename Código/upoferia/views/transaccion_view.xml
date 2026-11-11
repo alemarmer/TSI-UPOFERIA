@@ -1,0 +1,126 @@
+<odoo>
+  <record id="upoferia_transaccion_form_view" model="ir.ui.view">
+    <field name="name">upoferia.transaccion.form</field>
+    <field name="model">upoferia.transaccion</field>
+    <field name="arch" type="xml">
+      <form string="Transacciones">
+        <header>
+          <button name="btn_confirmar" string="Confirmar" type="object" class="oe_highlight" />
+          <button name="btn_recibir" string="Recibido" type="object" class="oe_highlight" />
+          <button name="btn_cancelar" string="Cancelar" type="object" />
+          <button name="btn_hacer" string="Hecho" type="object" class="oe_highlight" />
+          <button name="btn_pagar" string="Pagada" type="object" class="oe_highlight" />
+          <button name="btn_marcar_vencida" string="Vencida" type="object" />
+          <button name="btn_activar" string="Activar" type="object" class="oe_highlight" />
+          <button name="btn_marcar_vencido" string="Vencido" type="object" />
+          <button name="btn_rescindir" string="Rescindir" type="object" />
+          <button name="btn_eliminarLineas" string="Eliminar líneas" type="object" />
+        </header>
+        <sheet layout="auto">
+          <group>
+            <group>
+              <field name="sIdTransaccion" placeholder="PED-2026-001" />
+              <field name="tipo_transaccion_id" />
+              <field name="proveedor_id" />
+              <field name="sEstado" />
+              <field name="fImporte" />
+              <field name="sRefProveedor" />
+            </group>
+            <group>
+              <field name="dFechaInicial" />
+              <field name="dVencimiento" />
+              <field name="dFechaPrevistaFin" />
+              <field name="sDocumento" />
+              <field name="bRenovacionAuto" />
+              <field name="fImporteFacturado" />
+            </group>
+          </group>
+          <group>
+            <field name="transaccion_origen_id" />
+            <field name="linea_presupuesto_id" />
+            <field name="caseta_id" />
+          </group>
+          <notebook>
+            <page name="lineas" string="Líneas">
+              <field name="linea_ids" />
+            </page>
+            <page name="derivadas" string="Transacciones generadas">
+              <field name="transaccion_derivada_ids" readonly="1" />
+            </page>
+            <page name="movimientos" string="Movimientos">
+              <field name="movimiento_ids" readonly="1" />
+            </page>
+            <page name="actuaciones" string="Actuaciones">
+              <field name="actuacion_ids" readonly="1" />
+            </page>
+            <page name="salidas" string="Salidas">
+              <field name="salida_ids" readonly="1" />
+            </page>
+            <page name="prestamos" string="Préstamos">
+              <field name="prestamo_ids" readonly="1" />
+            </page>
+            <page name="mantenimientos" string="Mantenimientos">
+              <field name="mantenimiento_ids" readonly="1" />
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="upoferia_transaccion_list_view" model="ir.ui.view">
+    <field name="name">upoferia.transaccion.list</field>
+    <field name="model">upoferia.transaccion</field>
+    <field name="arch" type="xml">
+      <list string="Transacciones">
+        <field name="sIdTransaccion" />
+        <field name="tipo_transaccion_id" />
+        <field name="proveedor_id" />
+        <field name="dFechaInicial" />
+        <field name="fImporte" />
+        <field name="sEstado" />
+      </list>
+    </field>
+  </record>
+
+  <record id="upoferia_transaccion_calendar_view" model="ir.ui.view">
+    <field name="name">upoferia.transaccion.calendar</field>
+    <field name="model">upoferia.transaccion</field>
+    <field name="arch" type="xml">
+      <calendar string="Transacciones" color="tipo_transaccion_id" date_start="dFechaInicial" mode="month">
+        <field name="sIdTransaccion" />
+        <field name="proveedor_id" />
+      </calendar>
+    </field>
+  </record>
+
+  <record id="upoferia_transaccion_search_view" model="ir.ui.view">
+    <field name="name">upoferia.transaccion.search</field>
+    <field name="model">upoferia.transaccion</field>
+    <field name="arch" type="xml">
+      <search>
+        <field name="sIdTransaccion" />
+        <field name="proveedor_id" />
+        <filter name="search_pedidos" string="Pedidos" domain="[('tipo_transaccion_id.sCodigo','=','PED')]" />
+        <filter name="search_facturas" string="Facturas y abonos" domain="[('tipo_transaccion_id.sCodigo','in',('FAC','ABO'))]" />
+        <filter name="search_contratos" string="Contratos" domain="[('tipo_transaccion_id.sCodigo','=','CON')]" />
+        <separator orientation="vertical" />
+        <group expand="0" string="Agrupar por...">
+          <filter name="group_by_tipo" string="Tipo" context="{'group_by':'tipo_transaccion_id'}" />
+          <filter name="group_by_proveedor" string="Proveedor" context="{'group_by':'proveedor_id'}" />
+          <filter name="group_by_estado" string="Estado" context="{'group_by':'sEstado'}" />
+        </group>
+      </search>
+    </field>
+  </record>
+
+  <record id="transaccion_list_action" model="ir.actions.act_window">
+    <field name="name">Transacciones</field>
+    <field name="res_model">upoferia.transaccion</field>
+    <field name="search_view_id" ref="upoferia_transaccion_search_view" />
+    <field name="view_mode">list,form,calendar</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">Crea la primera transacción</p>
+    </field>
+  </record>
+</odoo>

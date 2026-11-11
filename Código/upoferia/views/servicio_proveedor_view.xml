@@ -1,0 +1,49 @@
+<odoo>
+  <record id="upoferia_servicio_proveedor_form_view" model="ir.ui.view">
+    <field name="name">upoferia.servicio_proveedor.form</field>
+    <field name="model">upoferia.servicio_proveedor</field>
+    <field name="arch" type="xml">
+      <form string="Tarifas de proveedores">
+        <sheet layout="auto">
+          <group>
+            <field name="servicio_id" />
+            <field name="proveedor_id" />
+            <field name="fPrecioTarifa" />
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="upoferia_servicio_proveedor_list_view" model="ir.ui.view">
+    <field name="name">upoferia.servicio_proveedor.list</field>
+    <field name="model">upoferia.servicio_proveedor</field>
+    <field name="arch" type="xml">
+      <list string="Tarifas de proveedores">
+        <field name="servicio_id" />
+        <field name="proveedor_id" />
+        <field name="fPrecioTarifa" />
+      </list>
+    </field>
+  </record>
+
+  <record id="upoferia_servicio_proveedor_graph_view" model="ir.ui.view">
+    <field name="name">upoferia.servicio_proveedor.graph</field>
+    <field name="model">upoferia.servicio_proveedor</field>
+    <field name="arch" type="xml">
+      <graph string="Precio de tarifa por servicio" type="bar">
+        <field name="servicio_id" />
+        <field name="fPrecioTarifa" type="measure" />
+      </graph>
+    </field>
+  </record>
+
+  <record id="servicio_proveedor_list_action" model="ir.actions.act_window">
+    <field name="name">Tarifas de proveedores</field>
+    <field name="res_model">upoferia.servicio_proveedor</field>
+    <field name="view_mode">list,form,graph</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">Crea la primera tarifa</p>
+    </field>
+  </record>
+</odoo>

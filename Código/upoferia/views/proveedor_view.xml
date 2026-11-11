@@ -1,0 +1,56 @@
+<odoo>
+  <record id="upoferia_proveedor_form_view" model="ir.ui.view">
+    <field name="name">upoferia.proveedor.form</field>
+    <field name="model">upoferia.proveedor</field>
+    <field name="arch" type="xml">
+      <form string="Proveedores">
+        <header>
+          <button name="btn_eliminarTarifas" string="Eliminar tarifas" type="object" />
+        </header>
+        <sheet layout="auto">
+          <group>
+            <field name="persona_id" />
+            <field name="sCif" />
+          </group>
+          <notebook>
+            <page name="categorias" string="Categorías">
+              <field name="categoria_ids" />
+            </page>
+            <page name="servicios" string="Servicios que ofrece">
+              <field name="servicio_proveedor_ids" />
+            </page>
+            <page name="marcas" string="Marcas">
+              <field name="marca_ids" readonly="1" />
+            </page>
+            <page name="transacciones" string="Transacciones">
+              <field name="transaccion_ids" readonly="1" />
+            </page>
+            <page name="prestamos" string="Préstamos">
+              <field name="prestamo_ids" readonly="1" />
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="upoferia_proveedor_list_view" model="ir.ui.view">
+    <field name="name">upoferia.proveedor.list</field>
+    <field name="model">upoferia.proveedor</field>
+    <field name="arch" type="xml">
+      <list string="Proveedores">
+        <field name="persona_id" />
+        <field name="sCif" />
+      </list>
+    </field>
+  </record>
+
+  <record id="proveedor_list_action" model="ir.actions.act_window">
+    <field name="name">Proveedores</field>
+    <field name="res_model">upoferia.proveedor</field>
+    <field name="view_mode">list,form</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">Crea el primer proveedor</p>
+    </field>
+  </record>
+</odoo>
