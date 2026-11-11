@@ -16,8 +16,8 @@ class RegistroXp(models.Model):
     # Relaciones
     temporada_pase_id = fields.Many2one('upoferia.temporada_pase', string="Temporada", required=True,
                                         ondelete='cascade')
-    socio_id = fields.Many2one('upoferia.socio', string="Socio", required=True, ondelete='restrict')
-    premio_id = fields.Many2one('upoferia.premio', string="Premio obtenido", ondelete='set null')
+    socio_id = fields.Char(string="Socio")
+    premio_id = fields.Char(string="Premio obtenido")
     clan_id = fields.Many2one('upoferia.clan', string="Clan", related='socio_id.clan_id', store=True)
     mision_ids = fields.One2many('upoferia.mision', 'registro_xp_id', string="Misiones")
     racha_ids = fields.One2many('upoferia.racha', 'registro_xp_id', string="Rachas")

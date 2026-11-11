@@ -13,7 +13,7 @@ class Clan(models.Model):
                                        help="Suma de la experiencia ganada por los socios del clan")
 
     # Relaciones
-    lider_id = fields.Many2one('upoferia.socio', string="Líder", ondelete='set null')
+    lider_id = fields.Char(string="Líder")
     socio_ids = fields.Char(string="Socios")
     registro_xp_ids = fields.One2many('upoferia.registro_xp', 'clan_id', string="Experiencia de sus socios")
     temporada_pase_ids = fields.Many2many('upoferia.temporada_pase', 'upoferia_clan_temporada_pase_rel',
