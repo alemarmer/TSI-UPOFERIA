@@ -1,5 +1,4 @@
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError
 
 
 class LineaTicket(models.Model):
@@ -26,19 +25,19 @@ class LineaTicket(models.Model):
     def _check_numero_linea(self):
         for record in self:
             if record.iNumeroLinea <= 0:
-                raise ValidationError('El número de línea debe ser mayor que 0.')
+                raise models.ValidationError('El número de línea debe ser mayor que 0.')
 
     @api.constrains('iCantidad')
     def _check_cantidad(self):
         for record in self:
             if record.iCantidad <= 0:
-                raise ValidationError('La cantidad debe ser mayor que 0.')
+                raise models.ValidationError('La cantidad debe ser mayor que 0.')
 
     @api.constrains('fPrecioUnitario')
     def _check_precio_unitario(self):
         for record in self:
             if record.fPrecioUnitario < 0:
-                raise ValidationError('El precio unitario no puede ser negativo.')
+                raise models.ValidationError('El precio unitario no puede ser negativo.')
 
     @api.onchange('iCantidad')
     def onchange_cantidad(self):
