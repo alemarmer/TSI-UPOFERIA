@@ -16,15 +16,15 @@ class Caseta(models.Model):
     fHoraApertura = fields.Float(string='Hora de apertura')
     fHoraCierre = fields.Float(string='Hora de cierre')
 
-    _sql_constraints = [
-            ('nombre_uniq', 'UNIQUE ("sNombre")',
-             'Ya existe una caseta con ese nombre.'),
-        ]
-
     zona_ids = fields.One2many('upoferia.zona_caseta', 'caseta_id', string='Zonas')
     mobiliario_ids = fields.One2many('upoferia.mobiliario_caseta', 'caseta_id', string='Mobiliario')
     licencia_ids = fields.One2many('upoferia.licencia', 'caseta_id', string='Licencias')
     inspeccion_ids = fields.One2many('upoferia.inspeccion', 'caseta_id', string='Inspecciones')
+
+    _sql_constraints = [
+                ('nombre_uniq', 'UNIQUE ("sNombre")',
+                 'Ya existe una caseta con ese nombre.'),
+    ]
 
     @api.constrains('iModulos', 'iAforoAutorizado')
     def _check_capacidad(self):
