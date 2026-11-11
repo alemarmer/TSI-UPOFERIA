@@ -1,0 +1,69 @@
+<odoo>
+  <record id="upoferia_licencia_form_view" model="ir.ui.view">
+    <field name="name">upoferia.licencia.form</field>
+    <field name="model">upoferia.licencia</field>
+    <field name="arch" type="xml">
+      <form string="Licencias">
+        <header>
+          <field name="sEstado" widget="statusbar" options="{'clickable': '1'}" />
+        </header>
+        <sheet layout="auto">
+          <widget name="web_ribbon" title="Vigente" bg_color="text-bg-success" invisible="not bVigente" />
+          <group>
+            <group string="Datos de la licencia">
+              <field name="sNumeroExpediente" placeholder="Ej. EXP-2026/0001" />
+              <field name="caseta_id" />
+              <field name="sTipo" />
+              <field name="sOrganismo" />
+              <field name="sDocumento" placeholder="URL o archivo .pdf/.doc/.docx/.odt" />
+            </group>
+            <group string="Vigencia" invisible="sEstado in ('solicitada', 'denegada')">
+              <field name="dFechaConcesion" required="sEstado in ('concedida', 'revocada')" />
+              <field name="dFechaCaducidad" required="sEstado in ('concedida', 'revocada')" />
+              <field name="bVigente" />
+            </group>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="upoferia_licencia_list_view" model="ir.ui.view">
+    <field name="name">upoferia.licencia.list</field>
+    <field name="model">upoferia.licencia</field>
+    <field name="arch" type="xml">
+      <list string="Licencias" decoration-success="bVigente" decoration-muted="sEstado in ('denegada', 'revocada')">
+        <field name="sNumeroExpediente" />
+        <field name="caseta_id" />
+        <field name="sTipo" />
+        <field name="sOrganismo" />
+        <field name="dFechaConcesion" />
+        <field name="dFechaCaducidad" />
+        <field name="sEstado" widget="badge" />
+        <field name="bVigente" />
+      </list>
+    </field>
+  </record>
+
+  <record id="upoferia_licencia_calendar_view" model="ir.ui.view">
+    <field name="name">upoferia.licencia.calendar</field>
+    <field name="model">upoferia.licencia</field>
+    <field name="arch" type="xml">
+      <calendar string="Licencias" date_start="dFechaConcesion" date_stop="dFechaCaducidad" color="caseta_id" mode="month" quick_create="0">
+        <field name="sNumeroExpediente" />
+        <field name="caseta_id" filters="1" />
+        <field name="sTipo" />
+        <field name="sEstado" />
+      </calendar>
+    </field>
+  </record>
+
+  <record id="licencia_list_action" model="ir.actions.act_window">
+    <field name="name">Licencias</field>
+    <field name="res_model">upoferia.licencia</field>
+    <field name="view_mode">list,form,calendar</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">Crea la primera licencia</p>
+    </field>
+  </record>
+</odoo>
