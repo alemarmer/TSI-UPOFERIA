@@ -41,11 +41,26 @@
         <field name="name">upoferia.control_accesos.registro_accesos.calendar</field>
         <field name="model">upoferia.control_accesos.registro_accesos</field>
         <field name="arch" type="xml">
-            <calendar string="Registros de Accesos" date_start="fecha_hora" color="metodo_acceso">
+            <calendar string="Registros de Accesos" date_start="fecha_hora" color="tipo_movimiento">
                 <field name="punto_acceso_id"/>
+                <field name="metodo_acceso"/>
             </calendar>
         </field>
     </record>
+
+    <!-- Vista pivote -->
+    <record id="upoferia_registro_acceso_pivot_view" model="ir.ui.view">
+        <field name="name">upoferia.control_accesos.registro_accesos.pivot</field>
+        <field name="model">upoferia.control_accesos.registro_accesos</field>
+        <field name="arch" type="xml">
+            <pivot string="Análisis de Accesos">
+                <field name="punto_acceso_id" type="row"/>
+                <field name="tipo_movimiento" type="col"/>
+            </pivot>
+        </field>
+    </record>
+
+
 
     <!-- Acción de Ventana -->
     <record id="upoferia_control_accesos_registro_accesos_action" model="ir.actions.act_window">

@@ -32,11 +32,38 @@
         </field>
     </record>
 
+    <!-- Vista Calendar -->
+    <record id="upoferia_socios_consentimiento_biometrico_calendar_view" model="ir.ui.view">
+        <field name="name">upoferia.socios.consentimiento_biometrico.calendar</field>
+        <field name="model">upoferia.socios.consentimiento_biometrico</field>
+        <field name="arch" type="xml">
+            <calendar string="Consentimiento biometrico" date_start="fecha_firma" color="estado">
+                <field name="persona_id"/>
+                <field name="fecha_renovacion"/>
+            </calendar>
+        </field>
+    </record>
+
+    <!-- Vista kanban -->
+    <record id="upoferia_socios_consentimiento_biometrico_kanban_view" model="ir.ui.view">
+        <field name="name">upoferia.socios.consentimiento_biometrico.kanban</field>
+        <field name="model">upoferia.socios.consentimiento_biometrico</field>
+        <field name="arch" type="xml">
+            <kanban string="Consentimientos biometricos">
+                <field name="persona_id"/>
+                <field name="estado"/>
+                <field name="fecha_firma"/>
+                <field name="fecha_renovacion"/>
+                <field name="datos_biometricos"/>
+            </kanban>
+        </field>
+    </record>
+
     <!-- Acción de Ventana -->
     <record id="upoferia_socios_consentimiento_biometrico_action" model="ir.actions.act_window">
         <field name="name">Consentimientos biometricos</field>
         <field name="res_model">upoferia.socios.consentimiento_biometrico</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">list,form,calendar,kanban</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Crea el primer consentimiento biometrico

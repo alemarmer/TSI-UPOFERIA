@@ -30,6 +30,19 @@
         </field>
     </record>
 
+    <!-- Vista Gráfico -->
+    <record id="upoferia_control_accesos_control_aforo_graph_view" model="ir.ui.view">
+        <field name="name">upoferia.control_accesos.control_aforo.graph</field>
+        <field name="model">upoferia.control_accesos.control_aforo</field>
+        <field name="arch" type="xml">
+            <graph string="Aforo" type="line">
+                <field name="fecha_hora" type="row" interval="hour"/>
+                <field name="ocupacion_actual" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+
     <!-- Acción de Ventana -->
     <record id="upoferia_control_accesos_control_aforo_action" model="ir.actions.act_window">
         <field name="name">Control de Aforo</field>
