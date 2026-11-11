@@ -46,18 +46,39 @@
 
     <!-- Vista kanban -->
     <record id="upoferia_socios_consentimiento_biometrico_kanban_view" model="ir.ui.view">
-        <field name="name">upoferia.socios.consentimiento_biometrico.kanban</field>
-        <field name="model">upoferia.socios.consentimiento_biometrico</field>
-        <field name="arch" type="xml">
-            <kanban string="Consentimientos biometricos">
-                <field name="persona_id"/>
-                <field name="estado"/>
-                <field name="fecha_firma"/>
-                <field name="fecha_renovacion"/>
-                <field name="datos_biometricos"/>
-            </kanban>
-        </field>
-    </record>
+    <field name="name">upoferia.socios.consentimiento_biometrico.kanban</field>
+    <field name="model">upoferia.socios.consentimiento_biometrico</field>
+    <field name="arch" type="xml">
+        <kanban string="Consentimientos Biométricos" default_group_by="estado" class="o_kanban_small_column">
+            <field name="persona_id"/>
+            <field name="estado"/>
+            <field name="fecha_firma"/>
+            <field name="fecha_renovacion"/>
+            <field name="datos_biometricos"/>
+            
+            <templates>
+                <t t-name="card">
+                    <div class="oe_kanban_card oe_kanban_global_click">
+                        <div class="oe_kanban_content">
+                            <div class="o_kanban_record_title font-weight-bold">
+                                <strong><field name="persona_id"/></strong>
+                            </div>
+                            <div class="text-muted small mt-1">
+                                <span>Firma: </span><field name="fecha_firma"/>
+                            </div>
+                            <div class="text-muted small">
+                                <span>Renovación: </span><field name="fecha_renovacion"/>
+                            </div>
+                            <div class="mt-2">
+                                <field name="estado" widget="badge"/>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </templates>
+        </kanban>
+    </field>
+</record>
 
     <!-- Acción de Ventana -->
     <record id="upoferia_socios_consentimiento_biometrico_action" model="ir.actions.act_window">
