@@ -21,14 +21,14 @@ class ElementoSeguridad(models.Model):
     dFechaUltimaRevision = fields.Date(string='Fecha de la última revisión')
     dFechaProximaRevision = fields.Date(string='Fecha de la próxima revisión')
 
-    _sql_constraints = [
-            ('mobiliario_uniq', 'UNIQUE (mobiliario_id)',
-             'Ese mobiliario ya está registrado como elemento de seguridad.'),
-        ]
-
     mobiliario_id = fields.Many2one('upoferia.mobiliario_caseta', string='Mobiliario', required=True)
 
     bRevisionVencida = fields.Boolean(string='Revisión vencida', compute='_compute_revision_vencida')
+
+    _sql_constraints = [
+                    ('mobiliario_uniq', 'UNIQUE (mobiliario_id)',
+                     'Ese mobiliario ya está registrado como elemento de seguridad.'),
+    ]
 
     @api.depends('dFechaProximaRevision')
     def _compute_revision_vencida(self):
