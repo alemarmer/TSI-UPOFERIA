@@ -5,7 +5,6 @@ from datetime import date
 from dateutil.relativedelta import relativedelta
 
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError
 
 
 class ElementoSeguridad(models.Model):
@@ -52,7 +51,7 @@ class ElementoSeguridad(models.Model):
                 continue
             dHoy = fields.Date.context_today(oRegistro)
             if not date(1970, 1, 1) <= oRegistro.dFechaUltimaRevision <= dHoy:
-                raise ValidationError('La «Fecha de la última revisión» debe estar entre el 01/01/1970 y hoy.')
+                raise models.ValidationError('La «Fecha de la última revisión» debe estar entre el 01/01/1970 y hoy.')
 
     @api.constrains('dFechaProximaRevision', 'dFechaUltimaRevision')
     def _check_fecha_proxima_revision(self):
@@ -61,9 +60,9 @@ class ElementoSeguridad(models.Model):
             if not oRegistro.dFechaProximaRevision or not oRegistro.dFechaUltimaRevision:
                 continue
             if oRegistro.dFechaProximaRevision <= oRegistro.dFechaUltimaRevision:
-                raise ValidationError('La «Fecha de la próxima revisión» tiene que ser posterior a la de la última revisión.')
+                raise models.ValidationError('La «Fecha de la próxima revisión» tiene que ser posterior a la de la última revisión.')
             if oRegistro.dFechaProximaRevision > oRegistro.dFechaUltimaRevision + relativedelta(years=5):
-                raise ValidationError('La «Fecha de la próxima revisión» puede ser como mucho cinco años después de la última revisión.')
+                raise models.ValidationError('La «Fecha de la próxima revisión» puede ser como mucho cinco años después de la última revisión.')
 
 
     def unlink(self):
