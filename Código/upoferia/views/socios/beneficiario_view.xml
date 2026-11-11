@@ -7,7 +7,19 @@
         <field name="arch" type="xml">
             <list string="Beneficiario">
                 <field name="beneficiario_id"/>
-                <field name="socio_id"/>
+                <group string="Datos Personales">
+                            <field name="dni" />
+                            <field name="nombre" placeholder="Nombre completo"/>
+                            <field name="telefono"/>
+                            <field name="email"/>
+                            <field name="codigo_persona"/>
+                        </group>
+                        <group string="Dirección">
+                            <field name="direccion_calle"/>
+                            <field name="direccion_ciudad"/>
+                            <field name="direccion_cp"/>
+                        </group>
+                    </group>
                 <field name="parentesco"/>
             </list>
         </field>

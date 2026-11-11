@@ -6,9 +6,25 @@
         <field name="model">upoferia.socios.socio</field>
         <field name="arch" type="xml">
             <list string="Socio">
-                <field name="persona_id"/>
-                <field name="tipo_socio_id"/>
-                <field name="clan"/>
+                <sheet>
+                    <group>
+                        <group string="Datos Personales">
+                            <field name="dni" />
+                            <field name="nombre" placeholder="Nombre completo"/>
+                            <field name="telefono"/>
+                            <field name="email"/>
+                            <field name="codigo_persona"/>
+                        </group>
+                        <group string="Dirección">
+                            <field name="direccion_calle"/>
+                            <field name="direccion_ciudad"/>
+                            <field name="direccion_cp"/>
+                        </group>
+                    </group>
+                    <group string="Información de Socio">
+                        <field name="tipo_socio_id"/>
+                        <field name="clan"/>
+                    </group>
             </list>
         </field>
     </record>
@@ -22,8 +38,10 @@
                 <sheet>
                     <group>
                         <field name="persona_id"/>
-                        <field name="tipo_socio_id"/>
-                        <field name="clan"/>
+                    </group>
+                    <group string="Información de Socio">
+                            <field name="tipo_socio_id"/>
+                            <field name="clan"/>
                     </group>
                 </sheet>
             </form>
