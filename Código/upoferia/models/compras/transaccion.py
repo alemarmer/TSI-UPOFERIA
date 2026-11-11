@@ -83,8 +83,11 @@ class Transaccion(models.Model):
      @api.depends('transaccion_derivada_ids.fImporte', 'transaccion_derivada_ids.tipo_transaccion_id.sCodigo')
      def _importeFacturado(self):
           for record in self:
-               facturas = record.transaccion_derivada_ids.filtered(lambda transaccion: transaccion.tipo_transaccion_id.sCodigo == 'FAC')
-               record.fImporteFacturado = sum(facturas.mapped('fImporte'))
+               total = 0
+               for transaccion in record.transaccion_derivada_ids:
+                    if transaccion.tipo_transaccion_id.sCodigo == 'FAC':
+                         total += transaccion.fImporte
+               record.fImporteFacturado = total
 
      @api.constrains('fImporte')
      def _check_importe(self):
