@@ -8,10 +8,6 @@ class ZonaCaseta(models.Model):
     _description = 'Zona de caseta'
     _rec_name = 'sNombre'
     _rec_names_search = ['sNombre', 'caseta_id.sNombre']
-    _sql_constraints = [
-        ('caseta_nombre_uniq', 'UNIQUE (caseta_id, "sNombre")',
-         'Esa caseta ya tiene una zona con ese nombre.'),
-    ]
 
     sNombre = fields.Char(string='Nombre', required=True)
     sTipo = fields.Selection([
@@ -28,6 +24,11 @@ class ZonaCaseta(models.Model):
 
     caseta_id = fields.Many2one('upoferia.caseta', string='Caseta', required=True)
     mesa_ids = fields.One2many('upoferia.mesa', 'zona_id', string='Mesas')
+
+    _sql_constraints = [
+            ('caseta_nombre_uniq', 'UNIQUE (caseta_id, "sNombre")',
+             'Esa caseta ya tiene una zona con ese nombre.'),
+    ]
 
     @api.depends('sNombre', 'caseta_id.sNombre')
     def _compute_display_name(self):
