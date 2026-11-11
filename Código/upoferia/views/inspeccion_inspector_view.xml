@@ -1,0 +1,38 @@
+<odoo>
+  <record id="upoferia_inspeccion_inspector_form_view" model="ir.ui.view">
+    <field name="name">upoferia.inspeccion_inspector.form</field>
+    <field name="model">upoferia.inspeccion_inspector</field>
+    <field name="arch" type="xml">
+      <form string="Inspectores de inspección">
+        <sheet layout="auto">
+          <group>
+            <field name="inspeccion_id" />
+            <field name="inspector_id" />
+            <field name="sRol" />
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="upoferia_inspeccion_inspector_list_view" model="ir.ui.view">
+    <field name="name">upoferia.inspeccion_inspector.list</field>
+    <field name="model">upoferia.inspeccion_inspector</field>
+    <field name="arch" type="xml">
+      <list string="Inspectores de inspección">
+        <field name="inspeccion_id" />
+        <field name="inspector_id" />
+        <field name="sRol" />
+      </list>
+    </field>
+  </record>
+
+  <record id="inspeccion_inspector_list_action" model="ir.actions.act_window">
+    <field name="name">Inspectores de inspección</field>
+    <field name="res_model">upoferia.inspeccion_inspector</field>
+    <field name="view_mode">list,form</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">Asigna el primer inspector a una inspección</p>
+    </field>
+  </record>
+</odoo>
