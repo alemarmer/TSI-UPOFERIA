@@ -7,10 +7,6 @@ class MobiliarioCaseta(models.Model):
     _name = 'upoferia.mobiliario_caseta'
     _description = 'Mobiliario de caseta'
     _rec_name = 'sNumeroSerie'
-    _sql_constraints = [
-        ('numero_serie_uniq', 'UNIQUE ("sNumeroSerie")',
-         'Ya existe un mobiliario con ese número de serie.'),
-    ]
 
     sNumeroSerie = fields.Char(string='Número de serie', required=True)
     sNombre = fields.Char(string='Nombre', required=True)
@@ -18,6 +14,11 @@ class MobiliarioCaseta(models.Model):
     fCoste = fields.Float(string='Coste')
 
     caseta_id = fields.Many2one('upoferia.caseta', string='Caseta')
+
+    _sql_constraints = [
+            ('numero_serie_uniq', 'UNIQUE ("sNumeroSerie")',
+             'Ya existe un mobiliario con ese número de serie.'),
+    ]
 
     @api.constrains('fCoste')
     def _check_coste(self):
