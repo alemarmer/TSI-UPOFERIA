@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="upoferia.IdentificacionAcceso">
+        <div>
+            <h2>Identificación de acceso</h2>
+            <p><t t-esc="state.nombre"/></p>
+        </div>
+    </t>
+</templates>

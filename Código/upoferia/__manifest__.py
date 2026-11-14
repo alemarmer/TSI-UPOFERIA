@@ -35,6 +35,7 @@ Long description of module's purpose
         'views/control_accesos/incidencia_puerta_view.xml',
         'views/control_accesos/registro_accesos_view.xml',
         'views/turnos/fichaje_view.xml',
+        'views/control_accesos/identificacion_acceso_view.xml',
         'views/menu.xml',
     ],
     # only loaded in demonstration mode
