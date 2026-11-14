@@ -35,15 +35,20 @@ Long description of module's purpose
         'views/control_accesos/incidencia_puerta_view.xml',
         'views/control_accesos/registro_accesos_view.xml',
         'views/turnos/fichaje_view.xml',
-        'static/src/identificacion_accesos/identificacion_accesos.xml',
-        'static/src/identificacion_accesos/identificacion_accesos.js',
-        'static/src/identificacion_accesos/identificacion_accesos.scss',
         'views/menu.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
         #'demo/demo.xml',
     ],
+    'assets': {
+        'web.assets_backend': [
+            'upoferia/static/src/js/main.js',
+            'upoferia/static/src/js/components/identificacion_acceso.js',
+            'upoferia/static/src/xml/identificacion_acceso.xml',
+            'upoferia/static/src/scss/identificacion_acceso.scss',
+        ],
+    },
     'application': True,
 }
 
