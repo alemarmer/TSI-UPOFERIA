@@ -3,7 +3,10 @@
     <t t-name="upoferia.IdentificacionAcceso">
         <div>
             <h2>Identificación de acceso</h2>
-            <p><t t-esc="state.nombre"/></p>
+            <video t-ref="video" autoplay="autoplay" playsinline="playsinline" muted="muted" style="width:640px; height:480px; background:black;"/>
+        </div>
+        <div t-if="state.error" class="text-danger">
+            <t t-esc="state.error"/>
         </div>
     </t>
 </templates>
