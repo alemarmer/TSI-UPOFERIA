@@ -32,7 +32,7 @@ class RegistroAccesos(models.Model):
         if not persona.exists():
             return self._error_con_incidencia('No se encontró ninguna persona con el código proporcionado.')
         
-        if not self.env['upoferia.socios.invitacion_acceso'].search([('persona_id', '=', persona.id),('fecha_validez', '=', fields.Date.today())], limit=1).exists() and not self.env['upoferia.socios.socio'].search([('beneficiario_id', '=', persona.id)], limit=1).exists() and not self.env['upoferia.socios.beneficiario'].search([('id', '=', persona.id)], limit=1).exists():
+        if not self.env['upoferia.socios.invitacion_acceso'].search([('persona_id', '=', persona.id),('fecha_validez', '=', fields.Date.today())], limit=1).exists() and not self.env['upoferia.socios.socio'].search([('persona_id', '=', persona.id)], limit=1).exists() and not self.env['upoferia.socios.beneficiario'].search([('beneficiario_id', '=', persona.id)], limit=1).exists():
             return self._error_con_incidencia('La persona no tiene acceso a la caseta.')
         
         tipo_movimiento = 'salida' if self.env['upoferia.control_accesos.registro_accesos'].search([
@@ -45,15 +45,14 @@ class RegistroAccesos(models.Model):
         if not aforo_actual.exists():
             return self._error_con_incidencia('No se pueden registrar accesos. No hay registros de aforo para esta caseta.')
         
-        if aforo_actual.aforo_actual >= aforo_actual.aforo_maximo and tipo_movimiento == 'entrada':
+        if aforo_actual.ocupacion_actual >= aforo_actual.aforo_maximo and tipo_movimiento == 'entrada':
             return self._error_con_incidencia('No se puede registrar la entrada. El aforo máximo de la caseta ha sido alcanzado.')
 
-        if aforo_actual.aforo_actual <= 0 and tipo_movimiento == 'salida':
+        if aforo_actual.ocupacion_actual <= 0 and tipo_movimiento == 'salida':
             return self._error_con_incidencia('No se puede registrar la salida. La caseta está vacía.')
         
         aforo = self.env['upoferia.control_accesos.control_aforo'].create({
-            'punto_acceso_id': punto_acceso_id,
-            'aforo_actual': aforo_actual.aforo_actual + 1 if tipo_movimiento == 'entrada' else aforo_actual.aforo_actual - 1,
+            'ocupacion_actual': aforo_actual.ocupacion_actual + 1 if tipo_movimiento == 'entrada' else aforo_actual.ocupacion_actual - 1,
             'aforo_maximo': aforo_actual.aforo_maximo
             })
         
@@ -70,9 +69,9 @@ class RegistroAccesos(models.Model):
             'ok': True,
             'nombre_persona': persona.nombre,
             'tipo_movimiento': tipo_movimiento,
-            'aforo_actual': aforo.aforo_actual,
+            'aforo_actual': aforo.ocupacion_actual,
             'aforo_maximo': aforo.aforo_maximo,
-            'message': f'Acceso registrado correctamente para {persona.nombre}. Aforo actual: {aforo.aforo_actual}/{aforo.aforo_maximo}.'
+            'message': f'Acceso registrado correctamente para {persona.nombre}. Aforo actual: {aforo.ocupacion_actual}/{aforo.aforo_maximo}.'
         } 
     
     
