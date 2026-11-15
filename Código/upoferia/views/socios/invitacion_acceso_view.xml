@@ -9,6 +9,7 @@
                 <field name="socio_id"/>
                 <field name="persona_id"/>
                 <field name="fecha_validez"/>
+                <field name="qr_imagen" widget="binary" filename="qr_nombre"/>
             </list>
         </field>
     </record>
@@ -24,6 +25,8 @@
                         <field name="socio_id"/>
                         <field name="persona_id"/>
                         <field name="fecha_validez"/>
+                        <field name="qr_imagen" widget="binary" filename="qr_nombre"/>
+                        <field name="qr_nombre" invisible="1"/>
                     </group>
                 </sheet>
             </form>

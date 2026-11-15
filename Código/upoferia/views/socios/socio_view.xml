@@ -16,6 +16,7 @@
                 <field name="direccion_cp"/>
                 <field name="tipo_socio_id"/>
                 <field name="clan"/>
+                <field name="qr_imagen" widget="binary" filename="qr_nombre"/>
             </list>
         </field>
     </record>
@@ -33,6 +34,10 @@
                     <group string="Información de Socio">
                             <field name="tipo_socio_id"/>
                             <field name="clan"/>
+                    </group>
+                    <group string="Código QR">
+                        <field name="qr_imagen" widget="binary" filename="qr_nombre"/>
+                        <field name="qr_nombre" invisible="1"/>
                     </group>
                 </sheet>
             </form>

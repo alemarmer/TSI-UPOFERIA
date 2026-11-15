@@ -6,7 +6,9 @@ class InvitacionAcceso(models.Model):
     socio_id = fields.Many2one('upoferia.socios.persona', string='Socio', required=True, ondelete='cascade')
     persona_id = fields.Many2one('upoferia.socios.persona', string='Invitado', required=True, ondelete='cascade')
     fecha_validez = fields.Date("Fecha de validez", default=fields.Datetime.now)
-    
+    qr_imagen = fields.Binary("Código QR", related='persona_id.qr_imagen')
+    qr_nombre = fields.Char("Nombre del archivo QR", related='persona_id.qr_nombre')
+
     @api.constrains('fecha_validez')
     def _check_fecha_validez(self):
         if self.fecha_validez and self.fecha_validez < fields.Date.today():

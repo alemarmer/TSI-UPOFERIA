@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-import re, hashlib
+import re, hashlib, base64, io
+from PIL import Image, ImageOps
 from odoo import models, fields, api
 
 
@@ -12,7 +13,9 @@ class Persona(models.Model):
     dni = fields.Char(string="DNI", size=9, required=True)
     nombre = fields.Char("Nombre")
     telefono = fields.Char("Teléfono", size=9)
-    ccodigo_persona = fields.Char("Código Persona", compute='_compute_codigo_persona', store=True, readonly=True)
+    codigo_persona = fields.Char("Código Persona", compute='_compute_codigo_persona', store=True, readonly=True)
+    qr_nombre = fields.Char("Nombre QR", readonly=True)
+    qr_imagen = fields.Binary("Código QR", attachment=True, readonly=True, store=False, compute='_compute_qr_imagen')
     email = fields.Char("Correo")
     direccion_calle = fields.Char("Calle")
     direccion_ciudad = fields.Char("Ciudad")
@@ -23,10 +26,32 @@ class Persona(models.Model):
     
     @api.depends('dni')
     def _compute_codigo_persona(self):
-        for record in self:
-            if record.dni:
-                record.ccodigo_persona = hashlib.md5(record.dni.encode()).hexdigest()[:12]
-    
+        for persona in self:
+            if persona.dni:
+                persona.codigo_persona = hashlib.md5(persona.dni.encode()).hexdigest()[:12]
+            else:
+                persona.codigo_persona = False
+
+    @api.depends('codigo_persona')
+    def _compute_qr_imagen(self):
+        for persona in self:
+            if not persona.codigo_persona:
+                persona.qr_imagen = False
+                persona.qr_nombre = False
+                continue
+
+            png = self.env['ir.actions.report'].barcode('QR', persona.codigo_persona, width=300, height=300)
+
+            # Si no ponemos fondo y borde da fallo al escanear
+            qr = Image.open(io.BytesIO(png)).convert('RGBA')
+            lienzo = Image.new('RGB', qr.size, 'white')
+            lienzo.paste(qr, mask=qr.split()[3])
+            lienzo = ImageOps.expand(lienzo, border=40, fill='white')
+            buffer = io.BytesIO()
+            lienzo.save(buffer, format='PNG')
+            persona.qr_imagen = base64.b64encode(buffer.getvalue())
+            persona.qr_nombre = f"qr_{persona.dni}.png"
+
     @api.constrains('dni')
     def _check_dni(self):
         LETRAS_DNI = "TRWAGMYFPDXBNJZSQVHLCKE"

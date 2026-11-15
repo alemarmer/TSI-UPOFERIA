@@ -50,11 +50,12 @@ export class IdentificacionAcceso extends Component {
         const video = this.videoRef.el;
         const canvas = this.canvasRef.el;
         canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;c
+        canvas.height = video.videoHeight;
         const ctx = canvas.getContext("2d", { willReadFrequently: true }) 
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
         const image = ctx.getImageData(0, 0, canvas.width, canvas.height);
-        const code = jsQR(image.data, canvas.width, canvas.height, { inversionAttempts: "dontInvert" });
+        const code = jsQR(image.data, canvas.width, canvas.height, { inversionAttempts: "attemptBoth" });
+        console.log(code);
         if (code) {
             this.ultimaLectura = ahora;
             this.state.codigoLeido = code.data;

@@ -32,6 +32,9 @@ class RegistroAccesos(models.Model):
         if not persona.exists():
             return self._error_con_incidencia('No se encontró ninguna persona con el código proporcionado.')
         
+        if not self.env['upoferia.socios.invitacion_acceso'].search([('persona_id', '=', persona.id),('fecha_validez', '=', fields.Date.today())], limit=1).exists() and not self.env['upoferia.socios.socio'].search([('beneficiario_id', '=', persona.id)], limit=1).exists() and not self.env['upoferia.socios.beneficiario'].search([('id', '=', persona.id)], limit=1).exists():
+            return self._error_con_incidencia('La persona no tiene acceso a la caseta.')
+        
         tipo_movimiento = 'salida' if self.env['upoferia.control_accesos.registro_accesos'].search([
             ('punto_acceso_id.nombre_caseta', '=', punto_acceso.nombre_caseta), 
             ('persona_id', '=', persona.id)], 
