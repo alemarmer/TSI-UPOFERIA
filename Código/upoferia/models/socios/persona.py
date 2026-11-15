@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import re
+import re, hashlib
 from odoo import models, fields, api
 
 
@@ -12,7 +12,7 @@ class Persona(models.Model):
     dni = fields.Char(string="DNI", size=9, required=True)
     nombre = fields.Char("Nombre")
     telefono = fields.Char("Teléfono", size=9)
-    codigo_persona = fields.Char("Código Persona")
+    ccodigo_persona = fields.Char("Código Persona", compute='calcular_codigo_persona', store=True, readonly=True)
     email = fields.Char("Correo")
     direccion_calle = fields.Char("Calle")
     direccion_ciudad = fields.Char("Ciudad")
@@ -20,6 +20,12 @@ class Persona(models.Model):
     invitaciones_recibidas_ids = fields.One2many('upoferia.socios.invitacion_acceso', 'persona_id', string="Invitaciones recibidas")
     consentimiento_biometrico_ids = fields.One2many('upoferia.socios.consentimiento_biometrico', 'persona_id', string="Consentimientos biométricos")
     registro_accesos_ids = fields.One2many('upoferia.control_accesos.registro_accesos', 'persona_id', string='Registros de accesos')
+    
+    @api.depends('dni')
+    def calcular_codigo_persona(self):
+        for record in self:
+            if record.dni:
+                record.ccodigo_persona = hashlib.md5(record.dni.encode()).hexdigest()[:12]
     
     @api.constrains('dni')
     def _check_dni(self):
@@ -39,4 +45,4 @@ class Persona(models.Model):
         if self.email and not re.match(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", self.email):
             raise models.ValidationError('El correo no es válido.')
             
-    _sql_constraints = [('dni_unique', 'UNIQUE(dni)', 'Ya existe un registro con este DNI.')]
+    _sql_constraints = [('dni_unique', 'UNIQUE(dni)', 'Ya existe un registro con este DNI.'),('codigo_persona_unique', 'UNIQUE(ccodigo_persona)', 'Ya existe un registro con este Código Persona.')]
