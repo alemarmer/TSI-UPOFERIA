@@ -4,6 +4,10 @@
         <div>
             <h2>Identificación de acceso</h2>
             <video t-ref="video" autoplay="autoplay" playsinline="playsinline" muted="muted" style="width:640px; height:480px; background:black;"/>
+            <canvas t-ref="canvas" class="d-none"/>
+        </div>
+        <div t-if="state.codigoLeido" class="text-info">
+            <t t-esc="state.codigoLeido"/>
         </div>
         <div t-if="state.error" class="text-danger">
             <t t-esc="state.error"/>
