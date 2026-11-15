@@ -12,7 +12,7 @@ class Persona(models.Model):
     dni = fields.Char(string="DNI", size=9, required=True)
     nombre = fields.Char("Nombre")
     telefono = fields.Char("Teléfono", size=9)
-    ccodigo_persona = fields.Char("Código Persona", compute='calcular_codigo_persona', store=True, readonly=True)
+    ccodigo_persona = fields.Char("Código Persona", compute='_compute_codigo_persona', store=True, readonly=True)
     email = fields.Char("Correo")
     direccion_calle = fields.Char("Calle")
     direccion_ciudad = fields.Char("Ciudad")
@@ -22,7 +22,7 @@ class Persona(models.Model):
     registro_accesos_ids = fields.One2many('upoferia.control_accesos.registro_accesos', 'persona_id', string='Registros de accesos')
     
     @api.depends('dni')
-    def calcular_codigo_persona(self):
+    def _compute_codigo_persona(self):
         for record in self:
             if record.dni:
                 record.ccodigo_persona = hashlib.md5(record.dni.encode()).hexdigest()[:12]

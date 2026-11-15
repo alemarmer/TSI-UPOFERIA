@@ -6,7 +6,7 @@ class ConsentimientoBiometrico(models.Model):
 
     persona_id = fields.Many2one('upoferia.socios.persona', string='Socio', required=True, ondelete='cascade')
     estado = fields.Boolean("Aprobado", default=False)
-    fecha_firma = fields.Date("Fecha de firma", autodate=True)
+    fecha_firma = fields.Date("Fecha de firma", default=fields.Datetime.now)
     fecha_renovacion = fields.Date("Fecha de renovación")
     datos_biometricos = fields.Binary(string="Datos Biométricos") #Dejo binary de momento, pero se este campo variará de tipo según las necesidades de la libreria usada para el reconocimiento facial.
     

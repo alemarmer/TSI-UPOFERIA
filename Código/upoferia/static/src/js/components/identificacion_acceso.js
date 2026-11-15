@@ -50,7 +50,7 @@ export class IdentificacionAcceso extends Component {
         const video = this.videoRef.el;
         const canvas = this.canvasRef.el;
         canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
+        canvas.height = video.videoHeight;c
         const ctx = canvas.getContext("2d", { willReadFrequently: true }) 
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
         const image = ctx.getImageData(0, 0, canvas.width, canvas.height);

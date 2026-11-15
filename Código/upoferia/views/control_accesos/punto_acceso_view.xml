@@ -9,8 +9,7 @@
                 <field name="name"/>
                 <field name="ip_dispositivo"/>
                 <field name="tipo_dispositivo"/>
-                <field name="nombre_case"/>
-                <field name="nombre_zona_caseta"/>
+                <field name="nombre_caseta"/>
             </list>
         </field>
     </record>
@@ -26,8 +25,7 @@
                         <field name="name"/>
                         <field name="ip_dispositivo"/>
                         <field name="tipo_dispositivo"/>
-                        <field name="nombre_case"/>
-                        <field name="nombre_zona_caseta"/>
+                        <field name="nombre_caseta"/>
                     </group>
                 </sheet>
             </form>
