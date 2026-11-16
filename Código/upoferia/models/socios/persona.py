@@ -50,7 +50,7 @@ class Persona(models.Model):
             buffer = io.BytesIO()
             lienzo.save(buffer, format='PNG')
             persona.qr_imagen = base64.b64encode(buffer.getvalue())
-            persona.qr_nombre = f"qr_{persona.dni}.png"
+            persona.qr_nombre = f"qr_{persona.codigo_persona}.png"
 
     @api.constrains('dni')
     def _check_dni(self):
