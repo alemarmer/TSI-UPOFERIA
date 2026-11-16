@@ -44,51 +44,54 @@ export class IdentificacionAcceso extends Component {
             }
         });
     }
-        leerFrame(){
-            if (this.state.procesando) return;
-            if (!this.videoRef.el || !this.canvasRef.el || this.videoRef.el.readyState !== this.videoRef.el.HAVE_ENOUGH_DATA) {
-                return;
-            }
-            const ahora = Date.now();
-            if (ahora - this.ultimaLectura < 5000) {
-                return;
-            }
-            if (this.state.resultado) {
-                this.state.resultado = null;
-            }
-            const video = this.videoRef.el;
-            const canvas = this.canvasRef.el;
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            const ctx = canvas.getContext("2d", { willReadFrequently: true })
-            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-            const image = ctx.getImageData(0, 0, canvas.width, canvas.height);
-            const code = jsQR(image.data, canvas.width, canvas.height, { inversionAttempts: "attemptBoth" });
-            if (code && code.data) {
-                this.ultimaLectura = ahora;
-                this.procesarCodigoQR(code.data)
-            } else return;
+    leerFrame() {
+        if (this.state.procesando) return;
+        if (!this.videoRef.el || !this.canvasRef.el || this.videoRef.el.readyState !== this.videoRef.el.HAVE_ENOUGH_DATA) {
+            return;
         }
-
-        async procesarCodigoQR (codigo){
-            if (!this.state.puntoId) {
-                this.state.resultado={ok: false, message:"No hay ninguna camara seleccionada."}
-                return;
-            }
-            if (this.state.procesando) return;
-            this.state.procesando = true;
-
-            try {
-                this.state.resultado = await this.orm.call("upoferia.control_accesos.registro_accesos", "registrar_acceso_qr", [codigo, Number(this.state.puntoId)])
-                if (!this.state.resultado.ok) {
-                    this.ultimaLectura = Date.now() + 3000;
-                }
-            } catch (error){
-                console.error(error);
-                this.state.resultado = { ok: false, message: "Error al contactar con el servidor" }
-            } finally {
-                this.state.procesando = false;
-            }
+        const ahora = Date.now();
+        if (ahora - this.ultimaLectura < 5000) {
+            return;
         }
-    
+        if (this.state.resultado) {
+            this.state.resultado = null;
+        }
+        const video = this.videoRef.el;
+        const canvas = this.canvasRef.el;
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        const ctx = canvas.getContext("2d", { willReadFrequently: true })
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        const image = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const code = jsQR(image.data, canvas.width, canvas.height, { inversionAttempts: "attemptBoth" });
+        if (code && code.data) {
+            this.ultimaLectura = ahora;
+            this.procesarCodigoQR(code.data)
+        } else return;
+    }
+
+    async procesarCodigoQR(codigo) {
+        if (!this.state.puntoId) {
+            this.state.resultado = { ok: false, message: "No hay ninguna camara seleccionada." }
+            return;
+        }
+        if (this.state.procesando) return;
+        this.state.procesando = true;
+
+        try {
+            this.state.resultado = await this.orm.call("upoferia.control_accesos.registro_accesos", "registrar_acceso_qr", [codigo, Number(this.state.puntoId)])
+            if (!this.state.resultado.ok) {
+                this.ultimaLectura = Date.now() + 3000;
+            }
+        } catch (error) {
+            console.error(error);
+            this.state.resultado = { ok: false, message: "Error al contactar con el servidor" }
+        } finally {
+            this.state.procesando = false;
+        }
+    }
+
+    cerrarResultado() {
+        this.state.resultado = null;
+    }
 }
