@@ -9,13 +9,23 @@ class RegistroAccesos(models.Model):
     fecha_hora = fields.Datetime("Fecha y hora de acceso",default=fields.Datetime.now)
     metodo_acceso = fields.Selection( selection=[('facial', 'Patrón Facial'), ('qr', 'Escáner de QR'), ('manual', 'Entrada manual'),],string="Metodo de acceso")
     tipo_movimiento = fields.Selection( selection=[('entrada', 'Entrada a la caseta'), ('salida', 'Salida de la caseta'),],string="Tipo de movimiento")
-    persona_id = fields.Many2one('upoferia.socios.persona', string='Persona', required=True, ondelete='cascade')
+    persona_id = fields.Many2one('upoferia.socios.persona', string='Persona', ondelete='cascade')
     evento_puerta_id = fields.Many2one('upoferia.control_accesos.evento_puerta', string='Evento de puerta', required=True, ondelete='cascade')
+    exitoso = fields.Boolean("Acceso correcto", default=True)
     
-    def _error_con_incidencia(self, motivo):
-            self.env['upoferia.control_accesos.incidencia_puerta'].create({ 
+    def _error_con_incidencia(self, motivo, punto_acceso_id,persona_id):
+            incidencia = self.env['upoferia.control_accesos.incidencia_puerta'].create({ 
                 'motivo': motivo
             })
+            self.create({
+                        'punto_acceso_id': punto_acceso_id,
+                        'persona_id': persona_id,
+                        'evento_puerta_id': incidencia.evento_puerta_id.id,
+                        'fecha_hora': fields.Datetime.now(),
+                        'metodo_acceso': 'qr',
+                        'tipo_movimiento': False,
+                        'exitoso': False
+                    })
             return {
                 'ok': False,
                 'message': motivo
@@ -25,31 +35,31 @@ class RegistroAccesos(models.Model):
     def registrar_acceso_qr(self, codigo, punto_acceso_id):
         
         punto_acceso = self.env['upoferia.control_accesos.punto_acceso'].browse(punto_acceso_id)
-        if not punto_acceso.exists():
-            return self._error_con_incidencia('El punto de acceso no existe.')
-        
+        if not punto_acceso.exists() or not punto_acceso.nombre_caseta:
+            return {'ok': False, 'message': 'El punto de acceso no existe o no tiene caseta configurada.'}
         persona = self.env['upoferia.socios.persona'].search([('codigo_persona', '=', codigo)], limit=1)
         if not persona.exists():
-            return self._error_con_incidencia('No se encontró ninguna persona con el código proporcionado.')
+            return self._error_con_incidencia('No se encontró ninguna persona con el código proporcionado.',punto_acceso_id,False)
         
         if not self.env['upoferia.socios.invitacion_acceso'].search([('persona_id', '=', persona.id),('fecha_validez', '=', fields.Date.today())], limit=1).exists() and not self.env['upoferia.socios.socio'].search([('persona_id', '=', persona.id)], limit=1).exists() and not self.env['upoferia.socios.beneficiario'].search([('beneficiario_id', '=', persona.id)], limit=1).exists():
-            return self._error_con_incidencia('La persona no tiene acceso a la caseta.')
+            return self._error_con_incidencia('La persona no tiene acceso a la caseta.', punto_acceso_id, persona.id)
         
         tipo_movimiento = 'salida' if self.env['upoferia.control_accesos.registro_accesos'].search([
             ('punto_acceso_id.nombre_caseta', '=', punto_acceso.nombre_caseta), 
-            ('persona_id', '=', persona.id)], 
+            ('persona_id', '=', persona.id),
+            ('exitoso', '=', True)],                                                    
             order='id desc', limit=1).tipo_movimiento == 'entrada' else 'entrada'
         
         aforo_actual = self.env['upoferia.control_accesos.control_aforo'].search([
             ('evento_puerta_id.registro_accesos_ids.punto_acceso_id.nombre_caseta', '=', punto_acceso.nombre_caseta)], order='id desc', limit=1)
         if not aforo_actual.exists():
-            return self._error_con_incidencia('No se pueden registrar accesos. No hay registros de aforo para esta caseta.')
+            return self._error_con_incidencia('No se pueden registrar accesos. No hay registros de aforo para esta caseta.', punto_acceso_id, persona.id)
         
         if aforo_actual.ocupacion_actual >= aforo_actual.aforo_maximo and tipo_movimiento == 'entrada':
-            return self._error_con_incidencia('No se puede registrar la entrada. El aforo máximo de la caseta ha sido alcanzado.')
+            return self._error_con_incidencia('No se puede registrar la entrada. El aforo máximo de la caseta ha sido alcanzado.', punto_acceso_id, persona.id)
 
         if aforo_actual.ocupacion_actual <= 0 and tipo_movimiento == 'salida':
-            return self._error_con_incidencia('No se puede registrar la salida. La caseta está vacía.')
+            return self._error_con_incidencia('No se puede registrar la salida. La caseta está vacía.', punto_acceso_id, persona.id)
         
         aforo = self.env['upoferia.control_accesos.control_aforo'].create({
             'ocupacion_actual': aforo_actual.ocupacion_actual + 1 if tipo_movimiento == 'entrada' else aforo_actual.ocupacion_actual - 1,
