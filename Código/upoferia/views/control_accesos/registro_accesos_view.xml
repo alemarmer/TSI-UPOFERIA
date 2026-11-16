@@ -60,7 +60,21 @@
         </field>
     </record>
 
-
+    <!-- Filtro por tipo de evento -->
+    <record id="upoferia_control_accesos_registro_accesos_search_view" model="ir.ui.view">
+        <field name="name">upoferia.control_accesos.registro_accesos.search</field>
+        <field name="model">upoferia.control_accesos.registro_accesos</field>
+        <field name="arch" type="xml">
+            <search string="Registros de accesos">
+                <filter name="f_incidencias" string="Incidencias" domain="[('evento_puerta_id.incidencia_ids', '!=', False)]"/>
+                <filter name="f_aforo" string="Control de aforo" domain="[('evento_puerta_id.aforo_ids', '!=', False)]"/>
+                <filter name="f_fichajes" string="Fichajes" domain="[('evento_puerta_id.fichaje_ids', '!=', False)]"/>
+                <separator/>
+                <filter name="f_fallidos" string="Accesos fallidos" domain="[('exitoso', '=', False)]"/>
+                <filter name="f_correctos" string="Accesos correctos" domain="[('exitoso', '=', True)]"/>
+            </search>
+        </field>
+    </record>
 
     <!-- Acción de Ventana -->
     <record id="upoferia_control_accesos_registro_accesos_action" model="ir.actions.act_window">

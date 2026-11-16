@@ -7,6 +7,9 @@ class EventoPuerta(models.Model):
 
     evento_puerta_num = fields.Integer("ID del evento de puerta", readonly=True,default=0)
     registro_accesos_ids = fields.One2many('upoferia.control_accesos.registro_accesos', 'evento_puerta_id', string='Registros de accesos')
+    incidencia_ids = fields.One2many('upoferia.control_accesos.incidencia_puerta', 'evento_puerta_id', string='Incidencias')
+    aforo_ids = fields.One2many('upoferia.control_accesos.control_aforo', 'evento_puerta_id', string='Controles de aforo')
+    fichaje_ids = fields.One2many('upoferia.turnos.fichaje', 'evento_puerta_id', string='Fichajes')
     
     @api.model_create_multi
     def create(self, vals_list):
